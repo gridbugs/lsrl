@@ -1,7 +1,7 @@
 #!/usr/bin/env lsc
 
-require! './GameNcurses.ls'
+require! './GameCurses.ls'
 
-main = -> GameNcurses.run!
+main = -> GameCurses.run!
 
 main() if require.main is module

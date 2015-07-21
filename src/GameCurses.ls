@@ -1,6 +1,7 @@
 require! ncurses
 require! './GameCommon.ls'
 require! './CursesDrawer.ls'
+require! './CursesInputSource.ls'
 
 export run = ->
     ncurses.showCursor = false
@@ -18,9 +19,9 @@ export run = ->
     process.on 'SIGINT' cleanup
     process.on 'exit'   cleanup
 
-    gameCommon = new GameCommon.GameCommon (new CursesDrawer.CursesDrawer ncurses, win0, win1, win2)
-
-    win0.on 'inputChar' (ch) ->
-        gameCommon.processChar ch
+    gameCommon = new GameCommon.GameCommon(
+        (new CursesDrawer.CursesDrawer ncurses, win0, win1, win2),
+        (new CursesInputSource.CursesInputSource  win0)
+    )
 
     gameCommon.start!
