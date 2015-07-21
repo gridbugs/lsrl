@@ -5,12 +5,9 @@ export class CursesDrawer
         @hud_window = hud_window
         @log_window = log_window
 
-        @game_window.addstr "game"
-        @hud_window.addstr "hud"
-        @log_window.addstr "log"
-
+    drawGrid: (grid) ->
+        @game_window.border!
         @game_window.refresh!
-        @game_window.top!
 
     draw: (game_state) ->
         @game_window.addstr("hello\n\r")
