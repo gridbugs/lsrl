@@ -1,4 +1,5 @@
 export const Colours =
+    BLACK: 16
     LIGHT_GREEN: 34
     DARK_GREEN: 22
     LIGHT_BROWN: 94

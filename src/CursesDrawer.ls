@@ -27,26 +27,23 @@ export class CursesDrawer
         @game_window = game_window
         @hud_window = hud_window
         @log_window = log_window
-    
+
         /* Initialize each colour pair.
          * This is done in the constructor as it requires an ncurses context.
          */
         for k, v of ColourPairs
-            @ncurses.colorPair v, Colours[k], @ncurses.colors.BLACK
+            @ncurses.colorPair v, Colours[k], Colours.BLACK
+
+    __drawCell: (cell) ->
+        @game_window.cursor cell.y, cell.x
+        @game_window.attrset @ncurses.colorPair(TileColours[cell.type])
+        @game_window.addstr TileChars[cell.type]
+
+    drawCell: (cell) ->
+        @__drawCell cell
+        @game_window.refresh!
 
     drawGrid: (grid) ->
         @game_window.border!
-        @game_window.attrset @ncurses.colorPair(ColourPairs.LIGHT_BLUE)
-
-        @game_window.addstr "hello" + Object.keys(ColourPairs)
+        grid.forEach (c) ~> @__drawCell c
         @game_window.refresh!
-
-    draw: (game_state) ->
-        @game_window.addstr("hello\n\r")
-        @game_window.refresh!
-        @hud_window.addstr("hello\n\r")
-        @hud_window.refresh!
-        @log_window.addstr("hello\n\r")
-        @log_window.refresh!
-        process.stderr.write "aoeu\n"
-

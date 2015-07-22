@@ -5,6 +5,7 @@ require! './CursesDrawer': {CursesDrawer}
 require! 'prelude-ls': {map, join, filter}
 require! './GameCurses.ls'
 require! './Grid.ls': {Grid}
+require! './Tiles.ls': {Tiles}
 
 class Cell
     (x, y) ->
@@ -31,10 +32,13 @@ main = ->
     process.on 'SIGINT' cleanup
     process.on 'exit'   cleanup
 
-    grid = new Grid Cell, 100, 40
+    grid = new Grid Cell, 120, 40
 
     drawer = new CursesDrawer ncurses, win0, win1, win2
 
+    grid.forEach (c) ->
+        c.type = Tiles.WATER
+#    drawer.drawCell c
     drawer.drawGrid grid
 
 #main = -> GameCurses.run!
