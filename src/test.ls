@@ -37,8 +37,9 @@ main = ->
     drawer = new CursesDrawer ncurses, win0, win1, win2
 
     grid.forEach (c) ->
+        c.type = Tiles.GRASS
+    grid.forEachBorder (c) ->
         c.type = Tiles.WATER
-#    drawer.drawCell c
     drawer.drawGrid grid
 
 #main = -> GameCurses.run!

@@ -39,6 +39,16 @@ export class Grid
             row.forEach (cell, c_idx, row) ~>
                 f(cell, [r_idx, c_idx], this)
 
+    forEachBorder: (f) ->
+        for i from 0 til @width
+            f @array[0][i]
+        for i from 1 til @height-1
+            f @array[i][@width-1]
+        for i from (@width-1) to 0 by -1
+            f @array[@height-1][i]
+        for i from @height-2 til 0 by -1
+            f @array[i][0]
+
     getCell: (x, y) -> @array[y][x]
     getCellCart: (c) -> @getCell c.x, c.y
 
