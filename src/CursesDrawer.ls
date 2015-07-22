@@ -21,6 +21,10 @@ for i in TileTypes
     TileChars.push TileStyles[i][0]
     TileColours.push ColourPairs[TileStyles[i][1]]
 
+for i from 0 to 25
+    TileChars.push '#'
+    TileColours.push 232+i
+
 export class CursesDrawer
     (ncurses, game_window, hud_window, log_window) ->
         @ncurses = ncurses
