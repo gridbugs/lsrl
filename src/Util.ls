@@ -7,7 +7,7 @@ export createRandomUnitVector = ->
     return vec2 Math.cos(angle), Math.sin(angle)
 
 export class SignedArray
-    ->  
+    ->
         @positive = []
         @negative = []
         @zero = void

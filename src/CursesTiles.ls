@@ -11,7 +11,12 @@ export const Colours =
 export const TileStyles =
     GRASS:  ['.', \LIGHT_GREEN]
     STONE:  ['.', \LIGHT_GREY]
+    DIRT:   ['.', \DARK_BROWN]
     TREE:   ['&', \DARK_GREEN]
     DEAD_TREE:  ['&', \LIGHT_BROWN]
     WATER:  ['~', \LIGHT_BLUE]
     WALL:   ['#', \DARK_GREY]
+    WOODEN_BRIDGE: ['=', \LIGHT_BROWN]
+    STONE_BRIDGE: ['=', \LIGHT_GREY]
+    WOODEN_DOOR: ['+', \LIGHT_BROWN]
+    STONE_DOOR: ['+', \LIGHT_GREY]

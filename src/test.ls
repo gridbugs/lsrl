@@ -40,7 +40,7 @@ main = ->
 
     const PERLIN_SCALE = 0.1
     grid.forEach (c) ->
-        c.type = parseInt(7 + ((perlin.getNoise (vec2 (c.x * PERLIN_SCALE), (c.y * PERLIN_SCALE))) + 1) * 4)
+        c.type = parseInt(((perlin.getNoise (vec2 (c.x * PERLIN_SCALE), (c.y * PERLIN_SCALE))) + 1) * 5.5)
 
 #    grid.forEachBorder (c) ->
 #        c.type = 14

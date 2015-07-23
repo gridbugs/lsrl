@@ -12,7 +12,7 @@ export class PerlinGenerator
         if not @rows.get(v.y).get(v.x)?
             @rows.get(v.y).set(v.x, createRandomUnitVector!)
 
-    __easeCurve: (x) -> 
+    __easeCurve: (x) ->
         6*Math.pow(x, 5) - 15*Math.pow(x, 4) + 10*Math.pow(x, 3)
 
     __getGradient: (v) ~> @rows.get(v.y).get(v.x)
@@ -27,7 +27,7 @@ export class PerlinGenerator
 
         each @__generateGradient, corners
         gradients = map @__getGradient, corners
-        
+
         dots = for i from 0 til 4
             gradients[i].dot (v.subtract corners[i])
 
