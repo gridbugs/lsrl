@@ -1,3 +1,4 @@
+require! ncurses
 require! './Tiles.ls': {TileTypes}
 require! './CursesTiles.ls': {Colours, TileStyles}
 
@@ -26,21 +27,30 @@ for i from 0 to 25
     TileColours.push 232+i
 
 export class CursesDrawer
-    (ncurses, game_window, hud_window, log_window) ->
-        @ncurses = ncurses
-        @game_window = game_window
-        @hud_window = hud_window
-        @log_window = log_window
+    ->
+        ncurses.showCursor = false
+        ncurses.echo = false
+        @stdscr = new ncurses.Window!
+        @game_window = new ncurses.Window(40, 120, 0, 0)
+        @hud_window = new ncurses.Window(47, 40, 0, 122)
+        @log_window = new ncurses.Window(6, 120, 41, 0)
 
         /* Initialize each colour pair.
          * This is done in the constructor as it requires an ncurses context.
          */
         for k, v of ColourPairs
-            @ncurses.colorPair v, Colours[k], Colours.BLACK
+            ncurses.colorPair v, Colours[k], Colours.BLACK
+
+    cleanup: ~>
+        @stdscr.close!
+        @game_window.close!
+        @hud_window.close!
+        @log_window.close!
+        ncurses.cleanup!
 
     __drawCell: (cell) ->
         @game_window.cursor cell.y, cell.x
-        @game_window.attrset @ncurses.colorPair(TileColours[cell.type])
+        @game_window.attrset ncurses.colorPair(TileColours[cell.type])
         @game_window.addstr TileChars[cell.type]
 
     drawCell: (cell) ->
