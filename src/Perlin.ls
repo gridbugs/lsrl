@@ -1,6 +1,6 @@
 require! 'prelude-ls': {map, each, zip}
-require! './Util.ls': {SignedArray, createRandomUnitVector}
-require! './Vec2.ls': {vec2}
+require! './SignedArray.ls': {SignedArray}
+require! './Vec2.ls': {vec2, createRandomUnitVector}
 
 export class PerlinGenerator
     ->
