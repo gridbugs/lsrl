@@ -1,4 +1,5 @@
 require! './GameState.ls'
+require! './Test.ls'
 
 export class TestAS
     (input_source, drawer) ->
@@ -18,6 +19,7 @@ export class GameCommon
         @gameState = new GameState.GameState (new TestAS input_source, drawer)
         @drawer = drawer
 
+    test: -> Test.test @gameDrawer
     start: -> @progressGameState!
 
     gameTimeToMs: (t) -> t

@@ -40,6 +40,7 @@ export class CursesDrawer
          */
         for k, v of ColourPairs
             ncurses.colorPair v, Colours[k], Colours.BLACK
+    getGameWindow: -> @game_window
 
     cleanup: ~>
         @stdscr.close!

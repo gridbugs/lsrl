@@ -1,27 +1,15 @@
-require! ncurses
-require! './GameCommon.ls'
-require! './CursesDrawer.ls'
-require! './CursesInputSource.ls'
+require! './GameCommon.ls': {GameCommon}
+require! './CursesDrawer.ls': {CursesDrawer}
+require! './CursesInputSource.ls': {CursesInputSource}
 
-export run = ->
-    ncurses.showCursor = false
-    ncurses.echo = false
-    stdscr = new ncurses.Window!
-    win0 = new ncurses.Window(40, 120, 0, 0)
-    win1 = new ncurses.Window(47, 40, 0, 122)
-    win2 = new ncurses.Window(6, 120, 41, 0)
+main = ->
+    drawer = new CursesDrawer!
+    input = new CursesInputSource drawer.getGameWindow!
 
-    cleanup = ->
-        win0.close!
-        stdscr.close!
-        ncurses.cleanup!
+    process.on 'SIGINT' drawer.cleanup
+    process.on 'exit'   drawer.cleanup
 
-    process.on 'SIGINT' cleanup
-    process.on 'exit'   cleanup
+    game = new GameCommon drawer, input
+    game.test drawer
 
-    gameCommon = new GameCommon.GameCommon(
-        (new CursesDrawer.CursesDrawer ncurses, win0, win1, win2),
-        (new CursesInputSource.CursesInputSource  win0)
-    )
-
-    gameCommon.start!
+main() if require.main is module
