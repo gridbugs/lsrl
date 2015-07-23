@@ -6,10 +6,9 @@ require! path
 require! express
 app = express!
 
+app.use '/', express.static path.resolve "#{__dirname}/public"
 app.use '/ls', express.static path.resolve "#{__dirname}/../src"
 
-
-app.get '/', (req, res) -> res.send "Hello, World!"
 server = app.listen SERVER_PORT, ->
     addr = server.address!
     console.log "Listing at #{addr.address}:#{addr.port}"
