@@ -20,7 +20,7 @@ export class GameCommon
         @drawer = drawer
 
     test: -> Test.test @gameDrawer
-    start: -> @progressGameState!
+    start: -> @progressGameState!x, y
 
     gameTimeToMs: (t) -> t
 

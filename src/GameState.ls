@@ -1,6 +1,7 @@
 export class GameState
-    (action_source) ->
-        @actionSource = action_source
+    (grid, character) ->
+        @characters = [character]
+        @grid = grid
     getCurrentActionSource: -> @actionSource
     applyAction: ->
     progressSchedule: ->

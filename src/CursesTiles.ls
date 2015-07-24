@@ -5,8 +5,8 @@ export const Colours =
     LIGHT_BROWN: 94
     DARK_BROWN: 58
     LIGHT_BLUE: 21
-    LIGHT_GREY: 240
-    DARK_GREY: 235
+    LIGHT_GREY: 250
+    DARK_GREY: 240
 
 export const TileStyles =
     GRASS:  ['.', \LIGHT_GREEN]

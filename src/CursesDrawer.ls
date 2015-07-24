@@ -62,3 +62,7 @@ export class CursesDrawer
         @game_window.border!
         grid.forEach (c) ~> @__drawCell c
         @game_window.refresh!
+
+    print: (str) ->
+        @log_window.addstr("#{str}\n\r")
+        @log_window.refresh!

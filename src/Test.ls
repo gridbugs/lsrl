@@ -1,5 +1,3 @@
-#!/usr/bin/env lsc
-
 require! 'prelude-ls': {map, join, filter}
 require! './PerlinTestGenerator.ls': {PerlinTestGenerator}
 require! './CellAutomataTestGenerator.ls': {CellAutomataTestGenerator}
@@ -12,6 +10,6 @@ class Cell
 
 export test = (drawer) ->
     c = new CellAutomataTestGenerator!
-    p = new PerlinTestGenerator!
     grid = c.generate Cell, 120, 40
     drawer.drawGrid grid
+    drawer.print "test"

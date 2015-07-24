@@ -33,11 +33,14 @@ export class Grid
                 c.neighbours[Direction.NORTH] = @array[c.y-1][c.x]
             if c.y < @height - 1
                 c.neighbours[Direction.SOUTH] = @array[c.y+1][c.x]
+            
+            c.allNeighbours = c.neighbours |> filter (?)
+            c.distanceToEdge = Math.min c.x, c.y, (@width - c.x - 1), (@height - c.y - 1)
 
     forEach: (f) ->
         @array.forEach (row, r_idx, grid) ~>
             row.forEach (cell, c_idx, row) ~>
-                f(cell, [r_idx, c_idx], this)
+                f(cell, c_idx, r_idx, this)
 
     forEachBorder: (f) ->
         for i from 0 til @width
@@ -49,7 +52,7 @@ export class Grid
         for i from @height-2 til 0 by -1
             f @array[i][0]
 
-    getCell: (x, y) -> @array[y][x]
-    getCellCart: (c) -> @getCell c.x, c.y
+    get: (x, y) -> @array[y][x]
+    getCart: (c) -> @get c.x, c.y
 
     toString: -> @array |> map (join '') |> join "\n"
