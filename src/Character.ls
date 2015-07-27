@@ -11,4 +11,4 @@ export class PlayerCharacter
         @inputSource.getChar (ch) ~>
             process.stderr.write "#{ch}\n"
             if ch == 'd'
-                cb new Action.MoveAction this, Direction.WEST, game_state.grid
+                cb new Action.MoveAction this, Direction.WEST, game_state

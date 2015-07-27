@@ -1,10 +1,11 @@
 require! './Direction.ls'
 
 export class MoveAction
-    (character, direction, grid) ->
+    (character, direction, game_state) ->
         @character = character
         @direction = direction
-        @grid = grid
+        @gameState = game_state
 
     commit: ->
         @character.position = @character.position.add Direction.directionVectors[@direction]
+        @gameState.scheduleActionSource @character, 10

@@ -10,6 +10,7 @@ export class GameState
         @playerCharacter = character
         @characters = [character]
         @grid = grid
+        @timeDelta = 0
 
         @absoluteTime = 0
         @schedule = new Heap (a, b) -> a.time <= b.time
@@ -17,9 +18,13 @@ export class GameState
 
     scheduleActionSource: (as, relative_time) ->
         @schedule.insert new ScheduleEntry as, (relative_time + @absoluteTime)
-        
+
 
     getCurrentActionSource: -> @schedule.peak!.actionSource
-    applyAction: ->
+    applyAction: (action) -> action.commit! #XXX
     progressSchedule: ->
-    getCurrentTimeDelta: -> 100
+        prev = @schedule.pop!
+        nextTime = prev.time
+        @timeDelta = nextTime - @absoluteTime;
+        @absoluteTime = nextTime
+    getCurrentTimeDelta: -> @timeDelta

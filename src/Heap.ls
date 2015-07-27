@@ -36,7 +36,7 @@ export class Heap
         while true
             left_child_idx = idx .<<. 1
             right_child_idx = left_child_idx + 1
-            
+
             next_idx = void
 
             if left_child_idx < max_idx

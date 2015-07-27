@@ -22,6 +22,8 @@ export class GameCommon
     test: -> Test.test @gameDrawer, @inputSource
     start: ->
         @gameState.scheduleActionSource @gameState.playerCharacter, 10
+        @progressGameState!
+        return
         @drawer.drawGameState @gameState
         action_source = @gameState.getCurrentActionSource!
         action_source.getAction @gameState, (action) ~>
@@ -32,10 +34,8 @@ export class GameCommon
     progressGameState: ->
 
         action_source = @gameState.getCurrentActionSource!
-
+        @drawer.drawGameState @gameState
         action_source.getAction @gameState, (action) ~>
-            @drawer.game_window.addstr "x"
-            @drawer.game_window.refresh!
             @gameState.applyAction action
 
             /* Progress the game state to the next action source */
