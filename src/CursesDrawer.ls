@@ -31,12 +31,12 @@ const PlayerCharacterColour = ColourPairs[PlayerCharacterStyle[1]]
 
 export class CursesDrawer
     ->
-        ncurses.showCursor = false
-        ncurses.echo = false
         @stdscr = new ncurses.Window!
         @game_window = new ncurses.Window(40, 120, 0, 0)
         @hud_window = new ncurses.Window(47, 40, 0, 122)
         @log_window = new ncurses.Window(6, 120, 41, 0)
+        ncurses.showCursor = false
+        ncurses.echo = false
 
         /* Initialize each colour pair.
          * This is done in the constructor as it requires an ncurses context.

@@ -6,7 +6,6 @@ export class CursesInputSource
         @currentCallback = (->)
         @window = window
         window.on 'inputChar' (c) ~>
-            process.stderr.write "inputChar #{c}\n"
             tmp = @currentCallback
             @currentCallback = (->)
             tmp c
@@ -21,8 +20,6 @@ export class CursesInputSource
         @currentCallback = cb
 
     getControl: (cb) ->
-        Util.print "getControl"
         @getChar (c) ~>
-            Util.print "got control"
             code = Util.getCharCode c
             cb @keymap[code]
