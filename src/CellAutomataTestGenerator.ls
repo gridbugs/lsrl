@@ -1,7 +1,9 @@
-require! 'prelude-ls': {filter, map}
-require! './Util.ls': {filterVoid}
+require! 'prelude-ls': {filter, map, each}
+require! './Util.ls'
 require! './Grid.ls': {Grid}
 require! './Tiles.ls': {Tiles}
+
+const OPEN_SPACE_RATIO = 0.4
 
 class CACell
     (x, y) ->
@@ -13,12 +15,13 @@ class CACell
     step: ->
         @alive = @alive_next
 
-    toString: -> if @alive then "#" else " "
+    toString: -> if @alive then " " else @groupIdx
 
     countAliveNeighbours: -> @allNeighbours |> filter (.alive) |> (.length)
 
 export class CellAutomataTestGenerator
-    generate: (T, x, y) ->
+
+    tryGenerateGrid: (x, y) ->
         @ca_grid = new Grid CACell, x, y
 
         for i from 0 to 4
@@ -26,14 +29,27 @@ export class CellAutomataTestGenerator
         
         @clean!
         
+        @classifySpaces!
+ 
+    generateGrid: (T, x, y) ->
+       
+        while true
+            @tryGenerateGrid x, y
+            if @maxSpace.length >= (x*y*OPEN_SPACE_RATIO)
+                break
+
         grid = new Grid T, x, y
         grid.forEach (c, i, j) ~>
             if @ca_grid.get(i, j).alive
                 c.type = Tiles.WALL
             else
                 c.type = Tiles.DIRT
-        
+
+        @maxGridSpace = @maxSpace |> map (x)~>grid.getCart x
+
         return grid
+
+    getStartingPointHint: -> Util.getRandomElement @maxGridSpace
 
     clean: ->
         @ca_grid.forEach (c) ->
@@ -60,3 +76,27 @@ export class CellAutomataTestGenerator
 
         @ca_grid.forEach (.step!)
 
+    floodFillClassify: (c) ->
+        @spaces[@currentGroupIdx].push c
+        c.groupIdx = @currentGroupIdx
+        for n in c.allNeighbours
+            if not n.alive and not n.groupIdx?
+                @floodFillClassify n
+
+    classifySpaces: ->
+        @spaces = []
+        @currentGroupIdx = 0
+        
+        @ca_grid.forEach (c) ~>
+            if not c.alive and not c.groupIdx?
+                @spaces[@currentGroupIdx] = []
+                @floodFillClassify c
+                ++@currentGroupIdx
+        
+        max_space_length = 0
+        max_space = void
+        for s in @spaces
+            if s.length > max_space_length
+                max_space_length = s.length
+                max_space = s
+        @maxSpace = max_space

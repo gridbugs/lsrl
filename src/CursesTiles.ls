@@ -1,4 +1,5 @@
 export const Colours =
+    WHITE: 15
     BLACK: 16
     LIGHT_GREEN: 34
     DARK_GREEN: 22
@@ -20,3 +21,5 @@ export const TileStyles =
     STONE_BRIDGE: ['=', \LIGHT_GREY]
     WOODEN_DOOR: ['+', \LIGHT_BROWN]
     STONE_DOOR: ['+', \LIGHT_GREY]
+
+export const PlayerCharacterStyle = ['@', \WHITE]

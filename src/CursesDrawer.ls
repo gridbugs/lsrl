@@ -1,6 +1,6 @@
 require! ncurses
 require! './Tiles.ls': {TileTypes}
-require! './CursesTiles.ls': {Colours, TileStyles}
+require! './CursesTiles.ls': {Colours, TileStyles, PlayerCharacterStyle}
 
 const PAIR_MIN = 16 /* Minimum number for ncurses colour pairs */
 
@@ -25,6 +25,9 @@ for i in TileTypes
 for i from 0 to 25
     TileChars.push '#'
     TileColours.push 232+i
+
+const PlayerCharacterChar = PlayerCharacterStyle[0]
+const PlayerCharacterColour = ColourPairs[PlayerCharacterStyle[1]]
 
 export class CursesDrawer
     ->
@@ -58,10 +61,24 @@ export class CursesDrawer
         @__drawCell cell
         @game_window.refresh!
 
-    drawGrid: (grid) ->
-        @game_window.border!
+    __drawGrid: (grid) ->
         grid.forEach (c) ~> @__drawCell c
+
+    drawGrid: (grid) ->
+        @__drawGrid grid
         @game_window.refresh!
+
+    __drawPlayerCharacter: (pc) ->
+        @game_window.cursor pc.position.y, pc.position.x
+        @game_window.attrset ncurses.colorPair(PlayerCharacterColour)
+        @game_window.addstr PlayerCharacterChar
+        
+
+    drawGameState: (game_state) ->
+        @__drawGrid game_state.grid
+        @__drawPlayerCharacter game_state.playerCharacter
+        @game_window.refresh!
+
 
     print: (str) ->
         @log_window.addstr("#{str}\n\r")

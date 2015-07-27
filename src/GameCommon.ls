@@ -16,22 +16,24 @@ export class GameCommon
     (drawer, input_source) ->
         @gameDrawer = drawer
         @inputSource = input_source
-        @gameState = new GameState.GameState (new TestAS input_source, drawer)
+        @gameState = @test!
         @drawer = drawer
 
-    test: -> Test.test @gameDrawer
-    start: -> @progressGameState!x, y
-
+    test: -> Test.test @gameDrawer, @inputSource
+    start: ->
+        @gameState.scheduleActionSource @gameState.playerCharacter, 10
+        @drawer.drawGameState @gameState
+        action_source = @gameState.getCurrentActionSource!
+        action_source.getAction @gameState, (action) ~>
+            action.commit!
+            @drawer.drawGameState @gameState
     gameTimeToMs: (t) -> t
 
     progressGameState: ->
 
-        @drawer.game_window.addstr "."
-        @drawer.game_window.refresh!
-
         action_source = @gameState.getCurrentActionSource!
 
-        action_source.getAction (action) ~>
+        action_source.getAction @gameState, (action) ~>
             @drawer.game_window.addstr "x"
             @drawer.game_window.refresh!
             @gameState.applyAction action

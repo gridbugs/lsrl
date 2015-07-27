@@ -1,3 +1,5 @@
+require! './Vec2.ls': {vec2}
+
 export const NORTH = 0
 export const EAST = 1
 export const SOUTH = 2
@@ -16,3 +18,13 @@ export const N_CARDINAL_DIRECTIONS = 4
 export const N_ORDINAL_DIRECTIONS = 4
 
 export const directionNames = <[ north east south west northeast southeast southwest northwest ]>
+
+export const directionVectors =
+    vec2 0, -1
+    vec2 1, 0
+    vec2 0, 1
+    vec2 -1, 0
+    vec2 1, -1
+    vec2 1, 1
+    vec2 -1, 1
+    vec2 -1, -1

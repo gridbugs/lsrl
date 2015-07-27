@@ -56,3 +56,6 @@ export class Grid
     getCart: (c) -> @get c.x, c.y
 
     toString: -> @array |> map (join '') |> join "\n"
+
+#    getRandomCellWith: (predicate) ->
+        
