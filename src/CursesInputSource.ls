@@ -1,5 +1,8 @@
+require! './Util.ls'
+require! ncurses
+
 export class CursesInputSource
-    (window) ->
+    (window, keys) ->
         @currentCallback = (->)
         @window = window
         window.on 'inputChar' (c) ~>
@@ -8,7 +11,18 @@ export class CursesInputSource
             @currentCallback = (->)
             tmp c
 
+        @keymap = []
+        for k, v of keys
+            code = Util.getCharCode k
+            @keymap[code] = v
+
     getChar: (cb) ->
-        process.stderr.write "getChar\n"
         @window.top!
         @currentCallback = cb
+
+    getControl: (cb) ->
+        Util.print "getControl"
+        @getChar (c) ~>
+            Util.print "got control"
+            code = Util.getCharCode c
+            cb @keymap[code]

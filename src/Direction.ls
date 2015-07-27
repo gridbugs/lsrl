@@ -1,4 +1,17 @@
+require! './Util.ls'
 require! './Vec2.ls': {vec2}
+
+export const DirectionNames =
+    \NORTH
+    \EAST
+    \SOUTH
+    \WEST
+    \NORTHEAST
+    \SOUTHEAST
+    \SOUTHWEST
+    \NORTHWEST
+
+export const Directions = Util.makeEnum DirectionNames
 
 export const NORTH = 0
 export const EAST = 1

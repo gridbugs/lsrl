@@ -1,5 +1,5 @@
 require! ncurses
-require! './Tiles.ls': {TileTypes}
+require! './Tiles.ls': {TileNames}
 require! './CursesTiles.ls': {Colours, TileStyles, PlayerCharacterStyle}
 
 const PAIR_MIN = 16 /* Minimum number for ncurses colour pairs */
@@ -18,7 +18,7 @@ let i = PAIR_MIN
  */
 TileChars = []
 TileColours = []
-for i in TileTypes
+for i in TileNames
     TileChars.push TileStyles[i][0]
     TileColours.push ColourPairs[TileStyles[i][1]]
 

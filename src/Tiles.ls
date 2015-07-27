@@ -1,4 +1,6 @@
-export const TileTypes =
+require! './Util.ls'
+
+export const TileNames =
     \GRASS
     \STONE
     \DIRT
@@ -11,8 +13,4 @@ export const TileTypes =
     \WOODEN_DOOR
     \STONE_DOOR
 
-export Tiles = {}
-let i = 0
-    for t in TileTypes
-        Tiles[t] = i++
-
+export Tiles = Util.makeEnum TileNames
