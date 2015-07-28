@@ -8,10 +8,12 @@ define [\direction, \util], (direction, util) ->
 
     class Control
         (@name, @type) ~>
+        toString: -> @name
 
     class DirectionControl
         (@name, @direction) ~>
             @type = ControlTypes.DIRECTION
+        toString: -> @name
 
     Controls = {}
 
