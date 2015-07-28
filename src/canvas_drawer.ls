@@ -3,9 +3,9 @@ define [
     \canvas_tile
 ], (tile, canvas_tile) ->
 
-    const FONT_SIZE = 12
+    const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
-    const HORIZONTAL_PADDING = 2
+    const HORIZONTAL_PADDING = 0
 
 
     TileChars = []
