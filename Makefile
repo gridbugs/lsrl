@@ -12,5 +12,10 @@ webapp: $(SRC)/*.ls
 	cp -v $(LIB)/prelude-ls/prelude-ls-requirejs.js $(OUTPUT)/prelude-ls.js
 	$(LSC) -co $(OUTPUT) $(SRC)
 
+watch:
+	mkdir -p $(OUTPUT)
+	cp -v $(LIB)/prelude-ls/prelude-ls-requirejs.js $(OUTPUT)/prelude-ls.js
+	$(LSC) -wco $(OUTPUT) $(SRC)
+
 clean:
 	rm -rf $(OUTPUT)
