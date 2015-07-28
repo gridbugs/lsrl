@@ -1,5 +1,5 @@
 define [\ncurses, \tile, \curses_tile], (ncurses, tile, curses_tile) ->
-    
+
     Colours = curses_tile.Colours
     TileStyles = curses_tile.TileStyles
     PlayerCharacterStyle = curses_tile.PlayerCharacterStyle
