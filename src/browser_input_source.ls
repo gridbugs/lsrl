@@ -11,7 +11,6 @@ define [
                 @currentControlCallback = (->)
 
                 ch = (String.fromCharCode e.keyCode).toLowerCase!
-                console.log ch
                 tmp @keymap[ch]
 
 

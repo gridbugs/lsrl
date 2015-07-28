@@ -12,7 +12,7 @@ define ->
         WOODEN_DOOR:    ['+', '#663300']
         STONE_DOOR:     ['+', '#888888']
 
-    const AsciiPlayerCharacterStyle = ['@', '#ffffff']
+    const AsciiPlayerCharacterStyle = ['@', 'white']
 
     {
         AsciiTileStyles

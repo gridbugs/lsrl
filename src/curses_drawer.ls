@@ -74,7 +74,6 @@ define [\ncurses, \tile, \curses_tile], (ncurses, tile, curses_tile) ->
             @game_window.cursor pc.position.y, pc.position.x
             @game_window.attrset ncurses.colorPair(PlayerCharacterColour)
             @game_window.addstr PlayerCharacterChar
-            
 
         drawGameState: (game_state) ->
             @__drawGrid game_state.grid

@@ -1,7 +1,5 @@
 define [\signed_array, \vec2, 'prelude-ls'], (signed_array, vec2, prelude) ->
 
-    console.debug prelude
-
     map = prelude.map
     each = prelude.each
 
