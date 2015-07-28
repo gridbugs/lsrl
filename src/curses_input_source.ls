@@ -15,7 +15,6 @@ define [\util], (util) ->
                 @keymap[code] = v
 
         getChar: (cb) ->
-            @window.top!
             @currentCallback = cb
 
         getControl: (cb) ->

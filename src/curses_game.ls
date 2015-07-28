@@ -15,6 +15,7 @@ define [
 
         util.setPrintDrawer drawer
 
+        drawer.game_window.top!
         game = new game_common.GameCommon drawer, input
         game.start!
 
