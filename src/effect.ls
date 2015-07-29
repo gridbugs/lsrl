@@ -9,7 +9,7 @@ define [
 
         apply: (action) ->
             action.cancel!
-            action.gameState.applyAction new Action.BumpIntoWallAction action.character, action.gameState
+            action.gameState.pushAction new Action.BumpIntoWallAction action.character, action.gameState
 
     {
         SolidCell

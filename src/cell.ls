@@ -11,6 +11,8 @@ define [
             @type = void
             @effects = {}
 
+        toString: -> "#{@type}"
+
         become: (c) ->
             @type = c.type
             @effects = {}
@@ -29,4 +31,10 @@ define [
                 Effect.SolidCell
             ]
         }
+    }
+
+    {
+        Cell
+        floorPrototype
+        wallPrototype
     }

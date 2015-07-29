@@ -15,13 +15,24 @@ define [\heap], (heap) ->
             @absoluteTime = 0
             @schedule = new heap.Heap (a, b) -> a.time <= b.time
 
+            @actionQueue = []
 
         scheduleActionSource: (as, relative_time) ->
             @schedule.insert new ScheduleEntry as, (relative_time + @absoluteTime)
 
 
         getCurrentActionSource: -> @schedule.peak!.actionSource
-        applyAction: (action) -> action.commit! #XXX
+        pushAction: (action) ->
+            @actionQueue.push action
+            for t in action.traits
+                t.process action
+
+        applyActionQueue: ->
+            while @actionQueue.length != 0
+                action = @actionQueue.pop!
+                if not action.cancelled?
+                    action.commit!
+
         progressSchedule: ->
             prev = @schedule.pop!
             nextTime = prev.time

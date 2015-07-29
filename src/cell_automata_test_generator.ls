@@ -1,4 +1,4 @@
-define [\util, \grid, \tile, 'prelude-ls'], (util, grid, tile, prelude) ->
+define [\util, \grid, \tile, 'prelude-ls', \cell], (util, grid, tile, prelude, Cell) ->
 
     filter = prelude.filter
     map = prelude.map
@@ -42,9 +42,9 @@ define [\util, \grid, \tile, 'prelude-ls'], (util, grid, tile, prelude) ->
             game_grid = new grid.Grid T, x, y
             game_grid.forEach (c, i, j) ~>
                 if @ca_grid.get(i, j).alive
-                    c.type = tile.Tiles.WALL
+                    c.become Cell.wallPrototype!
                 else
-                    c.type = tile.Tiles.DIRT
+                    c.become Cell.floorPrototype tile.Tiles.DIRT
 
             @maxGridSpace = @maxSpace |> map (x)~>game_grid.getCart x
 

@@ -14,8 +14,7 @@ define [
             @traits = []
 
         commit: ->
-            if not @cancelled?
-                @gameState.scheduleActionSource @character, 10
+            @gameState.scheduleActionSource @character, 10
 
     class MoveAction extends Action
         (@character, @direction, @gameState) ->
@@ -29,11 +28,11 @@ define [
             ]
 
         commit: ->
-            if not @cancelled?
-                @character.position = @character.position.add \
-                    Direction.DirectionVectorsByIndex[@direction.index]
-                @gameState.scheduleActionSource @character, 10
+            @character.position = @character.position.add \
+                Direction.DirectionVectorsByIndex[@direction.index]
+            @gameState.scheduleActionSource @character, 10
 
     {
         MoveAction
+        BumpIntoWallAction
     }
