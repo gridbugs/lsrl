@@ -22,6 +22,21 @@ define [\heap], (heap) ->
 
 
         getCurrentActionSource: -> @schedule.peak!.actionSource
+
+        applyAction: (action) ->
+            actionQueue = [action]
+            while actionQueue.length != 0
+                a = actionQueue.pop!
+                for t in a.traits
+                    t.forEachEffect (e) ~>
+                        next = e.apply a
+                        for i in next
+                            actionQueue.push i
+                        
+                if not a.cancelled?
+                    a.commitAndReschedule!
+                        
+
         pushAction: (action) ->
             @actionQueue.push action
             for t in action.traits
@@ -31,7 +46,7 @@ define [\heap], (heap) ->
             while @actionQueue.length != 0
                 action = @actionQueue.pop!
                 if not action.cancelled?
-                    action.commit!
+                    action.commitAndReschedule!
 
         progressSchedule: ->
             prev = @schedule.pop!

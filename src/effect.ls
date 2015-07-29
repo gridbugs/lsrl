@@ -1,16 +1,19 @@
 define [
     \action
-], (Action) ->
+    \trait
+], (Action, Trait) ->
 
-    class SolidCell
+    class SolidCellEffect
         (@cell) ->
 
-        match: (move_to_cell) -> move_to_cell.cell == @cell
+        match: (trait) ->
+            trait.constructor == Trait.MoveToCell and trait.cell == @cell
 
         apply: (action) ->
             action.cancel!
-            action.gameState.pushAction new Action.BumpIntoWallAction action.character, action.gameState
+            [new Action.BumpIntoWallAction action.character, action.gameState]
+
 
     {
-        SolidCell
+        SolidCellEffect
     }

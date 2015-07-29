@@ -1,14 +1,16 @@
 define [
-], ->
+    'prelude-ls'
+], (Prelude) ->
+
+    filter = Prelude.filter
+    each = Prelude.each
 
     class Trait
-        process: (action) ->
+        forEachEffect: (f) ->
             for g in @effect_groups
-                effect_list = g[@constructor.name]
-                if effect_list?
-                    for e in effect_list
-                        if e.match this
-                            e.apply action
+                for e in g
+                    if e.match this
+                        f e
 
     class MoveToCell extends Trait
         (@character, @cell)~>

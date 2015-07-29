@@ -24,8 +24,7 @@ define [\test], (test) ->
             action_source = @gameState.getCurrentActionSource!
             @drawer.drawGameState @gameState
             action_source.getAction @gameState, (action) ~>
-                @gameState.pushAction action
-                @gameState.applyActionQueue!
+                @gameState.applyAction action
 
                 /* Progress the game state to the next action source */
                 @gameState.progressSchedule!

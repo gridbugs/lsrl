@@ -4,7 +4,7 @@ define [\action, \direction, \util, \control], \
 
     class PlayerCharacter
         (@position, @inputSource) ->
-            @effects = {}
+            @effects = []
         getAction: (game_state, cb) ->
             @inputSource.getControl (ctrl) ~>
                 if not ctrl?

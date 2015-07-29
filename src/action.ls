@@ -2,19 +2,22 @@ define [
     \direction
     \trait
     \util
-], (Direction, Trait, Util) ->
-
+    \tile
+], (Direction, Trait, Util, Tile) ->
+    
     class Action
         cancel: ->
             @cancelled = true
+
+        commitAndReschedule: ->
+            @gameState.scheduleActionSource @commit!
 
     class BumpIntoWallAction extends Action
         (@character, @gameState) ->
 
             @traits = []
 
-        commit: ->
-            @gameState.scheduleActionSource @character, 10
+        commit: -> 20
 
     class MoveAction extends Action
         (@character, @direction, @gameState) ->
@@ -30,8 +33,7 @@ define [
         commit: ->
             @character.position = @character.position.add \
                 Direction.DirectionVectorsByIndex[@direction.index]
-            @gameState.scheduleActionSource @character, 10
-
+            return 10
     {
         MoveAction
         BumpIntoWallAction

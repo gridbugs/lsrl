@@ -4,7 +4,8 @@ define [
     \curses_input_source
     \keymap
     \util
-], (game_common, curses_drawer, curses_input_source, keymap, util) ->
+    \cell
+], (game_common, curses_drawer, curses_input_source, keymap, util, Cell) ->
 
     main = ->
         drawer = new curses_drawer.CursesDrawer!

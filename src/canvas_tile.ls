@@ -11,6 +11,7 @@ define ->
         STONE_BRIDGE:   ['=', '#888888']
         WOODEN_DOOR:    ['+', '#663300']
         STONE_DOOR:     ['+', '#888888']
+        SPIDER_WEB:     ['#', '#888888']
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
 

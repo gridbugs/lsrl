@@ -11,6 +11,7 @@ define [\util], (util) ->
         \STONE_BRIDGE
         \WOODEN_DOOR
         \STONE_DOOR
+        \SPIDER_WEB
 
     Tiles = util.makeEnum TileNames
 
