@@ -8,17 +8,14 @@ define [\action, \direction, \util, \control], \
         getAction: (game_state, cb) ->
             @inputSource.getControl (ctrl) ~>
                 if not ctrl?
-                    cb new action.NullAction this, game_state
+                    @getAction game_state, cb
                     return
 
                 a = void
                 if ctrl.type == control.ControlTypes.DIRECTION
                     a = new action.MoveAction this, ctrl.direction, game_state
 
-                if a?
-                    cb a
-                else
-                    cb new action.NullAction this, game_state
+                cb a
     {
         PlayerCharacter
     }
