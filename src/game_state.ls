@@ -1,4 +1,7 @@
-define [\heap], (heap) ->
+define [
+    \heap
+    \util
+], (heap, Util) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -24,30 +27,23 @@ define [\heap], (heap) ->
         getCurrentActionSource: -> @schedule.peak!.actionSource
 
         applyAction: (action) ->
-            actionQueue = [action]
-            while actionQueue.length != 0
-                a = actionQueue.pop!
-                for t in a.traits
-                    t.forEachEffect (e) ~>
-                        next = e.apply a
-                        for i in next
-                            actionQueue.push i
-                        
-                if not a.cancelled?
-                    a.commitAndReschedule!
-                        
+            action_queue = [action]
+            while action_queue.length != 0
+                current_action = action_queue.pop!
+                cancelled = false
+                for event in current_action.events
+                    event.forEachMatchingEffect (effect) ~>
+                        r = effect.apply event, this
+                        for new_action in r.actions
+                            action_queue.push new_action
+                        if not r.continue
+                            cancelled := true
 
-        pushAction: (action) ->
-            @actionQueue.push action
-            for t in action.traits
-                t.process action
+                    break if cancelled
 
-        applyActionQueue: ->
-            while @actionQueue.length != 0
-                action = @actionQueue.pop!
-                if not action.cancelled?
-                    action.commitAndReschedule!
-
+                if not cancelled
+                    current_action.commitAndReschedule!
+            
         progressSchedule: ->
             prev = @schedule.pop!
             nextTime = prev.time

@@ -10,6 +10,8 @@ define ->
 
     getCharCode = (c) -> c.charCodeAt 0
 
+    printTerminal = (x) -> process.stderr.write "#{x}\n"
+
     printState = {
         drawer: void
     }
@@ -23,4 +25,5 @@ define ->
         getCharCode
         setPrintDrawer
         print
+        printTerminal
     }

@@ -1,4 +1,7 @@
-define [\test], (test) ->
+define [
+    \test
+    \util
+], (test, Util) ->
 
     class GameCommon
         (drawer, input_source) ->

@@ -1,19 +1,20 @@
 define [
+    \event
     \action
-    \trait
-], (Action, Trait) ->
-
-    class SolidCellEffect
+], (Event, Action) ->
+    
+    class CellIsSolid
         (@cell) ->
 
-        match: (trait) ->
-            trait.constructor == Trait.MoveToCell and trait.cell == @cell
+        match: (event) ->
+            event.constructor == Event.MoveToCell and event.cell == @cell
 
-        apply: (action) ->
-            action.cancel!
-            [new Action.BumpIntoWallAction action.character, action.gameState]
-
+        apply: (event, game_state) ->
+            return {
+                continue: false
+                actions: [new Action.BumpIntoWall event.character, game_state]
+            }
 
     {
-        SolidCellEffect
+        CellIsSolid
     }

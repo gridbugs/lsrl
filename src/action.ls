@@ -1,40 +1,34 @@
 define [
+    \event
     \direction
-    \trait
-    \util
-    \tile
-], (Direction, Trait, Util, Tile) ->
-    
+], (Event, Direction) ->
+
     class Action
-        cancel: ->
-            @cancelled = true
-
         commitAndReschedule: ->
-            @gameState.scheduleActionSource @commit!
+            @gameState.scheduleActionSource @character, @commit!
 
-    class BumpIntoWallAction extends Action
-        (@character, @gameState) ->
-
-            @traits = []
-
-        commit: -> 20
-
-    class MoveAction extends Action
+    class Move extends Action
         (@character, @direction, @gameState) ->
+            @fromCell = @gameState.grid.getCart @character.position
+            @toCell = @fromCell.neighbours[@direction.index]
 
-            from_cell = @gameState.grid.getCart @character.position
-            to_cell = from_cell.neighbours[@direction.index]
-
-            @traits = [
-                Trait.MoveToCell @character, to_cell
-                Trait.MoveFromCell @character, from_cell
+            @events = [
+                new Event.MoveFromCell @character, @fromCell
+                new Event.MoveToCell @character, @toCell
             ]
 
         commit: ->
             @character.position = @character.position.add \
                 Direction.DirectionVectorsByIndex[@direction.index]
             return 10
+        
+    class BumpIntoWall extends Action
+        (@character, @gameState) ->
+            @events = []
+
+        commit: -> 20
+
     {
-        MoveAction
-        BumpIntoWallAction
+        Move
+        BumpIntoWall
     }

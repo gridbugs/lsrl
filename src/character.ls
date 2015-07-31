@@ -1,5 +1,9 @@
-define [\action, \direction, \util, \control], \
-    (action, direction, util, control) ->
+define [
+    \newaction
+    \direction
+    \util
+    \control
+], (Action, direction, util, control) ->
 
 
     class PlayerCharacter
@@ -13,7 +17,7 @@ define [\action, \direction, \util, \control], \
 
                 a = void
                 if ctrl.type == control.ControlTypes.DIRECTION
-                    a = new action.MoveAction this, ctrl.direction, game_state
+                    a = new Action.Move this, ctrl.direction, game_state
 
                 cb a
     {

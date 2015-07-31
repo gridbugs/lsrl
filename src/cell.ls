@@ -1,8 +1,9 @@
 define [
     \tile
     \effect
+    \util
     'prelude-ls'
-], (Tile, Effect, Prelude) ->
+], (Tile, Effect, Util, Prelude) ->
 
     map = Prelude.map
 
@@ -25,7 +26,7 @@ define [
     wallPrototype = -> {
         type: Tile.Tiles.WALL
         effects: [
-            Effect.SolidCellEffect
+            Effect.CellIsSolid
         ]
     }
 
