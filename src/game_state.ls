@@ -23,7 +23,6 @@ define [
         scheduleActionSource: (as, relative_time) ->
             @schedule.insert new ScheduleEntry as, (relative_time + @absoluteTime)
 
-
         getCurrentActionSource: -> @schedule.peak!.actionSource
 
         applyAction: (action) ->
@@ -33,11 +32,10 @@ define [
                 cancelled = false
                 for event in current_action.events
                     event.forEachMatchingEffect (effect) ~>
-                        r = effect.apply event, this
-                        for new_action in r.actions
+                        cancelled := cancelled or effect.cancells event
+                        actions = effect.getActions event, this
+                        for new_action in actions
                             action_queue.push new_action
-                        if not r.continue
-                            cancelled := true
 
                     break if cancelled
 
