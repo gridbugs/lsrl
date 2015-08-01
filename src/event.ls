@@ -3,8 +3,8 @@ define [
 
     class CharacterCellEvent
         forEachEffect: (f) ->
-            @character.effects.forEach f
-            @cell.effects.forEach f
+            @character.forEachEffect f
+            @cell.forEachEffect f
 
         forEachMatchingEffect: (f) ->
             @forEachEffect (e) ~>

@@ -21,6 +21,7 @@ define ->
     {
         isInt
         makeEnum
+        enum: makeEnum
         getRandomElement
         getCharCode
         setPrintDrawer

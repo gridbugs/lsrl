@@ -1,5 +1,8 @@
-define [\util], (util) ->
+define [
+    \util
+], (Util) ->
     const TileNames =
+        \UNKNOWN
         \GRASS
         \STONE
         \DIRT
@@ -13,9 +16,27 @@ define [\util], (util) ->
         \STONE_DOOR
         \SPIDER_WEB
 
-    Tiles = util.makeEnum TileNames
+    Tiles = Util.enum TileNames
+
+    const fixtureTiles =
+        Wall: Tiles.WALL
+
+    const groundTiles =
+        Dirt: Tiles.DIRT
+
+    fromCell = (cell) ->
+
+        name = cell.fixture.constructor.name
+        return fixtureTiles[name] if fixtureTiles[name]?
+        
+        name = cell.ground.constructor.name
+        return groundTiles[name] if groundTiles[name]?
+
+        return Tiles.UNKNOWN
+
 
     {
         TileNames
         Tiles
+        fromCell
     }

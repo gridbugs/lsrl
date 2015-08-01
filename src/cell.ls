@@ -9,8 +9,32 @@ define [
 
     class Cell
         (@x, @y) ->
-            @type = void
+
+            @ground = void
+            @fixture = void
+            @items = []
+            @characters = []
+
+            @type = Tile.Tiles.TREE
             @effects = []
+
+        setGround: (G) -> 
+            @ground = new G this
+        setFixture: (F) -> 
+            @fixture = new F this
+
+        forEachEffectInGroup: (group, f) ->
+            group.forEach (element) ->
+                element.forEachEffect f
+
+        forEachEffect: (f) ->
+            @ground.forEachEffect f
+            @fixture.forEachEffect f
+            @forEachEffectInGroup @items
+            @forEachEffectInGroup @characters
+
+        _forEachEffect: (f) ->
+            @effects.forEach f
 
         toString: -> "#{@type}"
 

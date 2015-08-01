@@ -9,8 +9,10 @@ define ->
         LIGHT_BLUE: 21
         LIGHT_GREY: 250
         DARK_GREY: 240
+        LIGHT_RED: 196
 
     const TileStyles =
+        UNKNOWN:['?', \LIGHT_RED]
         GRASS:  ['.', \LIGHT_GREEN]
         STONE:  ['.', \LIGHT_GREY]
         DIRT:   ['.', \DARK_BROWN]

@@ -1,4 +1,8 @@
-define [\ncurses, \tile, \curses_tile], (ncurses, tile, curses_tile) ->
+define [
+    \ncurses, 
+    \tile, 
+    \curses_tile
+], (ncurses, tile, curses_tile) ->
 
     Colours = curses_tile.Colours
     TileStyles = curses_tile.TileStyles
@@ -56,8 +60,9 @@ define [\ncurses, \tile, \curses_tile], (ncurses, tile, curses_tile) ->
 
         __drawCell: (cell) ->
             @game_window.cursor cell.y, cell.x
-            @game_window.attrset ncurses.colorPair(TileColours[cell.type])
-            @game_window.addstr TileChars[cell.type]
+            type = tile.fromCell cell
+            @game_window.attrset ncurses.colorPair(TileColours[type])
+            @game_window.addstr TileChars[type]
 
         drawCell: (cell) ->
             @__drawCell cell

@@ -9,6 +9,10 @@ define [
     class PlayerCharacter
         (@position, @inputSource) ->
             @effects = []
+
+        forEachEffect: (f) ->
+            @effects.forEach f
+
         getAction: (game_state, cb) ->
             @inputSource.getControl (ctrl) ~>
                 if not ctrl?

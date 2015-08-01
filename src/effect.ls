@@ -3,6 +3,11 @@ define [
     \action
 ], (Event, Action) ->
     
+    class Effectable
+        forEachEffect: (f) ->
+            @effects.forEach f
+        
+
     class CellIsSolid
         (@cell) ->
 
@@ -15,5 +20,6 @@ define [
             [new Action.BumpIntoWall event.character, game_state]
 
     {
+        Effectable
         CellIsSolid
     }
