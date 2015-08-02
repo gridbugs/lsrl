@@ -11,10 +11,17 @@ define ->
     getCharCode = (c) -> c.charCodeAt 0
 
     printTerminal = (x) -> process.stderr.write "#{x}\n"
+    printBrowser = (x) -> console.debug x
+
+    if console.debug?
+        printDebug = printBrowser
+    else
+        printDebug = printTerminal
 
     printState = {
         drawer: void
     }
+
     setPrintDrawer = (d) -> printState.drawer = d
     print = (str) -> printState.drawer.print str
 
@@ -26,5 +33,5 @@ define ->
         getCharCode
         setPrintDrawer
         print
-        printTerminal
+        printDebug
     }

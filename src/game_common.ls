@@ -1,7 +1,7 @@
 define [
     \test
     \util
-], (test, Util) ->
+], (Test, Util) ->
 
     class GameCommon
         (drawer, input_source) ->
@@ -10,8 +10,9 @@ define [
             @gameState = @test!
             @drawer = drawer
 
-        test: -> test.test @gameDrawer, @inputSource
+        test: -> Test.test @gameDrawer, @inputSource
         start: ->
+
             @gameState.scheduleActionSource @gameState.playerCharacter, 10
             @progressGameState!
             return

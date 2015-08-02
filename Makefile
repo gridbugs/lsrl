@@ -1,21 +1,25 @@
 LSC=/usr/bin/env lsc
 OUTPUT=webapp/public/generated
+LIB_OUTPUT=webapp/public/lib
 SRC=src
 LIB=lib
+REQUIREJS_LIBS=$(LIB)/requirejs-libs
+JS_LIBS=$(LIB)/js-libs
 
 .PHONY: watch
 
 all: webapp
 
-webapp: $(SRC)/*.ls
-	mkdir -p $(OUTPUT)
-	cp -v $(LIB)/prelude-ls/prelude-ls-requirejs.js $(OUTPUT)/prelude-ls.js
+webcommon:
+	mkdir -pv $(OUTPUT) $(LIB_OUTPUT)
+	cp -v $(REQUIREJS_LIBS)/*.js $(OUTPUT)
+	cp -v $(JS_LIBS)/*.js $(LIB_OUTPUT)
+
+webapp: webcommon
 	$(LSC) -co $(OUTPUT) $(SRC)
 
-watch:
-	mkdir -p $(OUTPUT)
-	cp -v $(LIB)/prelude-ls/prelude-ls-requirejs.js $(OUTPUT)/prelude-ls.js
+watch: webcommon
 	$(LSC) -wco $(OUTPUT) $(SRC)
 
 clean:
-	rm -rf $(OUTPUT)
+	rm -rf $(OUTPUT) $(LIB_OUTPUT) output

@@ -19,7 +19,8 @@ define [
     Tiles = Util.enum TileNames
 
     const fixtureTiles =
-        Wall: Tiles.WALL
+        Wall:   Tiles.WALL
+        Web:    Tiles.SPIDER_WEB
 
     const groundTiles =
         Dirt: Tiles.DIRT

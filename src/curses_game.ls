@@ -8,6 +8,9 @@ define [
 ], (game_common, curses_drawer, curses_input_source, keymap, util, Cell) ->
 
     main = ->
+
+        Math.seedrandom 0
+
         drawer = new curses_drawer.CursesDrawer!
         input = new curses_input_source.CursesInputSource drawer.game_window, keymap.Dvorak
 

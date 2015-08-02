@@ -26,6 +26,7 @@ define [
         getCurrentActionSource: -> @schedule.peak!.actionSource
 
         applyAction: (action) ->
+
             action_queue = [action]
             while action_queue.length != 0
                 current_action = action_queue.pop!

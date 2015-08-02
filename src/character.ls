@@ -1,5 +1,5 @@
 define [
-    \newaction
+    \action
     \direction
     \util
     \control

@@ -1,5 +1,6 @@
 define ->
     const AsciiTileStyles =
+        UNKNOWN:['?', \LIGHT_RED]
         GRASS:  ['.', '#99ff33']
         STONE:  ['.', '#888888']
         DIRT:   ['.', '#996600']

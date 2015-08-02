@@ -31,8 +31,9 @@ define [
             @ctx.fillRect 0, 0, @gridWidth, @gridHeight
 
         __drawCell: (cell) ->
-            @ctx.fillStyle = TileColours[cell.type]
-            @ctx.fillText TileChars[cell.type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+            type = tile.fromCell cell
+            @ctx.fillStyle = TileColours[type]
+            @ctx.fillText TileChars[type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
 
         __drawPlayerCharacter: (pc) ->
             x = pc.position.x

@@ -13,7 +13,20 @@ define [
                 new Effect.CellIsSolid cell
             ]
 
+    class Web extends Fixture
+        (@cell) ->
+            @strength = 3
+            @effects = [
+                new Effect.CellIsSticky cell, this
+            ]
+
+        tryUnstick: ->
+            --@strength
+            if @strength == 0
+                @cell.fixture = new Null @cell
+
     {
         Null
         Wall
+        Web
     }

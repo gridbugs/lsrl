@@ -28,7 +28,16 @@ define [
 
         commit: -> 20
 
+    class TryUnstick extends Action
+        (@character, @fixture, @gameState) ->
+            @events = []
+
+        commit: ->
+            @fixture.tryUnstick!
+            return 5
+
     {
         Move
         BumpIntoWall
+        TryUnstick
     }
