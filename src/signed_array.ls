@@ -21,4 +21,6 @@ define ->
             else
                 return @zero
     
-    { SignedArray }
+    {
+        SignedArray
+    }

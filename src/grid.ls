@@ -5,9 +5,7 @@ define [\direction, 'prelude-ls'], (direction, prelude) ->
     filter = prelude.filter
 
     class Grid
-        (T, width, height) ->
-            @width = width
-            @height = height
+        (T, @width, @height) ->
 
             @array =
                 for i from 0 til height

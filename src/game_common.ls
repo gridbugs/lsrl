@@ -28,7 +28,9 @@ define [
             action_source = @gameState.getCurrentActionSource!
             @drawer.drawGameState @gameState
             action_source.getAction @gameState, (action) ~>
-                @gameState.applyAction action
+                descriptions = @gameState.applyAction action
+                for desc in descriptions
+                    @drawer.print desc
 
                 /* Progress the game state to the next action source */
                 @gameState.progressSchedule!

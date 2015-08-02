@@ -1,29 +1,34 @@
 define [
     \action
-    \direction
-    \util
     \control
-], (Action, direction, util, control) ->
+    \knowledge
+], (Action, Control, Knowledge) ->
 
 
     class PlayerCharacter
-        (@position, @inputSource) ->
+        (@position, @inputSource, @grid) ->
             @effects = []
+            @knowledge = new Knowledge.Knowledge grid
 
         forEachEffect: (f) ->
             @effects.forEach f
 
         getAction: (game_state, cb) ->
-            @inputSource.getControl (ctrl) ~>
-                if not ctrl?
+            @inputSource.getControl (control) ~>
+                if not control?
                     @getAction game_state, cb
                     return
 
                 a = void
-                if ctrl.type == control.ControlTypes.DIRECTION
-                    a = new Action.Move this, ctrl.direction, game_state
+                if control.type == Control.ControlTypes.DIRECTION
+                    a = new Action.Move this, control.direction, game_state
 
                 cb a
+
+        getCell: -> @grid.getCart @position
+
+        getName: -> "The player"
+
     {
         PlayerCharacter
     }

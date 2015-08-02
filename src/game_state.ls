@@ -26,7 +26,7 @@ define [
         getCurrentActionSource: -> @schedule.peak!.actionSource
 
         applyAction: (action) ->
-
+            ret = []
             action_queue = [action]
             while action_queue.length != 0
                 current_action = action_queue.pop!
@@ -41,7 +41,11 @@ define [
                     break if cancelled
 
                 if not cancelled
-                    current_action.commitAndReschedule!
+                    descriptions = current_action.commitAndReschedule!
+                    for desc in descriptions
+                        ret.push desc
+
+            return ret
             
         progressSchedule: ->
             prev = @schedule.pop!

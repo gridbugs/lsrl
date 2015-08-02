@@ -28,7 +28,11 @@ define [
         cancells: (event) -> true
         
         getActions: (event, game_state) ->
-            [new Action.TryUnstick event.character, @fixture, game_state]
+            if @fixture.strength > 0
+                return [new Action.TryUnstick event.character, @fixture, game_state]
+            else
+                return [new Action.Unstick event.character, @fixture, game_state]
+
     
     {
         Effectable

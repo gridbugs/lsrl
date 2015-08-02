@@ -22,8 +22,9 @@ define [
 
         tryUnstick: ->
             --@strength
-            if @strength == 0
-                @cell.fixture = new Null @cell
+
+        unstick: ->
+            @cell.setFixture Null
 
     {
         Null
