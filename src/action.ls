@@ -1,8 +1,7 @@
 define [
     \event
     \direction
-    \fixture
-], (Event, Direction, Fixture) ->
+], (Event, Direction) ->
 
     class CommitMetaData
         (@time, @descriptions = []) ->

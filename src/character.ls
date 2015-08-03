@@ -4,7 +4,6 @@ define [
     \knowledge
 ], (Action, Control, Knowledge) ->
 
-
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
             @effects = []
@@ -28,6 +27,9 @@ define [
         getCell: -> @grid.getCart @position
 
         getName: -> "The player"
+
+        observe: (game_state) ->
+            @knowledge.grid.forEach (c) -> c.see game_state
 
     {
         PlayerCharacter

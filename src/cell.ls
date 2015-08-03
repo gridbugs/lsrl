@@ -15,9 +15,6 @@ define [
             @items = []
             @characters = []
 
-            @type = Tile.Tiles.TREE
-            @effects = []
-
         setGround: (G) -> 
             @ground = new G this
         setFixture: (F) -> 
@@ -35,12 +32,6 @@ define [
 
         _forEachEffect: (f) ->
             @effects.forEach f
-
-        toString: -> "#{@type}"
-
-        become: (c) ->
-            @type = c.type
-            @effects = c.effects |> map (E) ~> new E this
 
     floorPrototype = (tile) -> {
         type: tile

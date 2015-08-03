@@ -71,5 +71,14 @@ define [
             @__drawPlayerCharacter game_state.playerCharacter
             @ctx.fill!
 
+        drawCharacterKnowledge: (character) ->
+            @ctx.beginPath!
+            @__clear!
+            @__drawGrid character.knowledge.grid
+            @__drawPlayerCharacter character
+            @ctx.fill!
+
+        print: (str) ->
+            console.log str
 
     { CanvasDrawer }

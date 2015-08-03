@@ -1,8 +1,9 @@
 define [
-    \ncurses, 
-    \tile, 
+    \ncurses
+    \tile 
     \curses_tile
-], (ncurses, tile, curses_tile) ->
+    \util
+], (ncurses, tile, curses_tile, Util) ->
 
     Colours = curses_tile.Colours
     TileStyles = curses_tile.TileStyles
@@ -85,6 +86,10 @@ define [
             @__drawPlayerCharacter game_state.playerCharacter
             @game_window.refresh!
 
+        drawCharacterKnowledge: (character) ->
+            @__drawGrid character.knowledge.grid
+            @__drawPlayerCharacter character
+            @game_window.refresh!
 
         print: (str) ->
             @log_window.addstr("#{str}\n\r")

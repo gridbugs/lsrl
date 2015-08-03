@@ -15,18 +15,14 @@ define [
 
             @gameState.scheduleActionSource @gameState.playerCharacter, 10
             @progressGameState!
-            return
-            @drawer.drawGameState @gameState
-            action_source = @gameState.getCurrentActionSource!
-            action_source.getAction @gameState, (action) ~>
-                action.commit!
-                @drawer.drawGameState @gameState
+        
         gameTimeToMs: (t) -> t
 
         progressGameState: ->
 
             action_source = @gameState.getCurrentActionSource!
-            @drawer.drawGameState @gameState
+            @gameState.playerCharacter.observe @gameState
+            @drawer.drawCharacterKnowledge @gameState.playerCharacter
             action_source.getAction @gameState, (action) ~>
                 descriptions = @gameState.applyAction action
                 for desc in descriptions
