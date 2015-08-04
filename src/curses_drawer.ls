@@ -36,12 +36,15 @@ define [
     const PlayerCharacterChar = PlayerCharacterStyle[0]
     const PlayerCharacterColour = ColourPairs[PlayerCharacterStyle[1]]
 
+    const UnseenColour = ColourPairs.VERY_DARK_GREY
+
     class CursesDrawer
         ->
             @stdscr = new ncurses.Window!
             @game_window = new ncurses.Window(40, 120, 0, 0)
             @hud_window = new ncurses.Window(47, 40, 0, 122)
             @log_window = new ncurses.Window(6, 120, 41, 0)
+            @log_window.scrollok true
             ncurses.showCursor = false
             ncurses.echo = false
 
@@ -93,15 +96,27 @@ define [
             @game_window.addstr TileChars[u]
 
 
-        __drawKnowledgeCell: (cell) ->
+        __drawKnowledgeCell: (cell, game_state) ->
+            @game_window.cursor cell.y, cell.x
             if cell.known
-                @__drawCell cell.game_cell
-            else
-                @__drawUnknown cell.x, cell.y
+                colour = void
+                type = tile.fromCell cell
+                if cell.timestamp == game_state.absoluteTime
+                    colour = TileColours[type]
+                else
+                    colour = UnseenColour
+                @game_window.attrset ncurses.colorPair(colour)
+                @game_window.addstr TileChars[type]
 
-        drawCharacterKnowledge: (character) ->
+            else
+                u = tile.Tiles.UNKNOWN
+                @game_window.attrset ncurses.colorPair(TileColours[u])
+                @game_window.addstr TileChars[u]
+
+
+        drawCharacterKnowledge: (character, game_state) ->
             character.knowledge.grid.forEach (c) ~>
-                @__drawKnowledgeCell c
+                @__drawKnowledgeCell c, game_state
             @__drawPlayerCharacter character
             @game_window.refresh!
 

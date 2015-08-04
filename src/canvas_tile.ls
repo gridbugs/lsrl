@@ -1,6 +1,7 @@
 define ->
     const AsciiTileStyles =
-        UNKNOWN:['?', \LIGHT_RED]
+        ERROR:  ['?', '#ff0000']
+        UNKNOWN:[' ', '#000000']
         GRASS:  ['.', '#99ff33']
         STONE:  ['.', '#888888']
         DIRT:   ['.', '#996600']
@@ -15,8 +16,10 @@ define ->
         SPIDER_WEB:     ['#', '#888888']
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
+    const UnseenColour = '#333333'
 
     {
         AsciiTileStyles
         AsciiPlayerCharacterStyle
+        UnseenColour
     }

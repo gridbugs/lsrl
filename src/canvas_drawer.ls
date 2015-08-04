@@ -17,6 +17,8 @@ define [
     const PlayerCharacterChar = canvas_tile.AsciiPlayerCharacterStyle[0]
     const PlayerCharacterColour = canvas_tile.AsciiPlayerCharacterStyle[1]
 
+    const UnseenColour = canvas_tile.UnseenColour
+
     class CanvasDrawer
         (@canvas, @numCols, @numRows) ->
             @ctx = @canvas.getContext '2d'
@@ -71,10 +73,28 @@ define [
             @__drawPlayerCharacter game_state.playerCharacter
             @ctx.fill!
 
-        drawCharacterKnowledge: (character) ->
+        __drawKnowledgeCell: (cell, game_state) ->
+            if cell.known
+                type = tile.fromCell cell
+                colour = void
+                if cell.timestamp == game_state.absoluteTime
+                    colour = TileColours[type]
+                else 
+                    colour = UnseenColour
+                @ctx.fillStyle = colour
+                @ctx.fillText TileChars[type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+            else
+                type = tile.Tiles.UNKNOWN
+                @ctx.fillStyle = TileColours[type]
+                @ctx.fillText TileChars[type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+
+
+
+        drawCharacterKnowledge: (character, game_state) ->
             @ctx.beginPath!
             @__clear!
-            @__drawGrid character.knowledge.grid
+            character.knowledge.grid.forEach (c) ~>
+                @__drawKnowledgeCell c, game_state
             @__drawPlayerCharacter character
             @ctx.fill!
 
