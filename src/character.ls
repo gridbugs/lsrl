@@ -2,7 +2,8 @@ define [
     \action
     \control
     \knowledge
-], (Action, Control, Knowledge) ->
+    \util
+], (Action, Control, Knowledge, Util) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
@@ -29,7 +30,9 @@ define [
         getName: -> "The player"
 
         observe: (game_state) ->
-            @knowledge.grid.forEach (c) -> c.see game_state
+            @knowledge.grid.forEach (c) ~>
+                if (@position.distance c.game_cell.position) < 10
+                    c.see game_state
 
     {
         PlayerCharacter

@@ -2,14 +2,15 @@ define [
     \tile
     \effect
     \util
+    \vec2
     'prelude-ls'
-], (Tile, Effect, Util, Prelude) ->
+], (Tile, Effect, Util, Vec2, Prelude) ->
 
     map = Prelude.map
 
     class Cell
         (@x, @y) ->
-
+            @position = Vec2.Vec2 @x, @y
             @ground = void
             @fixture = void
             @items = []

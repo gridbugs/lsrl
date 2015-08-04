@@ -86,8 +86,22 @@ define [
             @__drawPlayerCharacter game_state.playerCharacter
             @game_window.refresh!
 
+        __drawUnknown: (x, y) ->
+            @game_window.cursor y, x
+            u = tile.Tiles.UNKNOWN
+            @game_window.attrset ncurses.colorPair(TileColours[u])
+            @game_window.addstr TileChars[u]
+
+
+        __drawKnowledgeCell: (cell) ->
+            if cell.known
+                @__drawCell cell.game_cell
+            else
+                @__drawUnknown cell.x, cell.y
+
         drawCharacterKnowledge: (character) ->
-            @__drawGrid character.knowledge.grid
+            character.knowledge.grid.forEach (c) ~>
+                @__drawKnowledgeCell c
             @__drawPlayerCharacter character
             @game_window.refresh!
 

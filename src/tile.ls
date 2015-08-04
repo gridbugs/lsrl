@@ -2,6 +2,7 @@ define [
     \util
 ], (Util) ->
     const TileNames =
+        \ERROR
         \UNKNOWN
         \GRASS
         \STONE
@@ -33,7 +34,7 @@ define [
         name = cell.ground.constructor.name
         return groundTiles[name] if groundTiles[name]?
 
-        return Tiles.UNKNOWN
+        return Tiles.ERROR
 
 
     {

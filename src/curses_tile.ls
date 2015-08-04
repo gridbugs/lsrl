@@ -12,7 +12,8 @@ define ->
         LIGHT_RED: 196
 
     const TileStyles =
-        UNKNOWN:['?', \LIGHT_RED]
+        ERROR:  ['?', \LIGHT_RED]
+        UNKNOWN:[' ', \BLACK]
         GRASS:  ['.', \LIGHT_GREEN]
         STONE:  ['.', \LIGHT_GREY]
         DIRT:   ['.', \DARK_BROWN]

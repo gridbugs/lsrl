@@ -11,7 +11,9 @@ define [], ->
         add: (v) -> Vec2 (@x + v.x), (@y + v.y)
         subtract: (v) -> Vec2 (@x - v.x), (@y - v.y)
         dot: (v) -> @x * v.x + @y * v.y
-    
+        length: -> Math.sqrt @dot(this)
+        distance: (v) -> (@subtract v).length!
+
     {
         createFromRadial
         createRandomUnitVector
