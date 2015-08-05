@@ -5,7 +5,9 @@ define [], ->
 
     class Vec2
         (@x, @y) ~>
-
+        
+        arraySet: (idx, val) -> [(~> @x = val), (~> @y = val)][idx]()
+        arrayGet: (idx) -> [@x, @y][idx]
         toString: -> "(#{@x}, #{@y})"
 
         add: (v) -> Vec2 (@x + v.x), (@y + v.y)
@@ -14,8 +16,15 @@ define [], ->
         length: -> Math.sqrt @dot(this)
         distance: (v) -> (@subtract v).length!
 
+    X_IDX = 0
+    Y_IDX = 1
+    otherIndex = (index) -> 1 - index
+
     {
         createFromRadial
         createRandomUnitVector
         Vec2
+        X_IDX
+        Y_IDX
+        otherIndex
     }

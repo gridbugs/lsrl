@@ -2,8 +2,9 @@ define [
     \action
     \control
     \knowledge
+    \recursive_shadowcast
     \util
-], (Action, Control, Knowledge, Util) ->
+], (Action, Control, Knowledge, Shadowcast, Util) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
@@ -29,10 +30,10 @@ define [
 
         getName: -> "The player"
 
+        canSeeThrough: (cell) -> cell.fixture.constructor.name != 'Wall'
+
         observe: (game_state) ->
-            @knowledge.grid.forEach (c) ~>
-                if (@position.distance c.game_cell.position) < 10
-                    c.see game_state
+            Shadowcast.observe this, game_state
 
     {
         PlayerCharacter

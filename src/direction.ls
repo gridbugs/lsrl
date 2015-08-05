@@ -28,8 +28,17 @@ define [\util, \vec2, 'prelude-ls'], (util, vec2, prelude) ->
 
 
     const AllDirections = DirectionNames |> map (n) -> Directions[n]
-    const CardinalDirections = <[NORTH EAST SOUTH WEST]> |> map (n) -> Directions[n]
-    const OrdinalDirections = <[NORTHEAST SOUTHEAST SOUTHWEST NORTHWEST]> |> map (n) -> Directions[n]
+    const CardinalDirectionNames = <[NORTH EAST SOUTH WEST]>
+    const OrdinalDirectionNames = <[NORTHEAST SOUTHEAST SOUTHWEST NORTHWEST]>
+    const CardinalDirections = CardinalDirectionNames |> map (n) -> Directions[n]
+    const OrdinalDirections = OrdinalDirectionNames |> map (n) -> Directions[n]
+    
+    CardinalIndices = {}
+    OrdinalIndices = {}
+    for i from 0 til 4
+        CardinalIndices[CardinalDirectionNames[i]] = i
+        OrdinalIndices[OrdinalDirectionNames[i]] = i
+
 
     const N_DIRECTIONS = 8
     const N_CARDINAL_DIRECTIONS = 4
@@ -48,6 +57,8 @@ define [\util, \vec2, 'prelude-ls'], (util, vec2, prelude) ->
     {
         Directions
         Indices
+        CardinalIndices
+        OrdinalIndices
         AllDirections
         CardinalDirections
         OrdinalDirections

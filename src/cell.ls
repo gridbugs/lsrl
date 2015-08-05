@@ -1,10 +1,10 @@
 define [
     \tile
-    \effect
     \util
     \vec2
+    \direction
     'prelude-ls'
-], (Tile, Effect, Util, Vec2, Prelude) ->
+], (Tile,Util, Vec2, Direction, Prelude) ->
 
     map = Prelude.map
 
@@ -15,6 +15,12 @@ define [
             @fixture = void
             @items = []
             @characters = []
+            @centre = Vec2.Vec2 (@x+0.5), (@y+0.5)
+            @corners = []
+            @corners[Direction.OrdinalIndices.NORTHWEST] = Vec2.Vec2 @x, @y
+            @corners[Direction.OrdinalIndices.NORTHEAST] = Vec2.Vec2 (@x+1), @y
+            @corners[Direction.OrdinalIndices.SOUTHWEST] = Vec2.Vec2 @x, (@y+1)
+            @corners[Direction.OrdinalIndices.SOUTHEAST] = Vec2.Vec2 (@x+1), (@y+1)
 
         setGround: (G) -> 
             @ground = new G this
@@ -34,20 +40,6 @@ define [
         _forEachEffect: (f) ->
             @effects.forEach f
 
-    floorPrototype = (tile) -> {
-        type: tile
-        effects: []
-    }
-
-    wallPrototype = -> {
-        type: Tile.Tiles.WALL
-        effects: [
-            Effect.CellIsSolid
-        ]
-    }
-
     {
         Cell
-        floorPrototype
-        wallPrototype
     }
