@@ -16,7 +16,7 @@ define ->
         SPIDER_WEB:     ['#', '#888888']
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
-    const UnseenColour = '#333333'
+    const UnseenColour = '#222222'
 
     {
         AsciiTileStyles

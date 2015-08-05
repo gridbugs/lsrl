@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+* {
+    padding: 0px;
+    margin: 0px;
+}
+#log {
+    font-family: monospace;
+    padding-left: 10px;
+    height: 120px;
+    width: 300px;
+    overflow: scroll;
+}
+</style>
 <script src="lib/jquery.js"></script>
 <script src="lib/seedrandom.js"></script>
 <script data-main= "generated/main_canvas" src="lib/require.js"></script>
 </head>
 <body>
-<canvas id="canvas" width=1200 height=800></canvas>
+<canvas id="canvas" width=1200 height=650></canvas>
+<p id="log">
+</p>
 </body>
 </html>

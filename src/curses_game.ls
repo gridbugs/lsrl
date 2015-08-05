@@ -9,7 +9,7 @@ define [
 
     main = ->
 
-        Math.seedrandom 0
+        #Math.seedrandom 0
 
         drawer = new curses_drawer.CursesDrawer!
         input = new curses_input_source.CursesInputSource drawer.game_window, keymap.Dvorak

@@ -41,8 +41,8 @@ define [
             section = section_stack.pop!
             depth_absolute_index = (eye_cell.position.arrayGet depth_index) +
                 section.depth * depth_direction
-
-            if depth_absolute_index < 0 || depth_absolute_index >= depth_max
+            
+            if depth_absolute_index < 0 || depth_absolute_index > depth_max
                 continue
 
             inner_depth_offset = section.depth - 0.5
@@ -85,7 +85,6 @@ define [
                 last_iteration = i == partial_stop_index
 
                 coord_idx.arraySet(lateral_index, i)
-
                 cell = knowledge_grid.getCart(coord_idx)
                 
                 if i >= complete_start_index and i <= complete_stop_index
@@ -117,8 +116,8 @@ define [
 
 
     observe = (character, game_state) ->
-        width = character.knowledge.grid.width
-        height = character.knowledge.grid.height
+        width = character.knowledge.grid.width - 1
+        height = character.knowledge.grid.height - 1
         cell = character.getCell!
 
         # \|

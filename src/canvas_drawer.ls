@@ -99,6 +99,9 @@ define [
             @ctx.fill!
 
         print: (str) ->
-            console.log str
+            log = document.getElementById("log");
+            log.innerHTML += "#{str}<br/>"
+            log.scrollTop = log.scrollHeight
+
 
     { CanvasDrawer }
