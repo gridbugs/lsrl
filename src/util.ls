@@ -18,12 +18,8 @@ define ->
     else
         printDebug = printTerminal
 
-    printState = {
-        drawer: void
-    }
-
-    setPrintDrawer = (d) -> printState.drawer = d
-    print = (str) -> printState.drawer.print str
+    constrain = (min, x, max) ->
+        return Math.min(Math.max(x, min), max)
 
     {
         isInt
@@ -31,7 +27,7 @@ define ->
         enum: makeEnum
         getRandomElement
         getCharCode
-        setPrintDrawer
-        print
+        print: printDebug
         printDebug
+        constrain
     }
