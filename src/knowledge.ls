@@ -17,12 +17,14 @@ define [
 
         init: (game_cell) ->
             @game_cell = game_cell
-
-        see: (game_state) ->
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
+
+        see: (game_state) ->
             @known = true
             @timestamp = game_state.absoluteTime
+            @ground = @game_cell.ground
+            @fixture = @game_cell.fixture
 
     class Knowledge
         (grid) ->

@@ -19,17 +19,19 @@ define [
         gameTimeToMs: (t) -> t
 
         progressGameState: ->
-
             action_source = @gameState.getCurrentActionSource!
+            
+            @gameState.progressSchedule!
+            
             @gameState.playerCharacter.observe @gameState
             @drawer.drawCharacterKnowledge @gameState.playerCharacter, @gameState
+            
+            
             action_source.getAction @gameState, (action) ~>
                 descriptions = @gameState.applyAction action
                 for desc in descriptions
                     @drawer.print desc
 
-                /* Progress the game state to the next action source */
-                @gameState.progressSchedule!
 
                 /* Get time until current action source (in game time) */
                 time = @gameState.getCurrentTimeDelta!

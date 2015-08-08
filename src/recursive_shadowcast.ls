@@ -87,10 +87,17 @@ define [
                 coord_idx.arraySet(lateral_index, i)
                 cell = knowledge_grid.getCart(coord_idx)
                 
+                if (cell.game_cell.centre.distance eye_cell.centre) < character.viewDistance and \
+                    cell.timestamp != game_state.absoluteTime
+                    markCompletelyVisible(cell, game_state)
+
+
+                /*
                 if i >= complete_start_index and i <= complete_stop_index
                     markCompletelyVisible(cell, game_state)
                 else
                     markPartiallyVisible(cell, game_state)
+                */
 
                 current_opaque = not character.canSeeThrough cell
                 if previous_opaque and not current_opaque
@@ -183,8 +190,6 @@ define [
             Direction.OrdinalIndices.NORTHEAST,
             1, Vec2.Y_IDX, height, width
         )
-
-
 
     {
         observe

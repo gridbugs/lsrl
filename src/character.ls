@@ -10,6 +10,7 @@ define [
         (@position, @inputSource, @grid) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
+            @viewDistance = 20
 
         forEachEffect: (f) ->
             @effects.forEach f

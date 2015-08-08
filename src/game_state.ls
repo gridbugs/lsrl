@@ -21,7 +21,8 @@ define [
             @actionQueue = []
 
         scheduleActionSource: (as, relative_time) ->
-            @schedule.insert new ScheduleEntry as, (relative_time + @absoluteTime)
+            entry = new ScheduleEntry as, (relative_time + @absoluteTime)
+            @schedule.insert entry
 
         getCurrentActionSource: -> @schedule.peak!.actionSource
 
@@ -50,7 +51,7 @@ define [
         progressSchedule: ->
             prev = @schedule.pop!
             nextTime = prev.time
-            @timeDelta = nextTime - @absoluteTime;
+            @timeDelta = nextTime - @absoluteTime
             @absoluteTime = nextTime
         getCurrentTimeDelta: -> @timeDelta
 
