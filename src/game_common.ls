@@ -1,7 +1,8 @@
 define [
     \test
     \util
-], (Test, Util) ->
+    \debug
+], (Test, Util, Debug) ->
 
     class GameCommon
         (drawer, input_source) ->
@@ -12,7 +13,8 @@ define [
 
         test: -> Test.test @gameDrawer, @inputSource
         start: ->
-
+            if Debug.DRAW_MAP_ONLY
+                return
             @gameState.scheduleActionSource @gameState.playerCharacter, 10
             @progressGameState!
         

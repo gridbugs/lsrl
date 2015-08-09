@@ -3,14 +3,21 @@ define [
     \control
     \knowledge
     \recursive_shadowcast
+    \omniscient
     \util
-], (Action, Control, Knowledge, Shadowcast, Util) ->
+    \debug
+], (Action, Control, Knowledge, Shadowcast, Omniscient, Util, Debug) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
             @viewDistance = 20
+
+            if Debug.OMNISCIENT_PLAYER
+                @observe_fn = Omniscient.observe
+            else
+                @observe_fn = Shadowcast.observe
 
         forEachEffect: (f) ->
             @effects.forEach f
@@ -34,7 +41,7 @@ define [
         canSeeThrough: (cell) -> cell.fixture.constructor.name != 'Wall'
 
         observe: (game_state) ->
-            Shadowcast.observe this, game_state
+            @observe_fn this, game_state
 
     {
         PlayerCharacter

@@ -21,6 +21,13 @@ define ->
     constrain = (min, x, max) ->
         return Math.min(Math.max(x, min), max)
 
+    shuffleArrayInPlace = (arr) ->
+        for i from 0 til arr.length
+            idx = i + Math.floor (Math.random! * (arr.length - i))
+            tmp = arr[i]
+            arr[i] = arr[idx]
+            arr[idx] = tmp
+    
     {
         isInt
         makeEnum
@@ -30,4 +37,5 @@ define ->
         print: printDebug
         printDebug
         constrain
+        shuffleArrayInPlace
     }

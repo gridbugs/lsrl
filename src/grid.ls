@@ -55,6 +55,7 @@ define [\direction, 'prelude-ls'], (direction, prelude) ->
 
         get: (x, y) -> @array[y][x]
         getCart: (c) -> @get c.x, c.y
+        getRandom: -> @get Math.floor(Math.random()*@width), Math.floor(Math.random()*@height)
 
         toString: -> @array |> map (join '') |> join "\n"
 

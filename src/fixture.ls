@@ -26,8 +26,11 @@ define [
         unstick: ->
             @cell.setFixture Null
 
+    class Tree extends Fixture
+        (cell) ->
     {
         Null
         Wall
         Web
+        Tree
     }

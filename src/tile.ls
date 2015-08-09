@@ -22,6 +22,7 @@ define [
     const fixtureTiles =
         Wall:   Tiles.WALL
         Web:    Tiles.SPIDER_WEB
+        Tree:   Tiles.TREE
 
     const groundTiles =
         Dirt: Tiles.DIRT
