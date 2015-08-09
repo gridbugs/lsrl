@@ -32,7 +32,7 @@ define ->
         STONE_BRIDGE: ['=', \LIGHT_GREY]
         WOODEN_DOOR: ['+', \LIGHT_BROWN]
         STONE_DOOR: ['+', \LIGHT_GREY]
-        SPIDER_WEB: ['#', \LIGHT_GREY]
+        SPIDER_WEB: ['*', \LIGHT_GREY]
 
     const PlayerCharacterStyle = ['@', \WHITE]
 

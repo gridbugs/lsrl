@@ -7,6 +7,10 @@ define [
     class Dirt extends Ground
         -> @effects = []
 
+    class Stone extends Ground
+        -> @effects = []
+
     {
         Dirt
+        Stone
     }

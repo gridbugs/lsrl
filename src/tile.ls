@@ -26,6 +26,7 @@ define [
 
     const groundTiles =
         Dirt: Tiles.DIRT
+        Stone: Tiles.STONE
 
     fromCell = (cell) ->
 

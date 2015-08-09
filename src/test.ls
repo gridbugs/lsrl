@@ -11,13 +11,11 @@ define ['prelude-ls', \perlin_test_generator, \cell_automata_test_generator, \ma
             return
 
         sp = c.getStartingPointHint!
-        Util.printDebug sp.position
         
-        /*
         grid.forEach (c) ->
-            if Math.random() < 0.01
-                c.setFixture Fixture.Web
-        */
+            if Math.random() < 0.03
+                if c.fixture.constructor.name == 'Null'
+                    c.setFixture Fixture.Web
 
         player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), input_source, grid
 

@@ -60,7 +60,7 @@ define [
             vertex_grid = new Grid.Grid VertexCell, width, height
             vertices = []
             grid.forEach (c, i, j) ~>
-                c.setGround Ground.Dirt
+                c.setGround Ground.Stone
                 c.setFixture Fixture.Wall
                 if i % 2 == 1 and j % 2 == 1 and i < width - 1 and j < height - 1
                     v = new Vertex grid, i, j

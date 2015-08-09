@@ -8,15 +8,15 @@ define ->
         TREE:   ['&', '#669900']
         DEAD_TREE:  ['&', '#663300']
         WATER:  ['~', '#33CCFF']
-        WALL:   ['#', '#444444']
+        WALL:   ['#', '#666666']
         WOODEN_BRIDGE:  ['=', '#663300']
         STONE_BRIDGE:   ['=', '#888888']
         WOODEN_DOOR:    ['+', '#663300']
         STONE_DOOR:     ['+', '#888888']
-        SPIDER_WEB:     ['#', '#888888']
+        SPIDER_WEB:     ['*', '#888888']
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
-    const UnseenColour = '#222222'
+    const UnseenColour = '#333333'
 
     {
         AsciiTileStyles
