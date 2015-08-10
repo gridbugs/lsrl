@@ -1,6 +1,7 @@
 define [
+    \types
     \util
-], (Util) ->
+], (Types, Util) ->
     const TileNames =
         \ERROR
         \UNKNOWN
@@ -19,6 +20,17 @@ define [
 
     Tiles = Util.enum TileNames
 
+    const fixtureTilesTable = Util.join Types.Fixture, Types.Tile, {
+        \Wall
+        Web: \SpiderWeb
+        \Tree
+    }
+
+    const groundTilesTable = Util.join Types.Ground, Types.Tile, {
+        \Dirt
+        \Stone
+    }
+
     const fixtureTiles =
         Wall:   Tiles.WALL
         Web:    Tiles.SPIDER_WEB
@@ -29,14 +41,13 @@ define [
         Stone: Tiles.STONE
 
     fromCell = (cell) ->
+        tile = fixtureTilesTable[cell.fixture.type]
+        return tile if tile?
 
-        name = cell.fixture.constructor.name
-        return fixtureTiles[name] if fixtureTiles[name]?
-        
-        name = cell.ground.constructor.name
-        return groundTiles[name] if groundTiles[name]?
+        tile = groundTilesTable[cell.ground.type]
+        return tile if tile?
 
-        return Tiles.ERROR
+        return Types.Tile.Error
 
 
     {

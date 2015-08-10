@@ -1,14 +1,22 @@
 define [
+    \types
     \effect
-], (Effect) ->
+], (Types, Effect) ->
 
     class Ground extends Effect.Effectable
+        (@type) ->
 
     class Dirt extends Ground
-        -> @effects = []
+        ->
+            super Types.Ground.Dirt
+            @effects = []
+        getName: -> 'Dirt'
 
     class Stone extends Ground
-        -> @effects = []
+        ->
+            super Types.Ground.Stone
+            @effects = []
+        getName: -> 'Stone'
 
     {
         Dirt

@@ -1,6 +1,6 @@
 define [
     \ncurses
-    \tile 
+    \tile
     \curses_tile
     \util
 ], (ncurses, tile, curses_tile, Util) ->
@@ -25,9 +25,9 @@ define [
      */
     TileChars = []
     TileColours = []
-    for i in tile.TileNames
-        TileChars.push TileStyles[i][0]
-        TileColours.push ColourPairs[TileStyles[i][1]]
+    for s in TileStyles
+        TileChars.push s[0]
+        TileColours.push ColourPairs[s[1]]
 
     for i from 0 to 25
         TileChars.push '#'

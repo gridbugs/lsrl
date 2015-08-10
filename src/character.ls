@@ -4,9 +4,10 @@ define [
     \knowledge
     \recursive_shadowcast
     \omniscient
+    \types
     \util
     \debug
-], (Action, Control, Knowledge, Shadowcast, Omniscient, Util, Debug) ->
+], (Action, Control, Knowledge, Shadowcast, Omniscient, Types, Util, Debug) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
@@ -20,7 +21,8 @@ define [
                 @observe_fn = Shadowcast.observe
 
         forEachEffect: (f) ->
-            @effects.forEach f
+            for e in @effects
+                f e
 
         getAction: (game_state, cb) ->
             @inputSource.getControl (control) ~>
@@ -38,7 +40,8 @@ define [
 
         getName: -> "The player"
 
-        canSeeThrough: (cell) -> cell.fixture.constructor.name != 'Wall'
+        canSeeThrough: (cell) ->
+            cell.fixture.type != Types.Fixture.Wall
 
         observe: (game_state) ->
             @observe_fn this, game_state

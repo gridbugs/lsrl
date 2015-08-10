@@ -5,7 +5,8 @@ define [
     
     class Effectable
         forEachEffect: (f) ->
-            @effects.forEach f
+            for e in @effects
+                f e
         
 
     class CellIsSolid

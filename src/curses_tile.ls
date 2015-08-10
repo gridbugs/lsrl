@@ -1,8 +1,11 @@
-define ->
+define [
+    \types
+    \util
+], (Types, Util) ->
     const Colours =
         WHITE: 15
         BLACK: 16
-        
+
         LIGHT_GREEN: 34
         DARK_GREEN: 22
 
@@ -10,14 +13,14 @@ define ->
         DARK_BROWN: 58
 
         LIGHT_BLUE: 21
-        
+
         LIGHT_GREY: 250
         DARK_GREY: 240
         VERY_DARK_GREY: 236
 
         LIGHT_RED: 196
 
-
+    /*
     const TileStyles =
         ERROR:  ['?', \LIGHT_RED]
         UNKNOWN:[' ', \BLACK]
@@ -33,6 +36,16 @@ define ->
         WOODEN_DOOR: ['+', \LIGHT_BROWN]
         STONE_DOOR: ['+', \LIGHT_GREY]
         SPIDER_WEB: ['*', \LIGHT_GREY]
+    */
+    const TileStyles = Util.table Types.Tile, {
+        Error:  ['?', \LIGHT_RED]
+        Unknown:[' ', \BLACK]
+        Stone:  ['.', \LIGHT_GREY]
+        Dirt:   ['.', \DARK_BROWN]
+        Tree:   ['&', \DARK_GREEN]
+        Wall:   ['#', \DARK_GREY]
+        SpiderWeb: ['*', \LIGHT_GREY]
+    }
 
     const PlayerCharacterStyle = ['@', \WHITE]
 

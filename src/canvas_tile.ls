@@ -1,4 +1,8 @@
-define ->
+define [
+    \types
+    \util
+], (Types, Util) ->
+    /*
     const AsciiTileStyles =
         ERROR:  ['?', '#ff0000']
         UNKNOWN:[' ', '#000000']
@@ -14,6 +18,16 @@ define ->
         WOODEN_DOOR:    ['+', '#663300']
         STONE_DOOR:     ['+', '#888888']
         SPIDER_WEB:     ['*', '#888888']
+    */
+    const AsciiTileStyles = Util.table Types.Tile, {
+        Error:  ['?', '#ff0000']
+        Unknown:[' ', '#000000']
+        Stone:  ['.', '#888888']
+        Dirt:   ['.', '#996600']
+        Tree:   ['&', '#669900']
+        Wall:   ['#', '#666666']
+        SpiderWeb:     ['*', '#888888']
+    }
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
     const UnseenColour = '#333333'

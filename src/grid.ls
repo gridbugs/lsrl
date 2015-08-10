@@ -39,9 +39,10 @@ define [\direction, 'prelude-ls'], (direction, prelude) ->
                 c.distanceToEdge = Math.min c.x, c.y, (@width - c.x - 1), (@height - c.y - 1)
 
         forEach: (f) ->
-            @array.forEach (row, r_idx, grid) ~>
-                row.forEach (cell, c_idx, row) ~>
-                    f(cell, c_idx, r_idx, this)
+            for i from 0 til @array.length
+                row = @array[i]
+                for j from 0 til row.length
+                    f row[j], j, i, this
 
         forEachBorder: (f) ->
             for i from 0 til @width

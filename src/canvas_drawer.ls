@@ -7,12 +7,13 @@ define [
     const VERTICAL_PADDING = 2
     const HORIZONTAL_PADDING = 0
 
-
+    /*
     TileChars = []
     TileColours = []
     for i in tile.TileNames
         TileChars.push canvas_tile.AsciiTileStyles[i][0]
         TileColours.push canvas_tile.AsciiTileStyles[i][1]
+    */
 
     const PlayerCharacterChar = canvas_tile.AsciiPlayerCharacterStyle[0]
     const PlayerCharacterColour = canvas_tile.AsciiPlayerCharacterStyle[1]
@@ -34,8 +35,8 @@ define [
 
         __drawCell: (cell) ->
             type = tile.fromCell cell
-            @ctx.fillStyle = TileColours[type]
-            @ctx.fillText TileChars[type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+            @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
+            @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
 
         __drawPlayerCharacter: (pc) ->
             x = pc.position.x
@@ -49,8 +50,8 @@ define [
             @ctx.beginPath!
             @ctx.fillStyle = '#000000'
             @ctx.fillRect cell.x * @cellWidth, cell.y * @cellHeight, @cellWidth, @cellHeight
-            @ctx.fillStyle = TileColours[cell.type]
-            @ctx.fillText TileChars[cell.type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+            @ctx.fillStyle = canvas_tile.AsciiTileStyles[cell.type][1]
+            @ctx.fillText canvas_tile.AsciiTileStyles[cell.type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
             @ctx.fill!
 
         __drawGrid: (grid) ->
@@ -73,20 +74,26 @@ define [
             @__drawPlayerCharacter game_state.playerCharacter
             @ctx.fill!
 
+        drawGrid: (grid) ->
+            @ctx.beginPath!
+            @__clear!
+            @__drawGrid grid
+            @ctx.fill!
+
         __drawKnowledgeCell: (cell, game_state) ->
             if cell.known
                 type = tile.fromCell cell
                 colour = void
                 if cell.timestamp == game_state.absoluteTime
-                    colour = TileColours[type]
-                else 
+                    colour = canvas_tile.AsciiTileStyles[type][1]
+                else
                     colour = UnseenColour
                 @ctx.fillStyle = colour
-                @ctx.fillText TileChars[type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+                @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
             else
                 type = tile.Tiles.UNKNOWN
-                @ctx.fillStyle = TileColours[type]
-                @ctx.fillText TileChars[type], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+                @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
+                @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
 
 
 

@@ -28,7 +28,7 @@ define [
             @fixture = new F this
 
         forEachEffectInGroup: (group, f) ->
-            group.forEach (element) ->
+            for element in group
                 element.forEachEffect f
 
         forEachEffect: (f) ->
@@ -38,7 +38,8 @@ define [
             @forEachEffectInGroup @characters
 
         _forEachEffect: (f) ->
-            @effects.forEach f
+            for e in effects
+                f e
 
     {
         Cell

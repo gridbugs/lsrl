@@ -78,7 +78,7 @@ define [
         getStartingPointHint: ->
             while true
                 c = @grid.getRandom!
-                if c.fixture.constructor.name == 'Null'
+                if c.fixture.getName! == 'Null'
                     return c
 
         createMazeDepthFirst: (start_vertex, grid) ->

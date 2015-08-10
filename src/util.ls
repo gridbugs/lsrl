@@ -8,6 +8,18 @@ define ->
             ret[e] = i++
         return ret
 
+    makeTable = (enum_type, object) ->
+        arr = []
+        for k, v of object
+            arr[enum_type[k]] = v
+        return arr
+
+    joinTable = (enum_l, enum_r, object) ->
+        arr = []
+        for k, v of object
+            arr[enum_l[k]] = enum_r[v]
+        return arr
+
     getCharCode = (c) -> c.charCodeAt 0
 
     printTerminal = (x) -> process.stderr.write "#{x}\n"
@@ -27,11 +39,13 @@ define ->
             tmp = arr[i]
             arr[i] = arr[idx]
             arr[idx] = tmp
-    
+
     {
         isInt
         makeEnum
         enum: makeEnum
+        table: makeTable
+        join: joinTable
         getRandomElement
         getCharCode
         print: printDebug
