@@ -47,7 +47,7 @@ define [
                         ret.push desc
 
             return ret
-            
+
         progressSchedule: ->
             prev = @schedule.pop!
             nextTime = prev.time

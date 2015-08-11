@@ -9,8 +9,12 @@ define [
             $(window).keydown (e) ~>
                 tmp = @currentControlCallback
                 @currentControlCallback = (->)
+                key = String.fromCharCode e.keyCode
+                if e.shiftKey
+                    ch = key.toUpperCase!
+                else
+                    ch = key.toLowerCase!
 
-                ch = (String.fromCharCode e.keyCode).toLowerCase!
                 tmp @keymap[ch]
 
 

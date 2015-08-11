@@ -4,6 +4,7 @@ define [\direction, \util], (direction, util) ->
         \DIRECTION
         \ACTION
         \MENU
+        \AUTO_DIRECTION
     }
 
     class Control
@@ -15,10 +16,19 @@ define [\direction, \util], (direction, util) ->
             @type = ControlTypes.DIRECTION
         toString: -> @name
 
+    class AutoDirectionControl
+        (@name, @direction) ~>
+            @type = ControlTypes.AUTO_DIRECTION
+        toString: -> @name
+
     Controls = {}
 
     for k, v of direction.Directions
         Controls[k] = DirectionControl k, v
+
+    for k, v of direction.Directions
+        name = "AUTO_#{k}"
+        Controls[name] = AutoDirectionControl name, v
 
     {
         Controls

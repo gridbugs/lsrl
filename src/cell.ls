@@ -22,9 +22,9 @@ define [
             @corners[Direction.OrdinalIndices.SOUTHWEST] = Vec2.Vec2 @x, (@y+1)
             @corners[Direction.OrdinalIndices.SOUTHEAST] = Vec2.Vec2 (@x+1), (@y+1)
 
-        setGround: (G) -> 
+        setGround: (G) ->
             @ground = new G this
-        setFixture: (F) -> 
+        setFixture: (F) ->
             @fixture = new F this
 
         forEachEffectInGroup: (group, f) ->

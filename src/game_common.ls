@@ -19,7 +19,7 @@ define [
             @gameState.scheduleActionSource @gameState.playerCharacter, 10
             @progressGameState!
 
-        gameTimeToMs: (t) -> t
+        gameTimeToMs: (t) -> t * 0.5
 
         progressGameState: ->
             action_source = @gameState.getCurrentActionSource!

@@ -9,6 +9,9 @@ define [
     \debug
 ], (Action, Control, Knowledge, Shadowcast, Omniscient, Types, Util, Debug) ->
 
+    class AutoMove
+        (@direction) ->
+
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
             @effects = []
@@ -20,21 +23,34 @@ define [
             else
                 @observe_fn = Shadowcast.observe
 
+            @autoMode = null
+
         forEachEffect: (f) ->
             for e in @effects
                 f e
 
         getAction: (game_state, cb) ->
-            @inputSource.getControl (control) ~>
-                if not control?
-                    @getAction game_state, cb
+            if @autoMode? and @autoMode.constructor == AutoMove
+                if @getCell!.neighbours[@autoMode.direction.index].fixture.type == Types.Fixture.Null
+                    cb new Action.Move this, @autoMode.direction, game_state
                     return
+                else
+                    @autoMode = null
 
-                a = void
-                if control.type == Control.ControlTypes.DIRECTION
-                    a = new Action.Move this, control.direction, game_state
+            if @autoMode == null
+                @inputSource.getControl (control) ~>
+                    if not control?
+                        @getAction game_state, cb
+                        return
 
-                cb a
+                    a = void
+                    if control.type == Control.ControlTypes.DIRECTION
+                        a = new Action.Move this, control.direction, game_state
+                    else if control.type == Control.ControlTypes.AUTO_DIRECTION
+                        a = new Action.Move this, control.direction, game_state
+                        @autoMode = new AutoMove control.direction
+
+                    cb a
 
         getCell: -> @grid.getCart @position
 

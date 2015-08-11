@@ -1,6 +1,6 @@
 define [\util, \vec2, 'prelude-ls'], (util, vec2, prelude) ->
 
-    map = prelude.map   
+    map = prelude.map
 
 
     class Direction
@@ -32,7 +32,7 @@ define [\util, \vec2, 'prelude-ls'], (util, vec2, prelude) ->
     const OrdinalDirectionNames = <[NORTHEAST SOUTHEAST SOUTHWEST NORTHWEST]>
     const CardinalDirections = CardinalDirectionNames |> map (n) -> Directions[n]
     const OrdinalDirections = OrdinalDirectionNames |> map (n) -> Directions[n]
-    
+
     CardinalIndices = {}
     OrdinalIndices = {}
     for i from 0 til 4
