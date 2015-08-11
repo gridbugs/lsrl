@@ -12,6 +12,8 @@ define [
         #Math.seedrandom 0
 
         drawer = new curses_drawer.CursesDrawer!
+        util.setDrawer drawer
+
         input = new curses_input_source.CursesInputSource drawer.game_window, keymap.Dvorak
 
         process.on 'SIGINT' drawer.cleanup

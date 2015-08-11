@@ -15,20 +15,21 @@ define [
         start: ->
             if Debug.DRAW_MAP_ONLY
                 return
+
             @gameState.scheduleActionSource @gameState.playerCharacter, 10
             @progressGameState!
-        
+
         gameTimeToMs: (t) -> t
 
         progressGameState: ->
             action_source = @gameState.getCurrentActionSource!
-            
+
             @gameState.progressSchedule!
-            
+
             @gameState.playerCharacter.observe @gameState
             @drawer.drawCharacterKnowledge @gameState.playerCharacter, @gameState
-            
-            
+
+
             action_source.getAction @gameState, (action) ~>
                 descriptions = @gameState.applyAction action
                 for desc in descriptions
@@ -40,5 +41,5 @@ define [
 
                 /* Process the next action after the time has passed */
                 setTimeout (~>@progressGameState!), (@gameTimeToMs time)
-    
+
     { GameCommon }

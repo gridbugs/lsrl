@@ -30,6 +30,11 @@ define ->
     else
         printDebug = printTerminal
 
+    drawer = null
+    setDrawer = (d) -> @drawer = d
+    printDrawer = (str) ->
+        @drawer.print str
+
     constrain = (min, x, max) ->
         return Math.min(Math.max(x, min), max)
 
@@ -50,6 +55,8 @@ define ->
         getCharCode
         print: printDebug
         printDebug
+        setDrawer
+        printDrawer
         constrain
         shuffleArrayInPlace
     }

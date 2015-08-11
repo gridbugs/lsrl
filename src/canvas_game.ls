@@ -11,6 +11,7 @@ define [
         #Math.seedrandom 0
 
         drawer = new canvas_drawer.CanvasDrawer $('#canvas')[0], 120, 40
+        util.setDrawer drawer
 
         if window.location.hash == '#qwerty'
             keys = keymap.Qwerty
