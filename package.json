@@ -1,0 +1,13 @@
+{
+    "private": true,
+    "name": "lsrl",
+    "version": "0.0.1",
+    "description": "A roguelike engine written in livescript with multiple front ends.",
+    "dependencies": {
+        "express": "*",
+        "livescript": "*",
+        "prelude-ls": "*",
+        "requirejs": "*",
+        "ncurses": "*"
+    }
+}
