@@ -8,6 +8,7 @@ run in a terminal or a browser.
 ## Dependencies
 
 - zeromq (required to compile ncurses)
+- python (required by npm. If the default python on your system is not python 2, run `npm install --python=/path/to/python2`.)
 
 ## Usage
 
