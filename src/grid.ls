@@ -19,22 +19,22 @@ define [\direction, 'prelude-ls'], (direction, prelude) ->
             @forEach (c) ~>
                 c.neighbours = [void] * direction.N_DIRECTIONS
                 if c.x > 0
-                    c.neighbours[direction.Indices.WEST] = @array[c.y][c.x-1]
+                    c.neighbours[direction.Indices.West] = @array[c.y][c.x-1]
                     if c.y > 0
-                        c.neighbours[direction.Indices.NORTHWEST] = @array[c.y-1][c.x-1]
+                        c.neighbours[direction.Indices.NorthWest] = @array[c.y-1][c.x-1]
                     if c.y < @height - 1
-                        c.neighbours[direction.Indices.SOUTHWEST] = @array[c.y+1][c.x-1]
+                        c.neighbours[direction.Indices.SouthWest] = @array[c.y+1][c.x-1]
                 if c.x < @width - 1
-                    c.neighbours[direction.Indices.EAST] = @array[c.y][c.x+1]
+                    c.neighbours[direction.Indices.East] = @array[c.y][c.x+1]
                     if c.y > 0
-                        c.neighbours[direction.Indices.NORTHEAST] = @array[c.y-1][c.x+1]
+                        c.neighbours[direction.Indices.NorthEast] = @array[c.y-1][c.x+1]
                     if c.y < @height - 1
-                        c.neighbours[direction.Indices.SOUTHEAST] = @array[c.y+1][c.x+1]
+                        c.neighbours[direction.Indices.SouthEast] = @array[c.y+1][c.x+1]
                 if c.y > 0
-                    c.neighbours[direction.Indices.NORTH] = @array[c.y-1][c.x]
+                    c.neighbours[direction.Indices.North] = @array[c.y-1][c.x]
                 if c.y < @height - 1
-                    c.neighbours[direction.Indices.SOUTH] = @array[c.y+1][c.x]
-                
+                    c.neighbours[direction.Indices.South] = @array[c.y+1][c.x]
+
                 c.allNeighbours = c.neighbours |> filter (?)
                 c.distanceToEdge = Math.min c.x, c.y, (@width - c.x - 1), (@height - c.y - 1)
 

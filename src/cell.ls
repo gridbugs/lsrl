@@ -17,10 +17,10 @@ define [
             @characters = []
             @centre = Vec2.Vec2 (@x+0.5), (@y+0.5)
             @corners = []
-            @corners[Direction.OrdinalIndices.NORTHWEST] = Vec2.Vec2 @x, @y
-            @corners[Direction.OrdinalIndices.NORTHEAST] = Vec2.Vec2 (@x+1), @y
-            @corners[Direction.OrdinalIndices.SOUTHWEST] = Vec2.Vec2 @x, (@y+1)
-            @corners[Direction.OrdinalIndices.SOUTHEAST] = Vec2.Vec2 (@x+1), (@y+1)
+            @corners[Direction.OrdinalIndices.NorthWest] = Vec2.Vec2 @x, @y
+            @corners[Direction.OrdinalIndices.NorthEast] = Vec2.Vec2 (@x+1), @y
+            @corners[Direction.OrdinalIndices.SouthWest] = Vec2.Vec2 @x, (@y+1)
+            @corners[Direction.OrdinalIndices.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
 
         setGround: (G) ->
             @ground = new G this

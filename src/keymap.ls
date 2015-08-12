@@ -3,42 +3,42 @@ define [\control], (control) ->
     Controls = control.Controls
 
     const Dvorak =
-        d: Controls.WEST
-        h: Controls.SOUTH
-        t: Controls.NORTH
-        n: Controls.EAST
-        f: Controls.NORTHWEST
-        g: Controls.NORTHEAST
-        x: Controls.SOUTHWEST
-        b: Controls.SOUTHEAST
-        D: Controls.AUTO_WEST
-        H: Controls.AUTO_SOUTH
-        T: Controls.AUTO_NORTH
-        N: Controls.AUTO_EAST
-        F: Controls.AUTO_NORTHWEST
-        G: Controls.AUTO_NORTHEAST
-        X: Controls.AUTO_SOUTHWEST
-        B: Controls.AUTO_SOUTHEAST
+        d: Controls.West
+        h: Controls.South
+        t: Controls.North
+        n: Controls.East
+        f: Controls.NorthWest
+        g: Controls.NorthEast
+        x: Controls.SouthWest
+        b: Controls.SouthEast
+        D: Controls.AutoWest
+        H: Controls.AutoSouth
+        T: Controls.AutoNorth
+        N: Controls.AutoEast
+        F: Controls.AutoNorthWest
+        G: Controls.AutoNorthEast
+        X: Controls.AutoSouthWest
+        B: Controls.AutoSouthEast
 
 
 
     const Qwerty =
-       h: Controls.WEST
-       j: Controls.SOUTH
-       k: Controls.NORTH
-       l: Controls.EAST
-       y: Controls.NORTHWEST
-       u: Controls.NORTHEAST
-       b: Controls.SOUTHWEST
-       n: Controls.SOUTHEAST
-       H: Controls.AUTO_WEST
-       J: Controls.AUTO_SOUTH
-       K: Controls.AUTO_NORTH
-       L: Controls.AUTO_EAST
-       Y: Controls.AUTO_NORTHWEST
-       U: Controls.AUTO_NORTHEAST
-       B: Controls.AUTO_SOUTHWEST
-       N: Controls.AUTO_SOUTHEAST
+       h: Controls.West
+       j: Controls.South
+       k: Controls.North
+       l: Controls.East
+       y: Controls.NorthWest
+       u: Controls.NorthEast
+       b: Controls.SouthWest
+       n: Controls.SouthEast
+       H: Controls.AutoWest
+       J: Controls.AutoSouth
+       K: Controls.AutoNorth
+       L: Controls.AutoEast
+       Y: Controls.AutoNorthWest
+       U: Controls.AutoNorthEast
+       B: Controls.AutoSouthWest
+       N: Controls.AutoSouthEast
 
     {
         Dvorak

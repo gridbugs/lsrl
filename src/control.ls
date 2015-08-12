@@ -1,10 +1,10 @@
 define [\direction, \util], (direction, util) ->
 
     const ControlTypes = {
-        \DIRECTION
-        \ACTION
-        \MENU
-        \AUTO_DIRECTION
+        \Direction
+        \Action
+        \Menu
+        \AutoDirection
     }
 
     class Control
@@ -13,12 +13,12 @@ define [\direction, \util], (direction, util) ->
 
     class DirectionControl
         (@name, @direction) ~>
-            @type = ControlTypes.DIRECTION
+            @type = ControlTypes.Direction
         toString: -> @name
 
     class AutoDirectionControl
         (@name, @direction) ~>
-            @type = ControlTypes.AUTO_DIRECTION
+            @type = ControlTypes.AutoDirection
         toString: -> @name
 
     Controls = {}
@@ -27,7 +27,7 @@ define [\direction, \util], (direction, util) ->
         Controls[k] = DirectionControl k, v
 
     for k, v of direction.Directions
-        name = "AUTO_#{k}"
+        name = "Auto#{k}"
         Controls[name] = AutoDirectionControl name, v
 
     {

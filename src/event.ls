@@ -13,7 +13,7 @@ define [
 
     class MoveToCell extends CharacterCellEvent
         (@character, @cell) ->
-        
+
     class MoveFromCell extends CharacterCellEvent
         (@character, @cell) ->
 

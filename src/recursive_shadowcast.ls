@@ -41,7 +41,7 @@ define [
             section = section_stack.pop!
             depth_absolute_index = (eye_cell.position.arrayGet depth_index) +
                 section.depth * depth_direction
-            
+
             if depth_absolute_index < 0 || depth_absolute_index > depth_max
                 continue
 
@@ -60,7 +60,7 @@ define [
                 min_inner_lateral_position, min_outer_lateral_position))
             complete_start_index = Math.ceil(Math.max(
                 min_inner_lateral_position, min_outer_lateral_position))
-            
+
             max_inner_lateral_offset = section.max_slope * inner_depth_offset
             max_outer_lateral_offset = section.max_slope * outer_depth_offset
 
@@ -86,7 +86,7 @@ define [
 
                 coord_idx.arraySet(lateral_index, i)
                 cell = knowledge_grid.getCart(coord_idx)
-                
+
                 if (cell.game_cell.centre.distance eye_cell.centre) < character.viewDistance and \
                     cell.timestamp != game_state.absoluteTime
                     markCompletelyVisible(cell, game_state)
@@ -129,65 +129,65 @@ define [
 
         # \|
         observeOctant(character, game_state, cell,
-            -1, 0, 
-            Direction.OrdinalIndices.NORTHWEST,
-            Direction.OrdinalIndices.SOUTHWEST,
+            -1, 0,
+            Direction.OrdinalIndices.NorthWest,
+            Direction.OrdinalIndices.SouthWest,
             -1, Vec2.X_IDX, width, height
         )
-        
+
         # |/
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.SOUTHWEST,
-            Direction.OrdinalIndices.NORTHWEST,
+            Direction.OrdinalIndices.SouthWest,
+            Direction.OrdinalIndices.NorthWest,
             -1, Vec2.X_IDX, width, height
         )
-        
+
         # /|
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.SOUTHWEST,
-            Direction.OrdinalIndices.NORTHWEST,
+            Direction.OrdinalIndices.SouthWest,
+            Direction.OrdinalIndices.NorthWest,
             1, Vec2.X_IDX, width, height
         )
-        
+
         # |\
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.NORTHWEST,
-            Direction.OrdinalIndices.SOUTHWEST,
+            Direction.OrdinalIndices.NorthWest,
+            Direction.OrdinalIndices.SouthWest,
             1, Vec2.X_IDX, width, height
         )
-        
+
         # _\
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.NORTHWEST,
-            Direction.OrdinalIndices.NORTHEAST,
+            Direction.OrdinalIndices.NorthWest,
+            Direction.OrdinalIndices.NorthEast,
             -1, Vec2.Y_IDX, height, width
         )
 
         # "/
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.NORTHEAST,
-            Direction.OrdinalIndices.NORTHWEST,
+            Direction.OrdinalIndices.NorthEast,
+            Direction.OrdinalIndices.NorthWest,
             -1, Vec2.Y_IDX, height, width
         )
-        
+
         # /_
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.NORTHEAST,
-            Direction.OrdinalIndices.NORTHWEST,
+            Direction.OrdinalIndices.NorthEast,
+            Direction.OrdinalIndices.NorthWest,
             1, Vec2.Y_IDX, height, width
         )
 
         # \"
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.NORTHWEST,
-            Direction.OrdinalIndices.NORTHEAST,
+            Direction.OrdinalIndices.NorthWest,
+            Direction.OrdinalIndices.NorthEast,
             1, Vec2.Y_IDX, height, width
         )
 

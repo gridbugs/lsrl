@@ -4,13 +4,27 @@ define [
     \knowledge
     \recursive_shadowcast
     \omniscient
+    \direction
     \types
     \util
+    'prelude-ls'
     \debug
-], (Action, Control, Knowledge, Shadowcast, Omniscient, Types, Util, Debug) ->
+], (Action, Control, Knowledge, Shadowcast, Omniscient, Direction, Types, Util, Prelude, Debug) ->
+
+    map = Prelude.map
 
     class AutoMove
         (@direction) ->
+
+    class Surroundings
+        (@centre, @direction) ->
+            @cells = Direction.Fronts[@direction.index] |> map (i) ~> @centre.neighbours[i]
+
+        equals: (other) ->
+            for i from 0 til @cells.length
+                if @cells[i].fixture.type != other.cells[i].fixture.type
+                    return false
+            return true
 
     class PlayerCharacter
         (@position, @inputSource, @grid) ->
@@ -31,7 +45,9 @@ define [
 
         getAction: (game_state, cb) ->
             if @autoMode? and @autoMode.constructor == AutoMove
-                if @getCell!.neighbours[@autoMode.direction.index].fixture.type == Types.Fixture.Null
+                new_surroundings = new Surroundings @getCell!, @autoMode.direction
+                if @surroundings.equals new_surroundings and @surroundings.centre.position.add(Direction.DirectionVectorsByIndex[@surroundings.direction.index]).equals(new_surroundings.centre.position)
+                    @surroundings = new_surroundings
                     cb new Action.Move this, @autoMode.direction, game_state
                     return
                 else
@@ -44,11 +60,12 @@ define [
                         return
 
                     a = void
-                    if control.type == Control.ControlTypes.DIRECTION
+                    if control.type == Control.ControlTypes.Direction
                         a = new Action.Move this, control.direction, game_state
-                    else if control.type == Control.ControlTypes.AUTO_DIRECTION
+                    else if control.type == Control.ControlTypes.AutoDirection
                         a = new Action.Move this, control.direction, game_state
                         @autoMode = new AutoMove control.direction
+                        @surroundings = new Surroundings @getCell!, @autoMode.direction
 
                     cb a
 
