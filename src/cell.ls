@@ -24,7 +24,7 @@ define [
             @corners[Direction.OrdinalIndices.SouthWest] = Vec2.Vec2 @x, (@y+1)
             @corners[Direction.OrdinalIndices.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
 
-            @moveOutCost = 1
+            @moveOutCost = 40
 
         getMoveOutCost: (direction) ->
             if Direction.isCardinal direction.index
