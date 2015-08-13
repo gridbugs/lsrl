@@ -36,7 +36,7 @@ define [
                 @possible = false
 
         isComplete: ->
-            @possible and @character.getCell!position.equals @destination.position
+            not @possible or @character.getCell!position.equals @destination.position
 
         getAction: (game_state) ->
             if not @possible
