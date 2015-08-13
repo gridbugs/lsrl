@@ -26,6 +26,12 @@ define [
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
 
+        hasUnknownNeighbour: ->
+            for n in @allNeighbours
+                if not n.known
+                    return true
+            return false
+
     class Knowledge
         (grid) ->
             @grid = new Grid.Grid KnowledgeCell, grid.width, grid.height

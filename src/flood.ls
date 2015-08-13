@@ -17,7 +17,7 @@ define [
         while not empty stack
             cell = stack.pop!
             for n in cell.allNeighbours
-                if not n.flood_visited? and predicate(n)
+                if not n.flood_visited and predicate(n)
                     callback(n)
                     stack.push(n)
                     n.flood_visited = true

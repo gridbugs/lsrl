@@ -22,14 +22,17 @@ define [
                 new Event.MoveToCell @character, @toCell
             ]
 
+            @cost = @fromCell.getMoveOutCost @direction
+
+
         commit: ->
             @character.position = @character.position.add \
                 Direction.DirectionVectorsByIndex[@direction.index]
 
             if @character.getCell!.fixture.getName! == 'Web'
-                return new CommitMetaData 10 ["#{@character.getName()} gets stuck in a web."]
+                return new CommitMetaData @cost, ["#{@character.getName()} gets stuck in a web."]
 
-            return new CommitMetaData 10 []
+            return new CommitMetaData @cost, []
 
     class BumpIntoWall extends Action
         (@character, @gameState) ->

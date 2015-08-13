@@ -74,7 +74,31 @@ define [\util, \vec2, 'prelude-ls'], (Util, Vec2, Prelude) ->
         SouthWest: [\South, \West, \SouthWest] |> map (DirectionEnum.)
         NorthWest: [\West, \North, \NorthWest] |> map (DirectionEnum.)
     }
+    const cardinalMap = Util.table DirectionEnum, {
+        North: true
+        South: true
+        East: true
+        West: true
+        NorthEast: false
+        SouthEast: false
+        NorthWest: false
+        SouthWest: false
+    }
+    const ordinalMap = Util.table DirectionEnum, {
+        North: false
+        South: false
+        East: false
+        West: false
+        NorthEast: true
+        SouthEast: true
+        NorthWest: true
+        SouthWest: true
+    }
 
+    isOrdinal = (d) -> ordinalMap[d]
+    isCardinal = (d) -> cardinalMap[d]
+
+    const AllIndices = [0 til N_DIRECTIONS]
 
     {
         Directions
@@ -90,4 +114,8 @@ define [\util, \vec2, 'prelude-ls'], (Util, Vec2, Prelude) ->
         DirectionVectorsByIndex
         FrontSides
         Fronts
+        isOrdinal
+        isCardinal
+        DirectionEnum
+        AllIndices
     }

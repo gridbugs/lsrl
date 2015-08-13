@@ -3,10 +3,12 @@ define [
     \util
     \vec2
     \direction
+    \constants
     'prelude-ls'
-], (Tile,Util, Vec2, Direction, Prelude) ->
+], (Tile,Util, Vec2, Direction, Constants, Prelude) ->
 
     map = Prelude.map
+
 
     class Cell
         (@x, @y) ->
@@ -21,6 +23,14 @@ define [
             @corners[Direction.OrdinalIndices.NorthEast] = Vec2.Vec2 (@x+1), @y
             @corners[Direction.OrdinalIndices.SouthWest] = Vec2.Vec2 @x, (@y+1)
             @corners[Direction.OrdinalIndices.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
+
+            @moveOutCost = 1
+
+        getMoveOutCost: (direction) ->
+            if Direction.isCardinal direction.index
+                return @moveOutCost
+            else
+                return @moveOutCost * Constants.SQRT2
 
         setGround: (G) ->
             @ground = new G this

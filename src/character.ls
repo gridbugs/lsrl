@@ -6,12 +6,14 @@ define [
     \omniscient
     \direction
     \ground
+    \fixture
     \flood
+    \search
     \types
     \util
     'prelude-ls'
-    \debug
-], (Action, Control, Knowledge, Shadowcast, Omniscient, Direction, Ground, Flood, Types, Util, Prelude, Debug) ->
+    \config
+], (Action, Control, Knowledge, Shadowcast, Omniscient, Direction, Ground, Fixture, Flood, Search, Types, Util, Prelude, Config) ->
 
     map = Prelude.map
 
@@ -34,7 +36,7 @@ define [
             @knowledge = new Knowledge.Knowledge grid
             @viewDistance = 20
 
-            if Debug.OMNISCIENT_PLAYER
+            if Config.OMNISCIENT_PLAYER
                 @observe_fn = Omniscient.observe
             else
                 @observe_fn = Shadowcast.observe
@@ -70,10 +72,11 @@ define [
                         @surroundings = new Surroundings @getCell!, @autoMode.direction
                     else if control.type == Control.ControlTypes.AutoExplore
 
-                        Flood.floodFill @getKnowledgeCell!, false, \
+                        result = Search.findClosest @getKnowledgeCell!, ((c, d) -> c.game_cell.getMoveOutCost d), \
                             ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
-                            ((c) -> c.game_cell.setGround Ground.Moss)
+                            ((c) -> c.hasUnknownNeighbour!)
 
+                        result.cell.game_cell.setGround Ground.Moss
                         a = new Action.Null this, game_state
 
                     cb a

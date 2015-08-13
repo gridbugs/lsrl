@@ -1,7 +1,10 @@
 define [
-], ->
+    \direction
+    \util
+], (Direction, Util) ->
+
+    test = ->
 
     {
-        DRAW_MAP_ONLY: false
-        OMNISCIENT_PLAYER: false
+        test
     }
