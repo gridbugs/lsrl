@@ -28,13 +28,14 @@ define [
                 @minSteps = 20
 
             @stepCount = 0
+            @stopping = false
             @findDestination!
 
         isAtDestination: -> @character.getCell!position.equals @destination.position
 
         hasUnexploredAreas: -> @possible
-        isStopping: -> @isAtDestination! and @minStepsPassed!
-        minStepsPassed: -> @isAtDestination! and @stepCount >= @minSteps
+        isStopping: -> @stopping
+        minStepsPassed: -> @stepCount >= @minSteps
 
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell!, \
@@ -59,10 +60,15 @@ define [
         proceed: ->
             ++@nextIndex
             ++@stepCount
-            if @isAtDestination! and not @minStepsPassed!
-                @findDestination!
-                
 
+            /* Search for a new destination regardless of whether minStepsPassed! is true.
+             * In the case where the last unexplored area is reached, but this object didn't
+             * realize because it didn't search for new paths due to minStepsPassed! being true.
+             */
+            if @isAtDestination!
+                @findDestination!
+                if @minStepsPassed!
+                    @stopping = true
 
     class Surroundings
         (@centre, @direction) ->
@@ -104,7 +110,7 @@ define [
 
             if @autoExplore?
                 @autoExplore.proceed!
-                
+
                 if not @autoExplore.hasUnexploredAreas!
                     Util.printDrawer "No further unexplored areas."
                     @autoExplore = null
@@ -128,6 +134,10 @@ define [
                     a = void
                     if control.type == Control.ControlTypes.Direction
                         a = new Action.Move this, control.direction, game_state
+                        if not @canEnterCell a.toCell
+                            @getAction game_state, cb
+                            return
+
                     else if control.type == Control.ControlTypes.AutoDirection
                         a = new Action.Move this, control.direction, game_state
                         @autoMode = new AutoMove control.direction
@@ -150,6 +160,7 @@ define [
 
                     cb a
 
+        canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
         getCell: -> @grid.getCart @position
         getKnowledgeCell: -> @knowledge.grid.getCart @position
 
