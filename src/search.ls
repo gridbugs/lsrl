@@ -8,15 +8,16 @@ define [
     empty = Prelude.empty
 
     class SearchResult
-        (@cell, @cost, @path) ->
+        (@cell, @cost, @path, @directions) ->
 
     class SearchNode
         (@cell, @cost) ->
 
-    pushParentsReversed = (array, node) ->
-        if node.search_parent?
-            pushParentsReversed array, node.search_parent
-        array.push node
+    pushParentsReversed = (path, directions, cell) ->
+        if cell.search_parent?
+            pushParentsReversed path, directions, cell.search_parent
+            path.push cell
+            directions.push cell.search_direction
 
     dijkstraFindClosest = (start_cell, cost_fn, can_enter_predicate, predicate) ->
         heap = new Heap.Heap (a, b) -> a.cost <= b.cost
@@ -50,6 +51,7 @@ define [
                     if not existing_cost? or cost < neighbour.search_cost
                         neighbour.search_cost = cost
                         neighbour.search_parent = current_cell
+                        neighbour.search_direction = d
                         heap.insert new SearchNode(neighbour, cost)
 
                     if not existing_cost?
@@ -61,17 +63,20 @@ define [
                 m.search_cost = void
                 m.search_parent = void
                 m.search_visited = void
+                m.search_direction = void
 
             return null
 
         path = []
-        pushParentsReversed path, target.cell
-        ret = new SearchResult target.cell, target.cost, path
+        directions = []
+        pushParentsReversed path, directions, target.cell
+        ret = new SearchResult target.cell, target.cost, path, directions
 
         for m in marked
             m.search_cost = void
             m.search_parent = void
             m.search_visited = void
+            m.search_direction = void
 
         return ret
 

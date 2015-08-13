@@ -1,8 +1,9 @@
 define [
     \cell
     \grid
+    \util
     'prelude-ls'
-], (Cell, Grid, Prelude) ->
+], (Cell, Grid, Util, Prelude) ->
 
     map = Prelude.map
     id = Prelude.id

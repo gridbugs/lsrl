@@ -20,6 +20,34 @@ define [
     class AutoMove
         (@direction) ->
 
+    class AutoExplore
+        (@character) ->
+            result = Search.findClosest @character.getKnowledgeCell!, \
+                        ((c, d) -> c.game_cell.getMoveOutCost d), \
+                        ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
+                        ((c) -> c.hasUnknownNeighbour!)
+
+            if result?
+                @possible = true
+                @directions = result.directions
+                @nextIndex = 0
+                @destination = result.cell.game_cell
+            else
+                @possible = false
+
+        isComplete: ->
+            @possible and @character.getCell!position.equals @destination.position
+
+        getAction: (game_state) ->
+            if not @possible
+                return new Action.Null @character, game_state
+
+            d_idx = @directions[@nextIndex]
+            ++@nextIndex
+            direction =  Direction.AllDirections[d_idx]
+            return new Action.Move @character, direction, game_state
+
+
     class Surroundings
         (@centre, @direction) ->
             @cells = Direction.Fronts[@direction.index] |> map (i) ~> @centre.neighbours[i]
@@ -42,6 +70,7 @@ define [
                 @observe_fn = Shadowcast.observe
 
             @autoMode = null
+            @autoExplore = null
 
         forEachEffect: (f) ->
             for e in @effects
@@ -57,7 +86,13 @@ define [
                 else
                     @autoMode = null
 
-            if @autoMode == null
+            if @autoExplore? and not @autoExplore.isComplete!
+                cb @autoExplore.getAction game_state
+                return
+            else
+                @autoExplore = null
+
+            if @autoMode == null and @autoExplore == null
                 @inputSource.getControl (control) ~>
                     if not control?
                         @getAction game_state, cb
@@ -71,13 +106,8 @@ define [
                         @autoMode = new AutoMove control.direction
                         @surroundings = new Surroundings @getCell!, @autoMode.direction
                     else if control.type == Control.ControlTypes.AutoExplore
-
-                        result = Search.findClosest @getKnowledgeCell!, ((c, d) -> c.game_cell.getMoveOutCost d), \
-                            ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
-                            ((c) -> c.hasUnknownNeighbour!)
-
-                        result.cell.game_cell.setGround Ground.Moss
-                        a = new Action.Null this, game_state
+                        @autoExplore = new AutoExplore this
+                        a = @autoExplore.getAction game_state
 
                     cb a
 

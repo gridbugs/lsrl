@@ -127,6 +127,8 @@ define [
         height = character.knowledge.grid.height - 1
         cell = character.getCell!
 
+        character.getKnowledgeCell!see game_state
+
         # \|
         observeOctant(character, game_state, cell,
             -1, 0,

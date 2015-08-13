@@ -24,22 +24,23 @@ define [\control], (control) ->
 
 
     const Qwerty =
-       h: Controls.West
-       j: Controls.South
-       k: Controls.North
-       l: Controls.East
-       y: Controls.NorthWest
-       u: Controls.NorthEast
-       b: Controls.SouthWest
-       n: Controls.SouthEast
-       H: Controls.AutoWest
-       J: Controls.AutoSouth
-       K: Controls.AutoNorth
-       L: Controls.AutoEast
-       Y: Controls.AutoNorthWest
-       U: Controls.AutoNorthEast
-       B: Controls.AutoSouthWest
-       N: Controls.AutoSouthEast
+        h: Controls.West
+        j: Controls.South
+        k: Controls.North
+        l: Controls.East
+        y: Controls.NorthWest
+        u: Controls.NorthEast
+        b: Controls.SouthWest
+        n: Controls.SouthEast
+        H: Controls.AutoWest
+        J: Controls.AutoSouth
+        K: Controls.AutoNorth
+        L: Controls.AutoEast
+        Y: Controls.AutoNorthWest
+        U: Controls.AutoNorthEast
+        B: Controls.AutoSouthWest
+        N: Controls.AutoSouthEast
+        o: Controls.AutoExplore
 
     {
         Dvorak

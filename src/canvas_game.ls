@@ -8,7 +8,7 @@ define [
 ], (game_common, canvas_drawer, browser_input_source, keymap, util, tile) ->
     main = ->
 
-        Math.seedrandom 0
+        #Math.seedrandom 0
 
         drawer = new canvas_drawer.CanvasDrawer $('#canvas')[0], 120, 40
         util.setDrawer drawer
