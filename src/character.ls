@@ -22,6 +22,21 @@ define [
 
     class AutoExplore
         (@character) ->
+            if Config.AUTOEXPLORE_ALL
+                @minSteps = 1000000000
+            else
+                @minSteps = 20
+
+            @stepCount = 0
+            @findDestination!
+
+        isAtDestination: -> @character.getCell!position.equals @destination.position
+
+        hasUnexploredAreas: -> @possible
+        isStopping: -> @isAtDestination! and @minStepsPassed!
+        minStepsPassed: -> @isAtDestination! and @stepCount >= @minSteps
+
+        findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell!, \
                         ((c, d) -> c.game_cell.getMoveOutCost d), \
                         ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
@@ -35,17 +50,18 @@ define [
             else
                 @possible = false
 
-        isComplete: ->
-            not @possible or @character.getCell!position.equals @destination.position
 
         getAction: (game_state) ->
-            if not @possible
-                return new Action.Null @character, game_state
-
             d_idx = @directions[@nextIndex]
-            ++@nextIndex
             direction =  Direction.AllDirections[d_idx]
             return new Action.Move @character, direction, game_state
+
+        proceed: ->
+            ++@nextIndex
+            ++@stepCount
+            if @isAtDestination! and not @minStepsPassed!
+                @findDestination!
+                
 
 
     class Surroundings
@@ -86,11 +102,22 @@ define [
                 else
                     @autoMode = null
 
-            if @autoExplore? and not @autoExplore.isComplete!
+            if @autoExplore?
+                @autoExplore.proceed!
+                
+                if not @autoExplore.hasUnexploredAreas!
+                    Util.printDrawer "No further unexplored areas."
+                    @autoExplore = null
+                    @getAction game_state, cb
+                    return
+
+                if @autoExplore.isStopping!
+                    @autoExplore = null
+                    @getAction game_state, cb
+                    return
+
                 cb @autoExplore.getAction game_state
                 return
-            else
-                @autoExplore = null
 
             if @autoMode == null and @autoExplore == null
                 @inputSource.getControl (control) ~>
@@ -106,7 +133,19 @@ define [
                         @autoMode = new AutoMove control.direction
                         @surroundings = new Surroundings @getCell!, @autoMode.direction
                     else if control.type == Control.ControlTypes.AutoExplore
+
+                        if @getCell!fixture.type != Types.Fixture.Null
+                            Util.printDrawer "Must be in open space."
+                            @getAction game_state, cb
+                            return
+
                         @autoExplore = new AutoExplore this
+                        if not @autoExplore.hasUnexploredAreas!
+                            Util.printDrawer "No unexplored areas!"
+                            @autoExplore = null
+                            @getAction game_state, cb
+                            return
+
                         a = @autoExplore.getAction game_state
 
                     cb a

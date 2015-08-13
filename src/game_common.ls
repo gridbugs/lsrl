@@ -21,7 +21,11 @@ define [
             @gameState.scheduleActionSource @gameState.playerCharacter, 10
             @progressGameState!
 
-        gameTimeToMs: (t) -> t * 0.5
+        gameTimeToMs: (t) -> 
+            if Config.FAST_ANIMATION
+                return 0
+            else
+                return t * 0.5
 
         progressGameState: ->
             action_source = @gameState.getCurrentActionSource!

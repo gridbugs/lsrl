@@ -59,7 +59,7 @@ define [
     class Null extends Action
         (@character, @gameState) ->
             @events = []
-        commit: -> new CommitMetaData 1 ["Nothing happens."]
+        commit: -> new CommitMetaData 1 []
 
     {
         Null
