@@ -1,4 +1,4 @@
-LSC=/usr/bin/env lsc
+LSC=node_modules/livescript/bin/lsc
 OUTPUT=webapp/public/generated
 LIB_OUTPUT=webapp/public/lib
 SRC=src
