@@ -5,11 +5,13 @@ define [
     \recursive_shadowcast
     \omniscient
     \direction
+    \ground
+    \flood
     \types
     \util
     'prelude-ls'
     \debug
-], (Action, Control, Knowledge, Shadowcast, Omniscient, Direction, Types, Util, Prelude, Debug) ->
+], (Action, Control, Knowledge, Shadowcast, Omniscient, Direction, Ground, Flood, Types, Util, Prelude, Debug) ->
 
     map = Prelude.map
 
@@ -66,10 +68,18 @@ define [
                         a = new Action.Move this, control.direction, game_state
                         @autoMode = new AutoMove control.direction
                         @surroundings = new Surroundings @getCell!, @autoMode.direction
+                    else if control.type == Control.ControlTypes.AutoExplore
+
+                        Flood.floodFill @getKnowledgeCell!, false, \
+                            ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
+                            ((c) -> c.game_cell.setGround Ground.Moss)
+
+                        a = new Action.Null this, game_state
 
                     cb a
 
         getCell: -> @grid.getCart @position
+        getKnowledgeCell: -> @knowledge.grid.getCart @position
 
         getName: -> "The player"
 

@@ -5,6 +5,7 @@ define [\direction, \util], (direction, util) ->
         \Action
         \Menu
         \AutoDirection
+        \AutoExplore
     }
 
     class Control
@@ -29,6 +30,8 @@ define [\direction, \util], (direction, util) ->
     for k, v of direction.Directions
         name = "Auto#{k}"
         Controls[name] = AutoDirectionControl name, v
+
+    Controls.AutoExplore = Control 'AutoExplore', ControlTypes.AutoExplore
 
     {
         Controls

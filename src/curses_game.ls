@@ -9,7 +9,7 @@ define [
 
     main = ->
 
-        #Math.seedrandom 0
+        Math.seedrandom 0
 
         drawer = new curses_drawer.CursesDrawer!
         util.setDrawer drawer

@@ -29,16 +29,8 @@ define [
     const groundTilesTable = Util.join Types.Ground, Types.Tile, {
         \Dirt
         \Stone
+        \Moss
     }
-
-    const fixtureTiles =
-        Wall:   Tiles.WALL
-        Web:    Tiles.SPIDER_WEB
-        Tree:   Tiles.TREE
-
-    const groundTiles =
-        Dirt: Tiles.DIRT
-        Stone: Tiles.STONE
 
     fromCell = (cell) ->
         tile = fixtureTilesTable[cell.fixture.type]

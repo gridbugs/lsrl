@@ -2,10 +2,10 @@ define ['prelude-ls', \border_generator, \perlin_test_generator, \cell_automata_
     (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, Util, Debug, Types) ->
 
     test = (drawer, input_source) ->
-        #c = new cell_automata_test_generator.CellAutomataTestGenerator!
-        c = new MazeGenerator.MazeGenerator!
+        c = new cell_automata_test_generator.CellAutomataTestGenerator!
+        #c = new MazeGenerator.MazeGenerator!
         #c = new border_generator.BorderGenerator!
-        grid = c.generateGrid cell.Cell, 120, 40
+        grid = c.generateGrid cell.Cell, 80, 30
 
         if Debug.DRAW_MAP_ONLY
             drawer.drawGrid grid

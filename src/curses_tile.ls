@@ -45,6 +45,7 @@ define [
         Tree:   ['&', \DARK_GREEN]
         Wall:   ['#', \DARK_GREY]
         SpiderWeb: ['*', \LIGHT_GREY]
+        Moss:   ['.', \LIGHT_GREEN]
     }
 
     const PlayerCharacterStyle = ['@', \WHITE]

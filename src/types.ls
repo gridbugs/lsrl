@@ -10,6 +10,7 @@ define [
         \Tree
         \Wall
         \SpiderWeb
+        \Moss
     ]
 
     const Fixture = Util.enum [
@@ -22,6 +23,7 @@ define [
     const Ground = Util.enum [
         \Dirt
         \Stone
+        \Moss
     ]
 
     {

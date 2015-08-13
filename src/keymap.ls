@@ -19,6 +19,7 @@ define [\control], (control) ->
         G: Controls.AutoNorthEast
         X: Controls.AutoSouthWest
         B: Controls.AutoSouthEast
+        r: Controls.AutoExplore
 
 
 

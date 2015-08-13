@@ -18,7 +18,14 @@ define [
             @effects = []
         getName: -> 'Stone'
 
+    class Moss extends Ground
+        ->
+            super Types.Ground.Moss
+            @effects = []
+        getName: -> 'Moss'
+
     {
         Dirt
         Stone
+        Moss
     }

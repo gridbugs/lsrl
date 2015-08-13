@@ -3,7 +3,7 @@ define [
     \grid
     'prelude-ls'
 ], (Cell, Grid, Prelude) ->
- 
+
     map = Prelude.map
     id = Prelude.id
 

@@ -53,7 +53,13 @@ define [
             @fixture.unstick!
             return new CommitMetaData 5 ["#{@character.getName()} breaks free from the web."]
 
+    class Null extends Action
+        (@character, @gameState) ->
+            @events = []
+        commit: -> new CommitMetaData 1 ["Nothing happens."]
+
     {
+        Null
         Move
         BumpIntoWall
         TryUnstick
