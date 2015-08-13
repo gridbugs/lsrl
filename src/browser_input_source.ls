@@ -5,20 +5,25 @@ define [
     class BrowserInputSource
         (keys) ->
             @keymap = keys
-            @currentControlCallback = (->)
+            @currentCallback = (->)
+
             $(window).keydown (e) ~>
-                tmp = @currentControlCallback
-                @currentControlCallback = (->)
+                tmp = @currentCallback
+                @currentCallback = (->)
                 key = String.fromCharCode e.keyCode
                 if e.shiftKey
                     ch = key.toUpperCase!
                 else
                     ch = key.toLowerCase!
 
-                tmp @keymap[ch]
+                tmp ch
 
 
         getControl: (cb) ->
-            @currentControlCallback = cb
+            @getChar (c) ~>
+                cb @keymap[c]
+
+        getChar: (cb) ->
+            @currentCallback = cb
 
     { BrowserInputSource }
