@@ -49,6 +49,7 @@ define [
             @log_window.scrollok true
             ncurses.showCursor = false
             ncurses.echo = false
+            ncurses.setEscDelay 0
 
             /* Initialize each colour pair.
              * This is done in the constructor as it requires an ncurses context.

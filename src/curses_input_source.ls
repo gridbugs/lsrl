@@ -5,7 +5,6 @@ define [\util], (Util) ->
             @currentCallback = (->)
             @window = window
             window.on 'inputChar' (c) ~>
-                Util.printDrawer c
                 tmp = @currentCallback
                 @currentCallback = (->)
                 tmp c
