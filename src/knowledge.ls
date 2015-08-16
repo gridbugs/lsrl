@@ -20,6 +20,7 @@ define [
             @game_cell = game_cell
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
+            @position = @game_cell.position
 
         see: (game_state) ->
             @known = true

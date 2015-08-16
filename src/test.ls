@@ -9,10 +9,11 @@ define [
     \game_state
     \cell
     \fixture
+    \user_interface
     \util
     \config
     \types
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, Util, Config, Types) ->
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, UserInterface, Util, Config, Types) ->
 
     test = (drawer, input_source) ->
         if Config.GENERATOR == 'cell_automata'
@@ -36,7 +37,7 @@ define [
                     if c.fixture.type == Types.Fixture.Null
                         c.setFixture Fixture.Web
 
-        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), input_source, grid
+        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), input_source, grid, new UserInterface.UserInterface(input_source, drawer)
 
         gs = new game_state.GameState grid, player
         return gs

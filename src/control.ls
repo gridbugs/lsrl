@@ -6,6 +6,9 @@ define [\direction, \util], (direction, util) ->
         \Menu
         \AutoDirection
         \AutoExplore
+        \NavigateToCell
+        \Accept
+        \Escape
     }
 
     class Control
@@ -32,7 +35,9 @@ define [\direction, \util], (direction, util) ->
         Controls[name] = AutoDirectionControl name, v
 
     Controls.AutoExplore = Control 'AutoExplore', ControlTypes.AutoExplore
-
+    Controls.NavigateToCell = Control 'NavigateToCell', ControlTypes.NavigateToCell
+    Controls.Accept = Control 'Accept', ControlTypes.Accept
+    Controls.Escape = Control 'Escape', ControlTypes.Escape
     {
         Controls
         ControlTypes

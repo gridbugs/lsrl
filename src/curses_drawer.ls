@@ -37,6 +37,8 @@ define [
     const PlayerCharacterColour = ColourPairs[PlayerCharacterStyle[1]]
 
     const UnseenColour = ColourPairs.VERY_DARK_GREY
+    const SelectColour = ColourPairs.DARK_YELLOW
+    const SelectColourPair = 100
 
     class CursesDrawer
         ->
@@ -53,6 +55,9 @@ define [
              */
             for k, v of ColourPairs
                 ncurses.colorPair v, Colours[k], Colours.BLACK
+
+            ncurses.colorPair SelectColourPair, Colours.BLACK, Colours.YELLOW
+
         getGameWindow: -> @game_window
 
         cleanup: ~>
@@ -119,6 +124,32 @@ define [
                 @__drawKnowledgeCell c, game_state
             @__drawPlayerCharacter character
             @game_window.refresh!
+
+        drawCellSelectOverlay: (character, game_state, select_coord) ->
+            character.knowledge.grid.forEach (c) ~>
+                @__drawKnowledgeCell c, game_state
+            @__drawPlayerCharacter character
+            @game_window.refresh!
+            
+            cell = character.knowledge.grid.getCart select_coord
+            @game_window.cursor cell.y, cell.x
+            
+            if cell.game_cell.position.equals character.position
+                @game_window.attrset ncurses.colorPair(SelectColourPair)
+                @game_window.addstr PlayerCharacterChar
+            else if cell.known
+                type = tile.fromCell cell
+                @game_window.attrset ncurses.colorPair(SelectColourPair)
+                @game_window.addstr TileChars[type]
+                @__drawPlayerCharacter character
+            else
+                type = tile.Tiles.UNKNOWN
+                @game_window.attrset ncurses.colorPair(SelectColourPair)
+                @game_window.addstr TileChars[type]
+                @__drawPlayerCharacter character
+
+            @game_window.refresh!
+
 
         print: (str) ->
             @log_window.addstr("#{str}\n\r")

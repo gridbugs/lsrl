@@ -17,6 +17,18 @@ define [
 
     map = Prelude.map
 
+    class AutoPath
+        (@character, @directions) ->
+            @index = 0
+
+        isStopping: -> @index >= @directions.length
+        getAction: (game_state) ->
+            action = new Action.Move @character, Direction.AllDirections[@directions[@index]], \
+                game_state
+            ++@index
+            return action
+
+
     class AutoMove
         (@direction) ->
 
@@ -81,7 +93,7 @@ define [
             return true
 
     class PlayerCharacter
-        (@position, @inputSource, @grid) ->
+        (@position, @inputSource, @grid, @ui) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
             @viewDistance = 20
@@ -93,6 +105,7 @@ define [
 
             @autoMode = null
             @autoExplore = null
+            @path = null
 
         forEachEffect: (f) ->
             for e in @effects
@@ -107,6 +120,16 @@ define [
                     return
                 else
                     @autoMode = null
+
+            if @path?
+                if @path.isStopping!
+                    @path = null
+                    @getAction game_state, cb
+                    return
+
+                action = @path.getAction game_state
+                cb action
+                return
 
             if @autoExplore?
                 @autoExplore.proceed!
@@ -125,7 +148,7 @@ define [
                 cb @autoExplore.getAction game_state
                 return
 
-            if @autoMode == null and @autoExplore == null
+            if @autoMode == null and @autoExplore == null and @path == null
                 @inputSource.getControl (control) ~>
                     if not control?
                         @getAction game_state, cb
@@ -157,8 +180,34 @@ define [
                             return
 
                         a = @autoExplore.getAction game_state
+                    else if control.type == Control.ControlTypes.NavigateToCell
+                        @navigateToCell @position, game_state, cb
+                        return
+                    else
+                        @getAction game_state, cb
+                        return
 
                     cb a
+
+        navigateToCell: (start_coord, game_state, cb) ->
+            @ui.selectCell start_coord, this, game_state, (coord) ~>
+                if not coord?
+                    @getAction game_state, cb
+                    return
+                dest_cell = @grid.getCart coord
+                result = Search.findPath @getKnowledgeCell(), \
+                    ((c, d) -> c.game_cell.getMoveOutCost d), \
+                    ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
+                    dest_cell
+                
+                if result?
+                    @path = new AutoPath this, result.directions
+                    @getAction game_state, cb
+                else
+                    Util.printDrawer "Can't reach selected cell."
+                    @navigateToCell coord, game_state, cb
+
+
 
         canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
         getCell: -> @grid.getCart @position

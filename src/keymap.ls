@@ -2,7 +2,7 @@ define [\control], (control) ->
 
     Controls = control.Controls
 
-    const Dvorak =
+    const Dvorak = {
         d: Controls.West
         h: Controls.South
         t: Controls.North
@@ -20,7 +20,11 @@ define [\control], (control) ->
         X: Controls.AutoSouthWest
         B: Controls.AutoSouthEast
         r: Controls.AutoExplore
-
+        Q: Controls.NavigateToCell
+        '\r': Controls.Accept
+        '\n': Controls.Accept
+        (String.fromCharCode(27)): Controls.Escape
+    }
 
 
     const Qwerty =
@@ -41,6 +45,10 @@ define [\control], (control) ->
         B: Controls.AutoSouthWest
         N: Controls.AutoSouthEast
         o: Controls.AutoExplore
+        X: Controls.NavigateToCell
+        '\r': Controls.Accept
+        '\n': Controls.Accept
+        (String.fromCharCode(27)): Controls.Escape
 
     {
         Dvorak

@@ -27,7 +27,7 @@ define [
             @moveOutCost = 40
 
         getMoveOutCost: (direction) ->
-            if Direction.isCardinal direction.index
+            if Direction.isCardinal direction
                 return @moveOutCost
             else
                 return @moveOutCost * Constants.SQRT2

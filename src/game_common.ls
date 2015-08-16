@@ -35,7 +35,6 @@ define [
             @gameState.playerCharacter.observe @gameState
             @drawer.drawCharacterKnowledge @gameState.playerCharacter, @gameState
 
-
             action_source.getAction @gameState, (action) ~>
                 descriptions = @gameState.applyAction action
                 for desc in descriptions

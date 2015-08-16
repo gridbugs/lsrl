@@ -20,6 +20,9 @@ define [
 
         LIGHT_RED: 196
 
+        YELLOW:     11
+        DARK_YELLOW: 184
+
     /*
     const TileStyles =
         ERROR:  ['?', \LIGHT_RED]

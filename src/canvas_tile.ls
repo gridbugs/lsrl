@@ -21,7 +21,7 @@ define [
     */
     const AsciiTileStyles = Util.table Types.Tile, {
         Error:  ['?', '#ff0000']
-        Unknown:[' ', '#000000']
+        Unknown:[' ', '#0000ff']
         Stone:  ['.', '#888888']
         Moss:   ['.', '#00ff00']
         Dirt:   ['.', '#996600']
@@ -32,9 +32,10 @@ define [
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
     const UnseenColour = '#333333'
-
+    const SelectColour = '#888800'
     {
         AsciiTileStyles
         AsciiPlayerCharacterStyle
         UnseenColour
+        SelectColour
     }
