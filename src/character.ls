@@ -112,6 +112,14 @@ define [
                 f e
 
         getAction: (game_state, cb) ->
+
+            if not (@autoMode == null and @autoExplore == null and @path == null)
+                if @inputSource.dirty
+                    Util.printDrawer "Cancelling automatic move."
+                    @autoMode = null
+                    @autoExplore = null
+                    @path = null
+
             if @autoMode? and @autoMode.constructor == AutoMove
                 new_surroundings = new Surroundings @getCell!, @autoMode.direction
                 if @surroundings.equals new_surroundings and @surroundings.centre.position.add(Direction.DirectionVectorsByIndex[@surroundings.direction.index]).equals(new_surroundings.centre.position)
