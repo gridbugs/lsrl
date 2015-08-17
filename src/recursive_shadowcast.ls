@@ -1,8 +1,8 @@
 define [
     \vec2
-    \direction
+    \types
     \util
-], (Vec2, Direction, Util) ->
+], (Vec2, Types, Util) ->
 
     class Section
         (@min_slope, @max_slope, @depth) ->
@@ -132,64 +132,64 @@ define [
         # \|
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.NorthWest,
-            Direction.OrdinalIndices.SouthWest,
+            Types.OrdinalDirection.NorthWest,
+            Types.OrdinalDirection.SouthWest,
             -1, Vec2.X_IDX, width, height
         )
 
         # |/
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.SouthWest,
-            Direction.OrdinalIndices.NorthWest,
+            Types.OrdinalDirection.SouthWest,
+            Types.OrdinalDirection.NorthWest,
             -1, Vec2.X_IDX, width, height
         )
 
         # /|
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.SouthWest,
-            Direction.OrdinalIndices.NorthWest,
+            Types.OrdinalDirection.SouthWest,
+            Types.OrdinalDirection.NorthWest,
             1, Vec2.X_IDX, width, height
         )
 
         # |\
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.NorthWest,
-            Direction.OrdinalIndices.SouthWest,
+            Types.OrdinalDirection.NorthWest,
+            Types.OrdinalDirection.SouthWest,
             1, Vec2.X_IDX, width, height
         )
 
         # _\
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.NorthWest,
-            Direction.OrdinalIndices.NorthEast,
+            Types.OrdinalDirection.NorthWest,
+            Types.OrdinalDirection.NorthEast,
             -1, Vec2.Y_IDX, height, width
         )
 
         # "/
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.NorthEast,
-            Direction.OrdinalIndices.NorthWest,
+            Types.OrdinalDirection.NorthEast,
+            Types.OrdinalDirection.NorthWest,
             -1, Vec2.Y_IDX, height, width
         )
 
         # /_
         observeOctant(character, game_state, cell,
             -1, 0,
-            Direction.OrdinalIndices.NorthEast,
-            Direction.OrdinalIndices.NorthWest,
+            Types.OrdinalDirection.NorthEast,
+            Types.OrdinalDirection.NorthWest,
             1, Vec2.Y_IDX, height, width
         )
 
         # \"
         observeOctant(character, game_state, cell,
             0, 1,
-            Direction.OrdinalIndices.NorthWest,
-            Direction.OrdinalIndices.NorthEast,
+            Types.OrdinalDirection.NorthWest,
+            Types.OrdinalDirection.NorthEast,
             1, Vec2.Y_IDX, height, width
         )
 

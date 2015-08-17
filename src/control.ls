@@ -1,4 +1,7 @@
-define [\direction, \util], (direction, util) ->
+define [
+    \direction
+    \util
+], (Direction, Util) ->
 
     const ControlTypes = {
         \Direction
@@ -27,12 +30,11 @@ define [\direction, \util], (direction, util) ->
 
     Controls = {}
 
-    for k, v of direction.Directions
-        Controls[k] = DirectionControl k, v
-
-    for k, v of direction.Directions
-        name = "Auto#{k}"
-        Controls[name] = AutoDirectionControl name, v
+    for d in Direction.Directions
+        name = Direction.getName(d)
+        Controls[name] = DirectionControl name, d
+        autoname = "Auto#{name}"
+        Controls[autoname] = AutoDirectionControl autoname, d
 
     Controls.AutoExplore = Control 'AutoExplore', ControlTypes.AutoExplore
     Controls.NavigateToCell = Control 'NavigateToCell', ControlTypes.NavigateToCell

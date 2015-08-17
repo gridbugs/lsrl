@@ -23,7 +23,7 @@ define [
 
         isStopping: -> @index >= @directions.length
         getAction: (game_state) ->
-            action = new Action.Move @character, Direction.AllDirections[@directions[@index]], \
+            action = new Action.Move @character, @directions[@index], \
                 game_state
             ++@index
             return action
@@ -65,8 +65,7 @@ define [
 
 
         getAction: (game_state) ->
-            d_idx = @directions[@nextIndex]
-            direction =  Direction.AllDirections[d_idx]
+            direction =  @directions[@nextIndex]
             return new Action.Move @character, direction, game_state
 
         proceed: ->
@@ -84,7 +83,7 @@ define [
 
     class Surroundings
         (@centre, @direction) ->
-            @cells = Direction.Fronts[@direction.index] |> map (i) ~> @centre.neighbours[i]
+            @cells = Direction.Fronts[@direction] |> map (i) ~> @centre.neighbours[i]
 
         equals: (other) ->
             for i from 0 til @cells.length
@@ -122,7 +121,7 @@ define [
 
             if @autoMode? and @autoMode.constructor == AutoMove
                 new_surroundings = new Surroundings @getCell!, @autoMode.direction
-                if @surroundings.equals new_surroundings and @surroundings.centre.position.add(Direction.DirectionVectorsByIndex[@surroundings.direction.index]).equals(new_surroundings.centre.position)
+                if @surroundings.equals new_surroundings and @surroundings.centre.position.add(Direction.Vectors[@surroundings.direction]).equals(new_surroundings.centre.position)
                     @surroundings = new_surroundings
                     cb new Action.Move this, @autoMode.direction, game_state
                     return

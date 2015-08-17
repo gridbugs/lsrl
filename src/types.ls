@@ -37,9 +37,25 @@ define [
         \NorthWest
     ]
 
+    const CardinalDirection = Util.enum [
+        \North
+        \East
+        \South
+        \West
+    ]
+
+    const OrdinalDirection = Util.enum [
+        \NorthEast
+        \SouthEast
+        \SouthWest
+        \NorthWest
+    ]
+
     {
         Tile
         Fixture
         Ground
         Direction
+        CardinalDirection
+        OrdinalDirection
     }

@@ -31,6 +31,11 @@ define ->
 
     enumValuesForKeys = (e, keys) -> keys.map (e.)
     enumValues = (e) -> enumValuesForKeys(e, Object.keys(e))
+    enumKeys = (e) ->
+        arr = []
+        for k, v of e
+            arr[v] = k
+        return arr
 
     getCharCode = (c) -> c.charCodeAt 0
 
@@ -75,4 +80,5 @@ define ->
         enumValuesForKeys
         joinArray: joinTableArray
         joinArraySelf: joinTableArraySelf
+        enumKeys
     }

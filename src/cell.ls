@@ -4,8 +4,9 @@ define [
     \vec2
     \direction
     \constants
+    \types
     'prelude-ls'
-], (Tile,Util, Vec2, Direction, Constants, Prelude) ->
+], (Tile,Util, Vec2, Direction, Constants, Types, Prelude) ->
 
     map = Prelude.map
 
@@ -19,10 +20,10 @@ define [
             @characters = []
             @centre = Vec2.Vec2 (@x+0.5), (@y+0.5)
             @corners = []
-            @corners[Direction.OrdinalIndices.NorthWest] = Vec2.Vec2 @x, @y
-            @corners[Direction.OrdinalIndices.NorthEast] = Vec2.Vec2 (@x+1), @y
-            @corners[Direction.OrdinalIndices.SouthWest] = Vec2.Vec2 @x, (@y+1)
-            @corners[Direction.OrdinalIndices.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
+            @corners[Types.OrdinalDirection.NorthWest] = Vec2.Vec2 @x, @y
+            @corners[Types.OrdinalDirection.NorthEast] = Vec2.Vec2 (@x+1), @y
+            @corners[Types.OrdinalDirection.SouthWest] = Vec2.Vec2 @x, (@y+1)
+            @corners[Types.OrdinalDirection.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
 
             @moveOutCost = 40
 

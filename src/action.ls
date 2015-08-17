@@ -15,7 +15,7 @@ define [
     class Move extends Action
         (@character, @direction, @gameState) ->
             @fromCell = @gameState.grid.getCart @character.position
-            @toCell = @fromCell.neighbours[@direction.index]
+            @toCell = @fromCell.neighbours[@direction]
 
             @events = [
                 new Event.MoveFromCell @character, @fromCell
@@ -27,7 +27,7 @@ define [
 
         commit: ->
             @character.position = @character.position.add \
-                Direction.DirectionVectorsByIndex[@direction.index]
+                Direction.Vectors[@direction]
 
             if @character.getCell!.fixture.getName! == 'Web'
                 return new CommitMetaData @cost, ["#{@character.getName()} gets stuck in a web."]

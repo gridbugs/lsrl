@@ -21,7 +21,7 @@ define [
                     return
                     
                 if control.type == Control.ControlTypes.Direction
-                    change = Direction.DirectionVectorsByIndex[control.direction.index]
+                    change = Direction.Vectors[control.direction]
                     @selectedPosition = @selectedPosition.add(change)
                     @selectCellLoop(character, game_state, cb)
                 else if control.type == Control.ControlTypes.Accept

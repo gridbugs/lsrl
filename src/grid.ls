@@ -1,8 +1,12 @@
-define [\direction, 'prelude-ls'], (direction, prelude) ->
+define [
+    \direction
+    \types
+    'prelude-ls'
+], (Direction, Types, Predule) ->
 
-    map = prelude.map
-    join = prelude.join
-    filter = prelude.filter
+    map = Predule.map
+    join = Predule.join
+    filter = Predule.filter
 
     class Grid
         (T, @width, @height) ->
@@ -17,23 +21,23 @@ define [\direction, 'prelude-ls'], (direction, prelude) ->
 
         __linkNeighbours: ->
             @forEach (c) ~>
-                c.neighbours = [void] * direction.N_DIRECTIONS
+                c.neighbours = [void] * Direction.NumDirections
                 if c.x > 0
-                    c.neighbours[direction.Indices.West] = @array[c.y][c.x-1]
+                    c.neighbours[Types.Direction.West] = @array[c.y][c.x-1]
                     if c.y > 0
-                        c.neighbours[direction.Indices.NorthWest] = @array[c.y-1][c.x-1]
+                        c.neighbours[Types.Direction.NorthWest] = @array[c.y-1][c.x-1]
                     if c.y < @height - 1
-                        c.neighbours[direction.Indices.SouthWest] = @array[c.y+1][c.x-1]
+                        c.neighbours[Types.Direction.SouthWest] = @array[c.y+1][c.x-1]
                 if c.x < @width - 1
-                    c.neighbours[direction.Indices.East] = @array[c.y][c.x+1]
+                    c.neighbours[Types.Direction.East] = @array[c.y][c.x+1]
                     if c.y > 0
-                        c.neighbours[direction.Indices.NorthEast] = @array[c.y-1][c.x+1]
+                        c.neighbours[Types.Direction.NorthEast] = @array[c.y-1][c.x+1]
                     if c.y < @height - 1
-                        c.neighbours[direction.Indices.SouthEast] = @array[c.y+1][c.x+1]
+                        c.neighbours[Types.Direction.SouthEast] = @array[c.y+1][c.x+1]
                 if c.y > 0
-                    c.neighbours[direction.Indices.North] = @array[c.y-1][c.x]
+                    c.neighbours[Types.Direction.North] = @array[c.y-1][c.x]
                 if c.y < @height - 1
-                    c.neighbours[direction.Indices.South] = @array[c.y+1][c.x]
+                    c.neighbours[Types.Direction.South] = @array[c.y+1][c.x]
 
                 c.allNeighbours = c.neighbours |> filter (?)
                 c.distanceToEdge = Math.min c.x, c.y, (@width - c.x - 1), (@height - c.y - 1)

@@ -1,14 +1,12 @@
 define [
     \heap
     \direction
-    \newdirection
+    \direction
     \util
     'prelude-ls'
 ], (Heap, Direction, NewDirection, Util, Prelude) ->
 
     empty = Prelude.empty
-
-    console.debug NewDirection
 
     class SearchResult
         (@cell, @cost, @path, @directions) ->
