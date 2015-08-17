@@ -20,6 +20,18 @@ define ->
             arr[enum_l[k]] = enum_r[v]
         return arr
 
+    joinTableArray = (enum_l, enum_r, object) ->
+        arr = []
+        for k, v of object
+            arr[enum_l[k]] = enumValuesForKeys enum_r, v
+        return arr
+    
+    joinTableArraySelf = (enum_type, object) ->
+        joinTableArray enum_type, enum_type, object
+
+    enumValuesForKeys = (e, keys) -> keys.map (e.)
+    enumValues = (e) -> enumValuesForKeys(e, Object.keys(e))
+
     getCharCode = (c) -> c.charCodeAt 0
 
     printTerminal = (x) -> process.stderr.write "#{x}\n"
@@ -59,4 +71,8 @@ define ->
         printDrawer
         constrain
         shuffleArrayInPlace
+        enumValues
+        enumValuesForKeys
+        joinArray: joinTableArray
+        joinArraySelf: joinTableArraySelf
     }

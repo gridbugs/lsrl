@@ -26,8 +26,20 @@ define [
         \Moss
     ]
 
+    const Direction = Util.enum [
+        \North
+        \East
+        \South
+        \West
+        \NorthEast
+        \SouthEast
+        \SouthWest
+        \NorthWest
+    ]
+
     {
         Tile
         Fixture
         Ground
+        Direction
     }

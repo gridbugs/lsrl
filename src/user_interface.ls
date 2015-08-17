@@ -27,7 +27,6 @@ define [
                 else if control.type == Control.ControlTypes.Accept
                     cb @selectedPosition
                 else if control.type == Control.ControlTypes.Escape
-                    Util.printDrawer "escape"
                     @drawer.drawCharacterKnowledge character, game_state
                     cb null
                 else

@@ -2,12 +2,16 @@ define [\util], (Util) ->
 
     class CursesInputSource
         (window, keys) ->
-            @currentCallback = (->)
-            @window = window
+            @currentCallback = null
+            @dirty = false
+
             window.on 'inputChar' (c) ~>
-                tmp = @currentCallback
-                @currentCallback = (->)
-                tmp c
+                if @currentCallback?
+                    tmp = @currentCallback
+                    @currentCallback = null
+                    tmp c
+                else
+                    @dirty = true
 
             @keymap = []
             for k, v of keys
@@ -15,6 +19,7 @@ define [\util], (Util) ->
                 @keymap[code] = v
 
         getChar: (cb) ->
+            @dirty = false
             @currentCallback = cb
 
         getControl: (cb) ->

@@ -115,7 +115,7 @@ define [
 
             if not (@autoMode == null and @autoExplore == null and @path == null)
                 if @inputSource.dirty
-                    Util.printDrawer "Cancelling automatic move."
+                    Util.printDrawer "Key pressed. Cancelling automatic move."
                     @autoMode = null
                     @autoExplore = null
                     @path = null
