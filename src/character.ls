@@ -162,17 +162,17 @@ define [
                         return
 
                     a = void
-                    if control.type == Control.ControlTypes.Direction
+                    if control.type == Types.Control.Direction
                         a = new Action.Move this, control.direction, game_state
                         if not @canEnterCell a.toCell
                             @getAction game_state, cb
                             return
 
-                    else if control.type == Control.ControlTypes.AutoDirection
+                    else if control.type == Types.Control.AutoDirection
                         a = new Action.Move this, control.direction, game_state
                         @autoMode = new AutoMove control.direction
                         @surroundings = new Surroundings @getCell!, @autoMode.direction
-                    else if control.type == Control.ControlTypes.AutoExplore
+                    else if control.type == Types.Control.AutoExplore
 
                         if @getCell!fixture.type != Types.Fixture.Null
                             Util.printDrawer "Must be in open space."
@@ -187,7 +187,7 @@ define [
                             return
 
                         a = @autoExplore.getAction game_state
-                    else if control.type == Control.ControlTypes.NavigateToCell
+                    else if control.type == Types.Control.NavigateToCell
                         @navigateToCell @position, game_state, cb
                         return
                     else

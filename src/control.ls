@@ -1,18 +1,8 @@
 define [
     \direction
+    \types
     \util
-], (Direction, Util) ->
-
-    const ControlTypes = {
-        \Direction
-        \Action
-        \Menu
-        \AutoDirection
-        \AutoExplore
-        \NavigateToCell
-        \Accept
-        \Escape
-    }
+], (Direction, Types, Util) ->
 
     class Control
         (@name, @type) ~>
@@ -20,12 +10,12 @@ define [
 
     class DirectionControl
         (@name, @direction) ~>
-            @type = ControlTypes.Direction
+            @type = Types.Control.Direction
         toString: -> @name
 
     class AutoDirectionControl
         (@name, @direction) ~>
-            @type = ControlTypes.AutoDirection
+            @type = Types.Control.AutoDirection
         toString: -> @name
 
     Controls = {}
@@ -36,11 +26,10 @@ define [
         autoname = "Auto#{name}"
         Controls[autoname] = AutoDirectionControl autoname, d
 
-    Controls.AutoExplore = Control 'AutoExplore', ControlTypes.AutoExplore
-    Controls.NavigateToCell = Control 'NavigateToCell', ControlTypes.NavigateToCell
-    Controls.Accept = Control 'Accept', ControlTypes.Accept
-    Controls.Escape = Control 'Escape', ControlTypes.Escape
+    Controls.AutoExplore = Control 'AutoExplore', Types.Control.AutoExplore
+    Controls.NavigateToCell = Control 'NavigateToCell', Types.Control.NavigateToCell
+    Controls.Accept = Control 'Accept', Types.Control.Accept
+    Controls.Escape = Control 'Escape', Types.Control.Escape
     {
         Controls
-        ControlTypes
     }

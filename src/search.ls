@@ -1,10 +1,9 @@
 define [
     \heap
     \direction
-    \direction
     \util
     'prelude-ls'
-], (Heap, Direction, NewDirection, Util, Prelude) ->
+], (Heap, Direction, Util, Prelude) ->
 
     empty = Prelude.empty
 
@@ -44,7 +43,7 @@ define [
                 target = current_node
                 break
 
-            for d in Direction.AllIndices
+            for d in Direction.Directions
                 neighbour = current_cell.neighbours[d]
                 if neighbour? and can_enter_predicate(neighbour)
                     cost = current_node.cost + cost_fn(current_cell, d)

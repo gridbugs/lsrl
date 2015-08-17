@@ -51,6 +51,17 @@ define [
         \NorthWest
     ]
 
+    const Control = Util.enum [
+        \Direction
+        \Action
+        \Menu
+        \AutoDirection
+        \AutoExplore
+        \NavigateToCell
+        \Accept
+        \Escape
+    ]
+
     {
         Tile
         Fixture
@@ -58,4 +69,5 @@ define [
         Direction
         CardinalDirection
         OrdinalDirection
+        Control
     }
