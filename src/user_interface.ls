@@ -1,9 +1,9 @@
 define [
-    \control
+    \types
     \vec2
     \direction
     \util
-], (Control, Vec2, Direction, Util) ->
+], (Types, Vec2, Direction, Util) ->
     
     class UserInterface
         (@inputSource, @drawer) ->
@@ -20,13 +20,13 @@ define [
                     @selectCellLoop(character, game_state, cb)
                     return
                     
-                if control.type == Control.ControlTypes.Direction
+                if control.type == Types.Control.Direction
                     change = Direction.Vectors[control.direction]
                     @selectedPosition = @selectedPosition.add(change)
                     @selectCellLoop(character, game_state, cb)
-                else if control.type == Control.ControlTypes.Accept
+                else if control.type == Types.Control.Accept
                     cb @selectedPosition
-                else if control.type == Control.ControlTypes.Escape
+                else if control.type == Types.Control.Escape
                     @drawer.drawCharacterKnowledge character, game_state
                     cb null
                 else
