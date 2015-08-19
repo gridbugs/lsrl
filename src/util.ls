@@ -62,6 +62,13 @@ define ->
             arr[i] = arr[idx]
             arr[idx] = tmp
 
+    repeatWhileUndefined = (f, cb) ->
+        f (a) ->
+            if a?
+                cb a
+            else
+                repeatWhileUndefined f, cb
+
     {
         isInt
         makeEnum
@@ -81,4 +88,5 @@ define ->
         joinArray: joinTableArray
         joinArraySelf: joinTableArraySelf
         enumKeys
+        repeatWhileUndefined
     }

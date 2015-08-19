@@ -22,7 +22,7 @@ define [\util], (Util) ->
             @dirty = false
             @currentCallback = cb
 
-        getControl: (cb) ->
+        getControl: (cb) ~>
             @getChar (c) ~>
                 code = Util.getCharCode c
                 cb @keymap[code]

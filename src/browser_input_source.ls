@@ -24,11 +24,11 @@ define [
 
 
 
-        getControl: (cb) ->
+        getControl: (cb) ~>
             @getChar (c) ~>
                 cb @keymap[c]
 
-        getChar: (cb) ->
+        getChar: (cb) ~>
             @dirty = false
             @currentCallback = cb
 

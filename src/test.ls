@@ -4,7 +4,7 @@ define [
     \perlin_test_generator
     \cell_automata_test_generator
     \maze_generator
-    \character
+    \player_character
     \vec2
     \game_state
     \cell
