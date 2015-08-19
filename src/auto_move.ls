@@ -75,8 +75,15 @@ define [
 
     class FollowPath
         (@character, @directions) ->
-        getAction: (game_state, cb) ->
+            @index = 0
 
+        canStart: -> @index < @directions.length
+        hasAction: -> @index < @directions.length
+
+        getAction: (game_state, cb) ->
+            action = new Action.Move(@character, @directions[@index], game_state)
+            ++@index
+            cb action
 
     {
         StraightLineMove

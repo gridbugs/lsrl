@@ -2,37 +2,53 @@ define [
     \action
     \auto_move
     \types
+    \search
     \util
-], (Action, AutoMove, Types, Util) ->
+], (Action, AutoMove, Types, Search, Util) ->
     
     class ControlInterpreter
-        (@character, @inputSource) ->
+        (@character, @inputSource, @ui) ->
 
 
         getAction: (game_state, cb) ->
             Util.repeatWhileUndefined @inputSource.getControl, (control) ~>
                 
-                action = switch control.type
+                switch control.type
                 |   Types.Control.Direction
-                        new Action.Move @character, control.direction, game_state
-
-                if action?
-                    cb action
-                    return
-
-                # If we get this far, the player attempted an auto move
-                auto_move = switch control.type
+                        return cb new Action.Move @character, control.direction, game_state
                 |   Types.Control.AutoDirection
-                        new AutoMove.StraightLineMove @character, control.direction
+                        @character.setAutoMove(
+                            new AutoMove.StraightLineMove @character, control.direction
+                        )
+                        @character.getAction game_state, cb
                 |   Types.Control.AutoExplore
-                        new AutoMove.AutoExplore @character
-
-                if auto_move?
-                    @character.setAutoMove auto_move
-                    @character.getAction game_state, cb
-                    return
+                        @character.setAutoMove(
+                            new AutoMove.AutoExplore @character
+                        )
+                        @character.getAction game_state, cb
+                |   Types.Control.NavigateToCell
+                        @navigateToCell(@character.position, game_state, cb)
+                        
                 
-                @getAction game_state, cb
+
+        navigateToCell: (start_coord, game_state, cb) ->
+            @ui.selectCell start_coord, @character, game_state, (coord) ~>
+                if not coord?
+                    return
+
+                dest_cell = @character.grid.getCart coord
+
+                result = Search.findPath @character.getKnowledgeCell(), \
+                    ((c, d) -> c.game_cell.getMoveOutCost d), \
+                    ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
+                    dest_cell
+                
+                if result?
+                    @character.setAutoMove(new AutoMove.FollowPath(@character, result.directions))
+                    @character.getAction game_state, cb
+                else
+                    Util.printDrawer "Can't reach selected cell."
+                    @navigateToCell coord, game_state, cb
 
     {
         ControlInterpreter

@@ -20,7 +20,7 @@ define [
                 @observe_fn = Shadowcast.observe
 
             @autoMove = null
-            @interpreter = new ControlInterpreter.ControlInterpreter this, @inputSource
+            @interpreter = new ControlInterpreter.ControlInterpreter this, @inputSource, @ui
 
 
         forEachEffect: (f) ->
