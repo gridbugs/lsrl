@@ -25,7 +25,7 @@ define ->
         for k, v of object
             arr[enum_l[k]] = enumValuesForKeys enum_r, v
         return arr
-    
+
     joinTableArraySelf = (enum_type, object) ->
         joinTableArray enum_type, enum_type, object
 
@@ -69,6 +69,10 @@ define ->
             else
                 repeatWhileUndefined f, cb
 
+    enumerate = (s) -> (s.map (x, i) -> [i, x])
+
+    enumerateDefined = (s) -> enumerate(s).filter (x) -> x?
+
     {
         isInt
         makeEnum
@@ -89,4 +93,6 @@ define ->
         joinArraySelf: joinTableArraySelf
         enumKeys
         repeatWhileUndefined
+        enumerate
+        enumerateDefined
     }

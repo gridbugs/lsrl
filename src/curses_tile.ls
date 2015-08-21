@@ -2,59 +2,45 @@ define [
     \types
     \util
 ], (Types, Util) ->
-    const Colours =
-        WHITE: 15
-        BLACK: 16
 
-        LIGHT_GREEN: 34
-        DARK_GREEN: 22
+    const ColourType =
+        White: 15
+        Black: 16
+        LightGreen: 34
+        DarkGreen: 22
+        LightBrown: 94
+        DarkBrown: 58
+        LightBlue: 21
+        LightGrey: 250
+        DarkGrey: 240
+        VeryDarkGrey: 236
+        LightRed: 196
+        Yellow:     11
+        DarkYellow: 184
 
-        LIGHT_BROWN: 94
-        DARK_BROWN: 58
 
-        LIGHT_BLUE: 21
-
-        LIGHT_GREY: 250
-        DARK_GREY: 240
-        VERY_DARK_GREY: 236
-
-        LIGHT_RED: 196
-
-        YELLOW:     11
-        DARK_YELLOW: 184
-
-    /*
-    const TileStyles =
-        ERROR:  ['?', \LIGHT_RED]
-        UNKNOWN:[' ', \BLACK]
-        GRASS:  ['.', \LIGHT_GREEN]
-        STONE:  ['.', \LIGHT_GREY]
-        DIRT:   ['.', \DARK_BROWN]
-        TREE:   ['&', \DARK_GREEN]
-        DEAD_TREE:  ['&', \LIGHT_BROWN]
-        WATER:  ['~', \LIGHT_BLUE]
-        WALL:   ['#', \DARK_GREY]
-        WOODEN_BRIDGE: ['=', \LIGHT_BROWN]
-        STONE_BRIDGE: ['=', \LIGHT_GREY]
-        WOODEN_DOOR: ['+', \LIGHT_BROWN]
-        STONE_DOOR: ['+', \LIGHT_GREY]
-        SPIDER_WEB: ['*', \LIGHT_GREY]
-    */
-    const TileStyles = Util.table Types.Tile, {
-        Error:  ['?', \LIGHT_RED]
-        Unknown:[' ', \BLACK]
-        Stone:  ['.', \LIGHT_GREY]
-        Dirt:   ['.', \DARK_BROWN]
-        Tree:   ['&', \DARK_GREEN]
-        Wall:   ['#', \DARK_GREY]
-        SpiderWeb: ['*', \LIGHT_GREY]
-        Moss:   ['.', \LIGHT_GREEN]
+    T = (character, colour) -> {
+        character: character
+        colour: ColourType[colour]
+        pair: null
     }
 
-    const PlayerCharacterStyle = ['@', \WHITE]
+    const TileStyles = Util.table Types.Tile, {
+        Error:      T '?', \LightRed
+        Unknown:    T ' ', \Black
+        Stone:      T '.', \LightGrey
+        Dirt:       T '.', \DarkBrown
+        Tree:       T '&', \DarkGreen
+        Wall:       T '#', \DarkGrey
+        SpiderWeb:  T '*', \LightGrey
+        Moss:       T '.', \LightGreen
+    }
+
+    const PlayerCharacterStyle = ['@', ColourType.White]
 
     {
-        Colours
         TileStyles
         PlayerCharacterStyle
+        ColourType
+        createTile: T
     }

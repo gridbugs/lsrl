@@ -1,7 +1,8 @@
 define [
     \tile
+    \types
     \canvas_tile
-], (tile, canvas_tile) ->
+], (tile, Types, canvas_tile) ->
 
     const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
@@ -11,6 +12,9 @@ define [
     const PlayerCharacterColour = canvas_tile.AsciiPlayerCharacterStyle[1]
 
     const UnseenColour = canvas_tile.UnseenColour
+
+    console.debug tile.Tiles
+    console.debug Types.Tile
 
     class CanvasDrawer
         (@canvas, @numCols, @numRows) ->
@@ -82,7 +86,7 @@ define [
                 @ctx.fillStyle = colour
                 @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
             else
-                type = tile.Tiles.UNKNOWN
+                type = Types.Tile.Unknown
                 @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
                 @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
 
@@ -121,7 +125,7 @@ define [
                 @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
                 @__drawPlayerCharacter character
             else
-                type = tile.Tiles.UNKNOWN
+                type = Types.Tile.Unknown
                 @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
                 @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
                 @__drawPlayerCharacter character
