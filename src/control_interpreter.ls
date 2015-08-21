@@ -34,6 +34,7 @@ define [
         navigateToCell: (start_coord, game_state, cb) ->
             @ui.selectCell start_coord, @character, game_state, (coord) ~>
                 if not coord?
+                    @character.getAction(game_state, cb)
                     return
 
                 dest_cell = @character.grid.getCart coord

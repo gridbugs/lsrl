@@ -2,19 +2,16 @@ define [
     \tile
     \types
     \canvas_tile
-], (tile, Types, canvas_tile) ->
+], (Tile, Types, CanvasTile) ->
 
     const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
     const HORIZONTAL_PADDING = 0
 
-    const PlayerCharacterChar = canvas_tile.AsciiPlayerCharacterStyle[0]
-    const PlayerCharacterColour = canvas_tile.AsciiPlayerCharacterStyle[1]
+    const PlayerCharacterChar = CanvasTile.AsciiPlayerCharacterStyle[0]
+    const PlayerCharacterColour = CanvasTile.AsciiPlayerCharacterStyle[1]
 
-    const UnseenColour = canvas_tile.UnseenColour
-
-    console.debug tile.Tiles
-    console.debug Types.Tile
+    const UnseenColour = CanvasTile.UnseenColour
 
     class CanvasDrawer
         (@canvas, @numCols, @numRows) ->
@@ -24,114 +21,106 @@ define [
             @cellHeight = FONT_SIZE + VERTICAL_PADDING
             @gridWidth = @cellWidth * @numCols
             @gridHeight = @cellHeight * @numRows
+            @clearColour = '#000000'
 
-        __clear: ->
-            @ctx.fillStyle = '#000000'
+        __clearAll: ->
+            @ctx.fillStyle = @clearColour
             @ctx.fillRect 0, 0, @gridWidth, @gridHeight
 
-        __drawCell: (cell) ->
-            type = tile.fromCell cell
-            @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
-            @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+        __fillText: (x, y, text, colour) ->
+            @ctx.fillStyle = colour
+            @ctx.fillText text, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+
+        __fillTextCart: (v, text, colour) ->
+            @__fillText(v.x, v.y, text, colour)
+
+        __fillTextFromTileType: (x, y, type) ->
+            @__fillText(x, y, CanvasTile.AsciiTileStyles[type][0], CanvasTile.AsciiTileStyles[type][1])
+
+        __fillTextFromTileTypeCart: (v, type) ->
+            @__fillTextFromTileType(v.x, v.y, type)
+
+        __fillTextFromCell: (cell) ->
+            @__fillTextFromTileType(cell.x, cell.y, Tile.fromCell(cell))
+        
+        __fillTextFromCellWithColour: (cell, colour) ->
+            @__fillText(cell.x, cell.y, CanvasTile.AsciiTileStyles[Tile.fromCell(cell)][0], colour)
+
+        __fillBackground: (x, y, colour) ->
+            @ctx.fillStyle = colour
+            @ctx.fillRect x * @cellWidth, y * @cellHeight, @cellWidth, @cellHeight
+        
+        __fillBackgroundCart: (v, colour) ->
+            @__fillBackground(v.x, v.y, colour)
+
+        __fillUnknownCart: (v) ->
+            @__fillTextFromTileTypeCart(v, Types.Tile.Unknown)
+            
+
+        __clearCart: (v) ->
+            @__fillBackgroundCart(v, @clearColour)
 
         __drawPlayerCharacter: (pc) ->
-            x = pc.position.x
-            y = pc.position.y
-            @ctx.fillStyle = '#000000'
-            @ctx.fillRect x * @cellWidth, y * @cellHeight, @cellWidth, @cellHeight
-            @ctx.fillStyle = PlayerCharacterColour
-            @ctx.fillText PlayerCharacterChar, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+            @__fillTextCart(pc.position, PlayerCharacterChar, PlayerCharacterColour)
 
-        drawCell: (cell) ->
-            @ctx.beginPath!
-            @ctx.fillStyle = '#000000'
-            @ctx.fillRect cell.x * @cellWidth, cell.y * @cellHeight, @cellWidth, @cellHeight
-            @ctx.fillStyle = canvas_tile.AsciiTileStyles[cell.type][1]
-            @ctx.fillText canvas_tile.AsciiTileStyles[cell.type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
-            @ctx.fill!
-
+        __drawCell: (cell) ->
+            @__fillTextFromCell(cell)
+        
         __drawGrid: (grid) ->
             grid.forEach (c) ~> @__drawCell c
 
         drawPlayerCharacter: (pc) ->
-            x = pc.position.x
-            y = pc.position.y
             @ctx.beginPath!
-            @ctx.fillStyle = '#000000'
-            @ctx.fillRect x * @cellWidth, y * @cellHeight, @cellWidth, @cellHeight
-            @ctx.fillStyle = PlayerCharacterColour
-            @ctx.fillText PlayerCharacterChar, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+            @__drawPlayerCharacter pc
             @ctx.fill!
 
         drawGameState: (game_state) ->
             @ctx.beginPath!
-            @__clear!
+            @__clearAll!
             @__drawGrid game_state.grid
             @__drawPlayerCharacter game_state.playerCharacter
             @ctx.fill!
 
         drawGrid: (grid) ->
             @ctx.beginPath!
-            @__clear!
+            @__clearAll!
             @__drawGrid grid
             @ctx.fill!
 
         __drawKnowledgeCell: (cell, game_state) ->
             if cell.known
-                type = tile.fromCell cell
                 if cell.timestamp == game_state.absoluteTime
-                    colour = canvas_tile.AsciiTileStyles[type][1]
+                    @__fillTextFromCell(cell)
                 else
-                    colour = UnseenColour
-                @ctx.fillStyle = colour
-                @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+                    @__fillTextFromCellWithColour(cell, UnseenColour)
             else
-                type = Types.Tile.Unknown
-                @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
-                @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+                @__fillUnknownCart(cell)
 
 
+        __drawCharacterKnowledge: (character, game_state) ->
+            character.knowledge.grid.forEach (c) ~>
+                if c.position.equals(character.position)
+                    @__drawPlayerCharacter(character)
+                else
+                    @__drawKnowledgeCell c, game_state
 
         drawCharacterKnowledge: (character, game_state) ->
-            @ctx.beginPath!
-            @__clear!
-            character.knowledge.grid.forEach (c) ~>
-                @__drawKnowledgeCell c, game_state
-            @__drawPlayerCharacter character
-            @ctx.fill!
+            @ctx.beginPath()
+            @__clearAll()
+
+            @__drawCharacterKnowledge(character, game_state)
+
+            @ctx.fill()
 
         drawCellSelectOverlay: (character, game_state, select_coord) ->
-            @ctx.beginPath!
-            @__clear!
-            character.knowledge.grid.forEach (c) ~>
-                @__drawKnowledgeCell c, game_state
+            @ctx.beginPath()
+            @__clearAll()
 
-            @ctx.fillStyle = canvas_tile.SelectColour
-            @ctx.fillRect select_coord.x * @cellWidth, select_coord.y * @cellHeight, @cellWidth, @cellHeight
+            @__fillBackgroundCart(select_coord, CanvasTile.SelectColour)
+            @__drawCharacterKnowledge(character, game_state)
 
-            cell = character.knowledge.grid.getCart select_coord
-            if cell.game_cell.position.equals character.position
-                x = character.position.x
-                y = character.position.y
-                @ctx.fillStyle = PlayerCharacterColour
-                @ctx.fillText PlayerCharacterChar, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
-            else if cell.known
-                type = tile.fromCell cell
-                if cell.timestamp == game_state.absoluteTime
-                    colour = canvas_tile.AsciiTileStyles[type][1]
-                else
-                    colour = UnseenColour
-                @ctx.fillStyle = colour
-                @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
-                @__drawPlayerCharacter character
-            else
-                type = Types.Tile.Unknown
-                @ctx.fillStyle = canvas_tile.AsciiTileStyles[type][1]
-                @ctx.fillText canvas_tile.AsciiTileStyles[type][0], cell.x * @cellWidth + HORIZONTAL_PADDING/2, cell.y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
-                @__drawPlayerCharacter character
-
-            @ctx.fill!
-
+            @ctx.fill()
+            
         print: (str) ->
             log = document.getElementById("log");
             log.innerHTML += "#{str}<br/>"

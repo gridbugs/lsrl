@@ -36,6 +36,10 @@ define [
             Ncurses.echo = false
             Ncurses.setEscDelay 0
 
+            @buf = [[void] * 120] * 40
+            @cursor_x = 0
+            @cursor_y = 0
+
             /* Initialize each colour pair.
              * This is done in the constructor as it requires an Ncurses context.
              */
@@ -54,12 +58,18 @@ define [
             @log_window.close!
             Ncurses.cleanup!
 
+        __setCursor: (x, y) ->
+            @game_window.cursor(y, x)
+            @cursor_x = x
+            @cursor_y = y
+
+        __setCursorCart: (v) ->
+            @__setCursor(v.x, v.y)
+
         __drawCell: (cell) ->
-            @game_window.cursor cell.y, cell.x
-            type = Tile.fromCell cell
-            tile = TileStyles[type]
-            @game_window.attrset Ncurses.colorPair(tile.pair)
-            @game_window.addstr tile.character
+            @__setCursorCart cell
+            tile = TileStyles[Tile.fromCell(cell)]
+            @__drawTile(tile)
 
         drawCell: (cell) ->
             @__drawCell cell
@@ -73,9 +83,8 @@ define [
             @game_window.refresh!
 
         __drawPlayerCharacter: (pc) ->
-            @game_window.cursor pc.position.y, pc.position.x
-            @game_window.attrset Ncurses.colorPair(PlayerCharacterStyle.pair)
-            @game_window.addstr PlayerCharacterStyle.character
+            @__setCursorCart pc.position
+            @__drawChar(PlayerCharacterStyle.character, PlayerCharacterStyle.pair)
 
         drawGameState: (game_state) ->
             @__drawGrid game_state.grid
@@ -83,60 +92,65 @@ define [
             @game_window.refresh!
 
         __drawUnknown: (x, y) ->
-            @game_window.cursor y, x
+            @__setCursor(x, y)
             tile = TileStyles[Types.Tile.Unknown]
-            @game_window.attrset Ncurses.colorPair(tile.pair)
-            @game_window.addstr tile.character
+            @__drawTile(tile)
+        
+        __drawUnknownCart: (v) ->
+            @__drawUnknown(v.x, v.y)
 
+        __drawChar: (char, colour_pair) ->
+            @game_window.attrset Ncurses.colorPair(colour_pair)
+            @game_window.addstr char
+            @buf[@cursor_y][@cursor_x] = char
+            
+        __drawTile: (tile) ->
+            @__drawChar(tile.character, tile.pair)
+
+        __drawUnseenTile: (tile) ->
+            @__drawChar(tile.character, UnseenPair)
 
         __drawKnowledgeCell: (cell, game_state) ->
-            @game_window.cursor cell.y, cell.x
+            @__setCursorCart cell
             if cell.known
-                colour = void
-                type = Tile.fromCell cell
-                tile = TileStyles[type]
+                tile = TileStyles[Tile.fromCell(cell)]
                 if cell.timestamp == game_state.absoluteTime
-                    colour = tile.pair
+                    @__drawTile(tile)
                 else
-                    colour = UnseenPair
-                @game_window.attrset Ncurses.colorPair(colour)
-                @game_window.addstr tile.character
-
+                    @__drawUnseenTile(tile)
             else
-                tile = TileStyles[Types.Tile.Unknown]
-                @game_window.attrset Ncurses.colorPair(tile.pair)
-                @game_window.addstr tile.character
+                @__drawUnknownCart(cell)
 
+        __drawCharacterKnowledge: (character, game_state) ->
+            character.knowledge.grid.forEach (c) ~>
+                if c.position.equals(character.position)
+                    @__drawPlayerCharacter(character)
+                else
+                    @__drawKnowledgeCell c, game_state
 
         drawCharacterKnowledge: (character, game_state) ->
-            character.knowledge.grid.forEach (c) ~>
-                @__drawKnowledgeCell c, game_state
-            @__drawPlayerCharacter character
+            @__drawCharacterKnowledge(character, game_state)
             @game_window.refresh!
+
+        __getCurrentChar: -> @buf[@cursor_y][@cursor_x]
 
         drawCellSelectOverlay: (character, game_state, select_coord) ->
-            character.knowledge.grid.forEach (c) ~>
-                @__drawKnowledgeCell c, game_state
-            @__drawPlayerCharacter character
-            @game_window.refresh!
+            @__drawCharacterKnowledge(character, game_state)
 
             cell = character.knowledge.grid.getCart select_coord
-            @game_window.cursor cell.y, cell.x
+            @__setCursorCart cell
+            #@__drawChar(@__getCurrentChar(), SelectColourPair)
+
 
             if cell.game_cell.position.equals character.position
-                @game_window.attrset Ncurses.colorPair(SelectColourPair)
-                @game_window.addstr PlayerCharacterStyle.character
+                @__drawChar(PlayerCharacterStyle.character, SelectColourPair)
             else if cell.known
                 type = Tile.fromCell cell
                 tile = TileStyles[type]
-                @game_window.attrset Ncurses.colorPair(SelectColourPair)
-                @game_window.addstr tile.character
-                @__drawPlayerCharacter character
+                @__drawChar(tile.character, SelectColourPair)
             else
                 tile = TileStyles[Types.Tile.Unknown]
-                @game_window.attrset Ncurses.colorPair(SelectColourPair)
-                @game_window.addstr tile.character
-                @__drawPlayerCharacter character
+                @__drawChar(tile.character, SelectColourPair)
 
             @game_window.refresh!
 
