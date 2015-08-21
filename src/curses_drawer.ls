@@ -6,37 +6,23 @@ define [
     \util
 ], (Ncurses, Tile, CursesTile, Types, Util) ->
 
-    Colours = CursesTile.Colours
     TileStyles = CursesTile.TileStyles
     PlayerCharacterStyle = CursesTile.PlayerCharacterStyle
 
     const PAIR_MIN = 16 /* Minimum number for ncurses colour pairs */
 
-    /* Choose numbers to use for colour pairs for each specified colour.
-     * Each colour pair will have the specified colour as the foreground
-     * and a black background.
-     */
     ColourPairs = []
     let i = PAIR_MIN
         for k, v of CursesTile.ColourType
             ColourPairs[v] = i
             ++i
 
-    /* Build arrays for tile chars and colours corresponding
-     * to the TileStyles object.
-     */
-    TileChars = []
-    TileColours = []
     for s in TileStyles
-        TileChars.push s.character
-        TileColours.push ColourPairs[s.colour]
         s.pair = ColourPairs[s.colour]
 
-    const PlayerCharacterChar = PlayerCharacterStyle[0]
-    const PlayerCharacterColour = ColourPairs[PlayerCharacterStyle[1]]
+    PlayerCharacterStyle.pair = ColourPairs[PlayerCharacterStyle.colour]
 
-    const UnseenColour = ColourPairs[CursesTile.ColourType.VeryDarkGrey]
-    const SelectColour = ColourPairs[CursesTile.ColourType.DarkYellow]
+    const UnseenPair = ColourPairs[CursesTile.SpecialColours.Unseen]
     const SelectColourPair = 100
 
     class CursesDrawer
@@ -88,8 +74,8 @@ define [
 
         __drawPlayerCharacter: (pc) ->
             @game_window.cursor pc.position.y, pc.position.x
-            @game_window.attrset Ncurses.colorPair(PlayerCharacterColour)
-            @game_window.addstr PlayerCharacterChar
+            @game_window.attrset Ncurses.colorPair(PlayerCharacterStyle.pair)
+            @game_window.addstr PlayerCharacterStyle.character
 
         drawGameState: (game_state) ->
             @__drawGrid game_state.grid
@@ -112,7 +98,7 @@ define [
                 if cell.timestamp == game_state.absoluteTime
                     colour = tile.pair
                 else
-                    colour = UnseenColour
+                    colour = UnseenPair
                 @game_window.attrset Ncurses.colorPair(colour)
                 @game_window.addstr tile.character
 
@@ -139,7 +125,7 @@ define [
 
             if cell.game_cell.position.equals character.position
                 @game_window.attrset Ncurses.colorPair(SelectColourPair)
-                @game_window.addstr PlayerCharacterChar
+                @game_window.addstr PlayerCharacterStyle.character
             else if cell.known
                 type = Tile.fromCell cell
                 tile = TileStyles[type]

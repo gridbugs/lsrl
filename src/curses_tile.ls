@@ -36,11 +36,16 @@ define [
         Moss:       T '.', \LightGreen
     }
 
-    const PlayerCharacterStyle = ['@', ColourType.White]
+    const PlayerCharacterStyle = T '@', \White
+
+    const SpecialColours =
+        Unseen:     ColourType.VeryDarkGrey
+        Selected:   ColourType.DarkYellow
 
     {
         TileStyles
         PlayerCharacterStyle
         ColourType
+        SpecialColours
         createTile: T
     }
