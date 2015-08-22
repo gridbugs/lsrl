@@ -5,22 +5,22 @@ define [
     \keymap
     \util
     \cell
-], (game_common, curses_drawer, curses_input_source, keymap, util, Cell) ->
+], (GameCommon, CursesDrawer, CursesInputSource, Keymap, Util, Cell) ->
 
     main = ->
 
         #Math.seedrandom 0
 
-        drawer = new curses_drawer.CursesDrawer!
-        util.setDrawer drawer
+        drawer = new CursesDrawer.CursesDrawer!
+        Util.setDrawer drawer
 
-        input = new curses_input_source.CursesInputSource drawer.game_window, keymap.Dvorak
+        input = new CursesInputSource.CursesInputSource drawer.gameWindow, Keymap.Dvorak
 
         process.on 'SIGINT' drawer.cleanup
         process.on 'exit'   drawer.cleanup
 
-        drawer.game_window.top!
-        game = new game_common.GameCommon drawer, input
+        drawer.gameWindow.top!
+        game = new GameCommon.GameCommon drawer, input
         game.start!
 
     { main }

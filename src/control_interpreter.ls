@@ -15,7 +15,12 @@ define [
                 
                 switch control.type
                 |   Types.Control.Direction
-                        return cb new Action.Move @character, control.direction, game_state
+                        action = new Action.Move @character, control.direction, game_state
+                        if action.toCell.fixture.type != Types.Fixture.Wall
+                            cb action
+                        else
+                            Util.printDrawer "Cannot move there."
+                            @character.getAction game_state, cb
                 |   Types.Control.AutoDirection
                         @character.setAutoMove(
                             new AutoMove.StraightLineMove @character, control.direction
@@ -32,6 +37,7 @@ define [
                 
 
         navigateToCell: (start_coord, game_state, cb) ->
+            Util.printDrawer "Select cell to move to."
             @ui.selectCell start_coord, @character, game_state, (coord) ~>
                 if not coord?
                     @character.getAction(game_state, cb)
@@ -41,7 +47,7 @@ define [
 
                 result = Search.findPath @character.getKnowledgeCell(), \
                     ((c, d) -> c.game_cell.getMoveOutCost d), \
-                    ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
+                    ((c) -> c.known and c.fixture.type != Types.Fixture.Wall), \
                     dest_cell
                 
                 if result?

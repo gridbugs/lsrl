@@ -28,10 +28,10 @@ define [
     class CursesDrawer
         ->
             @stdscr = new Ncurses.Window!
-            @game_window = new Ncurses.Window(40, 120, 0, 0)
-            @hud_window = new Ncurses.Window(47, 40, 0, 122)
-            @log_window = new Ncurses.Window(6, 120, 41, 0)
-            @log_window.scrollok true
+            @gameWindow = new Ncurses.Window(40, 120, 0, 0)
+            @hudWindow = new Ncurses.Window(47, 40, 0, 122)
+            @logWindow = new Ncurses.Window(6, 120, 41, 0)
+            @logWindow.scrollok true
             Ncurses.showCursor = false
             Ncurses.echo = false
             Ncurses.setEscDelay 0
@@ -48,18 +48,19 @@ define [
                 Ncurses.colorPair v, k, CursesTile.ColourType.Black
 
             Ncurses.colorPair SelectColourPair, CursesTile.ColourType.Black, CursesTile.ColourType.Yellow
+            @gameWindow.top!
 
-        getGameWindow: -> @game_window
+        getGameWindow: -> @gameWindow
 
         cleanup: ~>
             @stdscr.close!
-            @game_window.close!
-            @hud_window.close!
-            @log_window.close!
+            @gameWindow.close!
+            @hudWindow.close!
+            @logWindow.close!
             Ncurses.cleanup!
 
         __setCursor: (x, y) ->
-            @game_window.cursor(y, x)
+            @gameWindow.cursor(y, x)
             @cursor_x = x
             @cursor_y = y
 
@@ -73,14 +74,14 @@ define [
 
         drawCell: (cell) ->
             @__drawCell cell
-            @game_window.refresh!
+            @gameWindow.refresh!
 
         __drawGrid: (grid) ->
             grid.forEach (c) ~> @__drawCell c
 
         drawGrid: (grid) ->
             @__drawGrid grid
-            @game_window.refresh!
+            @gameWindow.refresh!
 
         __drawPlayerCharacter: (pc) ->
             @__setCursorCart pc.position
@@ -89,7 +90,7 @@ define [
         drawGameState: (game_state) ->
             @__drawGrid game_state.grid
             @__drawPlayerCharacter game_state.playerCharacter
-            @game_window.refresh!
+            @gameWindow.refresh!
 
         __drawUnknown: (x, y) ->
             @__setCursor(x, y)
@@ -100,8 +101,8 @@ define [
             @__drawUnknown(v.x, v.y)
 
         __drawChar: (char, colour_pair) ->
-            @game_window.attrset Ncurses.colorPair(colour_pair)
-            @game_window.addstr char
+            @gameWindow.attrset Ncurses.colorPair(colour_pair)
+            @gameWindow.addstr char
             @buf[@cursor_y][@cursor_x] = char
             
         __drawTile: (tile) ->
@@ -130,7 +131,7 @@ define [
 
         drawCharacterKnowledge: (character, game_state) ->
             @__drawCharacterKnowledge(character, game_state)
-            @game_window.refresh!
+            @gameWindow.refresh!
 
         __getCurrentChar: -> @buf[@cursor_y][@cursor_x]
 
@@ -152,11 +153,11 @@ define [
                 tile = TileStyles[Types.Tile.Unknown]
                 @__drawChar(tile.character, SelectColourPair)
 
-            @game_window.refresh!
+            @gameWindow.refresh!
 
 
         print: (str) ->
-            @log_window.addstr("#{str}\n\r")
-            @log_window.refresh!
+            @logWindow.addstr("#{str}\n\r")
+            @logWindow.refresh!
 
     { CursesDrawer }
