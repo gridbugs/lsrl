@@ -30,6 +30,7 @@ define [
     Controls.NavigateToCell = Control 'NavigateToCell', Types.Control.NavigateToCell
     Controls.Accept = Control 'Accept', Types.Control.Accept
     Controls.Escape = Control 'Escape', Types.Control.Escape
+    Controls.Examine = Control 'Examine', Types.Control.Examine
     {
         Controls
     }

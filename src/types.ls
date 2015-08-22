@@ -60,6 +60,7 @@ define [
         \NavigateToCell
         \Accept
         \Escape
+        \Examine
     ]
 
     {

@@ -1,6 +1,8 @@
-define [\control], (control) ->
+define [
+    \control
+], (Control) ->
 
-    Controls = control.Controls
+    Controls = Control.Controls
 
     const Dvorak = {
         d: Controls.West
@@ -24,6 +26,7 @@ define [\control], (control) ->
         '\r': Controls.Accept
         '\n': Controls.Accept
         (String.fromCharCode(27)): Controls.Escape
+        'q': Controls.Examine
     }
 
 
@@ -49,6 +52,7 @@ define [\control], (control) ->
         '\r': Controls.Accept
         '\n': Controls.Accept
         (String.fromCharCode(27)): Controls.Escape
+        'x': Controls.Examine
 
     {
         Dvorak

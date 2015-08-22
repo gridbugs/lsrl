@@ -25,6 +25,7 @@ define [
                     @selectedPosition = @selectedPosition.add(change)
                     @selectCellLoop(character, game_state, cb)
                 else if control.type == Types.Control.Accept
+                    @drawer.drawCharacterKnowledge character, game_state
                     cb @selectedPosition
                 else if control.type == Types.Control.Escape
                     @drawer.drawCharacterKnowledge character, game_state

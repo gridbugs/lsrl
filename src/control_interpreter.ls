@@ -33,7 +33,21 @@ define [
                         @character.getAction game_state, cb
                 |   Types.Control.NavigateToCell
                         @navigateToCell(@character.position, game_state, cb)
-                        
+                |   Types.Control.Examine
+                        @ui.selectCell @character.position, @character, game_state, (coord) ~>
+                            kcell = @character.knowledge.grid.getCart(coord)
+                            Util.printDrawer "You see here:"
+                            if kcell.fixture.type == Types.Fixture.Null
+                                switch (kcell.ground.type)
+                                |   Types.Ground.Dirt => Util.printDrawer "Dirt floor"
+                            else
+                                switch (kcell.fixture.type)
+                                |   Types.Fixture.Wall => Util.printDrawer "A wall"
+                                |   Types.Fixture.Web => Util.printDrawer "A spider web"
+
+                            
+                            @character.getAction game_state, cb
+
                 
 
         navigateToCell: (start_coord, game_state, cb) ->
