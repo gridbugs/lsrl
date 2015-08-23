@@ -12,6 +12,7 @@ define [
         \SpiderWeb
         \Moss
         \ItemStone
+        \ItemPlant
     ]
 
     const Fixture = Util.enum [
@@ -62,10 +63,14 @@ define [
         \Accept
         \Escape
         \Examine
+        \Get
+        \Drop
+        \Inventory
     ]
 
     const Item = Util.enum [
         \Stone
+        \Plant
     ]
 
     {

@@ -3,11 +3,12 @@ define [
     \util
     \vec2
     \direction
+    \unique_list
     \linked_list
     \constants
     \types
     'prelude-ls'
-], (Tile,Util, Vec2, Direction, LinkedList, Constants, Types, Prelude) ->
+], (Tile,Util, Vec2, Direction, UniqueList, LinkedList, Constants, Types, Prelude) ->
 
     map = Prelude.map
 
@@ -17,7 +18,7 @@ define [
             @position = Vec2.Vec2 @x, @y
             @ground = void
             @fixture = void
-            @items = new LinkedList.LinkedList()
+            @items = new UniqueList.UniqueList(new LinkedList.LinkedList())
             @characters = []
             @centre = Vec2.Vec2 (@x+0.5), (@y+0.5)
             @corners = []

@@ -13,6 +13,7 @@ define [
         Wall:   ['#', '#666666']
         SpiderWeb:     ['*', '#888888']
         ItemStone: ['%', '#444444']
+        ItemPlant: ['&', '#30b020']
     }
 
     const AsciiPlayerCharacterStyle = ['@', 'white']

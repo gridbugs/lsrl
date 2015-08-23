@@ -73,6 +73,12 @@ define ->
 
     enumerateDefined = (s) -> enumerate(s).filter (x) -> x?
 
+    objectKeyedByArray = (array, f = -> void) ->
+        obj = {}
+        for x in array
+            obj[x] = f(x)
+        return obj
+
     {
         isInt
         makeEnum
@@ -95,4 +101,5 @@ define ->
         repeatWhileUndefined
         enumerate
         enumerateDefined
+        objectKeyedByArray
     }

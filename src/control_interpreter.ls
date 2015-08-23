@@ -47,7 +47,46 @@ define [
 
                             
                             @character.getAction game_state, cb
+                |   Types.Control.Get
+                        cell = @character.getCell()
 
+                        if cell.items.empty()
+                            Util.printDrawer "You see no items here."
+                            @character.getAction game_state, cb
+                        else
+                            @chooseItem cell, (item) ~>
+                                action = new Action.Take(@character, game_state, item)
+                                cb(action)
+                |   Types.Control.Inventory
+                        @character.inventoryAlphabet.forEachAlphabet (char, items) ->
+                            name = items[0].getName()
+                            if items.length == 1
+                                Util.printDrawer "#{char}: #{name}"
+                            else if items.length > 1
+                                Util.printDrawer "#{char}: #{items.length} x #{name}"
+                        @character.getAction game_state, cb
+                |   Types.Control.Drop
+                    Util.printDrawer "Select item to drop:"
+                    @chooseInventoryItem (item) ~>
+                        if item?
+                            action = new Action.Drop(@character, game_state, item)
+                            cb(action)
+                        else
+                            Util.printDrawer "You aren't carrying any such item."
+                            @character.getAction game_state, cb
+                        
+
+        chooseInventoryItem: (cb) ->
+            @inputSource.getChar (char) ~>
+                item = @character.inventoryAlphabet.getByKey(char)
+                if item?
+                    cb(item[0])
+                else
+                    cb(void)
+            
+
+        chooseItem: (cell, cb) ->
+            cb(cell.items.first())
                 
 
         navigateToCell: (start_coord, game_state, cb) ->

@@ -34,11 +34,12 @@ define [
 
     const itemTileTable = Util.join Types.Item, Types.Tile, {
         Stone: \ItemStone
+        Plant: \ItemPlant
     }
 
     fromCell = (cell) ->
-
-        if cell.items.length == 1
+        
+        if cell.items.length() > 0
             tile = itemTileTable[cell.items.first().type]
             return tile if tile?
 

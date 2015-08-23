@@ -10,9 +10,10 @@ define [
     class LinkedList
         ->
             @head = void
-            @length = 0
+            @__length = 0
 
-        empty: -> @length == 0
+        length: -> @__length
+        empty: -> @__length == 0
         
         firstNode: -> @head
         first: -> @head.data
@@ -22,7 +23,7 @@ define [
             @insertNode(new LinkedListNode(x))
 
         insertNode: (n) ->
-            ++@length
+            ++@__length
 
             n.next = @head
             
@@ -32,7 +33,7 @@ define [
             @head = n
 
         removeNode: (n) ->
-            --@length
+            --@__length
 
             if n.next?
                 n.next.prev = n.prev
@@ -88,7 +89,11 @@ define [
         removeAllSatisfying: (predicate) ->
             @forEachSatisfyingNode(predicate, (node) ~> @removeNode(node))
 
+        removeElement: (element) ->
+            @removeAllSatisfying((x) -> x == element)
 
+        toArray: ->
+            @getAllSatisfying -> true
     {
         LinkedList
     }

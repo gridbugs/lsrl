@@ -38,10 +38,13 @@ define [
                 if Math.random() < 0.03
                     if c.fixture.type == Types.Fixture.Null
                         c.setFixture Fixture.Web
-                else if Math.random() < 0.08
+                else if Math.random() < 0.03
                     if c.fixture.type == Types.Fixture.Null
-                        c.addItem new Item.Stone()
-
+                        item = new Item.Stone()
+                        c.addItem item
+                else if Math.random() < 0.03
+                    if c.fixture.type == Types.Fixture.Null
+                        c.addItem new Item.Plant()
 
 
 

@@ -26,7 +26,10 @@ define [
         '\r': Controls.Accept
         '\n': Controls.Accept
         (String.fromCharCode(27)): Controls.Escape
-        'q': Controls.Examine
+        q: Controls.Examine
+        i: Controls.Get
+        e: Controls.Drop
+        c: Controls.Inventory
     }
 
 
@@ -52,7 +55,10 @@ define [
         '\r': Controls.Accept
         '\n': Controls.Accept
         (String.fromCharCode(27)): Controls.Escape
-        'x': Controls.Examine
+        x: Controls.Examine
+        g: Controls.Get
+        d: Controls.Drop
+        i: Controls.Inventory
 
     {
         Dvorak

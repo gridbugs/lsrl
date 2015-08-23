@@ -61,10 +61,30 @@ define [
             @events = []
         commit: -> new CommitMetaData 1 []
 
+    class Take extends Action
+        (@character, @gameState, @item) ->
+            @events = []
+
+        commit: ->
+            @character.addItemToInventory(@item)
+            return new CommitMetaData 2 ["#{@character.getName()} takes the #{@item.getName()}."]
+
+    class Drop extends Action
+        (@character, @gameState, @item) ->
+            @events = []
+
+        commit: ->
+            @character.removeItemFromInventory(@item)
+            @character.getCell().addItem(@item)
+            return new CommitMetaData 2 ["#{@character.getName()} drops the #{@item.getName()}."]
+
+
     {
         Null
         Move
         BumpIntoWall
         TryUnstick
         Unstick
+        Take
+        Drop
     }

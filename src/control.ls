@@ -31,6 +31,10 @@ define [
     Controls.Accept = Control 'Accept', Types.Control.Accept
     Controls.Escape = Control 'Escape', Types.Control.Escape
     Controls.Examine = Control 'Examine', Types.Control.Examine
+    Controls.Get = Control 'Get', Types.Control.Get
+    Controls.Drop = Control 'Drop', Types.Control.Drop
+    Controls.Inventory = Control 'Inventory', Types.Control.Inventory
+
     {
         Controls
     }
