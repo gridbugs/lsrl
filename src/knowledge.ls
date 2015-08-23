@@ -15,12 +15,14 @@ define [
             @timestamp = 0
             @ground = null
             @fixture = null
+            @items = null
 
         init: (game_cell) ->
             @game_cell = game_cell
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
             @position = @game_cell.position
+            @items = @game_cell.items
 
         see: (game_state) ->
             @known = true

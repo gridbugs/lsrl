@@ -11,7 +11,8 @@ define [
             @inputSource = input_source
             @gameState = @test!
             @drawer = drawer
-            Debug.test!
+            if Config.RUN_TEST
+                Test.linkedListTest()
 
         test: -> Test.test @gameDrawer, @inputSource
         start: ->

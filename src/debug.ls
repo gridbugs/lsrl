@@ -1,10 +1,10 @@
 define [
-    \direction
-    \util
-], (Direction, Util) ->
+], ->
 
-    test = ->
+    assert = (condition, message) ->
+        if not condition
+            throw message || "Assertion failed!"
 
     {
-        test
+        assert
     }

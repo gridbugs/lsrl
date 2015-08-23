@@ -11,6 +11,7 @@ define [
         \Wall
         \SpiderWeb
         \Moss
+        \ItemStone
     ]
 
     const Fixture = Util.enum [
@@ -63,6 +64,10 @@ define [
         \Examine
     ]
 
+    const Item = Util.enum [
+        \Stone
+    ]
+
     {
         Tile
         Fixture
@@ -71,4 +76,5 @@ define [
         CardinalDirection
         OrdinalDirection
         Control
+        Item
     }

@@ -32,7 +32,17 @@ define [
         \Moss
     }
 
+    const itemTileTable = Util.join Types.Item, Types.Tile, {
+        Stone: \ItemStone
+    }
+
     fromCell = (cell) ->
+
+        if cell.items.length == 1
+            tile = itemTileTable[cell.items.first().type]
+            return tile if tile?
+
+
         tile = fixtureTilesTable[cell.fixture.type]
         return tile if tile?
 

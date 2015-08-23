@@ -12,6 +12,7 @@ define [
         Tree:   ['&', '#669900']
         Wall:   ['#', '#666666']
         SpiderWeb:     ['*', '#888888']
+        ItemStone: ['%', '#444444']
     }
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
