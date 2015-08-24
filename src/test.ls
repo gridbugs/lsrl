@@ -12,10 +12,12 @@ define [
     \user_interface
     \util
     \linked_list
+    \binary_tree
+    \avl_tree
     \item
     \config
     \types
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, UserInterface, Util, LinkedList, Item, Config, Types) ->
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, UserInterface, Util, LinkedList, BinaryTree, AvlTree, Item, Config, Types) ->
 
     test = (drawer, input_source) ->
         if Config.GENERATOR == 'cell_automata'
@@ -84,7 +86,43 @@ define [
         b.removeAllSatisfying (x) -> x > 50
         console.debug b.getAllSatisfying (x) -> x % 2
 
+    treeTest = (tree) ->
+        tree.insert(5, "hello")
+        tree.insert(3, "world")
+        tree.insert(6, "blah")
+        tree.insert(1, "a")
+        tree.insert(2, "b")
+        tree.insert(4, "c")
+        tree.insert(7, "d")
+        tree.insert(8, "e")
+
+        tree.forEachPair (k, v) -> console.debug k, v
+        console.debug tree
+        console.log 'deleting 3'
+        tree.deleteByKey(3)
+        console.debug tree
+        tree.forEachPair (k, v) -> console.debug k, v
+        console.log 'deleting and printing 5'
+        console.debug(tree.deleteByKey(5))
+        tree.forEachPair (k, v) -> console.debug k, v
+        
+        tree.forEach (v) -> console.debug v
+        
+        console.debug(tree.findByKey(7))
+
+    avlTreeTest = ->
+        a = new BinaryTree.BinaryTree()
+        b = new AvlTree.AvlTree()
+
+        console.log "----------- Binary Tree -----------"
+        treeTest(a)
+        console.log "----------- AVL Tree -----------"
+        treeTest(b)
+
+
+
     {
         test
         linkedListTest
+        avlTreeTest
     }

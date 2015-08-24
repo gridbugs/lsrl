@@ -9,6 +9,7 @@ define [
     class AlphabeticList extends ListWrapper.ListWrapper
         (@list, @chars = DEFAULT_CHARS) ->
             @mapping  = Util.objectKeyedByArray(@chars)
+            
             @list.forEach (x) ~>
                 success = @fillFreeSlot(x)
                 Debug.assert(success, "Out of slots.")

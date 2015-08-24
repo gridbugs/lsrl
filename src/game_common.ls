@@ -12,7 +12,10 @@ define [
             @gameState = @test!
             @drawer = drawer
             if Config.RUN_TEST
-                Test.linkedListTest()
+                Util.printDebug "----- AVL Tree Test -------"
+                Test.avlTreeTest()
+                #Util.printDebug "----- Linked List Test -------"
+                #Test.linkedListTest()
 
         test: -> Test.test @gameDrawer, @inputSource
         start: ->
