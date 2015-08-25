@@ -46,6 +46,10 @@ define [
                                 |   Types.Fixture.Wall => Util.printDrawer "A wall"
                                 |   Types.Fixture.Web => Util.printDrawer "A spider web"
 
+                            if kcell.game_cell.items.length() > 0
+                                kcell.game_cell.items.forEachItemType (_, items) ->
+                                    Util.printDrawer "#{items.length} #{items[0].getName()}"
+
                             @character.getAction game_state, cb
                 |   Types.Control.Get
                         cell = @character.getCell()

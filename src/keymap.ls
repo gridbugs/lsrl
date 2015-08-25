@@ -57,8 +57,14 @@ define [
         F: \Y
         ':': \Z
     }
-    
-    convertFromDvorak = (c) -> DvorakKeys[c]
+
+    convertFromDvorak = (c) ->
+        key = DvorakKeys[c]
+        if key?
+            return key
+        else
+            return c
+
     convertFromQwerty = (c) -> c
 
     const Controls = Util.joinObject Control.Controls, {
