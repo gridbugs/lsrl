@@ -53,7 +53,7 @@ define [
                 if @right.balanceFactor == 1
                     @right = @right.rotateRight()
                 return @rotateLeft()
-            
+
             return this
 
         insert: (node) ->
@@ -63,8 +63,11 @@ define [
 
         deleteByKey: (key, with_node) ->
             ret = super(key, with_node)
-            @update()
-            return ret.rebalance()
+            if ret?
+                @update()
+                return ret.rebalance()
+            else
+                return void
 
     class AvlTree extends BinaryTree.BinaryTree
         ->

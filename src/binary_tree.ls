@@ -12,7 +12,7 @@ define [
                 return @left.insert(node)
             else
                 return node
-        
+
         rightInsert: (node) ->
             if @right?
                 return @right.insert(node)
@@ -38,7 +38,7 @@ define [
 
                 @update()
                 return ret
-            
+
             tmp = @right
 
             # we are the leftmost child
@@ -87,8 +87,8 @@ define [
             @right?.forEachNode(f)
 
         forEach: (f) -> @forEachNode (node) -> f(node.value)
-        
-        forEachPair: (f) -> @forEachNode (node) -> 
+
+        forEachPair: (f) -> @forEachNode (node) ->
             f(node.key, node.value)
 
         findNodeByKey: (key) ->
@@ -100,11 +100,12 @@ define [
                 return this
 
         findByKey: (key) ->
-            @findNodeByKey(key).value
+            @findNodeByKey(key)?.value
 
     class BinaryTree
         ->
             @root = void
+            @length = 0
 
         createNode: (key, value) ->
             return new BinaryTreeNode(key, value)
@@ -118,19 +119,25 @@ define [
         insert: (key, value) ->
             node = @createNode(key, value)
             @root = @tryInsert(node)
+            ++@length
 
         forEachNode: (f) -> @root?.forEachNode(f)
         forEachPair: (f) -> @root?.forEachPair(f)
         forEachKey: (f) -> @root?.forEachKey(f)
         forEach: (f) -> @root?.forEach(f)
 
-        deleteByKey: (key) -> 
+        deleteByKey: (key) ->
             ret = void
             @root = @root?.deleteByKey(key, (node) -> ret := node.value)
+            if ret?
+                --@length
             return ret
 
         findByKey: (key) -> @root?.findByKey(key)
+        containsKey: (key) -> @findByKey(key)?
 
+        empty: -> @root == void
+        top: -> @root?.value
     {
         BinaryTree
         BinaryTreeNode

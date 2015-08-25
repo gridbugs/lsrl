@@ -1,20 +1,31 @@
 define [
     \types
-], (Types) ->
+    \util
+], (Types, Util) ->
+
+    GlobalItemId = Object.keys(Types.Item).length
+    getItemId = -> (GlobalItemId++)
 
     class Item
         ->
-            @list = void
+            @collection = void
+            @id = getItemId()
+            @groupable = false
 
-        isGroupable: -> false
+        isGroupable: -> @groupable
+        getGroupId: -> @id
+        makeUnique: -> @groupable = false
 
     class GroupableItem extends Item
-        -> super ...
-        isGroupable: -> true
+        ->
+            super ...
+            @groupable = true
+
+        getGroupId: -> @type
 
     class Stone extends GroupableItem
         ->
-            super()    
+            super()
             @type = Types.Item.Stone
 
         getName: -> "stone"

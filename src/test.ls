@@ -14,10 +14,11 @@ define [
     \linked_list
     \binary_tree
     \avl_tree
+    \group_tree
     \item
     \config
     \types
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, UserInterface, Util, LinkedList, BinaryTree, AvlTree, Item, Config, Types) ->
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, UserInterface, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Config, Types) ->
 
     test = (drawer, input_source) ->
         if Config.GENERATOR == 'cell_automata'
@@ -34,7 +35,7 @@ define [
             return
 
         sp = c.getStartingPointHint!
-        
+
         if Config.GENERATOR == 'cell_automata'
             grid.forEach (c) ->
                 if Math.random() < 0.03
@@ -105,9 +106,9 @@ define [
         console.log 'deleting and printing 5'
         console.debug(tree.deleteByKey(5))
         tree.forEachPair (k, v) -> console.debug k, v
-        
+
         tree.forEach (v) -> console.debug v
-        
+
         console.debug(tree.findByKey(7))
 
     avlTreeTest = ->
@@ -119,7 +120,23 @@ define [
         console.log "----------- AVL Tree -----------"
         treeTest(b)
 
+        console.log "---------- Group Tree -----------"
+        c = new GroupTree.GroupTree(new AvlTree.AvlTree())
 
+        c.insert(1, "Hello")
+        c.insert(2, "world")
+        c.insert(1, "HELLO")
+        c.insert(1, "hello")
+        c.insert(2, "WORLD")
+        c.insert(3, "boop")
+
+        console.debug c.findByKey(1)
+        console.debug c.findGroupByKey(1)
+
+        console.debug c.deleteAmountByKey(1, 2)
+        console.debug c.deleteByKey(2)
+        console.debug c.deleteByKey(2)
+        console.debug c
 
     {
         test

@@ -34,6 +34,8 @@ define [
         Wall:       T '#', \DarkGrey
         SpiderWeb:  T '*', \LightGrey
         Moss:       T '.', \LightGreen
+        ItemStone:  T '%', \DarkGrey
+        ItemPlant:  T '&', \LightGreen
     }
 
     const PlayerCharacterStyle = T '@', \White

@@ -7,18 +7,20 @@ define [
     \unique_list
     \bucket_list
     \linked_list
+    \inventory
     \types
     \util
     \config
 ], (Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
-    AlphabeticList, UniqueList, BucketList, LinkedList, Types, Util, Config) ->
+    AlphabeticList, UniqueList, BucketList, LinkedList, Inventory, \
+    Types, Util, Config) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid, @ui) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
             @viewDistance = 20
-            
+
             if Config.OMNISCIENT_PLAYER
                 @observe_fn = Omniscient.observe
             else
@@ -31,17 +33,13 @@ define [
                 new LinkedList.LinkedList()
             )
 
-            @inventory = new UniqueList.UniqueList(
-                new BucketList.BucketList(
-                    @inventoryAlphabet
-                )
-            )
+            @inventory = new Inventory.Inventory()
 
         addItemToInventory: (item) ->
-            @inventory.insert(item)
+            return @inventory.insertItem(item)
 
         removeItemFromInventory: (item) ->
-            @inventory.removeElement(item)
+            return @inventory.removeItem(item)
 
         forEachEffect: (f) ->
             for e in @effects

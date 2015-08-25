@@ -3,17 +3,16 @@ define [
     \util
     \debug
 ], (ListWrapper, Util, Debug) ->
-    
+
     const DEFAULT_CHARS = "abcdefg"
 
     class AlphabeticList extends ListWrapper.ListWrapper
         (@list, @chars = DEFAULT_CHARS) ->
             @mapping  = Util.objectKeyedByArray(@chars)
-            
+
             @list.forEach (x) ~>
                 success = @fillFreeSlot(x)
                 Debug.assert(success, "Out of slots.")
-                
 
         insert: (x) ->
             success = @fillFreeSlot(x)

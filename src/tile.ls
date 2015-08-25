@@ -38,7 +38,7 @@ define [
     }
 
     fromCell = (cell) ->
-        
+
         if cell.items.length() > 0
             tile = itemTileTable[cell.items.first().type]
             return tile if tile?

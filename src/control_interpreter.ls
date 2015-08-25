@@ -4,15 +4,16 @@ define [
     \types
     \search
     \util
-], (Action, AutoMove, Types, Search, Util) ->
-    
+    \debug
+], (Action, AutoMove, Types, Search, Util, Debug) ->
+
     class ControlInterpreter
         (@character, @inputSource, @ui) ->
 
 
         getAction: (game_state, cb) ->
             Util.repeatWhileUndefined @inputSource.getControl, (control) ~>
-                
+
                 switch control.type
                 |   Types.Control.Direction
                         action = new Action.Move @character, control.direction, game_state
@@ -45,7 +46,6 @@ define [
                                 |   Types.Fixture.Wall => Util.printDrawer "A wall"
                                 |   Types.Fixture.Web => Util.printDrawer "A spider web"
 
-                            
                             @character.getAction game_state, cb
                 |   Types.Control.Get
                         cell = @character.getCell()
@@ -58,12 +58,15 @@ define [
                                 action = new Action.Take(@character, game_state, item)
                                 cb(action)
                 |   Types.Control.Inventory
-                        @character.inventoryAlphabet.forEachAlphabet (char, items) ->
+                        console.debug @character.inventory
+                        @character.inventory.forEachMapping (ch, items) ->
+                            Debug.assert(items.length > 0, "No items")
                             name = items[0].getName()
                             if items.length == 1
-                                Util.printDrawer "#{char}: #{name}"
+                                Util.printDrawer "#{ch}: #{name}"
                             else if items.length > 1
-                                Util.printDrawer "#{char}: #{items.length} x #{name}"
+                                Util.printDrawer "#{ch}: #{items.length} x #{name}"
+
                         @character.getAction game_state, cb
                 |   Types.Control.Drop
                     Util.printDrawer "Select item to drop:"
@@ -74,20 +77,18 @@ define [
                         else
                             Util.printDrawer "You aren't carrying any such item."
                             @character.getAction game_state, cb
-                        
+
 
         chooseInventoryItem: (cb) ->
             @inputSource.getChar (char) ~>
-                item = @character.inventoryAlphabet.getByKey(char)
+                item = @character.inventory.getGroupByChar(char)
                 if item?
                     cb(item[0])
                 else
                     cb(void)
-            
 
         chooseItem: (cell, cb) ->
             cb(cell.items.first())
-                
 
         navigateToCell: (start_coord, game_state, cb) ->
             Util.printDrawer "Select cell to move to."
@@ -102,7 +103,7 @@ define [
                     ((c, d) -> c.game_cell.getMoveOutCost d), \
                     ((c) -> c.known and c.fixture.type != Types.Fixture.Wall), \
                     dest_cell
-                
+
                 if result?
                     @character.setAutoMove(new AutoMove.FollowPath(@character, result.directions))
                     @character.getAction game_state, cb

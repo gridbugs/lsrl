@@ -7,7 +7,7 @@
 define [
     \list_wrapper
 ], (ListWrapper) ->
-    
+
     class UniqueList extends ListWrapper.ListWrapper
         (@list) ->
             super ...

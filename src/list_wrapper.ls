@@ -1,5 +1,4 @@
 define [
-
 ], ->
 
     class ListWrapper
