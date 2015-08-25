@@ -41,7 +41,7 @@ define [
 
         removeItem: (item) ->
             ret = @items.deleteByKey(item.getGroupId())
-            @postRemoveItem(item)
+            @postRemoveItem(ret)
             return ret
 
         removeItems: (type, amount) ->

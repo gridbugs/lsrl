@@ -59,7 +59,11 @@ define [
                     f(k, @itemCollection.items.findGroupByKey(v))
 
         getGroupByChar: (c) ->
-            return @itemCollection.items.findGroupByKey(@map[c])
+            key = @map[c]
+            if key?
+                return @itemCollection.items.findGroupByKey(@map[c])
+            else
+                return void
 
     {
         AlphabeticItemCollection

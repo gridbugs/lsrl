@@ -66,9 +66,9 @@ define [
             @events = []
 
         commit: ->
-            @item.collection.removeItem(@item)
-            char = @character.addItemToInventory(@item)
-            return new CommitMetaData 2 ["#{@character.getName()} takes the #{@item.getName()}(#{char})."]
+            removed_item = @item.collection.removeItem(@item)
+            char = @character.addItemToInventory(removed_item)
+            return new CommitMetaData 2 ["#{@character.getName()} takes the #{removed_item.getName()}(#{char})."]
 
     class Drop extends Action
         (@character, @gameState, @item) ->
@@ -77,6 +77,7 @@ define [
         commit: ->
             removed_item = @character.removeItemFromInventory(@item)
             @character.getCell().addItem(removed_item)
+            console.debug @character.getCell().items
             return new CommitMetaData 2 ["#{@character.getName()} drops the #{removed_item.getName()}."]
 
 
