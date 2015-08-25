@@ -3,17 +3,12 @@ define [
     \control_interpreter
     \recursive_shadowcast
     \omniscient
-    \alphabetic_list
-    \unique_list
-    \bucket_list
-    \linked_list
     \inventory
     \types
     \util
     \config
 ], (Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
-    AlphabeticList, UniqueList, BucketList, LinkedList, Inventory, \
-    Types, Util, Config) ->
+    Inventory, Types, Util, Config) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid, @ui) ->
@@ -28,11 +23,6 @@ define [
 
             @autoMove = null
             @interpreter = new ControlInterpreter.ControlInterpreter this, @inputSource, @ui
-
-            @inventoryAlphabet = new AlphabeticList.AlphabeticList(
-                new LinkedList.LinkedList()
-            )
-
             @inventory = new Inventory.Inventory()
 
         addItemToInventory: (item) ->

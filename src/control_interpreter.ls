@@ -58,7 +58,6 @@ define [
                                 action = new Action.Take(@character, game_state, item)
                                 cb(action)
                 |   Types.Control.Inventory
-                        console.debug @character.inventory
                         @character.inventory.forEachMapping (ch, items) ->
                             Debug.assert(items.length > 0, "No items")
                             name = items[0].getName()

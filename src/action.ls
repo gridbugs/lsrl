@@ -77,7 +77,6 @@ define [
         commit: ->
             removed_item = @character.removeItemFromInventory(@item)
             @character.getCell().addItem(removed_item)
-            console.debug @character.getCell().items
             return new CommitMetaData 2 ["#{@character.getName()} drops the #{removed_item.getName()}."]
 
 

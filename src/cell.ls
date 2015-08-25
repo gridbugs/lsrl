@@ -4,12 +4,10 @@ define [
     \vec2
     \direction
     \item_collection
-    \unique_list
-    \linked_list
     \constants
     \types
     'prelude-ls'
-], (Tile,Util, Vec2, Direction, ItemCollection, UniqueList, LinkedList, Constants, Types, Prelude) ->
+], (Tile,Util, Vec2, Direction, ItemCollection, Constants, Types, Prelude) ->
 
     map = Prelude.map
 

@@ -79,6 +79,12 @@ define ->
             obj[x] = f(x)
         return obj
 
+    joinObject = (left, right) ->
+        obj = {}
+        for k, v of right
+            obj[k] = left[v]
+        return obj
+
     {
         isInt
         makeEnum
@@ -102,4 +108,5 @@ define ->
         enumerate
         enumerateDefined
         objectKeyedByArray
+        joinObject
     }

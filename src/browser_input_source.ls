@@ -1,12 +1,11 @@
 define [
-    \util
-], (util) ->
+    \input_source
+    \keymap
+], (InputSource, Keymap) ->
 
-    class BrowserInputSource
-        (keys) ->
-            @keymap = keys
-            @currentCallback = null
-            @dirty = false
+    class BrowserInputSource extends InputSource.InputSource
+        (@convert = Keymap.convertFromQwerty) ->
+            super()
 
             $(window).keydown (e) ~>
                 if @currentCallback?
@@ -14,22 +13,14 @@ define [
                     @currentCallback = null
                     key = String.fromCharCode e.keyCode
                     if e.shiftKey
-                        ch = key.toUpperCase!
+                        ch = key.toUpperCase()
                     else
-                        ch = key.toLowerCase!
-
-                    tmp ch
+                        ch = key.toLowerCase()
+                    
+                    tmp(@convert(ch))
                 else
                     @dirty = true
 
-
-
-        getControl: (cb) ~>
-            @getChar (c) ~>
-                cb @keymap[c]
-
-        getChar: (cb) ~>
-            @dirty = false
-            @currentCallback = cb
-
-    { BrowserInputSource }
+    {
+        BrowserInputSource
+    }

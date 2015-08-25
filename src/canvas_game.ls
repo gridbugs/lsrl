@@ -11,16 +11,18 @@ define [
         #Math.seedrandom 0
 
         drawer = new CanvasDrawer.CanvasDrawer $('#canvas')[0], 120, 40
-        Util.setDrawer drawer
+        Util.setDrawer(drawer)
 
         if window.location.hash == '#qwerty'
-            keys = Keymap.Qwerty
+            convert = Keymap.convertFromQwerty
         else
-            keys = Keymap.Dvorak
+            convert = Keymap.convertFromDvorak
 
-        input = new BrowserInputSource.BrowserInputSource keys
+        input = new BrowserInputSource.BrowserInputSource(convert)
 
-        game = new GameCommon.GameCommon drawer, input
-        game.start!
+        game = new GameCommon.GameCommon(drawer, input)
+        game.start()
 
-    { main }
+    {
+        main
+    }

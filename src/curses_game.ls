@@ -11,16 +11,19 @@ define [
 
         #Math.seedrandom 0
 
-        drawer = new CursesDrawer.CursesDrawer!
-        Util.setDrawer drawer
+        drawer = new CursesDrawer.CursesDrawer()
+        Util.setDrawer(drawer)
 
-        input = new CursesInputSource.CursesInputSource drawer.gameWindow, Keymap.Dvorak
+        convert = Keymap.convertFromDvorak
+        input = new CursesInputSource.CursesInputSource(drawer.gameWindow, convert)
 
-        process.on 'SIGINT' drawer.cleanup
-        process.on 'exit'   drawer.cleanup
+        process.on('SIGINT', drawer.cleanup)
+        process.on('exit', drawer.cleanup)
 
-        drawer.gameWindow.top!
-        game = new GameCommon.GameCommon drawer, input
-        game.start!
+        drawer.gameWindow.top()
+        game = new GameCommon.GameCommon(drawer, input)
+        game.start()
 
-    { main }
+    {
+        main
+    }

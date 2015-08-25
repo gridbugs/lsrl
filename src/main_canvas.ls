@@ -6,5 +6,5 @@ requirejs.config {
 
 requirejs [
     \canvas_game
-], (canvas_game) ->
-    canvas_game.main!
+], (CanvasGame) ->
+    CanvasGame.main()

@@ -1,66 +1,96 @@
 define [
     \control
-], (Control) ->
+    \util
+], (Control, Util) ->
 
-    Controls = Control.Controls
+    const DvorakKeys = {
+        a: \a
+        x: \b
+        j: \c
+        e: \d
+        '.': \e
+        u: \f
+        i: \g
+        d: \h
+        c: \i
+        h: \j
+        t: \k
+        n: \l
+        m: \m
+        b: \n
+        r: \o
+        l: \p
+        "'": \q
+        p: \r
+        o: \s
+        y: \t
+        g: \u
+        k: \v
+        ',': \w
+        q: \x
+        f: \y
+        ';': \z
+        A: \A
+        X: \B
+        J: \C
+        E: \D
+        '>': \E
+        U: \F
+        I: \G
+        D: \H
+        C: \I
+        H: \J
+        T: \K
+        N: \L
+        M: \M
+        B: \N
+        R: \O
+        L: \P
+        '"': \Q
+        P: \R
+        O: \S
+        Y: \T
+        G: \U
+        K: \V
+        '<': \W
+        Q: \X
+        F: \Y
+        ':': \Z
+    }
+    
+    convertFromDvorak = (c) -> DvorakKeys[c]
+    convertFromQwerty = (c) -> c
 
-    const Dvorak = {
-        d: Controls.West
-        h: Controls.South
-        t: Controls.North
-        n: Controls.East
-        f: Controls.NorthWest
-        g: Controls.NorthEast
-        x: Controls.SouthWest
-        b: Controls.SouthEast
-        D: Controls.AutoWest
-        H: Controls.AutoSouth
-        T: Controls.AutoNorth
-        N: Controls.AutoEast
-        F: Controls.AutoNorthWest
-        G: Controls.AutoNorthEast
-        X: Controls.AutoSouthWest
-        B: Controls.AutoSouthEast
-        r: Controls.AutoExplore
-        Q: Controls.NavigateToCell
-        '\r': Controls.Accept
-        '\n': Controls.Accept
-        (String.fromCharCode(27)): Controls.Escape
-        q: Controls.Examine
-        i: Controls.Get
-        e: Controls.Drop
-        c: Controls.Inventory
+    const Controls = Util.joinObject Control.Controls, {
+        h: \West
+        j: \South
+        k: \North
+        l: \East
+        y: \NorthWest
+        u: \NorthEast
+        b: \SouthWest
+        n: \SouthEast
+        H: \AutoWest
+        J: \AutoSouth
+        K: \AutoNorth
+        L: \AutoEast
+        Y: \AutoNorthWest
+        U: \AutoNorthEast
+        B: \AutoSouthWest
+        N: \AutoSouthEast
+        o: \AutoExplore
+        X: \NavigateToCell
+        '\r': \Accept
+        '\n': \Accept
+        (String.fromCharCode(27)): \Escape
+        x: \Examine
+        g: \Get
+        d: \Drop
+        i: \Inventory
     }
 
-
-    const Qwerty =
-        h: Controls.West
-        j: Controls.South
-        k: Controls.North
-        l: Controls.East
-        y: Controls.NorthWest
-        u: Controls.NorthEast
-        b: Controls.SouthWest
-        n: Controls.SouthEast
-        H: Controls.AutoWest
-        J: Controls.AutoSouth
-        K: Controls.AutoNorth
-        L: Controls.AutoEast
-        Y: Controls.AutoNorthWest
-        U: Controls.AutoNorthEast
-        B: Controls.AutoSouthWest
-        N: Controls.AutoSouthEast
-        o: Controls.AutoExplore
-        X: Controls.NavigateToCell
-        '\r': Controls.Accept
-        '\n': Controls.Accept
-        (String.fromCharCode(27)): Controls.Escape
-        x: Controls.Examine
-        g: Controls.Get
-        d: Controls.Drop
-        i: Controls.Inventory
-
     {
-        Dvorak
-        Qwerty
+        Controls
+        convertFromQwerty
+        convertFromDvorak
     }
