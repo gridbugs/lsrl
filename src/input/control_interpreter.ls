@@ -104,7 +104,7 @@ define [
 
                 result = Search.findPath @character.getKnowledgeCell(), \
                     ((c, d) -> c.game_cell.getMoveOutCost d), \
-                    ((c) -> c.known and c.fixture.type != Types.Fixture.Wall), \
+                    ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
                     dest_cell
 
                 if result?

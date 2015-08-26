@@ -4,10 +4,12 @@ define [
     'canvas/input/browser_input_source'
     'input/keymap'
     'util'
-], (GameCommon, CanvasDrawer, BrowserInputSource, Keymap, Util) ->
+    'config'
+], (GameCommon, CanvasDrawer, BrowserInputSource, Keymap, Util, Config) ->
     main = ->
 
-        #Math.seedrandom 0
+        if Config.RANDOM_SEED?
+            Math.seedrandom(Config.RANDOM_SEED)
 
         drawer = new CanvasDrawer.CanvasDrawer $('#canvas')[0], 120, 40
         Util.setDrawer(drawer)

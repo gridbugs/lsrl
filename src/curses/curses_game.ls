@@ -4,11 +4,13 @@ define [
     'curses/input/curses_input_source'
     'input/keymap'
     'util'
-], (GameCommon, CursesDrawer, CursesInputSource, Keymap, Util) ->
+    'config'
+], (GameCommon, CursesDrawer, CursesInputSource, Keymap, Util, Config) ->
 
     main = ->
 
-        #Math.seedrandom 0
+        if Config.RANDOM_SEED?
+            Math.seedrandom(Config.RANDOM_SEED)
 
         drawer = new CursesDrawer.CursesDrawer()
         Util.setDrawer(drawer)

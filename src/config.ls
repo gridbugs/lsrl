@@ -8,4 +8,5 @@ define [
         FAST_ANIMATION: false
         AUTOEXPLORE_ALL: false
         RUN_TEST: false
+        RANDOM_SEED: void
     }
