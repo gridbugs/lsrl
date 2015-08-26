@@ -1,4 +1,5 @@
-define ->
+define [
+], ->
     isInt = (x) -> x % 1 == 0
     getRandomElement = (arr) -> arr[parseInt(Math.random()*arr.length)]
     makeEnum = (arr) ->

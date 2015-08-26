@@ -1,5 +1,5 @@
 define [
-    \util
+    'util'
 ], (Util) ->
 
     const Tile = Util.enum [
