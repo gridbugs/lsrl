@@ -66,6 +66,7 @@ define [
         \Get
         \Drop
         \Inventory
+        \Test
     ]
 
     const Item = Util.enum [

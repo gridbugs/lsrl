@@ -34,6 +34,7 @@ define [
     Controls.Get = Control 'Get', Types.Control.Get
     Controls.Drop = Control 'Drop', Types.Control.Drop
     Controls.Inventory = Control 'Inventory', Types.Control.Inventory
+    Controls.Test = Control 'Test', Types.Control.Test
 
     {
         Controls

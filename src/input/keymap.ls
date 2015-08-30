@@ -93,6 +93,7 @@ define [
         g: \Get
         d: \Drop
         i: \Inventory
+        t: \Test
     }
 
     {

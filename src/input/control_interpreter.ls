@@ -80,7 +80,12 @@ define [
                         else
                             Util.printDrawer "You aren't carrying any such item."
                             @character.getAction game_state, cb
-
+                |   Types.Control.Test
+                        Util.printDrawer "Enter a string:"
+                        Util.drawer.readLine (line) ~>
+                            Util.printDrawer "You entered: #{line}"
+                            @character.name = line
+                            @character.getAction game_state, cb
 
         chooseInventoryItem: (cb) ->
             @inputSource.getChar (char) ~>

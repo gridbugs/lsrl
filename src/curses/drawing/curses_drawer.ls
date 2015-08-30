@@ -31,7 +31,7 @@ define [
             @gameWindow = new Ncurses.Window(40, 120, 0, 0)
             @hudWindow = new Ncurses.Window(47, 40, 0, 122)
             @logWindow = new Ncurses.Window(6, 120, 41, 0)
-            @logWindow.scrollok true
+            @logWindow.scrollok(true)
             Ncurses.showCursor = false
             Ncurses.echo = false
             Ncurses.setEscDelay 0
@@ -155,9 +155,34 @@ define [
 
             @gameWindow.refresh!
 
-
         print: (str) ->
             @logWindow.addstr("#{str}\n\r")
             @logWindow.refresh!
 
-    { CursesDrawer }
+        readLine: (f) ->
+            Ncurses.showCursor = true
+            @logWindow.top()
+            @logWindow.refresh()
+            str = ""
+            @onInputChar @logWindow, (c) ~>
+                if c == '\n'
+                    Ncurses.showCursor = false
+                    @gameWindow.top()
+                    @gameWindow.refresh()
+                    @onInputChar(@logWindow, (->))
+                    @logWindow.addstr(c)
+                    @logWindow.refresh()
+                    f(str)
+                else
+                    str += c
+                    @logWindow.addstr(c)
+                    @logWindow.refresh()
+
+        onInputChar: (w, f) ->
+            w.on 'inputChar', f
+
+
+
+    {
+        CursesDrawer
+    }

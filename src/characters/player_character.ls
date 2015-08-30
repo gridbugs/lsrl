@@ -25,11 +25,7 @@ define [
             @interpreter = new ControlInterpreter.ControlInterpreter this, @inputSource, @ui
             @inventory = new Inventory.Inventory()
 
-        addItemToInventory: (item) ->
-            return @inventory.insertItem(item)
-
-        removeItemFromInventory: (item) ->
-            return @inventory.removeItem(item)
+            @name = "The player"
 
         forEachEffect: (f) ->
             for e in @effects
@@ -39,7 +35,7 @@ define [
         getCell: -> @grid.getCart @position
         getKnowledgeCell: -> @knowledge.grid.getCart @position
 
-        getName: -> "The player"
+        getName: -> @name
 
         canSeeThrough: (cell) ->
             cell.fixture.type != Types.Fixture.Wall
