@@ -48,7 +48,7 @@ define [
 
                             if kcell.game_cell.items.length() > 0
                                 kcell.game_cell.items.forEachItemType (_, items) ->
-                                    Util.printDrawer "#{items.length} #{items[0].getName()}"
+                                    Util.printDrawer "#{items.length()} #{items.first().getName()}"
 
                             @character.getAction game_state, cb
                 |   Types.Control.Get
@@ -59,23 +59,23 @@ define [
                             @character.getAction game_state, cb
                         else
                             @chooseItem cell, (item) ~>
-                                action = new Action.Take(@character, game_state, item)
+                                action = new Action.Take(@character, game_state, item.getGroupId(), 1)
                                 cb(action)
                 |   Types.Control.Inventory
                         @character.inventory.forEachMapping (ch, items) ->
-                            Debug.assert(items.length > 0, "No items")
-                            name = items[0].getName()
-                            if items.length == 1
+                            Debug.assert(items.length() > 0, "No items")
+                            name = items.first().getName()
+                            if items.length() == 1
                                 Util.printDrawer "#{ch}: #{name}"
-                            else if items.length > 1
-                                Util.printDrawer "#{ch}: #{items.length} x #{name}"
+                            else if items.length() > 1
+                                Util.printDrawer "#{ch}: #{items.length()} x #{name}"
 
                         @character.getAction game_state, cb
                 |   Types.Control.Drop
                     Util.printDrawer "Select item to drop:"
                     @chooseInventoryItem (item) ~>
                         if item?
-                            action = new Action.Drop(@character, game_state, item)
+                            action = new Action.Drop(@character, game_state, item.getGroupId(), 1)
                             cb(action)
                         else
                             Util.printDrawer "You aren't carrying any such item."
@@ -84,9 +84,9 @@ define [
 
         chooseInventoryItem: (cb) ->
             @inputSource.getChar (char) ~>
-                item = @character.inventory.getGroupByChar(char)
+                item = @character.inventory.getGroupByLetter(char)
                 if item?
-                    cb(item[0])
+                    cb(item.first())
                 else
                     cb(void)
 

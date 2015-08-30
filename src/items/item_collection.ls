@@ -1,12 +1,13 @@
 define [
     'structures/avl_tree'
     'structures/group_tree'
+    'structures/linked_list'
     'debug'
-], (AvlTree, GroupTree, Debug) ->
+], (AvlTree, GroupTree, LinkedList, Debug) ->
 
     class ItemCollection
         ->
-            @items = new GroupTree.GroupTree(new AvlTree.AvlTree())
+            @items = new GroupTree.GroupTree(new AvlTree.AvlTree(), LinkedList.LinkedList)
 
         length: -> @items.length
 
@@ -28,13 +29,8 @@ define [
             @items.insert(item.getGroupId(), item)
 
         insertItems: (items) ->
-            if items.length > 0
-                key = items[0].getGroupId()
-                for i in items
-                    @preAddItem(i)
-                    Debug.assert(i.getGroupId() == key)
-
-                @items.insertGroup(key, items)
+            items.forEach (item) ~>
+                @insertItem(item)
 
         forEachItem: (f) -> @items.forEach(f)
         forEachItemType: (f) -> @items.forEachGroupPair(f)

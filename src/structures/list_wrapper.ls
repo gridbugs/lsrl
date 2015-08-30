@@ -4,6 +4,8 @@ define [
     class ListWrapper
         (@list) ->
 
+        push: (x) -> @list.push(x)
+        pop: -> @list.pop()
         length: -> @list.length()
         empty: -> @list.empty()
         first: -> @list.first()
@@ -15,6 +17,8 @@ define [
         removeAllSattisfying: (p) -> @list.removeAllSatisfying(p)
         removeElement: (e) -> @list.removeElement(e)
         toArray: -> @list.toArray()
+        take: (n) -> @list.take(n)
+        extend: (s) -> @list.extend(s)
 
     {
         ListWrapper

@@ -18,9 +18,41 @@ define [
         firstNode: -> @head
         first: -> @head.data
 
+        # Adds an element to the start of the list
+        push: (x) -> @insert(x)
+
+        # Removes and returns the element at the start of the list
+        pop: ->
+            if not @head?
+                return void
+
+            --@__length
+            ret = @head.data
+            @head = @head.next
+            if @head?
+                @head.prev = void
+
+            return ret
+
+        # Returns a new linked list containing the first n elements
+        # from this list, removing them from this list. If n is greater
+        # than the length of this list, all elements are removed from
+        # this and returned in a new list. Order of elements is not
+        # specified.
+        take: (n) ->
+            ret = new LinkedList()
+            while n != 0 and @__length != 0
+                --n
+                ret.push(@pop())
+            return ret
+
         insert: (x) ->
             # Insert x at the start of the list
             @insertNode(new LinkedListNode(x))
+
+        extend: (s) ->
+            s.forEach (x) ~>
+                @insert(x)
 
         insertNode: (n) ->
             ++@__length
