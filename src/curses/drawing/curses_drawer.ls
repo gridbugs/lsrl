@@ -48,7 +48,12 @@ define [
                 Ncurses.colorPair v, k, CursesTile.ColourType.Black
 
             Ncurses.colorPair SelectColourPair, CursesTile.ColourType.Black, CursesTile.ColourType.Yellow
-            @gameWindow.top!
+            
+            @logWindowCallback = (->)
+            @logWindow.on 'inputChar', (c, k) ~>
+                @logWindowCallback(c, k)
+
+            @gameWindow.top()
 
         getGameWindow: -> @gameWindow
 
@@ -159,29 +164,37 @@ define [
             @logWindow.addstr("#{str}\n\r")
             @logWindow.refresh!
 
-        readLine: (f) ->
+        readLineFiltered: (filter, callback) ->
             Ncurses.showCursor = true
             @logWindow.top()
             @logWindow.refresh()
             str = ""
-            @onInputChar @logWindow, (c) ~>
+            
+            @logWindowCallback = (c, k) ~>
                 if c == '\n'
                     Ncurses.showCursor = false
                     @gameWindow.top()
                     @gameWindow.refresh()
-                    @onInputChar(@logWindow, (->))
+                    @logWindowCallback = (->)
                     @logWindow.addstr(c)
                     @logWindow.refresh()
-                    f(str)
+                    callback(str)
+                else if k == 127
+                    str := str.slice(0, str.length - 1)
+                    @logWindow.cursor(@logWindow.cury, @logWindow.curx - 1)
+                    @logWindow.delch()
+                    @logWindow.refresh()
                 else
-                    str += c
-                    @logWindow.addstr(c)
-                    @logWindow.refresh()
+                    if filter(c)
+                        str += c
+                        @logWindow.addstr(c)
+                        @logWindow.refresh()
 
-        onInputChar: (w, f) ->
-            w.on 'inputChar', f
+        readLine: (callback) ->
+            @readLineFiltered(->true, callback)
 
-
+        readInt: (callback) ->
+            @readLineFiltered(((c) -> not isNaN(parseInt(c))), ((line) -> callback(parseInt(line))))
 
     {
         CursesDrawer

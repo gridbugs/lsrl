@@ -80,7 +80,7 @@ define [
             items = @character.inventory.removeItemsByGroupId(@groupId, @numItems)
             @character.getCell().items.insertItems(items)
 
-            return new CommitMetaData 2 ["#{@character.getName()} drops the #{items.first().getName()}."]
+            return new CommitMetaData 2 ["#{@character.getName()} drops #{@numItems} x #{items.first().getName()}."]
 
 
     {

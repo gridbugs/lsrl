@@ -73,25 +73,34 @@ define [
                         @character.getAction game_state, cb
                 |   Types.Control.Drop
                     Util.printDrawer "Select item to drop:"
-                    @chooseInventoryItem (item) ~>
-                        if item?
-                            action = new Action.Drop(@character, game_state, item.getGroupId(), 1)
-                            cb(action)
+                    @chooseInventoryItem (items) ~>
+                        if items?
+
+                            if items.length() > 1
+                                Util.printDrawer "How many?"
+                                Util.drawer.readInt (i) ~>
+                                    if i > items.length()
+                                        Util.printDrawer "You don't have that many. Dropping #{items.length()}."
+                                        i = items.length()
+                                    action = new Action.Drop(@character, game_state, items.groupId, i)
+                                    cb(action)
+                            else
+                                action = new Action.Drop(@character, game_state, items.groupId, 1)
+                                cb(action)
                         else
                             Util.printDrawer "You aren't carrying any such item."
                             @character.getAction game_state, cb
                 |   Types.Control.Test
                         Util.printDrawer "Enter a string:"
-                        Util.drawer.readLine (line) ~>
-                            Util.printDrawer "You entered: #{line}"
-                            @character.name = line
+                        Util.drawer.readInt (i) ~>
+                            Util.printDrawer "You entered: #{i}"
                             @character.getAction game_state, cb
 
         chooseInventoryItem: (cb) ->
             @inputSource.getChar (char) ~>
                 item = @character.inventory.getGroupByLetter(char)
                 if item?
-                    cb(item.first())
+                    cb(item)
                 else
                     cb(void)
 
