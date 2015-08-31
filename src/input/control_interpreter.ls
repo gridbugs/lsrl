@@ -78,7 +78,7 @@ define [
 
                             if items.length() > 1
                                 Util.printDrawer "How many?"
-                                Util.drawer.readInt (i) ~>
+                                Util.drawer.readInt items.length(), (i) ~>
                                     if i > items.length()
                                         Util.printDrawer "You don't have that many. Dropping #{items.length()}."
                                         i = items.length()
@@ -92,9 +92,11 @@ define [
                             @character.getAction game_state, cb
                 |   Types.Control.Test
                         Util.printDrawer "Enter a string:"
-                        Util.drawer.readInt (i) ~>
+                        Util.drawer.readLine 'name', (i) ~>
                             Util.printDrawer "You entered: #{i}"
                             @character.getAction game_state, cb
+                |   _
+                        @character.getAction game_state, cb
 
         chooseInventoryItem: (cb) ->
             @inputSource.getChar (char) ~>

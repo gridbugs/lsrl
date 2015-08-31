@@ -164,11 +164,12 @@ define [
             @logWindow.addstr("#{str}\n\r")
             @logWindow.refresh!
 
-        readLineFiltered: (filter, callback) ->
+        readLineFiltered: (initial, filter, callback) ->
             Ncurses.showCursor = true
             @logWindow.top()
+            str = initial
+            @logWindow.addstr(str)
             @logWindow.refresh()
-            str = ""
             
             @logWindowCallback = (c, k) ~>
                 if c == '\n'
@@ -190,11 +191,21 @@ define [
                         @logWindow.addstr(c)
                         @logWindow.refresh()
 
-        readLine: (callback) ->
-            @readLineFiltered(->true, callback)
+        readLine: (default_string, callback) ->
+            if not callback?
+                callback = default_string
+                default_string = ""
 
-        readInt: (callback) ->
-            @readLineFiltered(((c) -> not isNaN(parseInt(c))), ((line) -> callback(parseInt(line))))
+            @readLineFiltered(default_string, ->true, callback)
+
+        readInt: (default_int, callback) ->
+            if callback?
+                default_string = "#{default_int}"
+            else
+                callback = default_int
+                default_string = ""
+
+            @readLineFiltered(default_string, ((c) -> not isNaN(parseInt(c))), ((line) -> callback(parseInt(line))))
 
     {
         CursesDrawer
