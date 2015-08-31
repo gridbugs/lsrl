@@ -14,7 +14,7 @@ define [
     const UnseenColour = CanvasTile.UnseenColour
 
     class CanvasDrawer
-        (@canvas, @numCols, @numRows) ->
+        (@canvas, @numCols, @numRows, @input) ->
             @ctx = @canvas.getContext '2d'
             @ctx.font = "#{FONT_SIZE}px Monospace"
             @cellWidth = @ctx.measureText('@').width + HORIZONTAL_PADDING
@@ -127,6 +127,39 @@ define [
             log.innerHTML += "#{str}<br/>"
             log.scrollTop = log.scrollHeight
 
+        readLineInternal: (initial, callback) ->
+            $field = $("<input class='readline'>")
+            $('#log').append($field)
+            $field.val(initial)
+
+            document.onkeyup = ->
+                $field.focus()
+
+            $field.keypress (e) ~>
+                if e.keyCode == 13
+                    document.onkeyup = (->)
+                    result = $field.val()
+                    $field.remove()
+                    @print result
+                    callback(result)
+
+        readLine: (default_string, callback) ->
+            if not callback?
+                callback = default_string
+                default_string = ""
+
+            @readLineInternal(default_string, callback)
+
+        readInt: (default_int, callback) ->
+            if callback?
+                default_string = "#{default_int}"
+            else
+                callback = default_int
+                default_string = ""
+            
+            @readLineInternal(default_string, (result) ->
+                callback(parseInt(result))
+            )
 
     {
         CanvasDrawer

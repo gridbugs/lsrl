@@ -10,16 +10,16 @@ define [
 
         if Config.RANDOM_SEED?
             Math.seedrandom(Config.RANDOM_SEED)
-
-        drawer = new CanvasDrawer.CanvasDrawer $('#canvas')[0], 120, 40
-        Util.setDrawer(drawer)
-
+        
         if window.location.hash == '#qwerty'
             convert = Keymap.convertFromQwerty
         else
             convert = Keymap.convertFromDvorak
 
+
         input = new BrowserInputSource.BrowserInputSource(convert)
+        drawer = new CanvasDrawer.CanvasDrawer($('#canvas')[0], 120, 40, input)
+        Util.setDrawer(drawer)
 
         game = new GameCommon.GameCommon(drawer, input)
         game.start()
