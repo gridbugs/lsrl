@@ -1,39 +1,19 @@
 define [
-    'types'
-    'structures/vec2'
-    'structures/direction'
-    'util'
-], (Types, Vec2, Direction, Util) ->
+], ->
 
     class UserInterface
-        (@inputSource, @drawer) ->
-            @selectedPosition = null
-
-        selectCell: (start_coord, character, game_state, cb) ->
-            @selectedPosition = start_coord
-            @selectCellLoop(character, game_state, cb)
-
-        selectCellLoop: (character, game_state, cb) ->
-            @drawer.drawCellSelectOverlay character, game_state, @selectedPosition
-            @inputSource.getControl (control) ~>
-                if not control?
-                    @selectCellLoop(character, game_state, cb)
-                    return
-
-                if control.type == Types.Control.Direction
-                    change = Direction.Vectors[control.direction]
-                    @selectedPosition = @selectedPosition.add(change)
-                    @selectCellLoop(character, game_state, cb)
-                else if control.type == Types.Control.Accept
-                    @drawer.drawCharacterKnowledge character, game_state
-                    cb @selectedPosition
-                else if control.type == Types.Control.Escape
-                    @drawer.drawCharacterKnowledge character, game_state
-                    cb null
-                else
-                    @selectCellLoop(character, game_state, cb)
-
+        (@gameDrawer, @gameController, @gameConsole) ->
 
     {
-        UserInterface
+        setUserInterface: (gameDrawer, gameController, gameConsole) ->
+            @Global = new UserInterface(gameDrawer, gameController, gameConsole)
+
+            bind = (obj, name) ->  obj[name].bind(obj)
+
+            @readInteger = bind(@Global.gameConsole, 'readInteger')
+            @readString = bind(@Global.gameConsole, 'readString')
+            @print = bind(@Global.gameConsole, 'print')
+            @printLine = bind(@Global.gameConsole, 'printLine')
+            @clearLine = bind(@Global.gameConsole, 'clearLine')
+            @newLine = bind(@Global.gameConsole, 'newLine')
     }

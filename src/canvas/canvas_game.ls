@@ -4,14 +4,15 @@ define [
     'canvas/input/browser_input_source'
     'canvas/console/console'
     'input/keymap'
+    'input/user_interface'
     'util'
     'config'
-], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, Util, Config) ->
+], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, UserInterface, Util, Config) ->
     main = ->
 
         if Config.RANDOM_SEED?
             Math.seedrandom(Config.RANDOM_SEED)
-        
+
         if window.location.hash == '#qwerty'
             convert = Keymap.convertFromQwerty
         else
@@ -20,7 +21,11 @@ define [
 
         input = new BrowserInputSource.BrowserInputSource(convert)
         drawer = new CanvasDrawer.CanvasDrawer($('#canvas')[0], 120, 40, input)
-        Util.setDrawer(drawer)
+        game_console = new Console.Console($('#log'))
+
+        UserInterface.setUserInterface(drawer, input, game_console)
+
+        Util.setUi(UserInterface.Global)
 
         game = new GameCommon.GameCommon(drawer, input)
         game.start()

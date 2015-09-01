@@ -1,9 +1,10 @@
 define [
+    'input/user_interface'
     'tests/test'
     'util'
     'config'
     'debug'
-], (Test, Util, Config, Debug) ->
+], (UserInterface, Test, Util, Config, Debug) ->
 
     class GameCommon
         (drawer, input_source) ->
@@ -42,7 +43,7 @@ define [
             action_source.getAction @gameState, (action) ~>
                 descriptions = @gameState.applyAction action
                 for desc in descriptions
-                    @drawer.print desc
+                    UserInterface.printLine desc
 
 
                 /* Get time until current action source (in game time) */

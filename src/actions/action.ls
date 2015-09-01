@@ -66,11 +66,10 @@ define [
             @events = []
 
         commit: ->
-            
             items = @character.getCell().items.removeItems(@groupId, @numItems)
             char = @character.inventory.insertItems(items)
 
-            return new CommitMetaData 2 ["#{@character.getName()} takes the #{items.first().getName()}(#{char})."]
+            return new CommitMetaData 2 ["#{@character.getName()} takes the #{items.first().getName()} (#{char})."]
 
     class Drop extends Action
         (@character, @gameState, @groupId, @numItems) ->
@@ -78,6 +77,8 @@ define [
 
         commit: ->
             items = @character.inventory.removeItemsByGroupId(@groupId, @numItems)
+            if items.length() == 0
+                return new CommitMetaData 1 ["You ponder the meaning of life as you drop no items."]
             @character.getCell().items.insertItems(items)
 
             return new CommitMetaData 2 ["#{@character.getName()} drops #{@numItems} x #{items.first().getName()}."]

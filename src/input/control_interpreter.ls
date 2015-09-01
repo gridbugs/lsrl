@@ -3,9 +3,10 @@ define [
     'input/auto_move'
     'types'
     'structures/search'
+    'input/user_interface'
     'util'
     'debug'
-], (Action, AutoMove, Types, Search, Util, Debug) ->
+], (Action, AutoMove, Types, Search, UserInterface, Util, Debug) ->
 
     class ControlInterpreter
         (@character, @inputSource, @ui) ->
@@ -20,7 +21,7 @@ define [
                         if action.toCell.fixture.type != Types.Fixture.Wall
                             cb action
                         else
-                            Util.printDrawer "Cannot move there."
+                            UserInterface.printLine "Cannot move there."
                             @character.getAction game_state, cb
                 |   Types.Control.AutoDirection
                         @character.setAutoMove(
@@ -35,27 +36,47 @@ define [
                 |   Types.Control.NavigateToCell
                         @navigateToCell(@character.position, game_state, cb)
                 |   Types.Control.Examine
+                        UserInterface.newLine()
                         @ui.selectCell @character.position, @character, game_state, (coord) ~>
+                            UserInterface.clearLine()
+                            if not coord?
+                                @character.getAction game_state, cb
+                                return
+
                             kcell = @character.knowledge.grid.getCart(coord)
-                            Util.printDrawer "You see here:"
+                            UserInterface.printLine "You see here:"
                             if kcell.fixture.type == Types.Fixture.Null
                                 switch (kcell.ground.type)
-                                |   Types.Ground.Dirt => Util.printDrawer "Dirt floor"
+                                |   Types.Ground.Dirt => UserInterface.printLine "Dirt floor"
                             else
                                 switch (kcell.fixture.type)
-                                |   Types.Fixture.Wall => Util.printDrawer "A wall"
-                                |   Types.Fixture.Web => Util.printDrawer "A spider web"
+                                |   Types.Fixture.Wall => UserInterface.printLine "A wall"
+                                |   Types.Fixture.Web => UserInterface.printLine "A spider web"
 
                             if kcell.game_cell.items.length() > 0
                                 kcell.game_cell.items.forEachItemType (_, items) ->
-                                    Util.printDrawer "#{items.length()} #{items.first().getName()}"
+                                    UserInterface.printLine "#{items.length()} #{items.first().getName()}"
 
                             @character.getAction game_state, cb
+
+                        , (coord) ~>
+                            UserInterface.clearLine()
+                            kcell = @character.knowledge.grid.getCart(coord)
+                            if kcell.fixture.type == Types.Fixture.Null
+                                switch (kcell.ground.type)
+                                |   Types.Ground.Dirt => UserInterface.print "Dirt floor"
+                            else
+                                switch (kcell.fixture.type)
+                                |   Types.Fixture.Wall => UserInterface.print "A wall"
+                                |   Types.Fixture.Web => UserInterface.print "A spider web"
+
+
+
                 |   Types.Control.Get
                         cell = @character.getCell()
 
                         if cell.items.empty()
-                            Util.printDrawer "You see no items here."
+                            UserInterface.printLine "You see no items here."
                             @character.getAction game_state, cb
                         else
                             @chooseItem cell, (item) ~>
@@ -66,36 +87,36 @@ define [
                             Debug.assert(items.length() > 0, "No items")
                             name = items.first().getName()
                             if items.length() == 1
-                                Util.printDrawer "#{ch}: #{name}"
+                                UserInterface.printLine "#{ch}: #{name}"
                             else if items.length() > 1
-                                Util.printDrawer "#{ch}: #{items.length()} x #{name}"
+                                UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
 
                         @character.getAction game_state, cb
                 |   Types.Control.Drop
-                    Util.printDrawer "Select item to drop:"
+                    UserInterface.printLine "Select item to drop:"
                     @chooseInventoryItem (items) ~>
                         if items?
-
                             if items.length() > 1
-                                Util.printDrawer "How many?"
-                                Util.drawer.readInt items.length(), (i) ~>
-                                    if i > items.length()
-                                        Util.printDrawer "You don't have that many. Dropping #{items.length()}."
-                                        i = items.length()
-                                    action = new Action.Drop(@character, game_state, items.groupId, i)
-                                    cb(action)
+                                UserInterface.print "How many? "
+                                num_items <~ UserInterface.readInteger(items.length())
+                                if num_items > items.length()
+                                    UserInterface.printLine "You don't have that many. Dropping #{items.length()}."
+                                    num_items = items.length()
+                                action = new Action.Drop(@character, game_state, items.groupId, num_items)
+                                cb(action)
                             else
                                 action = new Action.Drop(@character, game_state, items.groupId, 1)
                                 cb(action)
                         else
-                            Util.printDrawer "You aren't carrying any such item."
+                            UserInterface.printLine "You aren't carrying any such item."
                             @character.getAction game_state, cb
                 |   Types.Control.Test
-                        Util.printDrawer "Enter a string:"
-                        Util.drawer.readLine 'name', (i) ~>
-                            Util.printDrawer "You entered: #{i}"
+                        UserInterface.print "Enter a string: "
+                        UserInterface.readString "hello", (i) ~>
+                            UserInterface.printLine "You entered: #{i}"
                             @character.getAction game_state, cb
-                |   _
+
+                |   otherwise
                         @character.getAction game_state, cb
 
         chooseInventoryItem: (cb) ->
@@ -110,7 +131,7 @@ define [
             cb(cell.items.first())
 
         navigateToCell: (start_coord, game_state, cb) ->
-            Util.printDrawer "Select cell to move to."
+            UserInterface.printLine "Select cell to move to."
             @ui.selectCell start_coord, @character, game_state, (coord) ~>
                 if not coord?
                     @character.getAction(game_state, cb)
@@ -127,7 +148,7 @@ define [
                     @character.setAutoMove(new AutoMove.FollowPath(@character, result.directions))
                     @character.getAction game_state, cb
                 else
-                    Util.printDrawer "Can't reach selected cell."
+                    UserInterface.printLine "Can't reach selected cell."
                     @navigateToCell coord, game_state, cb
 
     {

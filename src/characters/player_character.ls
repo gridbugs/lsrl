@@ -4,11 +4,12 @@ define [
     'characters/recursive_shadowcast'
     'characters/omniscient'
     'characters/inventory'
+    'input/user_interface'
     'types'
     'util'
     'config'
 ], (Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
-    Inventory, Types, Util, Config) ->
+    Inventory, UserInterface, Types, Util, Config) ->
 
     class PlayerCharacter
         (@position, @inputSource, @grid, @ui) ->
@@ -47,14 +48,14 @@ define [
             if @autoMove?
 
                 if @inputSource.dirty
-                    Util.printDrawer "Key pressed. Cancelling auto move."
+                    UserInterface.printLine "Key pressed. Cancelling auto move."
                     @autoMove = null
                 else if @autoMove.hasAction!
                     @autoMove.getAction game_state, cb
                     return
                 else
                     @autoMove = null
-            
+
             @interpreter.getAction game_state, cb
 
         setAutoMove: (autoMove) ->

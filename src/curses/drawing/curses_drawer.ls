@@ -27,6 +27,7 @@ define [
 
     class CursesDrawer
         ->
+            @ncurses = Ncurses
             @stdscr = new Ncurses.Window!
             @gameWindow = new Ncurses.Window(40, 120, 0, 0)
             @hudWindow = new Ncurses.Window(47, 40, 0, 122)
@@ -48,7 +49,7 @@ define [
                 Ncurses.colorPair v, k, CursesTile.ColourType.Black
 
             Ncurses.colorPair SelectColourPair, CursesTile.ColourType.Black, CursesTile.ColourType.Yellow
-            
+
             @logWindowCallback = (->)
             @logWindow.on 'inputChar', (c, k) ~>
                 @logWindowCallback(c, k)
@@ -160,17 +161,13 @@ define [
 
             @gameWindow.refresh!
 
-        print: (str) ->
-            @logWindow.addstr("#{str}\n\r")
-            @logWindow.refresh!
-
         readLineFiltered: (initial, filter, callback) ->
             Ncurses.showCursor = true
             @logWindow.top()
             str = initial
             @logWindow.addstr(str)
             @logWindow.refresh()
-            
+
             @logWindowCallback = (c, k) ~>
                 if c == '\n'
                     Ncurses.showCursor = false
