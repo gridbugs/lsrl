@@ -134,10 +134,11 @@ define [
 
             document.onkeyup = ->
                 $field.focus()
+                $field.select()
+                document.onkeyup = (->)
 
             $field.keypress (e) ~>
                 if e.keyCode == 13
-                    document.onkeyup = (->)
                     result = $field.val()
                     $field.remove()
                     @print result
@@ -156,7 +157,7 @@ define [
             else
                 callback = default_int
                 default_string = ""
-            
+
             @readLineInternal(default_string, (result) ->
                 callback(parseInt(result))
             )
