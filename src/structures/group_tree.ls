@@ -1,7 +1,8 @@
 define [
     'structures/tree_wrapper'
+    'functional'
     'debug'
-], (TreeWrapper, Debug) ->
+], (TreeWrapper, Functional, Debug) ->
 
     class GroupTree extends TreeWrapper.TreeWrapper
         (@tree, @C) ->
@@ -10,31 +11,45 @@ define [
 
         top: -> super()?.first()
 
-        insert: (key, value) ->
-            ++@length
-            existing = @findGroupByKey(key)
-            if existing?
-                existing.push(value)
-                return existing
-            else
-                group = new @C()
-                group.push(value)
-                super(key, group)
-                return group
+        withExisting: (key, onTrue, onFalse) ->
+            Functional.ifExists(@~findGroupByKey, key, onTrue, onFalse)
+            
 
-        insertGroup: (key, group) ->
+        insert: (key, value, callback) ->
+            ++@length
+            ret = void
+            
+            @withExisting key, (existing) -> 
+                existing.push(value)
+                ret := existing
+            , ~> #else
+                group = new @C()
+                    ..push(value)
+                super(key, group)
+                ret := group
+
+            Debug.assert(ret?, "cannot return null")
+            callback?(ret)
+            return ret
+
+        insertGroup: (key, group, callback) ->
             @length += group.length()
-            existing = @findGroupByKey(key)
-            if existing?
+            ret = void
+
+            @withExisting key, (existing) ->
                 existing.extend(group)
-            else
+                ret := existing
+            , ~> #else
                 copy = new @C()
-                copy.extend(group)
+                    ..extend(group)
                 super(key, copy)
 
-        findGroupByKey: (key) ->
-            ret = @tree.findByKey(key)
+            Debug.assert(ret?, "cannot return null")
+            callback?(ret)
             return ret
+
+        findGroupByKey: (key, f) ->
+            return @tree.findByKey(key, f)
 
         deleteGroupByKey: (key) ->
             ret = @tree.deleteByKey(key)

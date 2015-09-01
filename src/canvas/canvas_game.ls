@@ -2,10 +2,11 @@ define [
     'common/game_common'
     'canvas/drawing/canvas_drawer'
     'canvas/input/browser_input_source'
+    'canvas/console/console'
     'input/keymap'
     'util'
     'config'
-], (GameCommon, CanvasDrawer, BrowserInputSource, Keymap, Util, Config) ->
+], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, Util, Config) ->
     main = ->
 
         if Config.RANDOM_SEED?

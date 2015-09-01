@@ -91,16 +91,17 @@ define [
         forEachPair: (f) -> @forEachNode (node) ->
             f(node.key, node.value)
 
-        findNodeByKey: (key) ->
+        findNodeByKey: (key, f) ->
             if key < @key
-                return @left?.findNodeByKey(key)
+                return @left?.findNodeByKey(key, f)
             else if key > @key
-                return @right?.findNodeByKey(key)
+                return @right?.findNodeByKey(key,  f)
             else
+                f(this)
                 return this
 
-        findByKey: (key) ->
-            @findNodeByKey(key)?.value
+        findByKey: (key, f) ->
+            @findNodeByKey(key, (node) -> f?(node.value))?.value
 
     class BinaryTree
         ->
@@ -133,7 +134,7 @@ define [
                 --@length
             return ret
 
-        findByKey: (key) -> @root?.findByKey(key)
+        findByKey: (key, f) -> @root?.findByKey(key, f)
         containsKey: (key) -> @findByKey(key)?
 
         empty: -> @root == void
