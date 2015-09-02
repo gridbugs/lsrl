@@ -66,7 +66,7 @@ define [
             @events = []
 
         commit: ->
-            items = @character.getCell().items.removeItems(@groupId, @numItems)
+            items = @character.getCell().items.removeItemsByGroupId(@groupId, @numItems)
             char = @character.inventory.insertItems(items)
 
             return new CommitMetaData 2 ["#{@character.getName()} takes the #{items.first().getName()} (#{char})."]

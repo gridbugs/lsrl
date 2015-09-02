@@ -2,16 +2,17 @@ define [
     'structures/vec2'
     'structures/direction'
     'items/item_collection'
+    'characters/inventory'
     'constants'
     'types'
-], (Vec2, Direction, ItemCollection, Constants, Types) ->
+], (Vec2, Direction, ItemCollection, Inventory, Constants, Types) ->
 
     class Cell
         (@x, @y) ->
             @position = Vec2.Vec2 @x, @y
             @ground = void
             @fixture = void
-            @items = new ItemCollection.ItemCollection()
+            @items = new Inventory.Inventory()
             @characters = []
             @centre = Vec2.Vec2 (@x+0.5), (@y+0.5)
             @corners = []

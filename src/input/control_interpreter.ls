@@ -78,10 +78,42 @@ define [
                     if cell.items.empty()
                         UserInterface.printLine "You see no items here."
                         @character.getAction game_state, cb
+                    else if cell.items.length() == 1
+                        action = new Action.Take(@character, game_state, cell.items.first().groupId, 1)
+                        cb(action)
+                    else if cell.items.numTypes() == 1
+                        UserInterface.print "How many? "
+                        num_items <~ UserInterface.readInteger(cell.items.length())
+                        action = new Action.Take(@character, game_state, cell.items.first().groupId, num_items)
+                        cb(action)
                     else
-                        @chooseItem cell, (item) ~>
-                            action = new Action.Take(@character, game_state, item.getGroupId(), 1)
-                            cb(action)
+                        UserInterface.printLine "Select item to pick up:"
+                        cell.items.forEachMapping (ch, items) ->
+                            Debug.assert(items.length() > 0, "No items")
+                            name = items.first().getName()
+                            if items.length() == 1
+                                UserInterface.printLine "#{ch}: #{name}"
+                            else if items.length() > 1
+                                UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
+                            
+
+                        @chooseItem cell, (group) ~>
+                            if group?
+                                console.debug(group)
+                                if group.length() > 1
+                                    UserInterface.print "How many? "
+                                    num_items <~ UserInterface.readInteger(group.length())
+                                    action = new Action.Take(@character, game_state, group.groupId, num_items)
+                                    cb(action)
+                                else
+                                    action = new Action.Take(@character, game_state, group.groupId, 1)
+                                    cb(action)
+
+                            else
+                                UserInterface.printLine "No such item!"
+                                @character.getAction game_state, cb
+
+
             |   Types.Control.Inventory
                     @character.inventory.forEachMapping (ch, items) ->
                         Debug.assert(items.length() > 0, "No items")
@@ -129,7 +161,12 @@ define [
                 cb(void)
 
         chooseItem: (cell, cb) ->
-            cb(cell.items.first())
+            char <~ UserInterface.getChar()
+            group = cell.items.getGroupByLetter(char)
+            if group?
+                cb(group)
+            else
+                cb(void)
 
         navigateToCell: (start_coord, game_state, cb) ->
             UserInterface.printLine "Select cell to move to."

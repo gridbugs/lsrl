@@ -11,6 +11,8 @@ define [
 
         top: -> super()?.first()
 
+        numGroups: -> @tree.length
+
         withExisting: (key, onTrue, onFalse) ->
             Functional.ifExists(@~findGroupByKey, key, onTrue, onFalse)
 
@@ -86,6 +88,14 @@ define [
                     @deleteGroupByKey(key)
 
                 @length -= ret.length()
+
+            return ret
+
+        deleteAmountFromGroup: (group, key, amount) ->
+            ret = group.take(amount)
+            @length -= ret.length()
+            if group.length() == 0
+                @deleteGroupByKey(key)
 
             return ret
 

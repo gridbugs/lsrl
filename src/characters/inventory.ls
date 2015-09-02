@@ -21,6 +21,14 @@ define [
             @map = Util.objectKeyedByArray(@letters)
             @numSlots = @letters.length
 
+        length: -> @items.length
+        first: -> @items.top()
+        empty: -> @items.empty()
+        numTypes: -> @items.numGroups()
+
+        forEachItem: (f) -> @items.forEach(f)
+        forEachItemType: (f) -> @items.forEachGroupPair(f)
+
         fillFreeSlot: (value) ->
             letter = @getFreeLetter()
             @fillSlot(letter, value)
@@ -66,15 +74,15 @@ define [
 
         removeItemsByGroupId: (id, num_items) ->
             group = @items.findGroupByKey(id)
+            console.debug group
             return @removeItemsFromGroup(group, num_items)
 
         removeItemsFromGroup: (group, num_items) ->
             Debug.assert(group.length() > 0, "Group is empty")
             Debug.assert(group.letter?, "Group has no letter")
-            ret = group.take(num_items)
+            ret = @items.deleteAmountFromGroup(group, group.groupId, num_items)
             Debug.assert(ret.length() > 0 || num_items == 0, "Ret is empty and num_items is not 0")
             if group.length() == 0
-                @items.deleteGroupByKey(group.groupId)
                 @clearSlot(group.letter)
 
             ret.forEach (x) ->
