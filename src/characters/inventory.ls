@@ -37,7 +37,7 @@ define [
                 if not @map[k]?
                     return k
             Debug.assert(false, "Out of slots!")
-        
+
         clearSlot: (letter) ->
             @map[letter] = void
 
@@ -52,7 +52,7 @@ define [
                 @fillSlot(letter, group)
 
             return group.letter
-        
+
         insertItems: (items) ->
             ret = void
             items.forEach (item) ~>
@@ -80,15 +80,15 @@ define [
             ret.forEach (x) ->
                 x.collection = void
             return ret
-        
+
         forEachMapping: (f) ->
             for l in @letters
                 v = @map[l]
                 if v?
                     f(l, v.list)
-        
+
         getGroupByLetter: (l) ->
-            return @map[l]?.list
+            return @map[l]
     {
         Inventory
     }

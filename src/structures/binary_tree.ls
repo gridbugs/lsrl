@@ -58,7 +58,6 @@ define [
                 @right.left = @left
                 return @right
 
-
         getDeletionReplacement: ->
             if @left?
                 if @right?
@@ -70,13 +69,13 @@ define [
             else
                 return void
 
-        deleteByKey: (key, with_node) ->
+        deleteNodeByKey: (key, callback) ->
             if key < @key
-                @left = @left?.deleteByKey(key, with_node)
+                @left = @left?.deleteNodeByKey(key, callback)
             else if key > @key
-                @right = @right?.deleteByKey(key, with_node)
+                @right = @right?.deleteNodeByKey(key, callback)
             else
-                with_node?(this)
+                callback?(this)
                 return @getDeletionReplacement()
 
             return this
@@ -91,17 +90,17 @@ define [
         forEachPair: (f) -> @forEachNode (node) ->
             f(node.key, node.value)
 
-        findNodeByKey: (key, f) ->
+        findNodeByKey: (key, callback) ->
             if key < @key
-                return @left?.findNodeByKey(key, f)
+                return @left?.findNodeByKey(key, callback)
             else if key > @key
-                return @right?.findNodeByKey(key,  f)
+                return @right?.findNodeByKey(key,  callback)
             else
-                f(this)
+                callback(this)
                 return this
 
-        findByKey: (key, f) ->
-            @findNodeByKey(key, (node) -> f?(node.value))?.value
+        findByKey: (key, callback) ->
+            @findNodeByKey(key, (node) -> callback?(node.value))?.value
 
     class BinaryTree
         ->
@@ -127,14 +126,16 @@ define [
         forEachKey: (f) -> @root?.forEachKey(f)
         forEach: (f) -> @root?.forEach(f)
 
-        deleteByKey: (key) ->
+        deleteByKey: (key, callback) ->
             ret = void
-            @root = @root?.deleteByKey(key, (node) -> ret := node.value)
-            if ret?
+            @root = @root?.deleteNodeByKey key, (node) ~>
+                ret := node.value
                 --@length
+            if ret?
+                callback?(ret)
             return ret
 
-        findByKey: (key, f) -> @root?.findByKey(key, f)
+        findByKey: (key, callback) -> @root?.findByKey(key, callback)
         containsKey: (key) -> @findByKey(key)?
 
         empty: -> @root == void

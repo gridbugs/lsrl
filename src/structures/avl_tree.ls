@@ -61,8 +61,8 @@ define [
             @update()
             return @rebalance()
 
-        deleteByKey: (key, with_node) ->
-            ret = super(key, with_node)
+        deleteByNodeKey: (key, callback) ->
+            ret = super(key, callback)
             if ret?
                 @update()
                 return ret.rebalance()

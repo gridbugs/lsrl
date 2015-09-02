@@ -13,13 +13,12 @@ define [
 
         withExisting: (key, onTrue, onFalse) ->
             Functional.ifExists(@~findGroupByKey, key, onTrue, onFalse)
-            
 
         insert: (key, value, callback) ->
             ++@length
             ret = void
-            
-            @withExisting key, (existing) -> 
+
+            @withExisting key, (existing) ->
                 existing.push(value)
                 ret := existing
             , ~> #else
@@ -51,12 +50,14 @@ define [
         findGroupByKey: (key, f) ->
             return @tree.findByKey(key, f)
 
-        deleteGroupByKey: (key) ->
-            ret = @tree.deleteByKey(key)
-            if ret?
+        deleteGroupByKey: (key, callback) ->
+            ret = void
+            do
+                value <~ @tree.deleteByKey(key)
+                callback?(value)
+                ret := value
                 @length -= ret.length()
-
-            Debug.assert(not @tree.containsKey(key), "Delete didn't work.")
+                Debug.assert(not @tree.containsKey(key), "Delete didn't work.")
 
             return ret
 
@@ -73,39 +74,42 @@ define [
         forEachGroup: (f) -> @tree.forEach(f)
         forEachGroupPair: (f) -> @tree.forEachPair(f)
 
-        deleteAmountByKey: (key, amount) ->
-            group = @findGroupByKey(key)
-            if group?
-                Debug.assert(group.length() > 0, "Group is empty")
-                ret = group.take(amount)
-                if group.length() == 0
+        deleteAmountByKey: (key, amount, callback) ->
+            ret = void
+
+            @withExisting key, (existing) ~>
+                Debug.assert(existing.length() > 0, "Group is empty")
+                ret := existing.take(amount)
+                callback?(ret)
+
+                if existing.length() == 0
                     @deleteGroupByKey(key)
 
                 @length -= ret.length()
-                return ret
-            else
-                return void
 
-        findByKey: (key) ->
-            group = @findGroupByKey(key)
-            if group?
-                Debug.assert(group.length() > 0, "Group is empty")
-                return group.first()
-            else
-                return void
+            return ret
 
-        deleteByKey: (key) ->
-            group = @findGroupByKey(key)
-            if group?
+        findByKey: (key, callback) ->
+            ret = void
+            do
+                group <~ @findGroupByKey(key)
                 Debug.assert(group.length() > 0, "Group is empty")
-                ret = group.pop()
-                if group.length() == 0
+                ret := group.first()
+                callback(ret)
+            return ret
+
+        deleteByKey: (key, callback) ->
+            ret = void
+
+            @withExisting key, (existing) ~>
+                Debug.assert(existing.length() > 0, "Group is empty")
+                ret := existing.pop()
+                if existing.length() == 0
                     @deleteGroupByKey(key)
 
                 --@length
-                return ret
-            else
-                return void
+
+            return ret
 
     {
         GroupTree
