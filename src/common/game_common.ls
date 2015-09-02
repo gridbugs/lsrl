@@ -7,24 +7,28 @@ define [
 ], (UserInterface, Test, Util, Config, Debug) ->
 
     class GameCommon
-        (drawer, input_source) ->
-            @gameDrawer = drawer
-            @inputSource = input_source
-            @gameState = @test!
-            @drawer = drawer
-            if Config.RUN_TEST
-                Util.printDebug "----- AVL Tree Test -------"
-                Test.avlTreeTest()
-                #Util.printDebug "----- Linked List Test -------"
-                #Test.linkedListTest()
+        (gameDrawer, gameController, gameConsole) ->
+            
+            UserInterface.setUserInterface(gameDrawer, gameController, gameConsole)
+            
+            if Config.RANDOM_SEED?
+                seed = Config.RANDOM_SEED
+            else
+                seed = new Date().getTime()
 
-        test: -> Test.test @gameDrawer, @inputSource
+            Util.printDebug "RNG Seed: #{seed}"
+            Math.seedrandom(seed)
+
+        test: -> Test.test()
+
         start: ->
+            @gameState = @test()
+
             if Config.DRAW_MAP_ONLY
                 return
 
-            @gameState.scheduleActionSource @gameState.playerCharacter, 10
-            @progressGameState!
+            @gameState.scheduleActionSource(@gameState.playerCharacter, 10)
+            @progressGameState()
 
         gameTimeToMs: (t) ->
             if Config.FAST_ANIMATION
@@ -33,12 +37,12 @@ define [
                 return t * 0.5
 
         progressGameState: ->
-            action_source = @gameState.getCurrentActionSource!
+            action_source = @gameState.getCurrentActionSource()
 
-            @gameState.progressSchedule!
+            @gameState.progressSchedule()
 
-            @gameState.playerCharacter.observe @gameState
-            @drawer.drawCharacterKnowledge @gameState.playerCharacter, @gameState
+            @gameState.playerCharacter.observe(@gameState)
+            UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
 
             action_source.getAction @gameState, (action) ~>
                 descriptions = @gameState.applyAction action

@@ -5,28 +5,27 @@ define [
     'canvas/console/console'
     'input/keymap'
     'input/user_interface'
+    'util'
     'config'
-], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, UserInterface, Config) ->
-    main = ->
+], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, UserInterface, Util, Config) ->
 
-        if Config.RANDOM_SEED?
-            Math.seedrandom(Config.RANDOM_SEED)
+    class Game extends GameCommon.GameCommon
+        ->
+            if window.location.hash == '#qwerty'
+                convert = Keymap.convertFromQwerty
+            else
+                convert = Keymap.convertFromDvorak
 
-        if window.location.hash == '#qwerty'
-            convert = Keymap.convertFromQwerty
-        else
-            convert = Keymap.convertFromDvorak
+            input = new BrowserInputSource.BrowserInputSource(convert)
+            drawer = new CanvasDrawer.CanvasDrawer($('#canvas')[0], 120, 40, input)
+            game_console = new Console.Console($('#log'))
+
+            super(drawer, input, game_console)
 
 
-        input = new BrowserInputSource.BrowserInputSource(convert)
-        drawer = new CanvasDrawer.CanvasDrawer($('#canvas')[0], 120, 40, input)
-        game_console = new Console.Console($('#log'))
-
-        UserInterface.setUserInterface(drawer, input, game_console)
-
-        game = new GameCommon.GameCommon(drawer, input)
-        game.start()
+    main = -> new Game().start()
 
     {
+        Game
         main
     }

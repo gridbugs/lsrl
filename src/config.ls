@@ -9,4 +9,5 @@ define [
         AUTOEXPLORE_ALL: false
         RUN_TEST: false
         RANDOM_SEED: void
+        DEBUG_PRINTOUTS: true
     }

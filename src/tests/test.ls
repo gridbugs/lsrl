@@ -18,11 +18,15 @@ define [
     'items/item'
     'structures/search'
     'input/auto_move'
+    'input/user_interface'
     'config'
     'types'
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, UserInterface, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, Config, Types) ->
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, Config, Types) ->
 
-    test = (drawer, input_source) ->
+    test = ->
+        drawer = UserInterface.Global.gameDrawer
+        input_source = UserInterface.Global.gameController
+
         if Config.GENERATOR == 'cell_automata'
             c = new cell_automata_test_generator.CellAutomataTestGenerator!
         else if Config.GENERATOR == 'maze'
@@ -51,7 +55,7 @@ define [
                     if c.fixture.type == Types.Fixture.Null
                         c.addItem new Item.Plant()
 
-        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), input_source, grid, new UserInterface.CellSelector(input_source, drawer)
+        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), input_source, grid, new CellSelector.CellSelector(input_source, drawer)
 
         gs = new game_state.GameState grid, player
 

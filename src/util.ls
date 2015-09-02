@@ -1,5 +1,6 @@
 define [
-], ->
+    'config'
+], (Config) ->
     isInt = (x) -> x % 1 == 0
     getRandomElement = (arr) -> arr[parseInt(Math.random()*arr.length)]
     makeEnum = (arr) ->
@@ -42,11 +43,14 @@ define [
 
     printTerminal = (x) -> process.stderr.write "#{x}\n"
     printBrowser = (x) -> console.debug x
-
-    if console.debug?
-        printDebug = printBrowser
+    
+    if Config.DEBUG_PRINTOUTS
+        if console.debug?
+            printDebug = printBrowser
+        else
+            printDebug = printTerminal
     else
-        printDebug = printTerminal
+        printDebug = ->
 
     constrain = (min, x, max) ->
         return Math.min(Math.max(x, min), max)

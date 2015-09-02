@@ -10,10 +10,12 @@ define [
 
             bind = (obj, name) ->  obj[name].bind(obj)
 
-            @readInteger = bind(@Global.gameConsole, 'readInteger')
-            @readString = bind(@Global.gameConsole, 'readString')
-            @print = bind(@Global.gameConsole, 'print')
-            @printLine = bind(@Global.gameConsole, 'printLine')
-            @clearLine = bind(@Global.gameConsole, 'clearLine')
-            @newLine = bind(@Global.gameConsole, 'newLine')
+            @readInteger = bind(gameConsole, 'readInteger')
+            @readString = bind(gameConsole, 'readString')
+            @print = bind(gameConsole, 'print')
+            @printLine = bind(gameConsole, 'printLine')
+            @clearLine = bind(gameConsole, 'clearLine')
+            @newLine = bind(gameConsole, 'newLine')
+
+            @drawCharacterKnowledge = bind(gameDrawer, 'drawCharacterKnowledge')
     }

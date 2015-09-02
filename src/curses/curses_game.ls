@@ -5,28 +5,28 @@ define [
     'curses/console/console'
     'input/keymap'
     'input/user_interface'
+    'util'
     'config'
-], (GameCommon, CursesDrawer, CursesInputSource, Console, Keymap, UserInterface, Config) ->
+], (GameCommon, CursesDrawer, CursesInputSource, Console, Keymap, UserInterface, Util, Config) ->
 
-    main = ->
+    class Game extends GameCommon.GameCommon
+        ->
+            drawer = new CursesDrawer.CursesDrawer()
 
-        if Config.RANDOM_SEED?
-            Math.seedrandom(Config.RANDOM_SEED)
+            convert = Keymap.convertFromDvorak
+            input = new CursesInputSource.CursesInputSource(drawer.gameWindow, convert)
+            game_console = new Console.Console(drawer.logWindow, drawer.gameWindow, drawer.ncurses)
 
-        drawer = new CursesDrawer.CursesDrawer()
+            UserInterface.setUserInterface(drawer, input, game_console)
 
-        convert = Keymap.convertFromDvorak
-        input = new CursesInputSource.CursesInputSource(drawer.gameWindow, convert)
-        game_console = new Console.Console(drawer.logWindow, drawer.gameWindow, drawer.ncurses)
+            process.on('SIGINT', drawer.cleanup)
+            process.on('exit', drawer.cleanup)
 
-        UserInterface.setUserInterface(drawer, input, game_console)
+            super(drawer, input, game_console)
 
-        process.on('SIGINT', drawer.cleanup)
-        process.on('exit', drawer.cleanup)
-
-        game = new GameCommon.GameCommon(drawer, input)
-        game.start()
+    main = -> new Game().start()
 
     {
+        Game
         main
     }
