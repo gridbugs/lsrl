@@ -22,9 +22,6 @@ define [
 
             control <~ Util.repeatWhileUndefined(UserInterface.getControl)
             
-            if not control?
-                return @selectCellLoop(character, game_state, cb, on_each)
-
             switch control.type
             |   Types.Control.Direction
                     change = Direction.Vectors[control.direction]
