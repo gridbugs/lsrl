@@ -1,39 +1,43 @@
 define [
-    'types'
+    'input/user_interface'
     'structures/vec2'
     'structures/direction'
+    'types'
     'util'
-], (Types, Vec2, Direction, Util) ->
+], (UserInterface, Vec2, Direction, Types, Util) ->
 
     class CellSelector
-        (@inputSource, @drawer) ->
-            @selectedPosition = null
+        ->
+            @selectedPosition = void
 
         selectCell: (start_coord, character, game_state, cb, on_each) ->
             @selectedPosition = start_coord
             @selectCellLoop(character, game_state, cb, on_each)
 
         selectCellLoop: (character, game_state, cb, on_each) ->
-            @drawer.drawCellSelectOverlay character, game_state, @selectedPosition
-            on_each?(@selectedPosition)
-            @inputSource.getControl (control) ~>
-                if not control?
-                    @selectCellLoop(character, game_state, cb)
-                    return
+            
+            UserInterface.drawCellSelectOverlay(character, game_state, @selectedPosition)
 
-                if control.type == Types.Control.Direction
+            on_each?(@selectedPosition)
+
+            control <~ Util.repeatWhileUndefined(UserInterface.getControl)
+            
+            if not control?
+                return @selectCellLoop(character, game_state, cb, on_each)
+
+            switch control.type
+            |   Types.Control.Direction
                     change = Direction.Vectors[control.direction]
                     @selectedPosition = @selectedPosition.add(change)
                     @selectCellLoop(character, game_state, cb, on_each)
-                else if control.type == Types.Control.Accept
-                    @drawer.drawCharacterKnowledge character, game_state
+            |   Types.Control.Accept
+                    UserInterface.drawCharacterKnowledge(character, game_state)
                     cb @selectedPosition
-                else if control.type == Types.Control.Escape
-                    @drawer.drawCharacterKnowledge character, game_state
-                    cb null
-                else
-                    @selectCellLoop(character, game_state, cb, on_each)
-
+            |   Types.Control.Escape
+                    UserInterface.drawCharacterKnowledge(character, game_state)
+                    cb(void)
+            |   otherwise
+                @selectCellLoop(character, game_state, cb, on_each)
 
     {
         CellSelector

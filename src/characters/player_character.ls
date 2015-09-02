@@ -12,7 +12,7 @@ define [
     Inventory, UserInterface, Types, Util, Config) ->
 
     class PlayerCharacter
-        (@position, @inputSource, @grid, @ui) ->
+        (@position, @grid) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
             @viewDistance = 20
@@ -23,7 +23,7 @@ define [
                 @observe_fn = Shadowcast.observe
 
             @autoMove = null
-            @interpreter = new ControlInterpreter.ControlInterpreter this, @inputSource, @ui
+            @interpreter = new ControlInterpreter.ControlInterpreter(this)
             @inventory = new Inventory.Inventory()
 
             @name = "The player"
@@ -47,7 +47,7 @@ define [
         getAction: (game_state, cb) ->
             if @autoMove?
 
-                if @inputSource.dirty
+                if UserInterface.Global.gameController.dirty
                     UserInterface.printLine "Key pressed. Cancelling auto move."
                     @autoMove = null
                 else if @autoMove.hasAction!

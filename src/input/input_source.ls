@@ -6,11 +6,11 @@ define [
         ->
             @currentCallback = void
 
-        getControl: (cb) ~>
-            @getChar (c) ~>
+        getControl: (cb) ->
+            @getChar (c) ->
                 cb(Keymap.Controls[c])
 
-        getChar: (cb) ~>
+        getChar: (cb) ->
             @dirty = false
             @currentCallback = cb
 

@@ -54,7 +54,6 @@ define [
             callback(parseInt(result_string))
 
         clearLine: ->
-            console.debug('clearing', this)
             @$current?.remove()
             @newLine()
 

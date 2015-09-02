@@ -18,4 +18,8 @@ define [
             @newLine = bind(gameConsole, 'newLine')
 
             @drawCharacterKnowledge = bind(gameDrawer, 'drawCharacterKnowledge')
+            @drawCellSelectOverlay = bind(gameDrawer, 'drawCellSelectOverlay')
+
+            @getControl = bind(gameController, 'getControl')
+            @getChar = bind(gameController, 'getChar')
     }

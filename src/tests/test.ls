@@ -55,7 +55,7 @@ define [
                     if c.fixture.type == Types.Fixture.Null
                         c.addItem new Item.Plant()
 
-        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), input_source, grid, new CellSelector.CellSelector(input_source, drawer)
+        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), grid
 
         gs = new game_state.GameState grid, player
 
