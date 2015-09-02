@@ -37,7 +37,7 @@ define [
             |   Types.Control.NavigateToCell
                     @navigateToCell(@character.position, game_state, cb)
             |   Types.Control.Examine
-                    UserInterface.newLine()
+                    UserInterface.printLine("You see here:")
                     @selector.selectCell @character.position, @character, game_state, (coord) ~>
                         UserInterface.clearLine()
                         if not coord?
@@ -45,7 +45,6 @@ define [
                             return
 
                         kcell = @character.knowledge.grid.getCart(coord)
-                        UserInterface.printLine "You see here:"
                         if kcell.fixture.type == Types.Fixture.Null
                             switch (kcell.ground.type)
                             |   Types.Ground.Dirt => UserInterface.printLine "Dirt floor"
