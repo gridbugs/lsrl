@@ -5,9 +5,8 @@ define [
     'canvas/console/console'
     'input/keymap'
     'input/user_interface'
-    'util'
     'config'
-], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, UserInterface, Util, Config) ->
+], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Keymap, UserInterface, Config) ->
     main = ->
 
         if Config.RANDOM_SEED?
@@ -24,8 +23,6 @@ define [
         game_console = new Console.Console($('#log'))
 
         UserInterface.setUserInterface(drawer, input, game_console)
-
-        Util.setUi(UserInterface.Global)
 
         game = new GameCommon.GameCommon(drawer, input)
         game.start()

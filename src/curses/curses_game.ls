@@ -5,9 +5,8 @@ define [
     'curses/console/console'
     'input/keymap'
     'input/user_interface'
-    'util'
     'config'
-], (GameCommon, CursesDrawer, CursesInputSource, Console, Keymap, UserInterface, Util, Config) ->
+], (GameCommon, CursesDrawer, CursesInputSource, Console, Keymap, UserInterface, Config) ->
 
     main = ->
 
@@ -21,7 +20,6 @@ define [
         game_console = new Console.Console(drawer.logWindow, drawer.gameWindow, drawer.ncurses)
 
         UserInterface.setUserInterface(drawer, input, game_console)
-        Util.setUi(UserInterface.Global)
 
         process.on('SIGINT', drawer.cleanup)
         process.on('exit', drawer.cleanup)

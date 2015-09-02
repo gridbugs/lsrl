@@ -48,12 +48,6 @@ define [
     else
         printDebug = printTerminal
 
-    ui = null
-    setDrawer = (d) -> @drawer = d
-    setUi = (@ui) ->
-    printDrawer = (str) ->
-        @ui.gameDrawer.print str
-
     constrain = (min, x, max) ->
         return Math.min(Math.max(x, min), max)
 
@@ -97,9 +91,6 @@ define [
         getCharCode
         print: printDebug
         printDebug
-        setDrawer
-        setUi
-        printDrawer
         constrain
         shuffleArrayInPlace
         enumValues
