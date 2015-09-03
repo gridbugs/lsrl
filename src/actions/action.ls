@@ -24,7 +24,6 @@ define [
 
             @cost = @fromCell.getMoveOutCost @direction
 
-
         commit: ->
             @character.position = @character.position.add \
                 Direction.Vectors[@direction]
@@ -83,6 +82,13 @@ define [
 
             return new CommitMetaData 2 ["#{@character.getName()} drops #{@numItems} x #{items.first().getName()}."]
 
+    class Open extends Action
+        (@character, @cell, @gameState) ->
+            @events = []
+
+        commit: ->
+            @cell.fixture.open()
+            return new CommitMetaData 2 ["Door opened"]
 
     {
         Null
@@ -92,4 +98,5 @@ define [
         Unstick
         Take
         Drop
+        Open
     }

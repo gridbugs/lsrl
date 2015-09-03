@@ -8,8 +8,9 @@ define [
     'debug'
     'structures/direction'
     'input/user_interface'
+    'structures/search'
     'prelude-ls'
-], (Fixture, Ground, Grid, Cell, Util, Types, Debug, Direction, UserInterface, Prelude) ->
+], (Fixture, Ground, Grid, Cell, Util, Types, Debug, Direction, UserInterface, Search, Prelude) ->
 
     const filter = Prelude.filter
     const map = Prelude.map
@@ -143,21 +144,78 @@ define [
                     c = @grid.get(@x + j, @y + i)
                     @cells.push(c)
                     c.room = this
+                    c.setGround(Ground.Stone)
 
             @entranceCandidates = []
             for s in @sides
                 for c in s.entranceCandidates
                     @entranceCandidates.push(c)
 
-        connect: ->
-            entrance = Util.getRandomElement(@entranceCandidates)
-            entrance.doorway.setFixture(Fixture.Null)
-            if entrance.outside.fixture.type == Types.Fixture.Null
-                return   
-            
-            entrance.outside.setFixture(Fixture.Null)
-            
+            @border = []
+            for i from (@x - 1) to (@x + @width)
+                @border.push(@grid.get(i, @y-1))
+                @border.push(@grid.get(i, @y + @height))
+            for i from @y to (@y + @height - 1)
+                @border.push(@grid.get(@x - 1, i))
+                @border.push(@grid.get(@x + @width, i))
 
+        connect: (main_only) ->
+            for c in @border
+                c.room = this
+
+            attempts = 10
+            result = void
+            entrance = void
+            while not result?
+
+                --attempts
+                if attempts == 0
+                    console.debug 'giving up'
+                    return
+
+                entrance = Util.getRandomElement(@entranceCandidates)
+
+                count = 0
+                for d in Direction.CardinalDirections
+                    if entrance.doorway.neighbours[d].fixture.type != Types.Fixture.Wall
+                        ++count
+
+                if count >= 3
+                    return
+
+
+                if entrance.outside.fixture.type == Types.Fixture.Null
+                    entrance.doorway.setFixture(Fixture.Null)
+                    entrance.doorway.setGround(Ground.Stone)
+                    return
+
+                if main_only
+                    f = (cell) ~> cell.fixture.type == Types.Fixture.Null and cell.main?
+                else
+                    f = (cell) ~> cell.fixture.type == Types.Fixture.Null
+
+                #entrance.outside.setFixture(Fixture.Null)
+                result = Search.findClosest(entrance.outside,
+                    ((_, d) -> if Direction.isCardinal(d) then return 1 else return 100000),
+                    ((cell) ~> cell.room != this),
+                    f)
+
+            entrance.doorway.setFixture(Fixture.Null)
+            entrance.doorway.setGround(Ground.Stone)
+
+            entrance.outside.setFixture(Fixture.Null)
+            entrance.outside.setGround(Ground.Stone)
+            for c in result.path
+                c.setFixture(Fixture.Null)
+                c.setGround(Ground.Stone)
+
+            count = 0
+            for d in Direction.CardinalDirections
+                if entrance.doorway.neighbours[d].fixture.type == Types.Fixture.Null
+                    ++count
+
+            if count == 2
+                entrance.doorway.setFixture(Fixture.Door)
 
     Room.createRandom = (min, max) ->
         new Room(Util.getRandomInt(min, max), Util.getRandomInt(min, max))
@@ -167,7 +225,10 @@ define [
         generateGrid: (T, x, y) ->
             grid = super(T, x, y)
             for s in @spaces
-                if s != @maxSpace
+                if s == @maxSpace
+                    for c in s
+                        grid.getCart(c).main = true
+                else
                     for c in s
                         grid.getCart(c).setFixture Fixture.Wall
 
@@ -175,9 +236,9 @@ define [
 
             for i from 0 til 100
 
-                room = Room.createRandom(4, 14)
+                room = Room.createRandom(4, 12)
 
-                for j from 0 til 20
+                for j from 0 til 40
                     x_coord = Util.getRandomInt(0, x - room.width)
                     y_coord = Util.getRandomInt(0, y - room.height)
 
@@ -188,7 +249,9 @@ define [
                         break
 
             for r in @rooms
-                r.connect()
+                r.connect(false)
+                if Math.random() < 0.75
+                    r.connect(true)
 
             return grid
 

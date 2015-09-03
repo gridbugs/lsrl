@@ -25,6 +25,8 @@ define [
         \Wall
         Web: \SpiderWeb
         \Tree
+        \Door
+        \OpenDoor
     }
 
     const groundTilesTable = Util.join Types.Ground, Types.Tile, {

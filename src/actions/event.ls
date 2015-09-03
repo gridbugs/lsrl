@@ -1,5 +1,6 @@
 define [
-], ->
+    'types'
+], (Types) ->
 
     class CharacterCellEvent
         forEachEffect: (f) ->
@@ -13,9 +14,11 @@ define [
 
     class MoveToCell extends CharacterCellEvent
         (@character, @cell) ->
+            @type = Types.Event.MoveToCell
 
     class MoveFromCell extends CharacterCellEvent
         (@character, @cell) ->
+            @type = Types.Event.MoveFromCell
 
     {
         MoveToCell

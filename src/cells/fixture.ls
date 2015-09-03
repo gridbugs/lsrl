@@ -17,9 +17,27 @@ define [
         (cell) ->
             super Types.Fixture.Wall
             @effects = [
-                new Effect.CellIsSolid cell
+                new Effect.CellIsSolid(cell)
             ]
         getName: -> 'Wall'
+
+    class Door extends Fixture
+        (cell) ->
+            super Types.Fixture.Door
+            @effects = [
+                new Effect.CellIsOpenable(cell)
+            ]
+            @isOpen = false
+
+        open: ->
+            @isOpen = true
+            @type = Types.Fixture.OpenDoor
+
+        getName: ->
+            if @isOpen
+                'Open Door'
+            else
+                'Closed Door'
 
     class Web extends Fixture
         (@cell) ->
@@ -47,4 +65,5 @@ define [
         Wall
         Web
         Tree
+        Door
     }

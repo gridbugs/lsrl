@@ -36,6 +36,8 @@ define [
         Moss:       T '.', \LightGreen
         ItemStone:  T '%', \DarkGrey
         ItemPlant:  T '&', \LightGreen
+        Door:       T '+', \LightGrey
+        OpenDoor:   T '-', \LightGrey
     }
 
     const PlayerCharacterStyle = T '@', \White

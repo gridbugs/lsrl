@@ -13,6 +13,8 @@ define [
         \Moss
         \ItemStone
         \ItemPlant
+        \Door
+        \OpenDoor
     ]
 
     const Fixture = Util.enum [
@@ -20,6 +22,8 @@ define [
         \Wall
         \Web
         \Tree
+        \Door
+        \OpenDoor
     ]
 
     const Ground = Util.enum [
@@ -74,6 +78,11 @@ define [
         \Plant
     ]
 
+    const Event = Util.enum [
+        \MoveToCell
+        \MoveFromCell
+    ]
+
     {
         Tile
         Fixture
@@ -83,4 +92,5 @@ define [
         OrdinalDirection
         Control
         Item
+        Event
     }

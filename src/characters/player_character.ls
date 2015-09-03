@@ -39,7 +39,8 @@ define [
         getName: -> @name
 
         canSeeThrough: (cell) ->
-            cell.fixture.type != Types.Fixture.Wall
+            cell.fixture.type != Types.Fixture.Wall and \
+                cell.fixture.type != Types.Fixture.Door
 
         observe: (game_state) ->
             @observe_fn this, game_state

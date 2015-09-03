@@ -14,6 +14,8 @@ define [
         SpiderWeb:     ['*', '#888888']
         ItemStone: ['%', '#444444']
         ItemPlant: ['&', '#30b020']
+        Door: ['+', '#888888']
+        OpenDoor: ['-', '#888888']
     }
 
     const AsciiPlayerCharacterStyle = ['@', 'white']
