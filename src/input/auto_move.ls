@@ -40,8 +40,8 @@ define [
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell(), \
                         ((c, d) -> c.game_cell.getMoveOutCost d), \
-                        ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
-                        ((c) -> c.hasUnknownNeighbour())
+                        ((c) -> c.known and (c.fixture.type == Types.Fixture.Null or c.fixture.type == Types.Fixture.Door or c.fixture.type == Types.Fixture.OpenDoor)), \
+                        ((c) -> c.hasUnknownNeighbour() or c.fixture.type == Types.Fixture.Door)
             if result?
                 @directions = result.directions
                 @nextIndex = 0
