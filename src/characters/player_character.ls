@@ -3,7 +3,7 @@ define [
     'input/control_interpreter'
     'characters/recursive_shadowcast'
     'characters/omniscient'
-    'characters/inventory'
+    'items/inventory'
     'input/user_interface'
     'types'
     'util'

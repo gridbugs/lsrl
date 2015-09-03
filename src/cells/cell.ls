@@ -1,11 +1,10 @@
 define [
     'structures/vec2'
     'structures/direction'
-    'items/item_collection'
-    'characters/inventory'
+    'items/inventory'
     'constants'
     'types'
-], (Vec2, Direction, ItemCollection, Inventory, Constants, Types) ->
+], (Vec2, Direction, Inventory, Constants, Types) ->
 
     class Cell
         (@x, @y) ->
