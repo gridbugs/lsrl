@@ -28,11 +28,11 @@ define [
         input_source = UserInterface.Global.gameController
 
         if Config.GENERATOR == 'cell_automata'
-            c = new cell_automata_test_generator.CellAutomataTestGenerator!
+            c = new cell_automata_test_generator.CellAutomataTestGeneratorRooms()
         else if Config.GENERATOR == 'maze'
-            c = new MazeGenerator.MazeGenerator!
+            c = new MazeGenerator.MazeGenerator()
         else if Config.GENERATOR == 'border'
-            c = new border_generator.BorderGenerator!
+            c = new border_generator.BorderGenerator()
 
         grid = c.generateGrid cell.Cell, 80, 30
 
@@ -40,7 +40,7 @@ define [
             drawer.drawGrid grid
             return
 
-        sp = c.getStartingPointHint!
+        sp = c.getStartingPointHint()
 
         if Config.GENERATOR == 'cell_automata'
             grid.forEach (c) ->

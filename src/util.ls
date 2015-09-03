@@ -10,6 +10,9 @@ define [
             ret[e] = i++
         return ret
 
+    getRandomFloat = (min, max) -> (Math.random() * (max - min)) + min
+    getRandomInt = (min, max) -> parseInt(getRandomFloat(min, max))
+
     makeTable = (enum_type, object) ->
         arr = []
         for k, v of object
@@ -43,7 +46,7 @@ define [
 
     printTerminal = (x) -> process.stderr.write "#{x}\n"
     printBrowser = (x) -> console.debug x
-    
+
     if Config.DEBUG_PRINTOUTS
         if console.debug?
             printDebug = printBrowser
@@ -107,4 +110,6 @@ define [
         enumerateDefined
         objectKeyedByArray
         joinObject
+        getRandomFloat
+        getRandomInt
     }
