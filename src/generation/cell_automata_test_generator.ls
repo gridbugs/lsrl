@@ -117,25 +117,24 @@ define [
     class RoomSide
         (@room, @cells, @outwardsDirection) ->
             @innerCells = @cells[1 til @cells.length - 1]
-            entrance_offset = Direction.Vectors[@outwardsDirection].multiply(2)
+            entrance_offset = Direction.Vectors[@outwardsDirection]
 
             @entranceCandidates = []
             for c in @innerCells
-                Util.printDebug c
-                coord = c.position.add(entrance_offset)
+                doorway = c.position.add(entrance_offset)
+                coord = c.position.add(entrance_offset.multiply(2))
                 if coord.x > 0 and coord.x < @room.grid.width - 1 and coord.y > 0 and coord.y < @room.grid.height - 1
-                    Util.printDebug coord
-                    @entranceCandidates.push(@room.grid.getCart(coord))
+                    @entranceCandidates.push({doorway: @room.grid.getCart(doorway), outside: @room.grid.getCart(coord)})
 
     class Room
         (@width, @height) ->
 
         finalize: (@grid, @x, @y) ->
             @sides = [
-                new RoomSide(this, ([@x til @x + @width] |> map (i) ~> @grid.get(@x + i, @y)), Types.Direction.North)
-                new RoomSide(this, ([@y til @y + @height] |> map (i) ~> @grid.get(@x, @y + i)), Types.Direction.West)
-                new RoomSide(this, ([@x til @x + @width] |> map (i) ~> @grid.get(@x + i, @y + @height - 1)), Types.Direction.South)
-                new RoomSide(this, ([@y til @y + @height] |> map (i) ~> @grid.get(@x + @width - 1, @y + i)), Types.Direction.East)
+                new RoomSide(this, ([@x til @x + @width] |> map (i) ~> @grid.get(i, @y)), Types.Direction.North)
+                new RoomSide(this, ([@y til @y + @height] |> map (i) ~> @grid.get(@x, i)), Types.Direction.West)
+                new RoomSide(this, ([@x til @x + @width] |> map (i) ~> @grid.get(i, @y + @height - 1)), Types.Direction.South)
+                new RoomSide(this, ([@y til @y + @height] |> map (i) ~> @grid.get(@x + @width - 1, i)), Types.Direction.East)
             ]
 
             @cells = []
@@ -150,6 +149,14 @@ define [
                 for c in s.entranceCandidates
                     @entranceCandidates.push(c)
 
+        connect: ->
+            entrance = Util.getRandomElement(@entranceCandidates)
+            entrance.doorway.setFixture(Fixture.Null)
+            if entrance.outside.fixture.type == Types.Fixture.Null
+                return   
+            
+            entrance.outside.setFixture(Fixture.Null)
+            
 
 
     Room.createRandom = (min, max) ->
@@ -179,6 +186,9 @@ define [
                         room.finalize(grid, x_coord, y_coord)
                         @rooms.push(room)
                         break
+
+            for r in @rooms
+                r.connect()
 
             return grid
 
