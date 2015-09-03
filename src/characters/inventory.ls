@@ -74,7 +74,6 @@ define [
 
         removeItemsByGroupId: (id, num_items) ->
             group = @items.findGroupByKey(id)
-            console.debug group
             return @removeItemsFromGroup(group, num_items)
 
         removeItemsFromGroup: (group, num_items) ->

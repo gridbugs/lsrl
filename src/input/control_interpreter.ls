@@ -95,11 +95,9 @@ define [
                                 UserInterface.printLine "#{ch}: #{name}"
                             else if items.length() > 1
                                 UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
-                            
 
                         @chooseItem cell, (group) ~>
                             if group?
-                                console.debug(group)
                                 if group.length() > 1
                                     UserInterface.print "How many? "
                                     num_items <~ UserInterface.readInteger(group.length())
