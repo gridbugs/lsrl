@@ -1,6 +1,8 @@
 define [
     'console/console'
-], (GenericConsole) ->
+    'util'
+    'config'
+], (GenericConsole, Util, Config) ->
 
     const KEYCODE_ENTER = 13
 
@@ -11,6 +13,9 @@ define [
         print: (str) ->
             @$current.append("<span>#{str}</span>")
             @scrollToBottom()
+            if Config.DEBUG_PRINT_CONSOLE
+                Util.printDebug(str)
+
 
         newLine: ->
             @$current = $("<div class='line'>")

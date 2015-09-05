@@ -12,8 +12,8 @@ define [
         Tree:   ['&', '#669900']
         Wall:   ['#', '#666666']
         SpiderWeb:     ['*', '#888888']
-        ItemStone: ['%', '#444444']
-        ItemPlant: ['&', '#30b020']
+        ItemStone: ['[', '#666666']
+        ItemPlant: ['%', '#30b020']
         Door: ['+', '#888888']
         OpenDoor: ['-', '#888888']
     }

@@ -1,6 +1,8 @@
 define [
     'console/console'
-], (GenericConsole) ->
+    'util'
+    'config'
+], (GenericConsole, Util, Config) ->
 
     const KEYCODE_BACKSPACE = 127
 
@@ -14,6 +16,8 @@ define [
         print: (str) ->
             @consoleWindow.addstr(str)
             @consoleWindow.refresh()
+            if Config.DEBUG_PRINT_CONSOLE
+                Util.printDebug(str)
 
         newLine: ->
             @consoleWindow.addstr("\n\r")

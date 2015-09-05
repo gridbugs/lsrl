@@ -34,8 +34,8 @@ define [
         Wall:       T '#', \DarkGrey
         SpiderWeb:  T '*', \LightGrey
         Moss:       T '.', \LightGreen
-        ItemStone:  T '%', \DarkGrey
-        ItemPlant:  T '&', \LightGreen
+        ItemStone:  T '[', \LightGrey
+        ItemPlant:  T '%', \LightGreen
         Door:       T '+', \LightGrey
         OpenDoor:   T '-', \LightGrey
     }

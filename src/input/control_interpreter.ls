@@ -123,23 +123,33 @@ define [
 
                     @character.getAction game_state, cb
             |   Types.Control.Drop
-                UserInterface.printLine "Select item to drop:"
-                items <~ @chooseInventoryItem()
-                if items?
-                    if items.length() > 1
-                        UserInterface.print "How many? "
-                        num_items <~ UserInterface.readInteger(items.length())
-                        if num_items > items.length()
-                            UserInterface.printLine "You don't have that many. Dropping #{items.length()}."
-                            num_items = items.length()
-                        action = new Action.Drop(@character, game_state, items.groupId, num_items)
-                        cb(action)
+                    
+                    UserInterface.printLine "Select item to drop:"
+                
+                    @character.inventory.forEachMapping (ch, items) ->
+                        Debug.assert(items.length() > 0, "No items")
+                        name = items.first().getName()
+                        if items.length() == 1
+                            UserInterface.printLine "#{ch}: #{name}"
+                        else if items.length() > 1
+                            UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
+
+                    items <~ @chooseInventoryItem()
+                    if items?
+                        if items.length() > 1
+                            UserInterface.print "How many? "
+                            num_items <~ UserInterface.readInteger(items.length())
+                            if num_items > items.length()
+                                UserInterface.printLine "You don't have that many. Dropping #{items.length()}."
+                                num_items = items.length()
+                            action = new Action.Drop(@character, game_state, items.groupId, num_items)
+                            cb(action)
+                        else
+                            action = new Action.Drop(@character, game_state, items.groupId, 1)
+                            cb(action)
                     else
-                        action = new Action.Drop(@character, game_state, items.groupId, 1)
-                        cb(action)
-                else
-                    UserInterface.printLine "You aren't carrying any such item."
-                    @character.getAction game_state, cb
+                        UserInterface.printLine "You aren't carrying any such item."
+                        @character.getAction game_state, cb
 
             |   Types.Control.Test
                     UserInterface.print "Enter a string: "
