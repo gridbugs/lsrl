@@ -41,7 +41,7 @@ define [
 
         canSeeThrough: (cell) ->
             cell.fixture.type != Types.Fixture.Wall and \
-                cell.fixture.type != Types.Fixture.Door
+                (cell.fixture.type != Types.Fixture.Door || cell.fixture.isOpen())
 
         observe: (game_state) ->
             @observe_fn this, game_state

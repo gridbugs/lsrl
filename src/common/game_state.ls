@@ -55,4 +55,6 @@ define [
             @absoluteTime = nextTime
         getCurrentTimeDelta: -> @timeDelta
 
-    { GameState }
+    {
+        GameState
+    }

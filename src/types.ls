@@ -25,7 +25,6 @@ define [
         \Web
         \Tree
         \Door
-        \OpenDoor
     ]
 
     const Ground = Util.enum [

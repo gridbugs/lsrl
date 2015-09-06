@@ -25,8 +25,11 @@ define [
         Wall:       -> Types.Tile.Wall
         Web:        -> Types.Tile.SpiderWeb
         Tree:       -> Types.Tile.Tree
-        Door:       -> Types.Tile.Door
-        OpenDoor:   -> Types.Tile.Door
+        Door:       (door) ->
+                        if door.isOpen()
+                            Types.Tile.OpenDoor
+                        else
+                            Types.Tile.Door
     }
 
     const GroundTiles = Util.table Types.Ground, {

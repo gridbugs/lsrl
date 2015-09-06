@@ -27,11 +27,15 @@ define [
             @effects = [
                 new Effect.CellIsOpenable(cell)
             ]
-            @isOpen = false
+            @_isOpen = false
 
         open: ->
-            @isOpen = true
-            @type = Types.Fixture.OpenDoor
+            @_isOpen = true
+
+        close: ->
+            @_isOpen = false
+
+        isOpen: -> @_isOpen
 
         getName: ->
             if @isOpen

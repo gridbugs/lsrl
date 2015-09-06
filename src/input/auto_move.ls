@@ -40,10 +40,12 @@ define [
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell(), \
                         ((c, d) -> c.game_cell.getMoveOutCost d), \
-                        ((c) -> c.known and (c.fixture.type == Types.Fixture.Null or c.fixture.type == Types.Fixture.Door or c.fixture.type == Types.Fixture.OpenDoor)), \
-                        ((c) -> c.hasUnknownNeighbour() or c.fixture.type == Types.Fixture.Door)
+                        ((c) -> c.known and (c.fixture.type == Types.Fixture.Null or c.fixture.type == Types.Fixture.Door)), \
+                        ((c) -> c.hasUnknownNeighbour())
+
             if result?
                 @directions = result.directions
+                @path = result.path
                 @nextIndex = 0
                 @atDestination = false
             else
@@ -55,6 +57,14 @@ define [
         hasAction: -> not (@atDestination or @allExplored)
 
         getAction: (game_state, cb) ->
+
+            if @path[@nextIndex].fixture.type == Types.Fixture.Door and not @path[@nextIndex].fixture.isOpen()
+                action = new Action.Move(@character, @directions[@nextIndex], game_state)
+                @atDestination = true
+                cb(action)
+                return
+
+
             action = new Action.Move(@character, @directions[@nextIndex], game_state)
             ++@nextIndex
             if @nextIndex == @directions.length
