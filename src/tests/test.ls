@@ -5,6 +5,7 @@ define [
     'generation/cell_automata_test_generator'
     'generation/maze_generator'
     'characters/player_character'
+    'characters/character'
     'structures/vec2'
     'common/game_state'
     'cells/cell'
@@ -21,7 +22,7 @@ define [
     'input/user_interface'
     'config'
     'types'
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, Config, Types) ->
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, Config, Types) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -55,9 +56,10 @@ define [
                     if c.fixture.type == Types.Fixture.Null
                         c.addItem new Item.Plant()
 
-        player = new character.PlayerCharacter (vec2.Vec2 sp.x, sp.y), grid
+        pos = vec2.Vec2(sp.x, sp.y)
+        char = new character.Human(pos, grid, pcharacter.PlayerCharacter)
 
-        gs = new game_state.GameState grid, player
+        gs = new game_state.GameState(grid, char.controller)
 
         return gs
 

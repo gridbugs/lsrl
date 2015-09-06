@@ -21,37 +21,44 @@ define [
 
     Tiles = Util.enum TileNames
 
-    const fixtureTilesTable = Util.join Types.Fixture, Types.Tile, {
-        \Wall
-        Web: \SpiderWeb
-        \Tree
-        \Door
-        \OpenDoor
+    const FixtureTiles = Util.table Types.Fixture, {
+        Wall:       -> Types.Tile.Wall
+        Web:        -> Types.Tile.SpiderWeb
+        Tree:       -> Types.Tile.Tree
+        Door:       -> Types.Tile.Door
+        OpenDoor:   -> Types.Tile.Door
     }
 
-    const groundTilesTable = Util.join Types.Ground, Types.Tile, {
-        \Dirt
-        \Stone
-        \Moss
+    const GroundTiles = Util.table Types.Ground, {
+        Dirt:       -> Types.Tile.Dirt
+        Stone:      -> Types.Tile.Stone
+        Moss:       -> Types.Tile.Moss
     }
 
-    const itemTileTable = Util.join Types.Item, Types.Tile, {
-        Stone: \ItemStone
-        Plant: \ItemPlant
+    const ItemTiles = Util.table Types.Item, {
+        Stone:      -> Types.Tile.ItemStone
+        Plant:      -> Types.Tile.ItemPlant
+    }
+
+    const CharacterTiles = Util.table Types.Character, {
+        Human:      -> Types.Tile.Human
+        Shrubbery:  -> Types.Tile.Shrubbery
     }
 
     fromCell = (cell) ->
 
-        if cell.items.length() > 0
-            #console.debug cell
-            tile = itemTileTable[cell.items.first().type]
-            return tile if tile?
-
-
-        tile = fixtureTilesTable[cell.fixture.type]
+        tile = CharacterTiles[cell.character?.type]?(cell.character)
         return tile if tile?
 
-        tile = groundTilesTable[cell.ground.type]
+        if cell.items.length() > 0
+            top_item = cell.items.first()
+            tile = ItemTiles[top_item.type]?(top_item)
+            return tile if tile?
+
+        tile = FixtureTiles[cell.fixture.type]?(cell.fixture)
+        return tile if tile?
+
+        tile = GroundTiles[cell.ground.type]?(cell.ground)
         return tile if tile?
 
         return Types.Tile.Error

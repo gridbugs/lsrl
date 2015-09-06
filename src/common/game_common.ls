@@ -23,7 +23,6 @@ define [
 
         start: ->
             @gameState = @test()
-
             if Config.DRAW_MAP_ONLY
                 return
 
@@ -44,17 +43,17 @@ define [
             @gameState.playerCharacter.observe(@gameState)
             UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
 
-            action_source.getAction @gameState, (action) ~>
-                descriptions = @gameState.applyAction action
-                for desc in descriptions
-                    UserInterface.printLine desc
+            action <~ action_source.getAction(@gameState)
 
+            descriptions = @gameState.applyAction action
+            for desc in descriptions
+                UserInterface.printLine desc
 
-                /* Get time until current action source (in game time) */
-                time = @gameState.getCurrentTimeDelta!
+            /* Get time until current action source (in game time) */
+            time = @gameState.getCurrentTimeDelta!
 
-                /* Process the next action after the time has passed */
-                setTimeout (~>@progressGameState!), (@gameTimeToMs time)
+            /* Process the next action after the time has passed */
+            setTimeout (~>@progressGameState!), (@gameTimeToMs time)
 
     {
         GameCommon

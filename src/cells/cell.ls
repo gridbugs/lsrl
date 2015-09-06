@@ -9,6 +9,7 @@ define [
     class Cell
         (@x, @y) ->
             @position = Vec2.Vec2 @x, @y
+            @character = void
             @ground = void
             @fixture = void
             @items = new Inventory.Inventory()

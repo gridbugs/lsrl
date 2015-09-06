@@ -15,6 +15,8 @@ define [
         \ItemPlant
         \Door
         \OpenDoor
+        \Human
+        \Shrubbery
     ]
 
     const Fixture = Util.enum [
@@ -83,6 +85,11 @@ define [
         \MoveFromCell
     ]
 
+    const Character = Util.enum [
+        \Human
+        \Shrubbery
+    ]
+
     {
         Tile
         Fixture
@@ -93,4 +100,5 @@ define [
         Control
         Item
         Event
+        Character
     }

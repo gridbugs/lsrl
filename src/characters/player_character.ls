@@ -1,4 +1,5 @@
 define [
+    'characters/character'
     'characters/knowledge'
     'input/control_interpreter'
     'characters/recursive_shadowcast'
@@ -8,11 +9,11 @@ define [
     'types'
     'util'
     'config'
-], (Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
+], (Character, Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
     Inventory, UserInterface, Types, Util, Config) ->
 
-    class PlayerCharacter
-        (@position, @grid) ->
+    class PlayerCharacter extends Character.Human
+        (@character, @position, @grid) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
             @viewDistance = 20
