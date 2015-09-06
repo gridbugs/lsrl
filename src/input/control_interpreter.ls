@@ -187,7 +187,8 @@ define [
 
                 result = Search.findPath @character.getKnowledgeCell(), \
                     ((c, d) -> c.game_cell.getMoveOutCost d), \
-                    ((c) -> c.known and c.fixture.type == Types.Fixture.Null), \
+                    ((c) -> c.known and (c.fixture.type == Types.Fixture.Null \
+                            or c.fixture.type == Types.Fixture.Door and c.fixture.isOpen())), \
                     dest_cell
 
                 if result?
