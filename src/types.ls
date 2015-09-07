@@ -17,6 +17,7 @@ define [
         \OpenDoor
         \Human
         \Shrubbery
+        \PlayerCharacter
     ]
 
     const Fixture = Util.enum [

@@ -58,6 +58,8 @@ define [
 
         pos = vec2.Vec2(sp.x, sp.y)
         char = new character.Human(pos, grid, pcharacter.PlayerCharacter)
+        char.setAsPlayerCharacter()
+        grid.get(sp.x, sp.y).character = char
 
         gs = new game_state.GameState(grid, char.controller)
 

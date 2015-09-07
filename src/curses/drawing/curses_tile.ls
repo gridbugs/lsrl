@@ -19,10 +19,11 @@ define [
         DarkYellow: 184
 
 
-    T = (character, colour) -> {
+    T = (character, colour, bold) -> {
         character: character
         colour: ColourType[colour]
         pair: null
+        bold: bold
     }
 
     const TileStyles = Util.table Types.Tile, {
@@ -38,6 +39,9 @@ define [
         ItemPlant:  T '%', \LightGreen
         Door:       T '+', \LightGrey
         OpenDoor:   T '-', \LightGrey
+        Human:      T 'h', \White, true
+        Shrubbery:  T 'p', \LightGreen, true
+        PlayerCharacter:    T '@', \White, true
     }
 
     const PlayerCharacterStyle = T '@', \White

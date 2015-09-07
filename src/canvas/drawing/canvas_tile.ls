@@ -16,17 +16,16 @@ define [
         ItemPlant: ['%', '#30b020']
         Door: ['+', '#888888']
         OpenDoor: ['-', '#888888']
-        Human: ['h', '#ffffff']
-        Shrubbery: ['p', '#30b020']
+        Human: ['h', '#ffffff', 'bold']
+        Shrubbery: ['p', '#30b020', 'bold']
+        PlayerCharacter: ['@', '#ffffff', 'bold']
     }
 
-    const AsciiPlayerCharacterStyle = ['@', 'white']
     const UnseenColour = '#333333'
     const SelectColour = '#888800'
 
     {
         AsciiTileStyles
-        AsciiPlayerCharacterStyle
         UnseenColour
         SelectColour
     }

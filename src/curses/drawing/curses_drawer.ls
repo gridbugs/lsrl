@@ -7,7 +7,6 @@ define [
 ], (Ncurses, Tile, CursesTile, Types, Util) ->
 
     TileStyles = CursesTile.TileStyles
-    PlayerCharacterStyle = CursesTile.PlayerCharacterStyle
 
     const PAIR_MIN = 16 /* Minimum number for ncurses colour pairs */
 
@@ -18,9 +17,8 @@ define [
             ++i
 
     for s in TileStyles
+        Util.printDebug(s)
         s.pair = ColourPairs[s.colour]
-
-    PlayerCharacterStyle.pair = ColourPairs[PlayerCharacterStyle.colour]
 
     const UnseenPair = ColourPairs[CursesTile.SpecialColours.Unseen]
     const SelectColourPair = 100
@@ -28,7 +26,7 @@ define [
     class CursesDrawer
         ->
             @ncurses = Ncurses
-            @stdscr = new Ncurses.Window!
+            @stdscr = new Ncurses.Window()
             @gameWindow = new Ncurses.Window(40, 120, 0, 0)
             @hudWindow = new Ncurses.Window(47, 40, 0, 122)
             @logWindow = new Ncurses.Window(6, 120, 41, 0)
@@ -89,33 +87,35 @@ define [
             @__drawGrid grid
             @gameWindow.refresh!
 
-        __drawPlayerCharacter: (pc) ->
-            @__setCursorCart pc.position
-            @__drawChar(PlayerCharacterStyle.character, PlayerCharacterStyle.pair)
 
         drawGameState: (game_state) ->
             @__drawGrid game_state.grid
-            @__drawPlayerCharacter game_state.playerCharacter
             @gameWindow.refresh!
 
         __drawUnknown: (x, y) ->
             @__setCursor(x, y)
             tile = TileStyles[Types.Tile.Unknown]
             @__drawTile(tile)
-        
+
         __drawUnknownCart: (v) ->
             @__drawUnknown(v.x, v.y)
 
-        __drawChar: (char, colour_pair) ->
-            @gameWindow.attrset Ncurses.colorPair(colour_pair)
+        __drawChar: (char, colour_pair, bold) ->
+
+            if bold? and bold
+                style = Ncurses.attrs.BOLD
+            else
+                style = Ncurses.attrs.NORMAL
+
+            @gameWindow.attrset(Ncurses.colorPair(colour_pair) .|. style)
             @gameWindow.addstr char
             @buf[@cursor_y][@cursor_x] = char
-            
+
         __drawTile: (tile) ->
-            @__drawChar(tile.character, tile.pair)
+            @__drawChar(tile.character, tile.pair, tile.bold)
 
         __drawUnseenTile: (tile) ->
-            @__drawChar(tile.character, UnseenPair)
+            @__drawChar(tile.character, UnseenPair, tile.bold)
 
         __drawKnowledgeCell: (cell, game_state) ->
             @__setCursorCart cell
@@ -130,10 +130,7 @@ define [
 
         __drawCharacterKnowledge: (character, game_state) ->
             character.knowledge.grid.forEach (c) ~>
-                if c.position.equals(character.position)
-                    @__drawPlayerCharacter(character)
-                else
-                    @__drawKnowledgeCell c, game_state
+                @__drawKnowledgeCell c, game_state
 
         drawCharacterKnowledge: (character, game_state) ->
             @__drawCharacterKnowledge(character, game_state)
@@ -146,12 +143,8 @@ define [
 
             cell = character.knowledge.grid.getCart select_coord
             @__setCursorCart cell
-            #@__drawChar(@__getCurrentChar(), SelectColourPair)
 
-
-            if cell.game_cell.position.equals character.position
-                @__drawChar(PlayerCharacterStyle.character, SelectColourPair)
-            else if cell.known
+            if cell.known
                 type = Tile.fromCell cell
                 tile = TileStyles[type]
                 @__drawChar(tile.character, SelectColourPair)

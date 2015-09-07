@@ -7,9 +7,10 @@ define [
             @game_cell = null
             @known = false
             @timestamp = 0
-            @ground = null
-            @fixture = null
-            @items = null
+            @ground = void
+            @fixture = void
+            @items = void
+            @character = void
 
         init: (game_cell) ->
             @game_cell = game_cell
@@ -17,12 +18,14 @@ define [
             @fixture = @game_cell.fixture
             @position = @game_cell.position
             @items = @game_cell.items
+            @character = @game_cell.character
 
         see: (game_state) ->
             @known = true
             @timestamp = game_state.absoluteTime
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
+            @character = @game_cell.character
 
         hasUnknownNeighbour: ->
             for n in @allNeighbours

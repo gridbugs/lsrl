@@ -12,7 +12,7 @@ define [
 ], (Character, Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
     Inventory, UserInterface, Types, Util, Config) ->
 
-    class PlayerCharacter extends Character.Human
+    class PlayerCharacter
         (@character, @position, @grid) ->
             @effects = []
             @knowledge = new Knowledge.Knowledge grid
@@ -34,7 +34,7 @@ define [
                 f e
 
         canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
-        getCell: -> @grid.getCart @position
+        getCell: -> @grid.getCart(@position)
         getKnowledgeCell: -> @knowledge.grid.getCart @position
 
         getName: -> @name

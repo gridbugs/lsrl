@@ -43,10 +43,15 @@ define [
         Plant:      -> Types.Tile.ItemPlant
     }
 
-    const CharacterTiles = Util.table Types.Character, {
+    const CharacterTiles = Util.mapTable Types.Character, {
         Human:      -> Types.Tile.Human
         Shrubbery:  -> Types.Tile.Shrubbery
-    }
+    }, (fn) ->
+        return (character) ->
+            if character.isPlayerCharacter()
+                return Types.Tile.PlayerCharacter
+            else
+                return fn(character)
 
     fromCell = (cell) ->
 

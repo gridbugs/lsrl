@@ -25,8 +25,12 @@ define [
             @cost = @fromCell.getMoveOutCost @direction
 
         commit: ->
-            @character.position = @character.position.add \
+            v = @character.position.add \
                 Direction.Vectors[@direction]
+
+            @character.getCell().character = void
+            @character.position = v
+            @character.getCell().character = @character.character
 
             if @character.getCell!.fixture.getName! == 'Web'
                 return new CommitMetaData @cost, ["#{@character.getName()} gets stuck in a web."]

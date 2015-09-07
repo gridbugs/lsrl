@@ -211,7 +211,7 @@ define [
 
             count = 0
             for d in Direction.CardinalDirections
-                if entrance.doorway.neighbours[d].fixture.type == Types.Fixture.Null
+                if entrance.doorway.neighbours[d].fixture.type != Types.Fixture.Wall
                     ++count
 
             if count == 2

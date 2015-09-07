@@ -19,6 +19,12 @@ define [
             arr[enum_type[k]] = v
         return arr
 
+    mapTable = (enum_type, object, fn) ->
+        arr = []
+        for k, v of object
+            arr[enum_type[k]] = fn(v)
+        return arr
+
     joinTable = (enum_l, enum_r, object) ->
         arr = []
         for k, v of object
@@ -112,4 +118,5 @@ define [
         joinObject
         getRandomFloat
         getRandomInt
+        mapTable
     }
