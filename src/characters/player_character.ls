@@ -15,7 +15,7 @@ define [
     class PlayerCharacter
         (@character, @position, @grid) ->
             @effects = []
-            @knowledge = new Knowledge.Knowledge grid
+            @knowledge = new Knowledge.Knowledge(@grid)
             @viewDistance = 20
 
             if Config.OMNISCIENT_PLAYER

@@ -19,6 +19,9 @@ define [
             switch control.type
             |   Types.Control.Direction
                     action = new Action.Move @character, control.direction, game_state
+
+                    if action.toCell.character?
+
                     if action.toCell.fixture.type != Types.Fixture.Wall
                         cb action
                     else

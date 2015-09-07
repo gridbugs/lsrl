@@ -20,9 +20,10 @@ define [
     'structures/search'
     'input/auto_move'
     'input/user_interface'
+    'characters/null_controller'
     'config'
     'types'
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, Config, Types) ->
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -55,6 +56,9 @@ define [
                 else if Math.random() < 0.03
                     if c.fixture.type == Types.Fixture.Null
                         c.addItem new Item.Plant()
+                else if Math.random() < 0.01
+                    if c.fixture.type == Types.Fixture.Null
+                        c.character = new character.Shrubbery(c.position, grid, NullController.NullController)
 
         pos = vec2.Vec2(sp.x, sp.y)
         char = new character.Human(pos, grid, pcharacter.PlayerCharacter)

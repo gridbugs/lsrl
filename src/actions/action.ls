@@ -94,6 +94,11 @@ define [
             @cell.fixture.open()
             return new CommitMetaData 2 ["Door opened"]
 
+    class Attack extends Action
+        (@character, @direction, @gameState) ->
+            @toCell = @fromCell.neighbours[@direction]
+
+
     {
         Null
         Move
