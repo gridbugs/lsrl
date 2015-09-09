@@ -39,9 +39,12 @@ define [
             else
                 Debug.assert(false, 'No action sources remaining!')
 
+        enqueueAction: (action) ->
+            @actionQueue.push(action)
+
         applyAction: (action) ->
             ret = []
-            @actionQueue.push(action)
+            @enqueueAction(action)
             while @actionQueue.length != 0
                 current_action = @actionQueue.pop()
                 current_action.apply(this)

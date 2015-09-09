@@ -24,7 +24,7 @@ define [
                 @observe_fn = Shadowcast.observe
 
             @autoMove = null
-            @interpreter = new ControlInterpreter.ControlInterpreter(this)
+            @interpreter = new ControlInterpreter.ControlInterpreter(@character)
             @inventory = new Inventory.Inventory()
 
             @name = "The player"
@@ -33,6 +33,7 @@ define [
             for e in @effects
                 f e
 
+        getKnowledge: -> @knowledge
         canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
         getCell: -> @character.getCell()
         getKnowledgeCell: -> @knowledge.grid.getCart(@character.getPosition())

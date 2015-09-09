@@ -18,7 +18,7 @@ define [
 
             switch control.type
             |   Types.Control.Direction
-                    action = new Action.Move @character.character, control.direction, game_state
+                    action = new Action.Move @character, control.direction, game_state
 
                     if action.toCell.character?
                         void
@@ -51,7 +51,7 @@ define [
                             @character.getAction game_state, cb
                             return
 
-                        kcell = @character.knowledge.grid.getCart(coord)
+                        kcell = @character.getKnowledge().grid.getCart(coord)
                         if kcell.fixture.type == Types.Fixture.Null
                             switch (kcell.ground.type)
                             |   Types.Ground.Dirt => UserInterface.printLine "Dirt floor"
@@ -68,7 +68,7 @@ define [
 
                     , (coord) ~>
                         UserInterface.clearLine()
-                        kcell = @character.knowledge.grid.getCart(coord)
+                        kcell = @character.getKnowledge().grid.getCart(coord)
                         if kcell.fixture.type == Types.Fixture.Null
                             switch (kcell.ground.type)
                             |   Types.Ground.Dirt => UserInterface.print "Dirt floor"
@@ -86,12 +86,12 @@ define [
                         UserInterface.printLine "You see no items here."
                         @character.getAction game_state, cb
                     else if cell.items.length() == 1
-                        action = new Action.Take(@character, game_state, cell.items.first().groupId, 1)
+                        action = new Action.Take(@character, cell.items.first().groupId, 1)
                         cb(action)
                     else if cell.items.numTypes() == 1
                         UserInterface.print "How many? "
                         num_items <~ UserInterface.readInteger(cell.items.length())
-                        action = new Action.Take(@character, game_state, cell.items.first().groupId, num_items)
+                        action = new Action.Take(@character, cell.items.first().groupId, num_items)
                         cb(action)
                     else
                         UserInterface.printLine "Select item to pick up:"
@@ -108,10 +108,10 @@ define [
                                 if group.length() > 1
                                     UserInterface.print "How many? "
                                     num_items <~ UserInterface.readInteger(group.length())
-                                    action = new Action.Take(@character, game_state, group.groupId, num_items)
+                                    action = new Action.Take(@character, group.groupId, num_items)
                                     cb(action)
                                 else
-                                    action = new Action.Take(@character, game_state, group.groupId, 1)
+                                    action = new Action.Take(@character, group.groupId, 1)
                                     cb(action)
 
                             else
@@ -120,7 +120,7 @@ define [
 
 
             |   Types.Control.Inventory
-                    @character.inventory.forEachMapping (ch, items) ->
+                    @character.getInventory().forEachMapping (ch, items) ->
                         Debug.assert(items.length() > 0, "No items")
                         name = items.first().getName()
                         if items.length() == 1
@@ -131,9 +131,32 @@ define [
                     @character.getAction game_state, cb
             |   Types.Control.Drop
                     
+                    if @character.getInventory().empty()
+                        UserInterface.printLine "You're not carrying any items."
+                        @character.getAction game_state, cb
+                        return
+
+                    if @character.getInventory().length() == 1
+                        action = new Action.Drop(@character, @character.getInventory().first().groupId, 1)
+                        cb(action)
+                        return
+
+                    if @character.getInventory().numTypes() == 1
+                        do
+                            UserInterface.print "How many? "
+                            length = @character.getInventory().length()
+                            num_items <~ UserInterface.readInteger(length)
+                            if num_items > length
+                                UserInterface.printLine "You don't have that many. Dropping #{length}."
+                                num_items = length
+
+                            action = new Action.Drop(@character, @character.getInventory().first().groupId, num_items)
+                            cb(action)
+                        return
+
                     UserInterface.printLine "Select item to drop:"
                 
-                    @character.inventory.forEachMapping (ch, items) ->
+                    @character.getInventory().forEachMapping (ch, items) ->
                         Debug.assert(items.length() > 0, "No items")
                         name = items.first().getName()
                         if items.length() == 1
@@ -149,10 +172,10 @@ define [
                             if num_items > items.length()
                                 UserInterface.printLine "You don't have that many. Dropping #{items.length()}."
                                 num_items = items.length()
-                            action = new Action.Drop(@character, game_state, items.groupId, num_items)
+                            action = new Action.Drop(@character, items.groupId, num_items)
                             cb(action)
                         else
-                            action = new Action.Drop(@character, game_state, items.groupId, 1)
+                            action = new Action.Drop(@character, items.groupId, 1)
                             cb(action)
                     else
                         UserInterface.printLine "You aren't carrying any such item."
@@ -169,7 +192,7 @@ define [
 
         chooseInventoryItem: (cb) ->
             char <~ UserInterface.getChar()
-            item = @character.inventory.getGroupByLetter(char)
+            item = @character.getInventory().getGroupByLetter(char)
             if item?
                 cb(item)
             else

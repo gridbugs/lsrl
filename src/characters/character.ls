@@ -27,7 +27,22 @@ define [
             return @grid.getCart(@getPosition())
 
         getCurrentMoveTime: ->
-            return 1
+            return 40
+
+        getKnowledgeCell: ->
+            @controller.getKnowledgeCell()
+
+        setAutoMove: (auto_move) ->
+            @controller.setAutoMove(auto_move)
+
+        getAction: (game_state, callback) ->
+            @controller.getAction(game_state, callback)
+
+        getInventory: ->
+            @controller.inventory
+
+        getKnowledge: ->
+            @controller.knowledge
 
     class Shrubbery extends Character
         (position, grid, Controller) ->

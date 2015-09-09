@@ -112,7 +112,7 @@ define [
             @ctx.font = @baseFont
 
         __drawCharacterKnowledge: (character, game_state) ->
-            character.knowledge.grid.forEach (c) ~>
+            character.getKnowledge().grid.forEach (c) ~>
                 @__drawKnowledgeCell c, game_state
 
 

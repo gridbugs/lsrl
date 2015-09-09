@@ -9,7 +9,6 @@ define [
             @effects.findAllByKey(event_type, callback)
 
         forEachEffect: (callback) ->
-            console.debug(this)
             @effects.forEach(callback)
 
         addEffect: (effect) ->

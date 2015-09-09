@@ -18,9 +18,40 @@ define [
 
         apply: (status) ->
             status.fail('attempted to enter solid cell')
-            status.gameState.actionQueue.push(
+            status.gameState.enqueueAction(
                 new Action.BumpIntoWall(status.action.character)
             )
+
+    class WebEntry extends ReactiveEffect
+        ->
+            super(Types.Event.MoveToCell)
+
+        apply: (status) ->
+            status.gameState.enqueueAction(
+                new Action.GetStuckInWeb(status.action.character)
+            )
+
+    class WebExit extends ReactiveEffect
+        ->
+            super(Types.Event.MoveFromCell)
+
+        apply: (status) ->
+            status.fail('stuck in web')
+            status.gameState.enqueueAction(
+                new Action.StruggleInWeb(status.action.character)
+            )
+
+    class OpenOnEnter extends ReactiveEffect
+        ->
+            super(Types.Event.MoveToCell)
+
+        apply: (status) ->
+            cell = status.action.toCell
+            if cell.fixture.isClosed()
+                status.fail('opening door instead')
+                status.gameState.enqueueAction(
+                    new Action.OpenDoor(status.action.character, cell)
+                )
 
     class CellIsSolid
         (@cell) ->
@@ -68,5 +99,8 @@ define [
         CellIsSticky
         CellIsOpenable
         Solid
+        WebEntry
+        WebExit
+        OpenOnEnter
     }
 

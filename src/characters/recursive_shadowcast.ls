@@ -88,7 +88,7 @@ define [
                 cell = knowledge_grid.getCart(coord_idx)
 
                 if (cell.game_cell.centre.distance eye_cell.centre) < character.viewDistance and \
-                    cell.timestamp != game_state.absoluteTime
+                    cell.timestamp != game_state.getTurnCount()
                     markCompletelyVisible(cell, game_state)
 
 

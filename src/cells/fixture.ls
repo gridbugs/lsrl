@@ -2,7 +2,8 @@ define [
     'types'
     'actions/effect'
     'actions/effectable'
-], (Types, Effect, Effectable) ->
+    'util'
+], (Types, Effect, Effectable, Util) ->
 
     class Fixture extends Effectable
         (@type) ->
@@ -23,10 +24,9 @@ define [
 
     class Door extends Fixture
         (cell) ->
-            super Types.Fixture.Door
-            @effects = [
-                new Effect.CellIsOpenable(cell)
-            ]
+            super(Types.Fixture.Door)
+            @addEffect(new Effect.OpenOnEnter())
+            
             @_isOpen = false
 
         open: ->
@@ -36,6 +36,7 @@ define [
             @_isOpen = false
 
         isOpen: -> @_isOpen
+        isClosed: -> not @isOpen()
 
         getName: ->
             if @isOpen
@@ -45,11 +46,12 @@ define [
 
     class Web extends Fixture
         (@cell) ->
-            super Types.Fixture.Web
-            @strength = 3
-            @effects = [
-                new Effect.CellIsSticky cell, this
-            ]
+            super(Types.Fixture.Web)
+            @strength = Util.getRandomInt(3, 6)
+
+            @addEffect(new Effect.WebEntry())
+            @addEffect(new Effect.WebExit())
+
         getName: -> 'Web'
 
         tryUnstick: ->
@@ -57,6 +59,8 @@ define [
 
         unstick: ->
             @cell.setFixture Null
+
+
 
     class Tree extends Fixture
         (cell) ->

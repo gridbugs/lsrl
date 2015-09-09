@@ -50,7 +50,7 @@ define [
                 UserInterface.printLine desc
 
             /* Get time until current action source (in game time) */
-            time = @gameState.getCurrentTimeDelta!
+            time = @gameState.getCurrentTimeDelta()
 
             /* Process the next action after the time has passed */
             setTimeout (~>@progressGameState!), (@gameTimeToMs time)
