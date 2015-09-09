@@ -95,7 +95,7 @@ define [
 
         __drawKnowledgeCell: (cell, game_state) ->
             if cell.known
-                if cell.timestamp == game_state.absoluteTime
+                if cell.timestamp == game_state.getTurnCount()
                     @__fillTextFromCell(cell)
                 else
                     @__fillTextFromCellWithColour(cell, UnseenColour)

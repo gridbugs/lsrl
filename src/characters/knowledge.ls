@@ -22,7 +22,7 @@ define [
 
         see: (game_state) ->
             @known = true
-            @timestamp = game_state.absoluteTime
+            @timestamp = game_state.getTurnCount()
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
             @character = @game_cell.character

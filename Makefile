@@ -23,3 +23,6 @@ watch: webcommon
 
 clean:
 	rm -rf $(OUTPUT) $(LIB_OUTPUT) output
+
+rmtemp:
+	find src -name '.*' -exec rm {} \;

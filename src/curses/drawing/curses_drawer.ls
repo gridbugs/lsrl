@@ -121,7 +121,7 @@ define [
             @__setCursorCart cell
             if cell.known
                 tile = TileStyles[Tile.fromCell(cell)]
-                if cell.timestamp == game_state.absoluteTime
+                if cell.timestamp == game_state.getTurnCount()
                     @__drawTile(tile)
                 else
                     @__drawUnseenTile(tile)
