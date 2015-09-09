@@ -1,13 +1,19 @@
 define [
     'actions/effectable'
+    'actions/effect'
     'types'
-], (Effectable, Types) ->
+], (Effectable, Effect, Types) ->
 
     class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
+            super()
+            
+            @addEffect(new Effect.Solid())
+            
             @controller = new @Controller(this, @position, @grid)
             @__playerCharacter = false
-            super()
+
+            @hitPoints = 10
 
         getName: -> 'Character'
 
@@ -44,13 +50,39 @@ define [
         getKnowledge: ->
             @controller.knowledge
 
+        getCurrentAttackTime: ->
+            return 10
+
+        getCurrentAttackDamage: ->
+            return 5
+
+
+        getCurrentResistance: ->
+            return 3
+
+        getCurrentHitPoints: ->
+            return @hitPoints
+
+        takeNetDamage: (damage) ->
+            @hitPoints = Math.max(0, @hitPoints - damage)
+
+        isAlive: ->
+            @hitPoints > 0
+
+        die: ->
+            @getCell().character = void
+
     class Shrubbery extends Character
         (position, grid, Controller) ->
             super(Types.Character.Shrubbery, position, grid, Controller)
 
+        getName: -> 'Shrubbery'
+
     class Human extends Character
         (position, grid, Controller) ->
             super(Types.Character.Human, position, grid, Controller)
+
+        getName: -> 'Human'
 
     {
         Character

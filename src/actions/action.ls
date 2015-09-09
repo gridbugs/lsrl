@@ -21,6 +21,10 @@ define [
             else
                 return void
 
+        prepare: ->
+        commit: ->
+
+
     /* An action which is clearly done by a single character. */
     class CharacterAction extends Action
         (@character) ->
@@ -117,6 +121,52 @@ define [
             @character.getCell().items.insertItems(items)
             UserInterface.printLine("#{@character.getName()} drops #{@numItems} x #{items.first().getName()}.")
 
+    class Attack extends CharacterAction
+        (character, @direction) ->
+            super(character)
+            @targetCell = character.getCell().neighbours[@direction]
+
+        prepare: ->
+            @target = @targetCell.character
+
+            if not @target?
+                @status.fail('no target')
+                return
+
+            @status.addTime(@character.getCurrentAttackTime())
+            @grossDamage = @character.getCurrentAttackDamage()
+            @targetResistance = @target.getCurrentResistance()
+            @netDamage = Math.max(0, @grossDamage - @targetResistance)
+
+        commit: ->
+            @status.gameState.enqueueAction(new TakeDamage(@target, @netDamage))
+            @target.takeNetDamage(@netDamage)
+            UserInterface.printLine("#{@character.getName()} attacks the #{@target.getName()}.")
+
+    class TakeDamage extends CharacterAction
+        (character, @damage) ->
+            super(character)
+
+        prepare: ->
+            @status.setNoReschedule()
+        
+        commit: ->
+            @status.setNoReschedule()
+            @character.takeNetDamage(@damage)
+            if not @character.isAlive()
+                @status.gameState.enqueueAction(new Die(@character))
+
+    class Die extends CharacterAction
+        (character) ->
+            super(character)
+
+        prepare: ->
+            @status.setNoReschedule()
+
+        commit: ->
+            @character.die()
+            UserInterface.printLine("#{@character.getName()} dies.")
+            
     {
         Move
         BumpIntoWall
@@ -125,4 +175,5 @@ define [
         OpenDoor
         Take
         Drop
+        Attack
     }

@@ -48,6 +48,7 @@ define [
         forEachMatchingEffect: (event_type, f) ->
             @ground.forEachMatchingEffect(event_type, f)
             @fixture.forEachMatchingEffect(event_type, f)
+            @character?.forEachMatchingEffect(event_type, f)
             super(event_type, f)
             
         addItem: (item) ->

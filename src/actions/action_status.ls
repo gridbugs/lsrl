@@ -41,6 +41,9 @@ define [
         isRescheduleRequired: ->
             return @rescheduleRequired
 
+        setNoReschedule: ->
+            @rescheduleRequired = false
+
     {
         ActionStatus
     }

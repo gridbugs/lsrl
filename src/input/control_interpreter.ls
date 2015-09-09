@@ -18,10 +18,10 @@ define [
 
             switch control.type
             |   Types.Control.Direction
-                    action = new Action.Move @character, control.direction, game_state
+                    action = new Action.Move(@character, control.direction)
 
                     if action.toCell.character?
-                        void
+                        action = new Action.Attack(@character, control.direction)
 
                     cb action
                     /*
