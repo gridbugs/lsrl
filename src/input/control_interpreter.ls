@@ -18,15 +18,19 @@ define [
 
             switch control.type
             |   Types.Control.Direction
-                    action = new Action.Move @character, control.direction, game_state
+                    action = new Action.Move @character.character, control.direction, game_state
 
                     if action.toCell.character?
+                        void
 
+                    cb action
+                    /*
                     if action.toCell.fixture.type != Types.Fixture.Wall
                         cb action
                     else
                         UserInterface.printLine "Cannot move there."
                         @character.getAction game_state, cb
+                    */
             |   Types.Control.AutoDirection
                     @character.setAutoMove(
                         new AutoMove.StraightLineMove @character, control.direction

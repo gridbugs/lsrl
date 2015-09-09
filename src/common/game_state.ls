@@ -1,7 +1,8 @@
 define [
     'structures/heap'
     'util'
-], (Heap, Util) ->
+    'debug'
+], (Heap, Util, Debug) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -24,14 +25,20 @@ define [
             entry = new ScheduleEntry as, (relative_time + @absoluteTime)
             @schedule.insert entry
 
-        getCurrentActionSource: -> @schedule.peak!.actionSource
+        getCurrentActionSource: ->
+            top = @schedule.peak()
+            if top?
+                return top.actionSource
+            else
+                Debug.assert(false, 'No action sources remaining!')
 
         applyAction: (action) ->
             ret = []
-            action_queue = [action]
-            while action_queue.length != 0
-                current_action = action_queue.pop!
-                cancelled = false
+            @actionQueue.push(action)
+            while @actionQueue.length != 0
+                current_action = @actionQueue.pop()
+                current_action.apply(this)
+                /*
                 for event in current_action.events
                     event.forEachMatchingEffect (effect) ~>
                         cancelled := cancelled or effect.cancells event
@@ -45,6 +52,7 @@ define [
                     descriptions = current_action.commitAndReschedule!
                     for desc in descriptions
                         ret.push desc
+                */
 
             return ret
 

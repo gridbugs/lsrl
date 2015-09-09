@@ -1,24 +1,24 @@
 define [
     'types'
     'actions/effect'
-], (Types, Effect) ->
+    'actions/effectable'
+], (Types, Effect, Effectable) ->
 
-    class Fixture extends Effect.Effectable
+    class Fixture extends Effectable
         (@type) ->
+            super()
 
     class Null extends Fixture
         (cell) ->
-            super Types.Fixture.Null
-            @effects = []
+            super(Types.Fixture.Null)
 
         getName: -> 'Null'
 
     class Wall extends Fixture
         (cell) ->
-            super Types.Fixture.Wall
-            @effects = [
-                new Effect.CellIsSolid(cell)
-            ]
+            super(Types.Fixture.Wall)
+            @addEffect(new Effect.Solid())
+
         getName: -> 'Wall'
 
     class Door extends Fixture

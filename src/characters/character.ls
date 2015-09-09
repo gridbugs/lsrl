@@ -1,14 +1,33 @@
 define [
+    'actions/effectable'
     'types'
-], (Types) ->
+], (Effectable, Types) ->
 
-    class Character
+    class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
             @controller = new @Controller(this, @position, @grid)
             @__playerCharacter = false
+            super()
 
-        isPlayerCharacter: -> @__playerCharacter
-        setAsPlayerCharacter: -> @__playerCharacter = true
+        getName: -> 'Character'
+
+        getController: ->
+            return @controller
+
+        isPlayerCharacter: ->
+            return @__playerCharacter
+
+        setAsPlayerCharacter: ->
+            @__playerCharacter = true
+
+        getPosition: ->
+            return @position
+
+        getCell: ->
+            return @grid.getCart(@getPosition())
+
+        getCurrentMoveTime: ->
+            return 1
 
     class Shrubbery extends Character
         (position, grid, Controller) ->

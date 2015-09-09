@@ -9,6 +9,18 @@ define [
             for e in @effects
                 f e
 
+    class ReactiveEffect
+        (@eventType) ->
+
+    class Solid extends ReactiveEffect
+        ->
+            super(Types.Event.MoveToCell)
+
+        apply: (status) ->
+            status.fail('attempted to enter solid cell')
+            status.gameState.actionQueue.push(
+                new Action.BumpIntoWall(status.action.character)
+            )
 
     class CellIsSolid
         (@cell) ->
@@ -55,5 +67,6 @@ define [
         CellIsSolid
         CellIsSticky
         CellIsOpenable
+        Solid
     }
 

@@ -83,6 +83,7 @@ define [
     const Event = Util.enum [
         \MoveToCell
         \MoveFromCell
+        \CharacterMove
     ]
 
     const Character = Util.enum [

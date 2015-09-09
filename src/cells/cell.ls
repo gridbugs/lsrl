@@ -2,11 +2,12 @@ define [
     'structures/vec2'
     'structures/direction'
     'items/inventory'
+    'actions/effectable'
     'constants'
     'types'
-], (Vec2, Direction, Inventory, Constants, Types) ->
+], (Vec2, Direction, Inventory, Effectable, Constants, Types) ->
 
-    class Cell
+    class Cell extends Effectable
         (@x, @y) ->
             @position = Vec2.Vec2 @x, @y
             @character = void
@@ -22,6 +23,7 @@ define [
             @corners[Types.OrdinalDirection.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
 
             @moveOutCost = 40
+            super()
 
         getMoveOutCost: (direction) ->
             if Direction.isCardinal direction
@@ -39,14 +41,15 @@ define [
                 element.forEachEffect f
 
         forEachEffect: (f) ->
-            @ground.forEachEffect f
-            @fixture.forEachEffect f
-            @forEachEffectInGroup @characters
+            @ground.forEachEffect(f)
+            @fixture.forEachEffect(f)
+            super(f)
 
-        _forEachEffect: (f) ->
-            for e in effects
-                f e
-
+        forEachMatchingEffect: (event_type, f) ->
+            @ground.forEachMatchingEffect(event_type, f)
+            @fixture.forEachMatchingEffect(event_type, f)
+            super(event_type, f)
+            
         addItem: (item) ->
             @items.insertItem item
 

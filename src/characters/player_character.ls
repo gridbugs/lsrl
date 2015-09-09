@@ -34,8 +34,8 @@ define [
                 f e
 
         canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
-        getCell: -> @grid.getCart(@position)
-        getKnowledgeCell: -> @knowledge.grid.getCart @position
+        getCell: -> @character.getCell()
+        getKnowledgeCell: -> @knowledge.grid.getCart(@character.getPosition())
 
         getName: -> @name
 

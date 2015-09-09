@@ -1,27 +1,29 @@
 define [
     'types'
     'actions/effect'
-], (Types, Effect) ->
+    'actions/effectable'
+], (Types, Effect, Effectable) ->
 
-    class Ground extends Effect.Effectable
+    class Ground extends Effectable
         (@type) ->
+            super()
 
     class Dirt extends Ground
         ->
-            super Types.Ground.Dirt
-            @effects = []
+            super(Types.Ground.Dirt)
+        
         getName: -> 'Dirt'
 
     class Stone extends Ground
         ->
-            super Types.Ground.Stone
-            @effects = []
+            super(Types.Ground.Stone)
+        
         getName: -> 'Stone'
 
     class Moss extends Ground
         ->
-            super Types.Ground.Moss
-            @effects = []
+            super(Types.Ground.Moss)
+        
         getName: -> 'Moss'
 
     {

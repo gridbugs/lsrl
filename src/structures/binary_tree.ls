@@ -96,11 +96,18 @@ define [
             else if key > @key
                 return @right?.findNodeByKey(key,  callback)
             else
-                callback(this)
+                callback?(this)
                 return this
 
         findByKey: (key, callback) ->
             @findNodeByKey(key, (node) -> callback?(node.value))?.value
+
+        findAllByKey: (key, callback) ->
+            n = @findNodeByKey(key)
+            if n?
+                callback(n.value)
+                n.left?.findAllByKey(key, callback)
+                n.right?.findAllByKey(key, callback)
 
     class BinaryTree
         ->
@@ -136,6 +143,7 @@ define [
             return ret
 
         findByKey: (key, callback) -> @root?.findByKey(key, callback)
+        findAllByKey: (key, callback) -> @root?.findAllByKey(key, callback)
         containsKey: (key) -> @findByKey(key)?
 
         empty: -> @root == void
