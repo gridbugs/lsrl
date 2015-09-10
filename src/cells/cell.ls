@@ -54,6 +54,10 @@ define [
         addItem: (item) ->
             @items.insertItem item
 
+        isEmpty: ->
+            return @fixture.type == Types.Fixture.Null and (not @character?) and
+                (@fixture.type != Types.Fixture.Door || @fixture.isOpen())
+
     {
         Cell
     }

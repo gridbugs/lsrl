@@ -6,30 +6,33 @@ define [
     'util'''
 ], (Action, Search, Direction, Types, Util) ->
 
+    class SurroundingCells
+        (centre, direction) ->
+            cells = Direction.Fronts[direction].map (centre.neighbours.)
+            @cellStates = cells.map (.isEmpty())
+
+        matches: (other) ->
+            for i from 0 til @cellStates.length
+                if @cellStates[i] != other.cellStates[i]
+                    return false
+            return true
+
     class StraightLineMove
         (@character, @direction) ->
             @initialSurroundings =
-                new StraightLineMove.SurroundingCells(@character.getCell(), @direction)
+                new SurroundingCells(@character.getCell(), @direction)
 
         hasAction: ->
-            surroundings =
-                new StraightLineMove.SurroundingCells(@character.getCell(), @direction)
+            dest = @character.getCell().neighbours[@direction]
+            if not dest.isEmpty()
+                return false
+            surroundings = new SurroundingCells(@character.getCell(), @direction)
             return surroundings.matches(@initialSurroundings)
 
-        canStart: -> @character.getCell()fixture.type == Types.Fixture.Null
+        canStart: -> @character.getCell().fixture.type == Types.Fixture.Null
 
         getAction: (game_state, cb) ->
             cb(new Action.Move(@character, @direction, game_state))
-
-    StraightLineMove.SurroundingCells = class
-        (@centre, @direction) ->
-            @cells = Direction.Fronts[@direction].map (i) ~> @centre.neighbours[i]
-
-        matches: (other) ->
-            for i from 0 til @cells.length
-                if @cells[i].fixture.type != other.cells[i].fixture.type
-                    return false
-            return true
 
     class AutoExploreOnce
         (@character) ->
@@ -40,7 +43,7 @@ define [
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell(), \
                         ((c, d) -> c.game_cell.getMoveOutCost d), \
-                        ((c) -> c.known and (c.fixture.type == Types.Fixture.Null or c.fixture.type == Types.Fixture.Door)), \
+                        ((c) -> c.known and (c.game_cell.isEmpty() or c.fixture.type == Types.Fixture.Door)), \
                         ((c) -> c.hasUnknownNeighbour())
 
             if result?
