@@ -50,7 +50,7 @@ define [
             @fixture.forEachMatchingEffect(event_type, f)
             @character?.forEachMatchingEffect(event_type, f)
             super(event_type, f)
-            
+
         addItem: (item) ->
             @items.insertItem item
 

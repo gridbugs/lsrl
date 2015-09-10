@@ -7,9 +7,9 @@ define [
     class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
             super()
-            
+
             @addEffect(new Effect.Solid())
-            
+
             @controller = new @Controller(this, @position, @grid)
             @__playerCharacter = false
 

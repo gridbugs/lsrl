@@ -20,7 +20,7 @@ define ->
                 return @negative[-idx - 1]
             else
                 return @zero
-    
+
     {
         SignedArray
     }

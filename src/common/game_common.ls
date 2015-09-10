@@ -8,9 +8,9 @@ define [
 
     class GameCommon
         (gameDrawer, gameController, gameConsole) ->
-            
+
             UserInterface.setUserInterface(gameDrawer, gameController, gameConsole)
-            
+
             if Config.RANDOM_SEED?
                 seed = Config.RANDOM_SEED
             else

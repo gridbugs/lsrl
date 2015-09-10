@@ -130,7 +130,7 @@ define [
 
                     @character.getAction game_state, cb
             |   Types.Control.Drop
-                    
+
                     if @character.getInventory().empty()
                         UserInterface.printLine "You're not carrying any items."
                         @character.getAction game_state, cb
@@ -155,7 +155,7 @@ define [
                         return
 
                     UserInterface.printLine "Select item to drop:"
-                
+
                     @character.getInventory().forEachMapping (ch, items) ->
                         Debug.assert(items.length() > 0, "No items")
                         name = items.first().getName()

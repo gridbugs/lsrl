@@ -1,6 +1,6 @@
 define [
 ], ->
-    
+
     class Something
         (@value) ->
         ifSomething: (f, g) -> f(@value)
@@ -18,7 +18,7 @@ define [
 
         if not done
             onFalse?()
-    
+
     maybe = (fn, ...args, callback) ->
         done = false
         args.push (x) ->

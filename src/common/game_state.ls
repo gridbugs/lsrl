@@ -27,7 +27,7 @@ define [
 
         getTime: ->
             return @absoluteTime
-        
+
         scheduleActionSource: (as, relative_time) ->
             entry = new ScheduleEntry as, (relative_time + @absoluteTime)
             @schedule.insert entry

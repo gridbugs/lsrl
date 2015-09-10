@@ -1,7 +1,7 @@
 define [
     \debug
 ], (Debug) ->
-    
+
     class LinkedListNode
         (@data) ->
             @next = void
@@ -14,7 +14,7 @@ define [
 
         length: -> @__length
         empty: -> @__length == 0
-        
+
         firstNode: -> @head
         first: -> @head.data
 
@@ -58,7 +58,7 @@ define [
             ++@__length
 
             n.next = @head
-            
+
             if @head?
                 @head.prev = n
 
@@ -76,7 +76,7 @@ define [
                 # n is the head of the list
                 Debug.assert(n == @head, "removeNode: n != @head")
                 @head = n.next
-        
+
         forEachNode: (f) ->
             tmp = @head
             while tmp?

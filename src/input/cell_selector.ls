@@ -15,13 +15,13 @@ define [
             @selectCellLoop(character, game_state, cb, on_each)
 
         selectCellLoop: (character, game_state, cb, on_each) ->
-            
+
             UserInterface.drawCellSelectOverlay(character, game_state, @selectedPosition)
 
             on_each?(@selectedPosition)
 
             control <~ Util.repeatWhileUndefined(UserInterface.getControl)
-            
+
             switch control.type
             |   Types.Control.Direction
                     change = Direction.Vectors[control.direction]

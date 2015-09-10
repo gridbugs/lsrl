@@ -26,7 +26,7 @@ define [
         (cell) ->
             super(Types.Fixture.Door)
             @addEffect(new Effect.OpenOnEnter())
-            
+
             @_isOpen = false
 
         open: ->

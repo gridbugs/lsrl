@@ -1,5 +1,4 @@
 define [
-    'actions/skill'
     'actions/action_status'
     'input/user_interface'
     'types'
@@ -8,7 +7,7 @@ define [
     class Action
         apply: (gameState) ->
             @status = new ActionStatus.ActionStatus(this, gameState)
-        
+
             @prepare()
 
             if @status.isSuccessful()
@@ -35,7 +34,7 @@ define [
     class Move extends CharacterAction
         (character, @direction) ->
             super(character)
-            
+
             /* determine source and destination cells */
             @fromCell = @character.getCell()
             @toCell = @fromCell.neighbours[@direction]
@@ -44,7 +43,7 @@ define [
             <~ @status.notify(@character, Types.Event.CharacterMove)
             <~ @status.notify(@fromCell, Types.Event.MoveFromCell)
             <~ @status.notify(@toCell, Types.Event.MoveToCell)
-            
+
             @status.addTime(@character.getCurrentMoveTime(@direction))
 
         commit: ->
@@ -149,7 +148,7 @@ define [
 
         prepare: ->
             @status.setNoReschedule()
-        
+
         commit: ->
             @status.setNoReschedule()
             @character.takeNetDamage(@damage)
@@ -166,7 +165,7 @@ define [
         commit: ->
             @character.die()
             UserInterface.printLine("#{@character.getName()} dies.")
-            
+
     {
         Move
         BumpIntoWall
