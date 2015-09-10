@@ -2,7 +2,7 @@ define [
     'actions/action_status'
     'input/user_interface'
     'types'
-], (Skill, ActionStatus, UserInterface, Types) ->
+], (ActionStatus, UserInterface, Types) ->
 
     class Action
         apply: (gameState) ->
