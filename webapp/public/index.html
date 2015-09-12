@@ -6,12 +6,43 @@
     padding: 0px;
     margin: 0px;
 }
-#log {
+#canvas {
+    position: relative;
+    float: left;
+}
+#side {
+    position: relative;
+    float: left;
     font-family: monospace;
-    padding-left: 10px;
-    height: 120px;
-    width: 400px;
+    height: 500px;
+}
+#side > div {
+    width: 300px;
+    position: relative;
+}
+#side > div > div {
+    position: absolute;
+    left: 10px;
+    right: 0px;
+    border: 2px solid black;
+    padding: 4px;
+}
+#hud-container {
+    top: 0px;
+    height: 100px;
+}
+#log-container {
     overflow: scroll;
+    bottom: 0px;
+    height: 400px;
+}
+#log {
+    top: 5px;
+    bottom: 0px;
+}
+#hud {
+    top: 0px;
+    bottom: 5px;
 }
 .readline {
     font-family: monospace;
@@ -21,11 +52,13 @@
 <script src="lib/jquery.js"></script>
 <script src="lib/jquery.numeric.min.js"></script>
 <script src="lib/seedrandom.js"></script>
-<script data-main= "generated/canvas/main_canvas" src="lib/require.js"></script>
+<script data-main="generated/canvas/main_canvas" src="lib/require.js"></script>
 </head>
 <body>
-<canvas id="canvas" width=1200 height=650></canvas>
-<p id="log">
-</p>
+<canvas id="canvas" width=800 height=500></canvas>
+<div id="side">
+    <div id="hud-container"><div id="hud"></div></div>
+    <div id="log-container"><div id="log"></div></div>
+</div>
 </body>
 </html>
