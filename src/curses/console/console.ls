@@ -13,15 +13,47 @@ define [
             @consoleWindow.on 'inputChar', (c, k) ~>
                 @consoleWindowCallback(c, k)
 
-        print: (str) ->
-            @consoleWindow.addstr(str)
+            @log = [""]
+            @logIndex = 0
+            @newLineOnNextPrint = false
+
+            @refresh()
+
+        setCurrentLogEntry: (str) ->
+            @log[@logIndex] = str
+
+        appendCurrentLogEntry: (str) ->
+            @setCurrentLogEntry([@log[@logIndex], str].join(''))
+
+        addNewLogEntry: ->
+            ++@logIndex
+            @setCurrentLogEntry("")
+
+        refresh: ->
+            @consoleWindow.clear()
+            @consoleWindow.box()
+            @consoleWindow.cursor(1, 1)
+            visible = @log.slice(-10)
+
+            for line in visible[0 til visible.length - 1]
+                @consoleWindow.addstr(line)
+                @consoleWindow.cursor(@consoleWindow.cury + 1, 1)
+                
+            @consoleWindow.addstr(visible[visible.length - 1])
+
             @consoleWindow.refresh()
+
+        print: (str) ->
+            if @newLineOnNextPrint
+                @addNewLogEntry()
+                @newLineOnNextPrint = false
+            @appendCurrentLogEntry(str)
+            @refresh()
             if Config.DEBUG_PRINT_CONSOLE
                 Util.printDebug(str)
 
         newLine: ->
-            @consoleWindow.addstr("\n\r")
-            @consoleWindow.refresh()
+            @newLineOnNextPrint = true
 
         readLineFiltered: (str, filter, callback) ->
             @ncurses.showCursor = true
@@ -31,15 +63,13 @@ define [
             @consoleWindow.addstr(str)
             @consoleWindow.refresh()
 
-
             @consoleWindowCallback = (c, k) ~>
                 if c == '\n'
                     @ncurses.showCursor = false
                     @gameWindow.top()
                     @gameWindow.refresh()
                     @consoleWindowCallback = (->)
-                    @consoleWindow.addstr(c)
-                    @consoleWindow.refresh()
+                    @printLine(str)
                     callback(str)
                 else if k == KEYCODE_BACKSPACE
                     str := str.slice(0, str.length - 1)
@@ -73,9 +103,9 @@ define [
             callback(ret)
 
         clearLine: ->
-            @consoleWindow.cursor(@consoleWindow.cury, 0)
-            @consoleWindow.addstr("                                             ")
-            @consoleWindow.cursor(@consoleWindow.cury, 0)
+            if not @newLineOnNextPrint
+                @setCurrentLogEntry("")
+                @refresh()
 
     {
         Console

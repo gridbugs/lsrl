@@ -44,7 +44,7 @@ define [
             |   Types.Control.NavigateToCell
                     @navigateToCell(@character.position, game_state, cb)
             |   Types.Control.Examine
-                    UserInterface.printLine("You see here:")
+                    UserInterface.printLine "You see here:"
                     @selector.selectCell @character.position, @character, game_state, (coord) ~>
                         UserInterface.clearLine()
                         if not coord?
@@ -120,6 +120,9 @@ define [
 
 
             |   Types.Control.Inventory
+                    UserInterface.printLine "Inventory:"
+                    if @character.getInventory().empty()
+                        UserInterface.printLine "(empty)"
                     @character.getInventory().forEachMapping (ch, items) ->
                         Debug.assert(items.length() > 0, "No items")
                         name = items.first().getName()
@@ -143,7 +146,8 @@ define [
 
                     if @character.getInventory().numTypes() == 1
                         do
-                            UserInterface.print "How many? "
+                            name = @character.getInventory().first().getName()
+                            UserInterface.print "How many #{name}s? "
                             length = @character.getInventory().length()
                             num_items <~ UserInterface.readInteger(length)
                             if num_items > length

@@ -29,8 +29,7 @@ define [
             @stdscr = new Ncurses.Window()
             @gameWindow = new Ncurses.Window(40, 120, 0, 0)
             @hudWindow = new Ncurses.Window(47, 40, 0, 122)
-            @logWindow = new Ncurses.Window(6, 120, 41, 0)
-            @logWindow.scrollok(true)
+            @logWindow = new Ncurses.Window(12, 120, 41, 0)
             Ncurses.showCursor = false
             Ncurses.echo = false
             Ncurses.setEscDelay 0
@@ -129,7 +128,7 @@ define [
                 @__drawUnknownCart(cell)
 
         __drawCharacterKnowledge: (character, game_state) ->
-            character.knowledge.grid.forEach (c) ~>
+            character.getKnowledge().grid.forEach (c) ~>
                 @__drawKnowledgeCell c, game_state
 
         drawCharacterKnowledge: (character, game_state) ->
@@ -141,7 +140,7 @@ define [
         drawCellSelectOverlay: (character, game_state, select_coord) ->
             @__drawCharacterKnowledge(character, game_state)
 
-            cell = character.knowledge.grid.getCart select_coord
+            cell = character.getKnowledge().grid.getCart select_coord
             @__setCursorCart cell
 
             if cell.known

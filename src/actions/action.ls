@@ -115,7 +115,6 @@ define [
             @status.addTime(2)
 
         commit: ->
-            console.debug this
             items = @character.getInventory().removeItemsByGroupId(@groupId, @numItems)
             @character.getCell().items.insertItems(items)
             UserInterface.printLine("#{@character.getName()} drops #{@numItems} x #{items.first().getName()}.")

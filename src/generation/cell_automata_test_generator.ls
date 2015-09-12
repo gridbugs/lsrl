@@ -170,7 +170,6 @@ define [
 
                 --attempts
                 if attempts == 0
-                    console.debug 'giving up'
                     return
 
                 entrance = Util.getRandomElement(@entranceCandidates)
