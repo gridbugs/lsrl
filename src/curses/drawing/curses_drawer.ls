@@ -27,12 +27,15 @@ define [
         ->
             @ncurses = Ncurses
             @stdscr = new Ncurses.Window()
-            @gameWindow = new Ncurses.Window(40, 120, 0, 0)
-            @hudWindow = new Ncurses.Window(47, 40, 0, 122)
-            @logWindow = new Ncurses.Window(12, 120, 41, 0)
+            width = 80
+            @gameWindow = new Ncurses.Window(30, width, 0, 0)
+            @hudWindow = new Ncurses.Window(4, width, @gameWindow.height, 0)
+            @logWindow = new Ncurses.Window(12, width, @gameWindow.height + @hudWindow.height, 0)
             Ncurses.showCursor = false
             Ncurses.echo = false
             Ncurses.setEscDelay 0
+
+            @hudWindow.border()
 
             @buf = [[void] * 120] * 40
             @cursor_x = 0
@@ -56,11 +59,11 @@ define [
         getGameWindow: -> @gameWindow
 
         cleanup: ~>
-            @stdscr.close!
-            @gameWindow.close!
-            @hudWindow.close!
-            @logWindow.close!
-            Ncurses.cleanup!
+            @stdscr.close()
+            @gameWindow.close()
+            @hudWindow.close()
+            @logWindow.close()
+            Ncurses.cleanup()
 
         __setCursor: (x, y) ->
             @gameWindow.cursor(y, x)

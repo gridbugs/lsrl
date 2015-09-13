@@ -17,6 +17,8 @@ define [
             @logIndex = 0
             @newLineOnNextPrint = false
 
+            @numLines = @consoleWindow.height - 2
+
             @refresh()
 
         setCurrentLogEntry: (str) ->
@@ -33,7 +35,7 @@ define [
             @consoleWindow.clear()
             @consoleWindow.box()
             @consoleWindow.cursor(1, 1)
-            visible = @log.slice(-10)
+            visible = @log.slice(-@numLines)
 
             for line in visible[0 til visible.length - 1]
                 @consoleWindow.addstr(line)
