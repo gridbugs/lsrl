@@ -9,7 +9,6 @@ define [
 
         getAction: (game_state, callback) ->
             callback(new Action.Null())
-            return false
 
     {
         NullController

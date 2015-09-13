@@ -56,7 +56,7 @@ define [
 
             @gameState.progressSchedule()
             
-            return action_source.getAction @gameState, (action) ~>
+            action_source.getAction @gameState, (action) ~>
 
                 @gameState.applyAction(action)
 
