@@ -7,9 +7,8 @@ define [
 ], (UserInterface, Test, Util, Config, Debug) ->
 
     class GameCommon
-        (gameDrawer, gameController, gameConsole) ->
-
-            UserInterface.setUserInterface(gameDrawer, gameController, gameConsole)
+        (gameDrawer, gameController, gameConsole, gameHud) ->
+            UserInterface.setUserInterface(gameDrawer, gameController, gameConsole, gameHud)
 
             if Config.RANDOM_SEED?
                 seed = Config.RANDOM_SEED
@@ -42,6 +41,7 @@ define [
 
             @gameState.playerCharacter.observe(@gameState)
             UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
+            UserInterface.updateHud(@gameState.playerCharacter.character)
 
             action <~ action_source.getAction(@gameState)
 

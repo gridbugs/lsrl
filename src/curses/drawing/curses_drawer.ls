@@ -17,7 +17,6 @@ define [
             ++i
 
     for s in TileStyles
-        Util.printDebug(s)
         s.pair = ColourPairs[s.colour]
 
     const UnseenPair = ColourPairs[CursesTile.SpecialColours.Unseen]
@@ -35,9 +34,7 @@ define [
             Ncurses.echo = false
             Ncurses.setEscDelay 0
 
-            @hudWindow.border()
-
-            @buf = [[void] * 120] * 40
+            @buf = [[void] * @gameWindow.width] * @gameWindow.height
             @cursor_x = 0
             @cursor_y = 0
 

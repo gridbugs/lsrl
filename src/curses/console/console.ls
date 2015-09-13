@@ -33,7 +33,7 @@ define [
 
         refresh: ->
             @consoleWindow.clear()
-            @consoleWindow.box()
+            @consoleWindow.border()
             @consoleWindow.cursor(1, 1)
             visible = @log.slice(-@numLines)
 

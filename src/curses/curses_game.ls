@@ -3,11 +3,12 @@ define [
     'curses/drawing/curses_drawer'
     'curses/input/curses_input_source'
     'curses/console/console'
+    'curses/hud/hud'
     'input/keymap'
     'input/user_interface'
     'util'
     'config'
-], (GameCommon, CursesDrawer, CursesInputSource, Console, Keymap, UserInterface, Util, Config) ->
+], (GameCommon, CursesDrawer, CursesInputSource, Console, Hud, Keymap, UserInterface, Util, Config) ->
 
     class Game extends GameCommon.GameCommon
         ->
@@ -16,13 +17,12 @@ define [
             convert = Keymap.convertFromDvorak
             input = new CursesInputSource.CursesInputSource(drawer.gameWindow, convert)
             game_console = new Console.Console(drawer.logWindow, drawer.gameWindow, drawer.ncurses)
-
-            UserInterface.setUserInterface(drawer, input, game_console)
+            hud = new Hud.Hud(drawer.hudWindow)
 
             process.on('SIGINT', drawer.cleanup)
             process.on('exit', drawer.cleanup)
 
-            super(drawer, input, game_console)
+            super(drawer, input, game_console, hud)
 
     main = -> new Game().start()
 

@@ -2,11 +2,11 @@ define [
 ], ->
 
     class UserInterface
-        (@gameDrawer, @gameController, @gameConsole) ->
+        (@gameDrawer, @gameController, @gameConsole, @gameHud) ->
 
     {
-        setUserInterface: (gameDrawer, gameController, gameConsole) ->
-            @Global = new UserInterface(gameDrawer, gameController, gameConsole)
+        setUserInterface: (gameDrawer, gameController, gameConsole, gameHud) ->
+            @Global = new UserInterface(gameDrawer, gameController, gameConsole, gameHud)
 
             bind = (obj, name) ->  obj[name].bind(obj)
 
@@ -22,4 +22,6 @@ define [
 
             @getControl = bind(gameController, 'getControl')
             @getChar = bind(gameController, 'getChar')
+
+            @updateHud = bind(gameHud, 'updateHud')
     }
