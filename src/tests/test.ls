@@ -23,10 +23,10 @@ define [
     'characters/null_controller'
     'config'
     'types'
-    'controllers/poison_shrubbery_controller'
+    'controllers/shrubbery_controllers'
 ], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
     pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, \
-    AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, PoisonShrubberyController) ->
+    AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -70,7 +70,11 @@ define [
                         c.character = new character.Shrubbery(c.position, grid, NullController.NullController)
                 else if Math.random() < 0.005
                     if c.fixture.type == Types.Fixture.Null and not c.character?
-                        c.character = new character.PoisonShrubbery(c.position, grid, PoisonShrubberyController.PoisonShrubberyController)
+                        c.character = new character.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
+                        gs.scheduleActionSource(c.character.controller, 0)
+                else if Math.random() < 0.005
+                    if c.fixture.type == Types.Fixture.Null and not c.character?
+                        c.character = new character.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
 
 

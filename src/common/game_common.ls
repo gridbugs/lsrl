@@ -27,7 +27,7 @@ define [
 
             @gameState.scheduleActionSource(@gameState.playerCharacter, 10)
 
-            @progressGameState()
+            @gameLoop()
 
         gameTimeToMs: (t) ->
             if Config.FAST_ANIMATION
@@ -35,22 +35,35 @@ define [
             else
                 return t * 0.5
 
-        progressGameState: ->
+        gameLoop: ->
+            looping = true
+            done = false
+            while not done
+                done = true
+                @progressGameState (game_time) ~>
+                    real_time_ms = @gameTimeToMs(game_time)
+                    
+                    if looping and real_time_ms == 0
+                        done := false
+                        return
+                    
+                    setTimeout((~>@gameLoop()), real_time_ms)
+
+            looping = false
+
+        progressGameState: (callback) ->
             action_source = @gameState.getCurrentActionSource()
 
             @gameState.progressSchedule()
+            
+            return action_source.getAction @gameState, (action) ~>
 
-            action <~ action_source.getAction(@gameState)
+                @gameState.applyAction(action)
 
-            descriptions = @gameState.applyAction(action)
-            for desc in descriptions
-                UserInterface.printLine desc
+                /* Get time until current action source (in game time) */
+                time = @gameState.getCurrentTimeDelta()
 
-            /* Get time until current action source (in game time) */
-            time = @gameState.getCurrentTimeDelta()
-
-            /* Process the next action after the time has passed */
-            setTimeout (~>@progressGameState()), (@gameTimeToMs time)
+                callback(time)
 
     {
         GameCommon

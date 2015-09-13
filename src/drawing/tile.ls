@@ -47,6 +47,7 @@ define [
         Human:      -> Types.Tile.Human
         Shrubbery:  -> Types.Tile.Shrubbery
         PoisonShrubbery: -> Types.Tile.PoisonShrubbery
+        CarnivorousShrubbery: -> Types.Tile.CarnivorousShrubbery
     }, (fn) ->
         return (character) ->
             if character.isPlayerCharacter()

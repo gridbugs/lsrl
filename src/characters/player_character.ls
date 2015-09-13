@@ -66,6 +66,7 @@ define [
                     @autoMove = null
 
             @interpreter.getAction game_state, cb
+            return true
 
         setAutoMove: (autoMove) ->
             if autoMove.canStart()

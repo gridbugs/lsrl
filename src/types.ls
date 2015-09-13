@@ -18,6 +18,7 @@ define [
         \Human
         \Shrubbery
         \PoisonShrubbery
+        \CarnivorousShrubbery
         \PlayerCharacter
     ]
 
@@ -91,6 +92,7 @@ define [
         \Human
         \Shrubbery
         \PoisonShrubbery
+        \CarnivorousShrubbery
     ]
 
     const Damage = Util.enum [

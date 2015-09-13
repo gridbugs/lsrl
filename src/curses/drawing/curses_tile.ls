@@ -17,6 +17,7 @@ define [
         LightRed: 196
         Yellow:     11
         DarkYellow: 184
+        Purple: 92
 
 
     T = (character, colour, bold) -> {
@@ -40,7 +41,9 @@ define [
         Door:       T '+', \LightGrey
         OpenDoor:   T '-', \LightGrey
         Human:      T 'h', \White, true
-        Shrubbery:  T 'p', \LightGreen, true
+        Shrubbery:  T 'p', \DarkGreen, true
+        PoisonShrubbery: T 'p', \Purple, true
+        CarnivorousShrubbery: T 'p', \LightGreen, true
         PlayerCharacter:    T '@', \White, true
     }
 

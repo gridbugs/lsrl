@@ -82,9 +82,16 @@ define [
     class PoisonShrubbery extends Character
         (position, grid, Controller) ->
             super(Types.Character.PoisonShrubbery, position, grid, Controller)
-            @hitPoints = 20
+            @hitPoints = 10
 
         getName: -> 'Poison Shrubbery'
+
+    class CarnivorousShrubbery extends Character
+        (position, grid, Controller) ->
+            super(Types.Character.CarnivorousShrubbery, position, grid, Controller)
+            @hitPoints = 20
+
+        getName: -> 'Carnivorous Shrubbery'
 
     class Human extends Character
         (position, grid, Controller) ->
@@ -97,4 +104,5 @@ define [
         Human
         Shrubbery
         PoisonShrubbery
+        CarnivorousShrubbery
     }
