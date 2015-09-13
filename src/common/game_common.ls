@@ -47,7 +47,7 @@ define [
                         done := false
                         return
                     
-                    setTimeout((~>@gameLoop()), real_time_ms)
+                    setTimeout(@~gameLoop, real_time_ms)
 
             looping = false
 
