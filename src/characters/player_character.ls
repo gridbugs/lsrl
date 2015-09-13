@@ -48,6 +48,12 @@ define [
             @observe_fn this, game_state
 
         getAction: (game_state, cb) ->
+
+            @observe(game_state)
+
+            UserInterface.drawCharacterKnowledge(this, game_state)
+            UserInterface.updateHud(@character)
+            
             if @autoMove?
 
                 if UserInterface.Global.gameController.dirty

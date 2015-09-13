@@ -132,13 +132,12 @@ define [
                 return
 
             @status.addTime(@character.getCurrentAttackTime())
-            @grossDamage = @character.getCurrentAttackDamage()
-            @targetResistance = @target.getCurrentResistance()
-            @netDamage = Math.max(0, @grossDamage - @targetResistance)
+            @damage = @character.getCurrentAttackDamage()
+            #@targetResistance = @target.getCurrentResistance()
+            #@netDamage = Math.max(0, @grossDamage - @targetResistance)
 
         commit: ->
-            @status.gameState.enqueueAction(new TakeDamage(@target, @netDamage))
-            @target.takeNetDamage(@netDamage)
+            @status.gameState.enqueueAction(new TakeDamage(@target, @damage))
             UserInterface.printLine("#{@character.getName()} attacks the #{@target.getName()}.")
 
     class TakeDamage extends CharacterAction
@@ -150,7 +149,7 @@ define [
 
         commit: ->
             @status.setNoReschedule()
-            @character.takeNetDamage(@damage)
+            @damage.apply(@character)
             if not @character.isAlive()
                 @status.gameState.enqueueAction(new Die(@character))
 
@@ -165,6 +164,24 @@ define [
             @character.die()
             UserInterface.printLine("#{@character.getName()} dies.")
 
+    class Null extends Action
+        ->
+            super()
+
+        prepare: ->
+            @status.setNoReschedule()
+        
+        commit: ->
+
+    class Wait extends CharacterAction
+        (character, @duration) ->
+            super(character)
+
+        prepare: ->
+            @status.addTime(@duration)
+
+        commit: ->
+
     {
         Move
         BumpIntoWall
@@ -174,4 +191,6 @@ define [
         Take
         Drop
         Attack
+        Null
+        Wait
     }

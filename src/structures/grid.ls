@@ -64,4 +64,6 @@ define [
 
         toString: -> @array |> map (join '') |> join "\n"
 
-    { Grid }
+    {
+        Grid
+    }

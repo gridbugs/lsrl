@@ -18,6 +18,7 @@ define [
         OpenDoor: ['-', '#888888']
         Human: ['h', '#ffffff', 'bold']
         Shrubbery: ['p', '#30b020', 'bold']
+        PoisonShrubbery: ['p', '#993399', 'bold']
         PlayerCharacter: ['@', '#ffffff', 'bold']
     }
 

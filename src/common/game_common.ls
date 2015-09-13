@@ -26,6 +26,7 @@ define [
                 return
 
             @gameState.scheduleActionSource(@gameState.playerCharacter, 10)
+
             @progressGameState()
 
         gameTimeToMs: (t) ->
@@ -39,13 +40,9 @@ define [
 
             @gameState.progressSchedule()
 
-            @gameState.playerCharacter.observe(@gameState)
-            UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
-            UserInterface.updateHud(@gameState.playerCharacter.character)
-
             action <~ action_source.getAction(@gameState)
 
-            descriptions = @gameState.applyAction action
+            descriptions = @gameState.applyAction(action)
             for desc in descriptions
                 UserInterface.printLine desc
 
@@ -53,7 +50,7 @@ define [
             time = @gameState.getCurrentTimeDelta()
 
             /* Process the next action after the time has passed */
-            setTimeout (~>@progressGameState!), (@gameTimeToMs time)
+            setTimeout (~>@progressGameState()), (@gameTimeToMs time)
 
     {
         GameCommon

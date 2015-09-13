@@ -23,7 +23,10 @@ define [
     'characters/null_controller'
     'config'
     'types'
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types) ->
+    'controllers/poison_shrubbery_controller'
+], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
+    pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, \
+    AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, PoisonShrubberyController) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -44,6 +47,12 @@ define [
 
         sp = c.getStartingPointHint()
 
+        pos = vec2.Vec2(sp.x, sp.y)
+        char = new character.Human(pos, grid, pcharacter.PlayerCharacter)
+        char.setAsPlayerCharacter()
+        grid.get(sp.x, sp.y).character = char
+        gs = new game_state.GameState(grid, char.controller)
+
         if Config.GENERATOR == 'cell_automata'
             grid.forEach (c) ->
                 if Math.random() < 0.03
@@ -59,13 +68,12 @@ define [
                 else if Math.random() < 0.01
                     if c.fixture.type == Types.Fixture.Null
                         c.character = new character.Shrubbery(c.position, grid, NullController.NullController)
+                else if Math.random() < 0.005
+                    if c.fixture.type == Types.Fixture.Null and not c.character?
+                        c.character = new character.PoisonShrubbery(c.position, grid, PoisonShrubberyController.PoisonShrubberyController)
+                        gs.scheduleActionSource(c.character.controller, 0)
 
-        pos = vec2.Vec2(sp.x, sp.y)
-        char = new character.Human(pos, grid, pcharacter.PlayerCharacter)
-        char.setAsPlayerCharacter()
-        grid.get(sp.x, sp.y).character = char
 
-        gs = new game_state.GameState(grid, char.controller)
 
         return gs
 

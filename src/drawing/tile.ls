@@ -46,6 +46,7 @@ define [
     const CharacterTiles = Util.mapTable Types.Character, {
         Human:      -> Types.Tile.Human
         Shrubbery:  -> Types.Tile.Shrubbery
+        PoisonShrubbery: -> Types.Tile.PoisonShrubbery
     }, (fn) ->
         return (character) ->
             if character.isPlayerCharacter()

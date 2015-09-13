@@ -30,7 +30,7 @@ define [
 
         scheduleActionSource: (as, relative_time) ->
             entry = new ScheduleEntry as, (relative_time + @absoluteTime)
-            @schedule.insert entry
+            @schedule.insert(entry)
 
         getCurrentActionSource: ->
             top = @schedule.peak()

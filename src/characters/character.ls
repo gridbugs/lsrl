@@ -1,8 +1,9 @@
 define [
     'actions/effectable'
     'actions/effect'
+    'actions/damage'
     'types'
-], (Effectable, Effect, Types) ->
+], (Effectable, Effect, Damage, Types) ->
 
     class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
@@ -50,12 +51,11 @@ define [
         getKnowledge: ->
             @controller.knowledge
 
-        getCurrentAttackTime: ->
-            return 10
-
         getCurrentAttackDamage: ->
-            return 5
+            return new Damage.PhysicalDamage(3)
 
+        getCurrentAttackTime: ->
+            10
 
         getCurrentResistance: ->
             return 3
@@ -75,8 +75,16 @@ define [
     class Shrubbery extends Character
         (position, grid, Controller) ->
             super(Types.Character.Shrubbery, position, grid, Controller)
+            @hitPoints = 5
 
         getName: -> 'Shrubbery'
+
+    class PoisonShrubbery extends Character
+        (position, grid, Controller) ->
+            super(Types.Character.PoisonShrubbery, position, grid, Controller)
+            @hitPoints = 20
+
+        getName: -> 'Poison Shrubbery'
 
     class Human extends Character
         (position, grid, Controller) ->
@@ -88,4 +96,5 @@ define [
         Character
         Human
         Shrubbery
+        PoisonShrubbery
     }

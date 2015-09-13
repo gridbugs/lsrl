@@ -25,6 +25,7 @@ define [
             @timestamp = game_state.getTurnCount()
             @ground = @game_cell.ground
             @fixture = @game_cell.fixture
+
             @character = @game_cell.character
 
         hasUnknownNeighbour: ->

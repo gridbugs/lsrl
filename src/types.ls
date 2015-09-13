@@ -17,6 +17,7 @@ define [
         \OpenDoor
         \Human
         \Shrubbery
+        \PoisonShrubbery
         \PlayerCharacter
     ]
 
@@ -89,6 +90,12 @@ define [
     const Character = Util.enum [
         \Human
         \Shrubbery
+        \PoisonShrubbery
+    ]
+
+    const Damage = Util.enum [
+        \Physical
+        \Poison
     ]
 
     {
@@ -102,4 +109,5 @@ define [
         Item
         Event
         Character
+        Damage
     }
