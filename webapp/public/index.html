@@ -6,44 +6,88 @@
     padding: 0px;
     margin: 0px;
 }
+
 #canvas {
     position: relative;
-    float: left;
 }
 #side {
     position: relative;
-    float: left;
     font-family: monospace;
-    height: 500px;
-}
-#side > div {
-    width: 300px;
-    position: relative;
-}
-#side > div > div {
-    position: absolute;
-    left: 10px;
-    right: 0px;
-    border: 2px solid black;
-    padding: 4px;
-}
-#hud-container {
-    top: 0px;
-    height: 100px;
-}
-#log-container {
-    overflow: scroll;
-    bottom: 0px;
-    height: 400px;
 }
 #log {
-    top: 5px;
-    bottom: 0px;
+    overflow: auto;
 }
-#hud {
-    top: 0px;
-    bottom: 5px;
+@media all and (min-width: 1200px) {
+    #canvas {
+        float: left;
+    }
+    #side {
+        float: left;
+        height: 500px;
+    }
+    #side > div {
+        position: relative;
+        width: 300px;
+    }
+    #side > div > div {
+        position: absolute;
+        left: 10px;
+        right: 0px;
+        border: 2px solid black;
+        padding: 4px;
+    }
+    #hud-container {
+        top: 0px;
+        height: 100px;
+    }
+    #log-container {
+        /* overflow: scroll; */
+        bottom: 0px;
+        height: 400px;
+    }
+    #log {
+        top: 5px;
+        bottom: 0px;
+    }
+    #hud {
+        top: 0px;
+        bottom: 5px;
+    }
 }
+
+@media not all and (min-width: 1200px) {
+    #side {
+        height: 100px;
+        width: 800px;
+    }
+    #side > div {
+        position: relative;
+        width: 800px;
+    }
+    #side > div > div {
+        border: 2px solid black;
+        position: absolute;
+    }
+    #hud-container {
+        height: 50px;
+    }
+    #log-container {
+        height: 150px;
+    }
+    #hud {
+        top: 6px;
+        bottom: 5px;
+        left: 0px;
+        right: 0px;
+    }
+    #log {
+        top: 5px;
+        bottom:0px;
+        left: 0px;
+        right: 0px;
+    }
+}
+
 .readline {
     font-family: monospace;
 }
@@ -57,8 +101,8 @@
 <body>
 <canvas id="canvas" width=800 height=500></canvas>
 <div id="side">
-    <div id="hud-container"><div id="hud"></div></div>
-    <div id="log-container"><div id="log"></div></div>
+    <div id="hud-container"><div id="hud">hud</div></div>
+    <div id="log-container"><div id="log">log</div></div>
 </div>
 </body>
 </html>
