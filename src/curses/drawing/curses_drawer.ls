@@ -116,11 +116,11 @@ define [
         __drawUnseenTile: (tile) ->
             @__drawChar(tile.character, UnseenPair, tile.bold)
 
-        __drawKnowledgeCell: (cell, game_state) ->
+        __drawKnowledgeCell: (cell, turn_count) ->
             @__setCursorCart cell
             if cell.known
                 tile = TileStyles[Tile.fromCell(cell)]
-                if cell.timestamp == game_state.getTurnCount()
+                if cell.timestamp == turn_count
                     @__drawTile(tile)
                 else
                     @__drawUnseenTile(tile)
@@ -129,7 +129,7 @@ define [
 
         __drawCharacterKnowledge: (character, game_state) ->
             character.getKnowledge().grid.forEach (c) ~>
-                @__drawKnowledgeCell c, game_state
+                @__drawKnowledgeCell(c, character.getTurnCount())
 
         drawCharacterKnowledge: (character, game_state) ->
             @__drawCharacterKnowledge(character, game_state)

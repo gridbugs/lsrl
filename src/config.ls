@@ -8,7 +8,7 @@ define [
         FAST_ANIMATION: false
         AUTOEXPLORE_ALL: false
         RUN_TEST: false
-        RANDOM_SEED: 1442231741676
+        RANDOM_SEED: void
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: true
     }
