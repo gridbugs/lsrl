@@ -100,9 +100,9 @@ define [
             @observerNode = node
 
         die: (game_state) ->
-            #if @observerNode?
-            #    game_state.removeObserverNode(@observerNode)
-            #@getCell().character = void
+            if @observerNode?
+                game_state.removeObserverNode(@observerNode)
+            @getCell().character = void
 
     class Shrubbery extends Character
         (position, grid, Controller) ->
