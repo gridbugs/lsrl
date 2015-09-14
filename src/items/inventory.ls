@@ -11,13 +11,13 @@ define [
 
     class InventorySlot extends ListWrapper.ListWrapper
         ->
-            @list = new LinkedList.LinkedList()
+            @list = new LinkedList()
             @letter = void
             @groupId = void
 
     class Inventory
         (@letters = InventoryLetters) ->
-            @items = new GroupTree.GroupTree(new AvlTree.AvlTree(), InventorySlot)
+            @items = new GroupTree.GroupTree(new AvlTree(), InventorySlot)
             @map = Util.objectKeyedByArray(@letters)
             @numSlots = @letters.length
 
@@ -96,6 +96,3 @@ define [
 
         getGroupByLetter: (l) ->
             return @map[l]
-    {
-        Inventory
-    }

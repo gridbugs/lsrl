@@ -23,12 +23,13 @@ define [
         __getGradient: (v) ~> @rows.get(v.y).get(v.x)
 
         getNoise: (v) ->
-            top_left = Vec2.Vec2 (Math.floor v.x), (Math.floor v.y)
-            corners =
-                top_left
-                top_left.add (Vec2.Vec2 1 0)
-                top_left.add (Vec2.Vec2 0 1)
-                top_left.add (Vec2.Vec2 1 1)
+            top_left = new Vec2 (Math.floor v.x), (Math.floor v.y)
+            corners = [
+                top_left,
+                top_left.add(new Vec2(1, 0)),
+                top_left.add(new Vec2(0, 1)),
+                top_left.add(new Vec2(1, 1))
+            ]
 
             each @__generateGradient, corners
             gradients = map @__getGradient, corners

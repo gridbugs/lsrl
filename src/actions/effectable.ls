@@ -3,7 +3,7 @@ define [
 ], (AvlTree) ->
     class Effectable
         ->
-            @effects = new AvlTree.AvlTree()
+            @effects = new AvlTree()
 
         forEachMatchingEffect: (event_type, callback) ->
             @effects.findAllByKey(event_type, callback)

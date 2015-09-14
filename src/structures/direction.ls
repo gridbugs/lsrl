@@ -62,15 +62,16 @@ define [
     isOrdinal = (d) -> OrdinalMap[d]
     isCardinal = (d) -> CardinalMap[d]
 
-    const Vectors =
-        Vec2.Vec2 0, -1
-        Vec2.Vec2 1, 0
-        Vec2.Vec2 0, 1
-        Vec2.Vec2 -1, 0
-        Vec2.Vec2 1, -1
-        Vec2.Vec2 1, 1
-        Vec2.Vec2 -1, 1
-        Vec2.Vec2 -1, -1
+    const Vectors = [
+        new Vec2(0, -1),
+        new Vec2(1, 0),
+        new Vec2(0, 1),
+        new Vec2(-1, 0),
+        new Vec2(1, -1),
+        new Vec2(1, 1),
+        new Vec2(-1, 1),
+        new Vec2(-1, -1)
+    ]
 
     {
         /* Lists of directions */

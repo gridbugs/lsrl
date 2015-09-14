@@ -25,7 +25,7 @@ define [
 
             @autoMove = null
             @interpreter = new ControlInterpreter.ControlInterpreter(@character)
-            @inventory = new Inventory.Inventory()
+            @inventory = new Inventory()
 
             @name = "The player"
 

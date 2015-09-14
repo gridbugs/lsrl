@@ -24,9 +24,8 @@ define [
             @schedule = new Heap.Heap (a, b) -> a.time <= b.time
 
             @actionQueue = []
-
-            @continuousEffects = new LinkedList.LinkedList()
-            @observers = new LinkedList.LinkedList()
+            @continuousEffects = new LinkedList()
+            @observers = new LinkedList()
 
         processObservers: ->
             @observers.forEach (observer) ~>
@@ -95,6 +94,3 @@ define [
         getCurrentTimeDelta: ->
             return @timeDelta
 
-    {
-        GameState
-    }

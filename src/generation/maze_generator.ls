@@ -23,12 +23,12 @@ define [
             @cell = @grid.get(@x, @y)
             @cell.setFixture Fixture.Tree
             @visited = false
-            coord = Vec2.Vec2 @x, @y
+            coord = new Vec2(@x, @y)
             neighbour_coords = [
-                coord.add(Vec2.Vec2(0, 2))
-                coord.add(Vec2.Vec2(0, -2))
-                coord.add(Vec2.Vec2(2, 0))
-                coord.add(Vec2.Vec2(-2, 0))
+                coord.add(new Vec2(0, 2))
+                coord.add(new Vec2(0, -2))
+                coord.add(new Vec2(2, 0))
+                coord.add(new Vec2(-2, 0))
             ] |> filter (v) ~>
                 v.x > 0 and v.y > 0 and \
                     v.x < @grid.width - 1 and v.y < @grid.height - 1

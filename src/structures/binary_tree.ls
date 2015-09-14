@@ -148,7 +148,9 @@ define [
 
         empty: -> @root == void
         top: -> @root?.value
-    {
-        BinaryTree
-        BinaryTreeNode
-    }
+
+
+    BinaryTree.Node = BinaryTreeNode
+
+
+    return BinaryTree

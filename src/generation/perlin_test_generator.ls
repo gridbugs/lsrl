@@ -14,7 +14,7 @@ define [
         generate: (T, x, y) ->
             grid = new Grid.Grid T, x, y
             grid.forEach (c) ~>
-                c.type = parseInt(((@perlin.getNoise (Vec2.Vec2 (c.x * PERLIN_SCALE), (c.y * PERLIN_SCALE))) + 1) * 5.5)
+                c.type = parseInt(((@perlin.getNoise (new Vec2 (c.x * PERLIN_SCALE), (c.y * PERLIN_SCALE))) + 1) * 5.5)
 
             grid.forEachBorder (c) ->
                 c.type = Tile.Tiles.TREE

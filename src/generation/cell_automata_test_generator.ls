@@ -2,7 +2,6 @@ define [
     'cells/fixture'
     'cells/ground'
     'structures/grid'
-    'cells/cell'
     'util'
     'types'
     'debug'
@@ -10,7 +9,7 @@ define [
     'input/user_interface'
     'structures/search'
     'prelude-ls'
-], (Fixture, Ground, Grid, Cell, Util, Types, Debug, Direction, UserInterface, Search, Prelude) ->
+], (Fixture, Ground, Grid, Util, Types, Debug, Direction, UserInterface, Search, Prelude) ->
 
     const filter = Prelude.filter
     const map = Prelude.map

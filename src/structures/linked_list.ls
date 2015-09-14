@@ -128,6 +128,3 @@ define [
 
         toArray: ->
             @getAllSatisfying -> true
-    {
-        LinkedList
-    }

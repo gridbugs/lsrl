@@ -26,7 +26,7 @@ define [
     'controllers/shrubbery_controllers'
     'actions/effect'
 ], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
-    pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, \
+    pcharacter, character, Vec2, GameState, Cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
     Effect) ->
 
@@ -41,7 +41,7 @@ define [
         else if Config.GENERATOR == 'border'
             c = new border_generator.BorderGenerator()
 
-        grid = c.generateGrid cell.Cell, 80, 30
+        grid = c.generateGrid Cell, 80, 30
 
         if Config.DRAW_MAP_ONLY
             drawer.drawGrid grid
@@ -49,11 +49,11 @@ define [
 
         sp = c.getStartingPointHint()
 
-        pos = vec2.Vec2(sp.x, sp.y)
+        pos = new Vec2(sp.x, sp.y)
         char = new character.Human(pos, grid, pcharacter.PlayerCharacter)
         char.setAsPlayerCharacter()
         grid.get(sp.x, sp.y).character = char
-        gs = new game_state.GameState(grid, char.controller)
+        gs = new GameState(grid, char.controller)
 
         if Config.GENERATOR == 'cell_automata'
             grid.forEach (c) ->

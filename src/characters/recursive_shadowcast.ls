@@ -32,7 +32,7 @@ define [
         depth_max
     ) ->
         knowledge_grid = character.knowledge.grid
-        depth_index = Vec2.otherIndex lateral_index
+        depth_index = Vec2.otherIndex(lateral_index)
         section_stack = [
             new Section(min_slope_initial, max_slope_initial, 1)
         ]
@@ -79,7 +79,7 @@ define [
 
             first_iteration = true
             previous_opaque = false
-            coord_idx = Vec2.Vec2!
+            coord_idx = new Vec2()
             coord_idx.arraySet(depth_index, depth_absolute_index)
             for i from start_index to stop_index
                 last_iteration = i == partial_stop_index

@@ -1,8 +1,7 @@
 define [
     'structures/tree_wrapper'
-    'functional'
     'debug'
-], (TreeWrapper, Functional, Debug) ->
+], (TreeWrapper, Debug) ->
 
     class GroupTree extends TreeWrapper.TreeWrapper
         (@tree, @C) ->
@@ -14,7 +13,11 @@ define [
         numGroups: -> @tree.length
 
         withExisting: (key, onTrue, onFalse) ->
-            Functional.ifExists(@~findGroupByKey, key, onTrue, onFalse)
+            value = @findGroupByKey(key)
+            if value?
+                onTrue(value)
+            else
+                onFalse()
 
         insert: (key, value, callback) ->
             ++@length

@@ -1,10 +1,9 @@
 define [
     'input/user_interface'
-    'structures/vec2'
     'structures/direction'
     'types'
     'util'
-], (UserInterface, Vec2, Direction, Types, Util) ->
+], (UserInterface, Direction, Types, Util) ->
 
     class CellSelector
         ->

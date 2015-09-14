@@ -9,18 +9,18 @@ define [
 
     class Cell extends Effectable
         (@x, @y) ->
-            @position = Vec2.Vec2 @x, @y
+            @position = new Vec2(@x, @y)
             @character = void
             @ground = void
             @fixture = void
-            @items = new Inventory.Inventory()
+            @items = new Inventory()
             @characters = []
-            @centre = Vec2.Vec2 (@x+0.5), (@y+0.5)
+            @centre = new Vec2 (@x+0.5), (@y+0.5)
             @corners = []
-            @corners[Types.OrdinalDirection.NorthWest] = Vec2.Vec2 @x, @y
-            @corners[Types.OrdinalDirection.NorthEast] = Vec2.Vec2 (@x+1), @y
-            @corners[Types.OrdinalDirection.SouthWest] = Vec2.Vec2 @x, (@y+1)
-            @corners[Types.OrdinalDirection.SouthEast] = Vec2.Vec2 (@x+1), (@y+1)
+            @corners[Types.OrdinalDirection.NorthWest] = new Vec2(@x, @y)
+            @corners[Types.OrdinalDirection.NorthEast] = new Vec2((@x+1), @y)
+            @corners[Types.OrdinalDirection.SouthWest] = new Vec2(@x, (@y+1))
+            @corners[Types.OrdinalDirection.SouthEast] = new Vec2((@x+1), (@y+1))
 
             @moveOutCost = 40
             super()
@@ -58,6 +58,3 @@ define [
             return @fixture.type == Types.Fixture.Null and (not @character?) and
                 (@fixture.type != Types.Fixture.Door || @fixture.isOpen())
 
-    {
-        Cell
-    }

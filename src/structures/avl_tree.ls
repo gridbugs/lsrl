@@ -2,7 +2,7 @@ define [
     'structures/binary_tree'
 ], (BinaryTree) ->
 
-    class AvlTreeNode extends BinaryTree.BinaryTreeNode
+    class AvlTreeNode extends BinaryTree.Node
         (@key, @value) ->
             super ...
             @height = 0
@@ -69,13 +69,9 @@ define [
             else
                 return void
 
-    class AvlTree extends BinaryTree.BinaryTree
+    class AvlTree extends BinaryTree
         ->
-            super ...
+            super()
 
         createNode: (key, value) ->
             return new AvlTreeNode(key, value)
-
-    {
-        AvlTree
-    }
