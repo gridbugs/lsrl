@@ -149,7 +149,7 @@ define [
 
         commit: ->
             @status.setNoReschedule()
-            @damage.apply(@character)
+            @damage.apply(@character, @status.gameState)
             if not @character.isAlive()
                 @status.gameState.enqueueAction(new Die(@character))
 
@@ -182,6 +182,25 @@ define [
 
         commit: ->
 
+    class BecomePoisoned extends CharacterAction
+        (character, @damage_rate) ->
+            super(character)
+
+        prepare: ->
+            @status.setNoReschedule()
+        
+        commit: ->
+            @character.becomePoisoned(@damage_rate)
+
+    class RemoveContinuousEffect extends Action
+        (@node) ->
+            super()
+
+        prepare: ->
+            @status.setNoReschedule()
+
+        commit: ->
+            @status.gameState.removeContinuousEffectNode(@node)
     {
         Move
         BumpIntoWall
@@ -193,4 +212,5 @@ define [
         Attack
         Null
         Wait
+        TakeDamage
     }

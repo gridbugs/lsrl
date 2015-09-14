@@ -1,8 +1,11 @@
 define [
     'structures/heap'
+    'structures/linked_list'
+    'actions/action'
+    'controllers/single_action_controller'
     'util'
     'debug'
-], (Heap, Util, Debug) ->
+], (Heap, LinkedList, Action, SingleActionController, Util, Debug) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -21,6 +24,17 @@ define [
             @schedule = new Heap.Heap (a, b) -> a.time <= b.time
 
             @actionQueue = []
+
+            @continuousEffects = new LinkedList.LinkedList()
+
+        registerContinuousEffect: (effect, length) ->
+            node = @continuousEffects.insert(effect)
+            remover = new Action.RemoveContinuousEffect(node)
+            remover_controller = new SingleActionController(remover)
+            @scheduleActionSource(remover_controller, length)
+
+        removeContinuousEffectNode: (node) ->
+            @continuousEffects.removeNode(node)
 
         getTurnCount: ->
             return @turnCount

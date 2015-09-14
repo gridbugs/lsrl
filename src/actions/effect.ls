@@ -1,13 +1,23 @@
 define [
     'actions/event'
     'actions/action'
+    'actions/damage'
     'types'
-], (Event, Action, Types) ->
+], (Event, Action, Damage, Types) ->
 
     class Effectable
         forEachEffect: (f) ->
             for e in @effects
                 f e
+
+    class ContinuousEffect
+
+    class Poisoned extends ContinuousEffect
+        (@character, @damage_rate) ->
+
+        apply: (time_delta, game_state) ->
+            damage = new Damage.PoisonDamage(@damage_rate * time_delta)
+            game_state.enqueueAction(new Action.TakeDamage(@character, damage))
 
     class ReactiveEffect
         (@eventType) ->
@@ -102,5 +112,6 @@ define [
         WebEntry
         WebExit
         OpenOnEnter
+        Poisoned
     }
 

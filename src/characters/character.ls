@@ -16,6 +16,9 @@ define [
 
             @hitPoints = 10
 
+            @poison = 0
+            @poisonThreshold = 10
+
         getName: -> 'Character'
 
         getController: ->
@@ -71,6 +74,19 @@ define [
 
         die: ->
             @getCell().character = void
+
+        accumulatePoison: (amount) ->
+            @poison += amount
+
+        isPoisoned: ->
+            return @poison > @poisonThreshold
+
+        clearPoison: ->
+            @poison = 0
+
+        becomePoisoned: (game_state, damage_rate) ->
+            @clearPoison()
+            game_state.registerContinuousEffect(new Effect.Poisoned(this, damage_rate))
 
     class Shrubbery extends Character
         (position, grid, Controller) ->

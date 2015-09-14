@@ -48,7 +48,9 @@ define [
 
         insert: (x) ->
             # Insert x at the start of the list
-            @insertNode(new LinkedListNode(x))
+            node = new LinkedListNode(x)
+            @insertNode(node)
+            return node
 
         extend: (s) ->
             s.forEach (x) ~>
