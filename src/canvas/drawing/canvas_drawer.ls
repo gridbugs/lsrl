@@ -93,9 +93,9 @@ define [
             @__drawGrid grid
             @ctx.fill!
 
-        __drawKnowledgeCell: (cell, game_state) ->
+        __drawKnowledgeCell: (cell, turn_count) ->
             if cell.known
-                if cell.timestamp == game_state.getTurnCount()
+                if cell.timestamp == turn_count
                     @__fillTextFromCell(cell)
                 else
                     @__fillTextFromCellWithColour(cell, UnseenColour)
@@ -113,7 +113,7 @@ define [
 
         __drawCharacterKnowledge: (character, game_state) ->
             character.getKnowledge().grid.forEach (c) ~>
-                @__drawKnowledgeCell c, game_state
+                @__drawKnowledgeCell(c, character.getTurnCount())
 
 
         drawCharacterKnowledge: (character, game_state) ->
@@ -134,47 +134,6 @@ define [
             @__processBoldQueue()
 
             @ctx.fill()
-
-        print: (str) ->
-            console.log str
-            log = document.getElementById("log");
-            log.innerHTML += "#{str}<br/>"
-            log.scrollTop = log.scrollHeight
-
-        readLineInternal: (initial, callback) ->
-            $field = $("<input class='readline'>")
-            $('#log').append($field)
-            $field.val(initial)
-
-            document.onkeyup = ->
-                $field.focus()
-                $field.select()
-                document.onkeyup = (->)
-
-            $field.keypress (e) ~>
-                if e.keyCode == 13
-                    result = $field.val()
-                    $field.remove()
-                    @print result
-                    callback(result)
-
-        readLine: (default_string, callback) ->
-            if not callback?
-                callback = default_string
-                default_string = ""
-
-            @readLineInternal(default_string, callback)
-
-        readInt: (default_int, callback) ->
-            if callback?
-                default_string = "#{default_int}"
-            else
-                callback = default_int
-                default_string = ""
-
-            @readLineInternal(default_string, (result) ->
-                callback(parseInt(result))
-            )
 
     {
         CanvasDrawer

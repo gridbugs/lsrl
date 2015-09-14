@@ -3,8 +3,9 @@ define [
     'structures/search'
     'structures/direction'
     'types'
-    'util'''
-], (Action, Search, Direction, Types, Util) ->
+    'util'
+    'debug'
+], (Action, Search, Direction, Types, Util, Debug) ->
 
     class SurroundingCells
         (centre, direction) ->
@@ -45,7 +46,6 @@ define [
                         ((c, d) -> c.game_cell.getMoveOutCost d), \
                         ((c) -> c.known and (c.game_cell.isEmpty() or c.fixture.type == Types.Fixture.Door)), \
                         ((c) -> c.hasUnknownNeighbour())
-
             if result?
                 @directions = result.directions
                 @path = result.path

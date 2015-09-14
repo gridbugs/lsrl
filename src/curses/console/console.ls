@@ -40,7 +40,7 @@ define [
             for line in visible[0 til visible.length - 1]
                 @consoleWindow.addstr(line)
                 @consoleWindow.cursor(@consoleWindow.cury + 1, 1)
-                
+
             @consoleWindow.addstr(visible[visible.length - 1])
 
             @consoleWindow.refresh()

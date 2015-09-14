@@ -6,7 +6,7 @@ define [
         (@x, @y) ->
             @game_cell = null
             @known = false
-            @timestamp = 0
+            @timestamp = -1
             @ground = void
             @fixture = void
             @items = void

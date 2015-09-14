@@ -6,7 +6,7 @@ define [
 
     class ShrubberyController
         (@character, @position, @grid) ->
-            @period = 20
+            @period = 5
 
         getAction: (game_state, callback) ->
 
@@ -15,7 +15,7 @@ define [
                 |   Types.Character.Human => return direction
                 |   otherwise => return void
             .filter (?)
-            
+
             if potential_directions.length == 0
                 callback(new Action.Wait(@character, @period))
             else
@@ -30,7 +30,6 @@ define [
         (character, position, grid) ->
             super(character, position, grid)
 
-       
 
     {
         PoisonShrubberyController

@@ -133,7 +133,7 @@ define [
 
         drawCharacterKnowledge: (character, game_state) ->
             @__drawCharacterKnowledge(character, game_state)
-            @gameWindow.refresh!
+            @gameWindow.refresh()
 
         __getCurrentChar: -> @buf[@cursor_y][@cursor_x]
 
@@ -152,49 +152,6 @@ define [
                 @__drawChar(tile.character, SelectColourPair)
 
             @gameWindow.refresh!
-
-        readLineFiltered: (initial, filter, callback) ->
-            Ncurses.showCursor = true
-            @logWindow.top()
-            str = initial
-            @logWindow.addstr(str)
-            @logWindow.refresh()
-
-            @logWindowCallback = (c, k) ~>
-                if c == '\n'
-                    Ncurses.showCursor = false
-                    @gameWindow.top()
-                    @gameWindow.refresh()
-                    @logWindowCallback = (->)
-                    @logWindow.addstr(c)
-                    @logWindow.refresh()
-                    callback(str)
-                else if k == 127
-                    str := str.slice(0, str.length - 1)
-                    @logWindow.cursor(@logWindow.cury, @logWindow.curx - 1)
-                    @logWindow.delch()
-                    @logWindow.refresh()
-                else
-                    if filter(c)
-                        str += c
-                        @logWindow.addstr(c)
-                        @logWindow.refresh()
-
-        readLine: (default_string, callback) ->
-            if not callback?
-                callback = default_string
-                default_string = ""
-
-            @readLineFiltered(default_string, ->true, callback)
-
-        readInt: (default_int, callback) ->
-            if callback?
-                default_string = "#{default_int}"
-            else
-                callback = default_int
-                default_string = ""
-
-            @readLineFiltered(default_string, ((c) -> not isNaN(parseInt(c))), ((line) -> callback(parseInt(line))))
 
     {
         CursesDrawer

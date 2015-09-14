@@ -4,4 +4,4 @@ define [
         (@action) ->
 
         getAction: (game_state, callback) ->
-            callback(action)
+            callback(@action)

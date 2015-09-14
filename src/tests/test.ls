@@ -24,9 +24,11 @@ define [
     'config'
     'types'
     'controllers/shrubbery_controllers'
+    'actions/effect'
 ], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
     pcharacter, character, vec2, game_state, cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, \
-    AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers) ->
+    AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
+    Effect) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -77,94 +79,11 @@ define [
                         c.character = new character.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
 
-
+        gs.registerObserver(char)
+        char.addEffect(new Effect.ResurrectOnDeath())
 
         return gs
 
-    linkedListTest = ->
-        a = new LinkedList.LinkedList()
-
-        a.insert "hello"
-        a.insert "world"
-
-        console.debug a
-
-        a.forEachNode (node) ->
-            console.debug node
-
-        a.forEach (data) ->
-            console.debug data
-
-        x = a.getFirstSatisfyingNode (str) -> str[0] == 'h'
-        console.debug x
-
-        a.removeNode x
-
-        console.debug a
-
-        b = new LinkedList.LinkedList()
-        for i from 0 to 100
-            b.insert i
-
-        console.debug b
-
-        console.debug b.getAllSatisfying (x) -> x % 2
-        b.removeAllSatisfying (x) -> x > 50
-        console.debug b.getAllSatisfying (x) -> x % 2
-
-    treeTest = (tree) ->
-        tree.insert(5, "hello")
-        tree.insert(3, "world")
-        tree.insert(6, "blah")
-        tree.insert(1, "a")
-        tree.insert(2, "b")
-        tree.insert(4, "c")
-        tree.insert(7, "d")
-        tree.insert(8, "e")
-
-        tree.forEachPair (k, v) -> console.debug k, v
-        console.debug tree
-        console.log 'deleting 3'
-        tree.deleteByKey(3)
-        console.debug tree
-        tree.forEachPair (k, v) -> console.debug k, v
-        console.log 'deleting and printing 5'
-        console.debug(tree.deleteByKey(5))
-        tree.forEachPair (k, v) -> console.debug k, v
-
-        tree.forEach (v) -> console.debug v
-
-        console.debug(tree.findByKey(7))
-
-    avlTreeTest = ->
-        a = new BinaryTree.BinaryTree()
-        b = new AvlTree.AvlTree()
-
-        console.log "----------- Binary Tree -----------"
-        treeTest(a)
-        console.log "----------- AVL Tree -----------"
-        treeTest(b)
-
-        console.log "---------- Group Tree -----------"
-        c = new GroupTree.GroupTree(new AvlTree.AvlTree())
-
-        c.insert(1, "Hello")
-        c.insert(2, "world")
-        c.insert(1, "HELLO")
-        c.insert(1, "hello")
-        c.insert(2, "WORLD")
-        c.insert(3, "boop")
-
-        console.debug c.findByKey(1)
-        console.debug c.findGroupByKey(1)
-
-        console.debug c.deleteAmountByKey(1, 2)
-        console.debug c.deleteByKey(2)
-        console.debug c.deleteByKey(2)
-        console.debug c
-
     {
         test
-        linkedListTest
-        avlTreeTest
     }

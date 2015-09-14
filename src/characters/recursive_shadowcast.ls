@@ -125,7 +125,7 @@ define [
     observe = (character, game_state) ->
         width = character.knowledge.grid.width - 1
         height = character.knowledge.grid.height - 1
-        cell = character.getCell!
+        cell = character.getCell()
 
         character.getKnowledgeCell!see game_state
 

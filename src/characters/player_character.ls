@@ -29,6 +29,11 @@ define [
 
             @name = "The player"
 
+            @turnCount = -1
+
+        getTurnCount: ->
+            return @turnCount
+
         forEachEffect: (f) ->
             for e in @effects
                 f e
@@ -46,21 +51,17 @@ define [
 
         observe: (game_state) ->
             @observe_fn this, game_state
+            @turnCount = game_state.getTurnCount()
 
         getAction: (game_state, cb) ->
 
-            @observe(game_state)
-
-            UserInterface.drawCharacterKnowledge(this, game_state)
-            UserInterface.updateHud(@character)
-            
             if @autoMove?
 
                 if UserInterface.Global.gameController.dirty
                     UserInterface.printLine "Key pressed. Cancelling auto move."
                     @autoMove = null
-                else if @autoMove.hasAction!
-                    @autoMove.getAction game_state, cb
+                else if @autoMove.hasAction()
+                    @autoMove.getAction(game_state, cb)
                     return
                 else
                     @autoMove = null
@@ -70,6 +71,9 @@ define [
         setAutoMove: (autoMove) ->
             if autoMove.canStart()
                 @autoMove = autoMove
+
+        clearAutoMove: ->
+            @autoMove = void
 
     {
         PlayerCharacter

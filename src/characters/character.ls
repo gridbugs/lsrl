@@ -1,9 +1,10 @@
 define [
+    'input/user_interface'
     'actions/effectable'
     'actions/effect'
     'actions/damage'
     'types'
-], (Effectable, Effect, Damage, Types) ->
+], (UserInterface, Effectable, Effect, Damage, Types) ->
 
     class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
@@ -19,7 +20,13 @@ define [
             @poison = 0
             @poisonThreshold = 10
 
+        getTurnCount: ->
+            return @controller.getTurnCount()
+
         getName: -> 'Character'
+
+        observe: (game_state) ->
+            @controller.observe(game_state)
 
         getController: ->
             return @controller
@@ -37,7 +44,7 @@ define [
             return @grid.getCart(@getPosition())
 
         getCurrentMoveTime: ->
-            return 40
+            return 10
 
         getKnowledgeCell: ->
             @controller.getKnowledgeCell()
@@ -72,8 +79,8 @@ define [
         isAlive: ->
             @hitPoints > 0
 
-        die: ->
-            @getCell().character = void
+        resurrect: ->
+            @hitPoints = 10
 
         accumulatePoison: (amount) ->
             @poison += amount
@@ -84,9 +91,18 @@ define [
         clearPoison: ->
             @poison = 0
 
-        becomePoisoned: (game_state, damage_rate) ->
+        becomePoisoned: (game_state, damage_rate, duration) ->
             @clearPoison()
-            game_state.registerContinuousEffect(new Effect.Poisoned(this, damage_rate))
+            UserInterface.printLine "Becomes poisoned."
+            game_state.registerContinuousEffect(new Effect.Poisoned(this, damage_rate), duration)
+
+        setObserverNode: (node) ->
+            @observerNode = node
+
+        die: (game_state) ->
+            #if @observerNode?
+            #    game_state.removeObserverNode(@observerNode)
+            #@getCell().character = void
 
     class Shrubbery extends Character
         (position, grid, Controller) ->
@@ -102,12 +118,21 @@ define [
 
         getName: -> 'Poison Shrubbery'
 
+        getCurrentAttackTime: ->
+            return 40
+
+        getCurrentAttackDamage: ->
+            return new Damage.PoisoningPhysicalDamage(1, 100, 0.1, 1000)
+
     class CarnivorousShrubbery extends Character
         (position, grid, Controller) ->
             super(Types.Character.CarnivorousShrubbery, position, grid, Controller)
             @hitPoints = 20
 
         getName: -> 'Carnivorous Shrubbery'
+
+        getCurrentAttackTime: ->
+            return 40
 
     class Human extends Character
         (position, grid, Controller) ->

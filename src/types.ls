@@ -86,6 +86,7 @@ define [
         \MoveToCell
         \MoveFromCell
         \CharacterMove
+        \Death
     ]
 
     const Character = Util.enum [

@@ -2,8 +2,9 @@ define [
     'actions/event'
     'actions/action'
     'actions/damage'
+    'input/user_interface'
     'types'
-], (Event, Action, Damage, Types) ->
+], (Event, Action, Damage, UserInterface, Types) ->
 
     class Effectable
         forEachEffect: (f) ->
@@ -18,6 +19,9 @@ define [
         apply: (time_delta, game_state) ->
             damage = new Damage.PoisonDamage(@damage_rate * time_delta)
             game_state.enqueueAction(new Action.TakeDamage(@character, damage))
+
+        onRemove: ->
+            UserInterface.printLine("No longer poisoned.")
 
     class ReactiveEffect
         (@eventType) ->
@@ -62,6 +66,16 @@ define [
                 status.gameState.enqueueAction(
                     new Action.OpenDoor(status.action.character, cell)
                 )
+
+    class ResurrectOnDeath extends ReactiveEffect
+        ->
+            super(Types.Event.Death)
+
+        apply: (status) ->
+            status.fail('resurrecting')
+            status.gameState.enqueueAction(
+                new Action.Resurrect(status.action.character)
+            )
 
     class CellIsSolid
         (@cell) ->
@@ -113,5 +127,6 @@ define [
         WebExit
         OpenOnEnter
         Poisoned
+        ResurrectOnDeath
     }
 

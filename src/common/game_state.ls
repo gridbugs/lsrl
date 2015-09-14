@@ -26,10 +26,27 @@ define [
             @actionQueue = []
 
             @continuousEffects = new LinkedList.LinkedList()
+            @observers = new LinkedList.LinkedList()
+
+        processObservers: ->
+            @observers.forEach (observer) ~>
+                observer.observe(this)
+
+        registerObserver: (observer) ->
+            node = @observers.insert(observer)
+            observer.setObserverNode(node)
+
+        removeObserverNode: (node) ->
+            @observers.removeNode(node)
+
+        processContinuousEffects: ->
+            if @timeDelta > 0
+                @continuousEffects.forEach (effect) ~>
+                    effect.apply(@timeDelta, this)
 
         registerContinuousEffect: (effect, length) ->
             node = @continuousEffects.insert(effect)
-            remover = new Action.RemoveContinuousEffect(node)
+            remover = new Action.RemoveContinuousEffect(node, effect)
             remover_controller = new SingleActionController(remover)
             @scheduleActionSource(remover_controller, length)
 
@@ -57,20 +74,23 @@ define [
             @actionQueue.push(action)
 
         applyAction: (action) ->
-            ret = []
             @enqueueAction(action)
+            @processActions()
+
+        processActions: ->
             while @actionQueue.length != 0
                 current_action = @actionQueue.pop()
                 current_action.apply(this)
 
-            return ret
+        progressTurnCount: ->
+            ++@turnCount
 
         progressSchedule: ->
             prev = @schedule.pop()
             nextTime = prev.time
             @timeDelta = nextTime - @absoluteTime
             @absoluteTime = nextTime
-            ++@turnCount
+            @progressTurnCount()
 
         getCurrentTimeDelta: ->
             return @timeDelta

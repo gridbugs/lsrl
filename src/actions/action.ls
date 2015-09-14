@@ -16,10 +16,6 @@ define [
                 if @status.isRescheduleRequired()
                     gameState.scheduleActionSource(@getSource(), @status.getTime())
 
-                return @status.getMessage()
-            else
-                return void
-
         prepare: ->
         commit: ->
 
@@ -90,6 +86,7 @@ define [
             super(character)
 
         prepare: ->
+            @status.addTime(5)
 
         commit: ->
             @cell.fixture.open()
@@ -159,10 +156,22 @@ define [
 
         prepare: ->
             @status.setNoReschedule()
+            <~ @status.notify(@character, Types.Event.Death)
 
         commit: ->
-            @character.die()
+            @character.die(@status.gameState)
             UserInterface.printLine("#{@character.getName()} dies.")
+
+    class Resurrect extends CharacterAction
+        (character) ->
+            super(character)
+
+        prepare: ->
+            @status.setNoReschedule()
+
+        commit: ->
+            @character.resurrect()
+            UserInterface.printLine("#{@character.getName()} is resurrected by some force.")
 
     class Null extends Action
         ->
@@ -170,7 +179,7 @@ define [
 
         prepare: ->
             @status.setNoReschedule()
-        
+
         commit: ->
 
     class Wait extends CharacterAction
@@ -183,23 +192,24 @@ define [
         commit: ->
 
     class BecomePoisoned extends CharacterAction
-        (character, @damage_rate) ->
+        (character, @damage_rate, @duration) ->
             super(character)
 
         prepare: ->
             @status.setNoReschedule()
-        
+
         commit: ->
-            @character.becomePoisoned(@damage_rate)
+            @character.becomePoisoned(@status.gameState, @damage_rate, @duration)
 
     class RemoveContinuousEffect extends Action
-        (@node) ->
+        (@node, @effect) ->
             super()
 
         prepare: ->
             @status.setNoReschedule()
 
         commit: ->
+            @effect.onRemove()
             @status.gameState.removeContinuousEffectNode(@node)
     {
         Move
@@ -213,4 +223,7 @@ define [
         Null
         Wait
         TakeDamage
+        BecomePoisoned
+        RemoveContinuousEffect
+        Resurrect
     }
