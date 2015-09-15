@@ -4,7 +4,3 @@ define [
         printLine: (line) ->
             @print(line)
             @newLine()
-
-    {
-        Console
-    }

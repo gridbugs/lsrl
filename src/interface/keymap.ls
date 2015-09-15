@@ -1,5 +1,5 @@
 define [
-    'input/control'
+    'interface/control'
     'util'
 ], (Control, Util) ->
 

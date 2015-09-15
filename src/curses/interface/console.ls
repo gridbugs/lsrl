@@ -1,12 +1,12 @@
 define [
-    'console/console'
+    'interface/console'
     'util'
     'config'
 ], (GenericConsole, Util, Config) ->
 
     const KEYCODE_BACKSPACE = 127
 
-    class Console extends GenericConsole.Console
+    class Console extends GenericConsole
         (@consoleWindow, @gameWindow, @ncurses) ->
 
             @consoleWindowCallback = (->)

@@ -1,17 +1,17 @@
 define [
     'actions/action'
-    'input/auto_move'
+    'interface/auto_move'
     'types'
     'structures/search'
-    'input/user_interface'
-    'input/cell_selector'
+    'interface/user_interface'
+    'interface/cell_selector'
     'util'
     'debug'
 ], (Action, AutoMove, Types, Search, UserInterface, CellSelector, Util, Debug) ->
 
     class ControlInterpreter
         (@character) ->
-            @selector = new CellSelector.CellSelector()
+            @selector = new CellSelector()
 
         getAction: (game_state, cb) ->
             control <~ Util.repeatWhileUndefined(UserInterface.getControl)
@@ -230,7 +230,3 @@ define [
                 else
                     UserInterface.printLine "Can't reach selected cell."
                     @navigateToCell coord, game_state, cb
-
-    {
-        ControlInterpreter
-    }

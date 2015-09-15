@@ -1,16 +1,16 @@
 define [
     'common/game_common'
     'curses/drawing/curses_drawer'
-    'curses/input/curses_input_source'
-    'curses/console/console'
-    'curses/hud/hud'
-    'input/keymap'
-    'input/user_interface'
+    'curses/interface/curses_input_source'
+    'curses/interface/console'
+    'curses/interface/hud'
+    'interface/keymap'
+    'interface/user_interface'
     'util'
     'config'
 ], (GameCommon, CursesDrawer, CursesInputSource, Console, Hud, Keymap, UserInterface, Util, Config) ->
 
-    class Game extends GameCommon.GameCommon
+    class Game extends GameCommon
         ->
             drawer = new CursesDrawer.CursesDrawer()
 

@@ -1,10 +1,9 @@
 define [
-    'hud/hud'
     'util'
     'config'
-], (GenericHud, Util, Config) ->
+], (Util, Config) ->
 
-    class Hud extends GenericHud
+    class Hud
         (@hudWindow) ->
             @hudWindow.border()
         

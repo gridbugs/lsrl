@@ -6,7 +6,7 @@ define [
     'types'
     'debug'
     'structures/direction'
-    'input/user_interface'
+    'interface/user_interface'
     'structures/search'
     'prelude-ls'
 ], (Fixture, Ground, Grid, Util, Types, Debug, Direction, UserInterface, Search, Prelude) ->

@@ -1,5 +1,5 @@
 define [
-    'input/user_interface'
+    'interface/user_interface'
     'actions/effectable'
     'actions/effect'
     'actions/damage'

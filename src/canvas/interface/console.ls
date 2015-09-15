@@ -1,12 +1,12 @@
 define [
-    'console/console'
+    'interface/console'
     'util'
     'config'
 ], (GenericConsole, Util, Config) ->
 
     const KEYCODE_ENTER = 13
 
-    class Console extends GenericConsole.Console
+    class Console extends GenericConsole
         (@$consoleDiv) ->
             @newLine()
 
@@ -64,6 +64,3 @@ define [
 
         scrollToBottom: ->
             @$consoleDiv[0].scrollTop = @$consoleDiv[0].scrollHeight
-    {
-        Console
-    }

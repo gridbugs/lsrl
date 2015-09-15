@@ -1,9 +1,9 @@
 define [
-    'input/input_source'
-    'input/keymap'
+    'interface/input_source'
+    'interface/keymap'
 ], (InputSource, Keymap) ->
 
-    class CursesInputSource extends InputSource.InputSource
+    class CursesInputSource extends InputSource
         (window, @convert = Keymap.convertFromQwerty) ->
             super()
 
@@ -14,7 +14,3 @@ define [
                     tmp(@convert(c))
                 else
                     @dirty = true
-
-    {
-        CursesInputSource
-    }

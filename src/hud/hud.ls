@@ -1,7 +1,0 @@
-define [
-], ->
-    class Hud
-
-    {
-        Hud
-    }

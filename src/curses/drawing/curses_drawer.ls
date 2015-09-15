@@ -152,7 +152,3 @@ define [
                 @__drawChar(tile.character, SelectColourPair)
 
             @gameWindow.refresh!
-
-    {
-        CursesDrawer
-    }

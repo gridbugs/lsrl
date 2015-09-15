@@ -1,21 +1,20 @@
 define [
     'characters/character'
     'characters/knowledge'
-    'input/control_interpreter'
+    'interface/control_interpreter'
     'characters/recursive_shadowcast'
     'characters/omniscient'
     'items/inventory'
-    'input/user_interface'
+    'interface/user_interface'
     'types'
     'util'
     'config'
 ], (Character, Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
     Inventory, UserInterface, Types, Util, Config) ->
 
-    class PlayerCharacter
+    class PlayerController
         (@character, @position, @grid) ->
-            @effects = []
-            @knowledge = new Knowledge.Knowledge(@grid)
+            @knowledge = new Knowledge(@grid)
             @viewDistance = 20
 
             if Config.OMNISCIENT_PLAYER
@@ -24,7 +23,7 @@ define [
                 @observe_fn = Shadowcast.observe
 
             @autoMove = null
-            @interpreter = new ControlInterpreter.ControlInterpreter(@character)
+            @interpreter = new ControlInterpreter(@character)
             @inventory = new Inventory()
 
             @name = "The player"
@@ -33,10 +32,6 @@ define [
 
         getTurnCount: ->
             return @turnCount
-
-        forEachEffect: (f) ->
-            for e in @effects
-                f e
 
         getKnowledge: -> @knowledge
         canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
@@ -74,7 +69,3 @@ define [
 
         clearAutoMove: ->
             @autoMove = void
-
-    {
-        PlayerCharacter
-    }

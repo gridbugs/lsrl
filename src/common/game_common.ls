@@ -1,5 +1,5 @@
 define [
-    'input/user_interface'
+    'interface/user_interface'
     'tests/test'
     'util'
     'config'
@@ -69,6 +69,3 @@ define [
 
                 callback(time, action_source == @gameState.playerCharacter)
 
-    {
-        GameCommon
-    }

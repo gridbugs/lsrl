@@ -1,5 +1,5 @@
 define [
-    'input/user_interface'
+    'interface/user_interface'
     'structures/direction'
     'types'
     'util'
@@ -34,7 +34,3 @@ define [
                     cb(void)
             |   otherwise
                 @selectCellLoop(character, game_state, cb, on_each)
-
-    {
-        CellSelector
-    }

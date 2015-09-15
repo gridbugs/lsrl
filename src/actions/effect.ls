@@ -2,7 +2,7 @@ define [
     'actions/event'
     'actions/action'
     'actions/damage'
-    'input/user_interface'
+    'interface/user_interface'
     'types'
 ], (Event, Action, Damage, UserInterface, Types) ->
 

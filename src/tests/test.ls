@@ -4,13 +4,12 @@ define [
     'generation/perlin_test_generator'
     'generation/cell_automata_test_generator'
     'generation/maze_generator'
-    'characters/player_character'
+    'controllers/player_controller'
     'characters/character'
     'structures/vec2'
     'common/game_state'
     'cells/cell'
     'cells/fixture'
-    'input/cell_selector'
     'util'
     'structures/linked_list'
     'structures/binary_tree'
@@ -18,15 +17,15 @@ define [
     'structures/group_tree'
     'items/item'
     'structures/search'
-    'input/auto_move'
-    'input/user_interface'
-    'characters/null_controller'
+    'interface/auto_move'
+    'interface/user_interface'
+    'controllers/null_controller'
     'config'
     'types'
     'controllers/shrubbery_controllers'
     'actions/effect'
 ], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
-    pcharacter, character, Vec2, GameState, Cell, Fixture, CellSelector, Util, LinkedList, BinaryTree, \
+    PlayerController, character, Vec2, GameState, Cell, Fixture, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
     Effect) ->
 
@@ -50,7 +49,7 @@ define [
         sp = c.getStartingPointHint()
 
         pos = new Vec2(sp.x, sp.y)
-        char = new character.Human(pos, grid, pcharacter.PlayerCharacter)
+        char = new character.Human(pos, grid, PlayerController)
         char.setAsPlayerCharacter()
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
@@ -69,7 +68,7 @@ define [
                         c.addItem new Item.Plant()
                 else if Math.random() < 0.01
                     if c.fixture.type == Types.Fixture.Null
-                        c.character = new character.Shrubbery(c.position, grid, NullController.NullController)
+                        c.character = new character.Shrubbery(c.position, grid, NullController)
                 else if Math.random() < 0.005
                     if c.fixture.type == Types.Fixture.Null and not c.character?
                         c.character = new character.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)

@@ -134,7 +134,3 @@ define [
             @__processBoldQueue()
 
             @ctx.fill()
-
-    {
-        CanvasDrawer
-    }

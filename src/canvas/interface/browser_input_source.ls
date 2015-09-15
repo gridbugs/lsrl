@@ -1,9 +1,9 @@
 define [
-    'input/input_source'
-    'input/keymap'
+    'interface/input_source'
+    'interface/keymap'
 ], (InputSource, Keymap) ->
 
-    class BrowserInputSource extends InputSource.InputSource
+    class BrowserInputSource extends InputSource
         (@convert = Keymap.convertFromQwerty) ->
             super()
 
@@ -20,7 +20,3 @@ define [
                     tmp(@convert(ch))
                 else
                     @dirty = true
-
-    {
-        BrowserInputSource
-    }

@@ -1,5 +1,5 @@
 define [
-    'input/keymap'
+    'interface/keymap'
 ], (Keymap) ->
 
     class InputSource
@@ -13,7 +13,3 @@ define [
         getChar: (cb) ->
             @dirty = false
             @currentCallback = cb
-
-    {
-        InputSource
-    }
