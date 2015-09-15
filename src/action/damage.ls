@@ -1,5 +1,5 @@
 define [
-    'actions/action'
+    'action/action'
     'interface/user_interface'
     'types'
 ], (Action, UserInterface, Types) ->

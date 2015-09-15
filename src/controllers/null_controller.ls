@@ -1,9 +1,11 @@
 define [
-    'actions/action'
-], (Action) ->
+    'controllers/controller'
+    'action/action'
+], (Controller, Action) ->
 
-    class NullController
+    class NullController extends Controller
         (@character, @position, @grid) ->
+            super()
 
         observe: (game_state) ->
 

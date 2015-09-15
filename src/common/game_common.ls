@@ -56,9 +56,12 @@ define [
             looping = false
 
         progressGameState: (callback) ->
-            action_source = @gameState.getCurrentActionSource()
+            
+            do
+                action_source = @gameState.getCurrentActionSource()
 
-            @gameState.progressSchedule()
+                @gameState.progressSchedule()
+            until action_source.isActive()
 
             action_source.getAction @gameState, (action) ~>
 

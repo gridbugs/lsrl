@@ -1,7 +1,7 @@
 define [
     'types'
-    'actions/effect'
-    'actions/effectable'
+    'action/effect'
+    'action/effectable'
 ], (Types, Effect, Effectable) ->
 
     class Ground extends Effectable

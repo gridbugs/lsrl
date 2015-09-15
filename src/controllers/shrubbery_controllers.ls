@@ -1,11 +1,13 @@
 define [
-    'actions/action'
+    'controllers/controller'
+    'action/action'
     'types'
     'util'
-], (Action, Types, Util) ->
+], (Controller, Action, Types, Util) ->
 
-    class ShrubberyController
+    class ShrubberyController extends Controller
         (@character, @position, @grid) ->
+            super()
             @period = 5
 
         getAction: (game_state, callback) ->

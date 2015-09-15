@@ -56,6 +56,8 @@ define [
         Q: \X
         F: \Y
         ':': \Z
+        v: '.'
+        w: ','
     }
 
     convertFromDvorak = (c) ->
@@ -67,7 +69,7 @@ define [
 
     convertFromQwerty = (c) -> c
 
-    const Controls = Util.joinObject Control.Controls, {
+    const Controls = Util.joinObject Control, {
         h: \West
         j: \South
         k: \North
@@ -94,6 +96,7 @@ define [
         d: \Drop
         i: \Inventory
         t: \Test
+        '.': \Wait
     }
 
     {

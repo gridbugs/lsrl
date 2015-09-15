@@ -1,7 +1,7 @@
 define [
     'structures/heap'
     'structures/linked_list'
-    'actions/action'
+    'action/action'
     'controllers/single_action_controller'
     'util'
     'debug'

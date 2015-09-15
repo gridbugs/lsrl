@@ -1,5 +1,5 @@
 define [
-    'actions/action'
+    'action/action'
     'interface/auto_move'
     'types'
     'structures/search'
@@ -24,13 +24,6 @@ define [
                         action = new Action.Attack(@character, control.direction)
 
                     cb action
-                    /*
-                    if action.toCell.fixture.type != Types.Fixture.Wall
-                        cb action
-                    else
-                        UserInterface.printLine "Cannot move there."
-                        @character.getAction game_state, cb
-                    */
             |   Types.Control.AutoDirection
                     @character.setAutoMove(
                         new AutoMove.StraightLineMove @character, control.direction
@@ -43,6 +36,8 @@ define [
                     @character.getAction game_state, cb
             |   Types.Control.NavigateToCell
                     @navigateToCell(@character.position, game_state, cb)
+            |   Types.Control.Wait
+                    cb(new Action.Wait(@character, 10))
             |   Types.Control.Examine
                     UserInterface.printLine "You see here:"
                     @selector.selectCell @character.position, @character, game_state, (coord) ~>

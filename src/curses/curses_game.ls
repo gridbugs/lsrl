@@ -12,12 +12,12 @@ define [
 
     class Game extends GameCommon
         ->
-            drawer = new CursesDrawer.CursesDrawer()
+            drawer = new CursesDrawer()
 
             convert = Keymap.convertFromDvorak
-            input = new CursesInputSource.CursesInputSource(drawer.gameWindow, convert)
-            game_console = new Console.Console(drawer.logWindow, drawer.gameWindow, drawer.ncurses)
-            hud = new Hud.Hud(drawer.hudWindow)
+            input = new CursesInputSource(drawer.gameWindow, convert)
+            game_console = new Console(drawer.logWindow, drawer.gameWindow, drawer.ncurses)
+            hud = new Hud(drawer.hudWindow)
 
             process.on('SIGINT', drawer.cleanup)
             process.on('exit', drawer.cleanup)

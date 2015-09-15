@@ -108,7 +108,3 @@ define [
             if not @newLineOnNextPrint
                 @setCurrentLogEntry("")
                 @refresh()
-
-    {
-        Console
-    }

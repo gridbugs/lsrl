@@ -1,8 +1,8 @@
 define [
     'interface/user_interface'
-    'actions/effectable'
-    'actions/effect'
-    'actions/damage'
+    'action/effectable'
+    'action/effect'
+    'action/damage'
     'types'
 ], (UserInterface, Effectable, Effect, Damage, Types) ->
 
@@ -100,50 +100,7 @@ define [
             @observerNode = node
 
         die: (game_state) ->
+            @controller.deactivate()
             if @observerNode?
                 game_state.removeObserverNode(@observerNode)
             @getCell().character = void
-
-    class Shrubbery extends Character
-        (position, grid, Controller) ->
-            super(Types.Character.Shrubbery, position, grid, Controller)
-            @hitPoints = 5
-
-        getName: -> 'Shrubbery'
-
-    class PoisonShrubbery extends Character
-        (position, grid, Controller) ->
-            super(Types.Character.PoisonShrubbery, position, grid, Controller)
-            @hitPoints = 10
-
-        getName: -> 'Poison Shrubbery'
-
-        getCurrentAttackTime: ->
-            return 40
-
-        getCurrentAttackDamage: ->
-            return new Damage.PoisoningPhysicalDamage(1, 100, 0.1, 1000)
-
-    class CarnivorousShrubbery extends Character
-        (position, grid, Controller) ->
-            super(Types.Character.CarnivorousShrubbery, position, grid, Controller)
-            @hitPoints = 20
-
-        getName: -> 'Carnivorous Shrubbery'
-
-        getCurrentAttackTime: ->
-            return 40
-
-    class Human extends Character
-        (position, grid, Controller) ->
-            super(Types.Character.Human, position, grid, Controller)
-
-        getName: -> 'Human'
-
-    {
-        Character
-        Human
-        Shrubbery
-        PoisonShrubbery
-        CarnivorousShrubbery
-    }

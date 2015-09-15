@@ -4,38 +4,43 @@ define [
     'util'
 ], (Direction, Types, Util) ->
 
-    class Control
-        (@name, @type) ~>
+    class BasicControl
+        (@name, @type) ->
         toString: -> @name
 
     class DirectionControl
-        (@name, @direction) ~>
+        (@name, @direction) ->
             @type = Types.Control.Direction
         toString: -> @name
 
     class AutoDirectionControl
-        (@name, @direction) ~>
+        (@name, @direction) ->
             @type = Types.Control.AutoDirection
         toString: -> @name
 
-    Controls = {}
+    Control = {}
 
     for d in Direction.Directions
         name = Direction.getName(d)
-        Controls[name] = DirectionControl name, d
+        Control[name] = new DirectionControl(name, d)
         autoname = "Auto#{name}"
-        Controls[autoname] = AutoDirectionControl autoname, d
+        Control[autoname] = new AutoDirectionControl(autoname, d)
 
-    Controls.AutoExplore = Control 'AutoExplore', Types.Control.AutoExplore
-    Controls.NavigateToCell = Control 'NavigateToCell', Types.Control.NavigateToCell
-    Controls.Accept = Control 'Accept', Types.Control.Accept
-    Controls.Escape = Control 'Escape', Types.Control.Escape
-    Controls.Examine = Control 'Examine', Types.Control.Examine
-    Controls.Get = Control 'Get', Types.Control.Get
-    Controls.Drop = Control 'Drop', Types.Control.Drop
-    Controls.Inventory = Control 'Inventory', Types.Control.Inventory
-    Controls.Test = Control 'Test', Types.Control.Test
+    createBasicControl = (name) ->
+        Control[name] = new BasicControl(name, Types.Control[name])
 
-    {
-        Controls
-    }
+    # Basic Controls
+    [
+        'AutoExplore'
+        'NavigateToCell'
+        'Accept'
+        'Escape'
+        'Examine'
+        'Get'
+        'Drop'
+        'Inventory'
+        'Test'
+        'Wait'
+    ].map(createBasicControl)
+    
+    return Control

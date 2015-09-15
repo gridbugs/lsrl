@@ -1,6 +1,6 @@
 define [
-    'cells/fixture'
-    'cells/ground'
+    'cell/fixture'
+    'cell/ground'
     'structures/grid'
 ], (Fixture, Ground, Grid) ->
 

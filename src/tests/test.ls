@@ -5,17 +5,17 @@ define [
     'generation/cell_automata_test_generator'
     'generation/maze_generator'
     'controllers/player_controller'
-    'characters/character'
+    'character/character'
     'structures/vec2'
     'common/game_state'
-    'cells/cell'
-    'cells/fixture'
+    'cell/cell'
+    'cell/fixture'
     'util'
     'structures/linked_list'
     'structures/binary_tree'
     'structures/avl_tree'
     'structures/group_tree'
-    'items/item'
+    'item/item'
     'structures/search'
     'interface/auto_move'
     'interface/user_interface'
@@ -23,11 +23,12 @@ define [
     'config'
     'types'
     'controllers/shrubbery_controllers'
-    'actions/effect'
+    'action/effect'
+    'assets/assets'
 ], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
     PlayerController, character, Vec2, GameState, Cell, Fixture, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
-    Effect) ->
+    Effect, Assets) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -49,7 +50,7 @@ define [
         sp = c.getStartingPointHint()
 
         pos = new Vec2(sp.x, sp.y)
-        char = new character.Human(pos, grid, PlayerController)
+        char = new Assets.Characters.Human(pos, grid, PlayerController)
         char.setAsPlayerCharacter()
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
@@ -68,14 +69,14 @@ define [
                         c.addItem new Item.Plant()
                 else if Math.random() < 0.01
                     if c.fixture.type == Types.Fixture.Null
-                        c.character = new character.Shrubbery(c.position, grid, NullController)
+                        c.character = new Assets.Characters.Shrubberies.Shrubbery(c.position, grid, NullController)
                 else if Math.random() < 0.005
                     if c.fixture.type == Types.Fixture.Null and not c.character?
-                        c.character = new character.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
+                        c.character = new Assets.Characters.Shrubberies.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
                 else if Math.random() < 0.005
                     if c.fixture.type == Types.Fixture.Null and not c.character?
-                        c.character = new character.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
+                        c.character = new Assets.Characters.Shrubberies.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
 
         gs.registerObserver(char)

@@ -1,8 +1,8 @@
 define [
     'structures/vec2'
     'structures/direction'
-    'items/inventory'
-    'actions/effectable'
+    'item/inventory'
+    'action/effectable'
     'constants'
     'types'
 ], (Vec2, Direction, Inventory, Effectable, Constants, Types) ->

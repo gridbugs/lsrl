@@ -1,7 +1,7 @@
 define [
     'types'
-    'actions/effect'
-    'actions/effectable'
+    'action/effect'
+    'action/effectable'
     'util'
 ], (Types, Effect, Effectable, Util) ->
 

@@ -14,7 +14,3 @@ define [
             @hudWindow.addstr("#{character.getName()}")
             @hudWindow.addstr("  Curse: #{character.getCurrentHitPoints()}")
             @hudWindow.refresh()
-
-    {
-        Hud
-    }

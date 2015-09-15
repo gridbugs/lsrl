@@ -1,5 +1,5 @@
 define [
-    'actions/action'
+    'action/action'
     'structures/search'
     'structures/direction'
     'types'

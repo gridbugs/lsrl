@@ -1,19 +1,21 @@
 define [
-    'characters/character'
-    'characters/knowledge'
+    'controllers/controller'
+    'character/knowledge'
     'interface/control_interpreter'
-    'characters/recursive_shadowcast'
-    'characters/omniscient'
-    'items/inventory'
+    'character/recursive_shadowcast'
+    'character/omniscient'
+    'item/inventory'
     'interface/user_interface'
     'types'
     'util'
     'config'
-], (Character, Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
+], (Controller, Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
     Inventory, UserInterface, Types, Util, Config) ->
 
-    class PlayerController
+    class PlayerController extends Controller
         (@character, @position, @grid) ->
+            super()
+
             @knowledge = new Knowledge(@grid)
             @viewDistance = 20
 

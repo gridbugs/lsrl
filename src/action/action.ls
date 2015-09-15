@@ -1,5 +1,5 @@
 define [
-    'actions/action_status'
+    'action/action_status'
     'interface/user_interface'
     'types'
 ], (ActionStatus, UserInterface, Types) ->
@@ -130,8 +130,6 @@ define [
 
             @status.addTime(@character.getCurrentAttackTime())
             @damage = @character.getCurrentAttackDamage()
-            #@targetResistance = @target.getCurrentResistance()
-            #@netDamage = Math.max(0, @grossDamage - @targetResistance)
 
         commit: ->
             @status.gameState.enqueueAction(new TakeDamage(@target, @damage))

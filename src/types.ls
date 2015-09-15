@@ -75,6 +75,7 @@ define [
         \Drop
         \Inventory
         \Test
+        \Wait
     ]
 
     const Item = Util.enum [

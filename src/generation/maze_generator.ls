@@ -1,7 +1,7 @@
 define [
     'structures/grid'
-    'cells/fixture'
-    'cells/ground'
+    'cell/fixture'
+    'cell/ground'
     'structures/vec2'
     'util'
     'prelude-ls'
