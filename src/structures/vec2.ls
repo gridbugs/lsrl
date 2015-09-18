@@ -3,8 +3,16 @@ define [], ->
     class Vec2
         (@x, @y) ->
 
-        arraySet: (idx, val) -> [(~> @x = val), (~> @y = val)][idx]()
-        arrayGet: (idx) -> [@x, @y][idx]
+        arraySet: (idx, val) !->
+            switch idx
+            |   0 => @x = val
+            |   _ => @y = val
+                
+        arrayGet: (idx) !->
+            switch idx
+            |   0 => return @x
+            |   _ => return @y
+
         toString: -> "(#{@x}, #{@y})"
 
         add: (v) -> new Vec2((@x + v.x), (@y + v.y))
@@ -13,7 +21,17 @@ define [], ->
         divide: (s) -> new Vec2((@x / s), (@y / s))
         dot: (v) -> @x * v.x + @y * v.y
         length: -> Math.sqrt @dot(this)
-        distance: (v) -> (@subtract v).length!
+
+        distanceSquared: (v) ->
+            dx = @x - v.x
+            dy = @y - v.y
+            return dx*dx+dy*dy
+
+        distance: (v) ->
+            dx = @x - v.x
+            dy = @y - v.y
+            return Math.sqrt(dx*dx+dy*dy)
+
         equals: (v) -> @x == v.x and @y == v.y
 
     Vec2.X_IDX = 0

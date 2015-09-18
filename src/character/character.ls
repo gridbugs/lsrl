@@ -3,8 +3,9 @@ define [
     'action/effectable'
     'action/effect'
     'action/damage'
+    'character/recursive_shadowcast'
     'types'
-], (UserInterface, Effectable, Effect, Damage, Types) ->
+], (UserInterface, Effectable, Effect, Damage, RecursiveShadowcast, Types) ->
 
     class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
@@ -26,7 +27,9 @@ define [
         getName: -> 'Character'
 
         observe: (game_state) ->
-            @controller.observe(game_state)
+            RecursiveShadowcast.observe(@controller, game_state)
+            @controller.turnCount = game_state.getTurnCount()
+            #@controller.observe(game_state)
 
         getController: ->
             return @controller

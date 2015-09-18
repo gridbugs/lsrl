@@ -16,7 +16,7 @@ define [
         knowledge_cell.see(game_state)
 
     markPartiallyVisible = (knowledge_cell, game_state) ->
-        markCompletelyVisible(knowledge_cell, game_state)
+        knowledge_cell.see(game_state)
 
     observeOctant = (
         character,
@@ -85,9 +85,9 @@ define [
                 last_iteration = i == partial_stop_index
 
                 coord_idx.arraySet(lateral_index, i)
-                cell = knowledge_grid.getCart(coord_idx)
+                cell = knowledge_grid.array[coord_idx.y][coord_idx.x]
 
-                if (cell.game_cell.centre.distance eye_cell.centre) < character.viewDistance and \
+                if (cell.game_cell.centre.distanceSquared(eye_cell.centre)) < (character.viewDistance * character.viewDistance) and \
                     cell.timestamp != game_state.getTurnCount()
                     markCompletelyVisible(cell, game_state)
 
@@ -99,7 +99,7 @@ define [
                     markPartiallyVisible(cell, game_state)
                 */
 
-                current_opaque = not character.canSeeThrough cell
+                current_opaque = not character.canSeeThrough(cell)
                 if previous_opaque and not current_opaque
                     section.min_slope = computeSlope(
                         eye_cell.centre, cell.game_cell.corners[inner_direction],

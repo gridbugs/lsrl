@@ -2,14 +2,12 @@ define [
     'controllers/controller'
     'character/knowledge'
     'interface/control_interpreter'
-    'character/recursive_shadowcast'
-    'character/omniscient'
     'item/inventory'
     'interface/user_interface'
     'types'
     'util'
     'config'
-], (Controller, Knowledge, ControlInterpreter, Shadowcast, Omniscient, \
+], (Controller, Knowledge, ControlInterpreter, \
     Inventory, UserInterface, Types, Util, Config) ->
 
     class PlayerController extends Controller
@@ -18,11 +16,6 @@ define [
 
             @knowledge = new Knowledge(@grid)
             @viewDistance = 20
-
-            if Config.OMNISCIENT_PLAYER
-                @observe_fn = Omniscient.observe
-            else
-                @observe_fn = Shadowcast.observe
 
             @autoMove = null
             @interpreter = new ControlInterpreter(@character)
@@ -43,12 +36,9 @@ define [
         getName: -> @name
 
         canSeeThrough: (cell) ->
-            cell.fixture.type != Types.Fixture.Wall and \
-                (cell.fixture.type != Types.Fixture.Door || cell.fixture.isOpen())
-
-        observe: (game_state) ->
-            @observe_fn this, game_state
-            @turnCount = game_state.getTurnCount()
+            fixture = cell.fixture
+            type = fixture.type
+            return type != Types.Fixture.Wall and (type != Types.Fixture.Door || fixture.isOpen())
 
         getAction: (game_state, cb) ->
 
