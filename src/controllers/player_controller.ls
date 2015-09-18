@@ -16,6 +16,7 @@ define [
 
             @knowledge = new Knowledge(@grid)
             @viewDistance = 20
+            @viewDistanceSquared = @viewDistance * @viewDistance
 
             @autoMove = null
             @interpreter = new ControlInterpreter(@character)

@@ -11,13 +11,6 @@ define [
         (to_vec.arrayGet(lateral_index) - from_vec.arrayGet(lateral_index)) /
             (to_vec.arrayGet(depth_index) - from_vec.arrayGet(depth_index))
 
-
-    markCompletelyVisible = (knowledge_cell, game_state) ->
-        knowledge_cell.see(game_state)
-
-    markPartiallyVisible = (knowledge_cell, game_state) ->
-        knowledge_cell.see(game_state)
-
     observeOctant = (
         character,
         game_state,
@@ -87,17 +80,10 @@ define [
                 coord_idx.arraySet(lateral_index, i)
                 cell = knowledge_grid.array[coord_idx.y][coord_idx.x]
 
-                if (cell.game_cell.centre.distanceSquared(eye_cell.centre)) < (character.viewDistance * character.viewDistance) and \
+                if (cell.game_cell.position.distanceSquared(eye_cell.position)) < (character.viewDistanceSquared) and \
                     cell.timestamp != game_state.getTurnCount()
-                    markCompletelyVisible(cell, game_state)
 
-
-                /*
-                if i >= complete_start_index and i <= complete_stop_index
-                    markCompletelyVisible(cell, game_state)
-                else
-                    markPartiallyVisible(cell, game_state)
-                */
+                    cell.see(game_state)
 
                 current_opaque = not character.canSeeThrough(cell)
                 if previous_opaque and not current_opaque
