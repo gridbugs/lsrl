@@ -77,7 +77,7 @@ define [
         lateral_index,      /* 0 or 1 */
         lateral_max,        /* grid width or height */
         depth_max
-    ) ->
+    ) !->
         knowledge_grid = character.knowledge.grid
         depth_index = Vec2.otherIndex(lateral_index)
 
@@ -165,7 +165,7 @@ define [
                 first_iteration = false
 
 
-    observe = (character, game_state) ->
+    observe = (character, game_state) !->
         width = character.knowledge.grid.width - 1
         height = character.knowledge.grid.height - 1
         cell = character.getCell()
