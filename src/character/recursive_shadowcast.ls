@@ -7,10 +7,64 @@ define [
     class Section
         (@min_slope, @max_slope, @depth) ->
 
+    class ArraySectionStack
+        (@size) ->
+            @stack = []
+
+        push: (min_slope, max_slope, depth) ->
+            @stack.push(new Section(min_slope, max_slope, depth))
+
+        empty: ->
+            return @stack.length == 0
+
+        pop: ->
+            @stack.pop()
+
+        top: ->
+            return @stack[@stack.length - 1]
+
+        topMinSlope: ->
+            return @top().min_slope
+
+        topMaxSlope: ->
+            return @top().max_slope
+
+        topDepth: ->
+            return @top().depth
+
+    class Float32ArraySectionStack
+        (@size) ->
+            @stack = new Float32Array(@size)
+            @index = 0
+
+        empty: ->
+            return @index == 0
+
+        push: (min_slope, max_slope, depth) !->
+            @stack[@index] = min_slope
+            @stack[@index+1] = max_slope
+            @stack[@index+2] = depth
+            @index += 3
+
+        pop: !->
+            @index -= 3
+
+        topMinSlope: ->
+            return @stack[@index - 3]
+
+        topMaxSlope: ->
+            return @stack[@index - 2]
+
+        topDepth: ->
+            return @stack[@index - 1]
+
     computeSlope = (from_vec, to_vec, lateral_index, depth_index) ->
         (to_vec.arrayGet(lateral_index) - from_vec.arrayGet(lateral_index)) /
             (to_vec.arrayGet(depth_index) - from_vec.arrayGet(depth_index))
 
+    SECTION_STACK = new Float32ArraySectionStack(100)
+    COORD_IDX = new Vec2()
+    
     observeOctant = (
         character,
         game_state,
@@ -26,23 +80,28 @@ define [
     ) ->
         knowledge_grid = character.knowledge.grid
         depth_index = Vec2.otherIndex(lateral_index)
-        section_stack = [
-            new Section(min_slope_initial, max_slope_initial, 1)
-        ]
 
-        while section_stack.length != 0
-            section = section_stack.pop!
+        section_stack = SECTION_STACK
+        section_stack.push(min_slope_initial, max_slope_initial, 1)
+
+        while not section_stack.empty()
+
+            min_slope = section_stack.topMinSlope()
+            max_slope = section_stack.topMaxSlope()
+            depth = section_stack.topDepth()
+            section_stack.pop()
+
             depth_absolute_index = (eye_cell.position.arrayGet depth_index) +
-                section.depth * depth_direction
+                depth * depth_direction
 
-            if depth_absolute_index < 0 || depth_absolute_index > depth_max
+            if depth_absolute_index < 0 or depth_absolute_index > depth_max
                 continue
 
-            inner_depth_offset = section.depth - 0.5
+            inner_depth_offset = depth - 0.5
             outer_depth_offset = inner_depth_offset + 1
 
-            min_inner_lateral_offset = section.min_slope * inner_depth_offset
-            min_outer_lateral_offset = section.min_slope * outer_depth_offset
+            min_inner_lateral_offset = min_slope * inner_depth_offset
+            min_outer_lateral_offset = min_slope * outer_depth_offset
 
             min_inner_lateral_position = min_inner_lateral_offset +
                 eye_cell.centre.arrayGet(lateral_index)
@@ -54,8 +113,8 @@ define [
             complete_start_index = Math.ceil(Math.max(
                 min_inner_lateral_position, min_outer_lateral_position))
 
-            max_inner_lateral_offset = section.max_slope * inner_depth_offset
-            max_outer_lateral_offset = section.max_slope * outer_depth_offset
+            max_inner_lateral_offset = max_slope * inner_depth_offset
+            max_outer_lateral_offset = max_slope * outer_depth_offset
 
             max_inner_lateral_position = max_inner_lateral_offset +
                 eye_cell.centre.arrayGet(lateral_index) - 1
@@ -72,7 +131,7 @@ define [
 
             first_iteration = true
             previous_opaque = false
-            coord_idx = new Vec2()
+            coord_idx = COORD_IDX
             coord_idx.arraySet(depth_index, depth_absolute_index)
             for i from start_index to stop_index
                 last_iteration = i == partial_stop_index
@@ -87,7 +146,7 @@ define [
 
                 current_opaque = not character.canSeeThrough(cell)
                 if previous_opaque and not current_opaque
-                    section.min_slope = computeSlope(
+                    min_slope = computeSlope(
                         eye_cell.centre, cell.game_cell.corners[inner_direction],
                         lateral_index, depth_index
                     ) * depth_direction
@@ -97,12 +156,10 @@ define [
                         eye_cell.centre, cell.game_cell.corners[outer_direction],
                         lateral_index, depth_index
                     ) * depth_direction
-                    section_stack.push(new Section(
-                        section.min_slope, new_max_slope, section.depth + 1))
+                    section_stack.push(min_slope, new_max_slope, depth + 1)
 
                 if not current_opaque and last_iteration
-                    section_stack.push(new Section(
-                        section.min_slope, section.max_slope, section.depth + 1))
+                    section_stack.push(min_slope, max_slope, depth + 1)
 
                 previous_opaque = current_opaque
                 first_iteration = false
@@ -113,7 +170,7 @@ define [
         height = character.knowledge.grid.height - 1
         cell = character.getCell()
 
-        character.getKnowledgeCell!see game_state
+        character.getKnowledgeCell().see(game_state)
 
         # \|
         observeOctant(character, game_state, cell,
