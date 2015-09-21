@@ -46,7 +46,7 @@ define [
             for i from 0 til @array.length
                 row = @array[i]
                 for j from 0 til row.length
-                    f row[j], j, i, this
+                    f(row[j], j, i, this)
 
         forEachBorder: (f) ->
             for i from 0 til @width
@@ -63,7 +63,3 @@ define [
         getRandom: -> @get Math.floor(Math.random()*@width), Math.floor(Math.random()*@height)
 
         toString: -> @array |> map (join '') |> join "\n"
-
-    {
-        Grid
-    }

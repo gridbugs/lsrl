@@ -36,7 +36,7 @@ define [
 
     class Knowledge
         (grid) ->
-            @grid = new Grid.Grid KnowledgeCell, grid.width, grid.height
+            @grid = new Grid(KnowledgeCell, grid.width, grid.height)
             for i from 0 til grid.height
                 for j from 0 til grid.width
                     @grid.get(j, i).init grid.get(j, i)

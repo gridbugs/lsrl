@@ -64,8 +64,8 @@ define [
 
     class Tree extends Fixture
         (cell) ->
-            super Types.Fixture.Tree
-            @effects = []
+            super(Types.Fixture.Tree)
+            @addEffect(new Effect.Solid())
 
         getName: -> 'Tree'
     {

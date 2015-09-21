@@ -56,8 +56,8 @@ define [
 
     class MazeGenerator
         generateGrid: (T, width, height) ->
-            grid = new Grid.Grid T, width, height
-            vertex_grid = new Grid.Grid VertexCell, width, height
+            grid = new Grid(T, width, height)
+            vertex_grid = new Grid(VertexCell, width, height)
             vertices = []
             grid.forEach (c, i, j) ~>
                 c.setGround Ground.Stone

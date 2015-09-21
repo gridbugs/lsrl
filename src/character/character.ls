@@ -4,6 +4,7 @@ define [
     'action/effect'
     'action/damage'
     'character/recursive_shadowcast'
+    #'character/omniscient'
     'types'
 ], (UserInterface, Effectable, Effect, Damage, RecursiveShadowcast, Types) ->
 

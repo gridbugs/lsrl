@@ -34,12 +34,16 @@ define [
         drawer = UserInterface.Global.gameDrawer
         input_source = UserInterface.Global.gameController
 
+        /*
         if Config.GENERATOR == 'cell_automata'
             c = new cell_automata_test_generator.CellAutomataTestGeneratorRooms()
         else if Config.GENERATOR == 'maze'
             c = new MazeGenerator.MazeGenerator()
         else if Config.GENERATOR == 'border'
             c = new border_generator.BorderGenerator()
+        */
+
+        c = new Assets.Generators.Catacombs()
 
         grid = c.generateGrid Cell, 80, 30
 
