@@ -94,6 +94,9 @@ define [
             obj[k] = left[v]
         return obj
 
+    isAlpha = (str) ->
+        return (str == /^[a-zA-Z]+$/)?
+
     {
         isInt
         makeEnum
@@ -119,4 +122,5 @@ define [
         getRandomFloat
         getRandomInt
         mapTable
+        isAlpha
     }
