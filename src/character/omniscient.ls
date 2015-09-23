@@ -3,7 +3,7 @@ define [
 
     observe = (character, game_state) ->
 
-        character.knowledge.grid.forEach (c) ->
+        character.knowledge.grid.forEach (c) !->
             c.see game_state
 
     {
