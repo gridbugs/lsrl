@@ -30,6 +30,8 @@ define [
                             Types.Tile.OpenDoor
                         else
                             Types.Tile.Door
+        DirtWall:   -> Types.Tile.DirtWall
+        BrickWall:  -> Types.Tile.BrickWall
     }
 
     const GroundTiles = Util.table Types.Ground, {

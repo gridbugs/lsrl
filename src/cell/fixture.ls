@@ -22,6 +22,20 @@ define [
 
         getName: -> 'Wall'
 
+    class BrickWall extends Fixture
+        (cell) ->
+            super(Types.Fixture.BrickWall)
+            @addEffect(new Effect.Solid())
+
+        getName: -> 'Wall'
+
+    class DirtWall extends Fixture
+        (cell) ->
+            super(Types.Fixture.DirtWall)
+            @addEffect(new Effect.Solid())
+
+        getName: -> 'Wall'
+
     class Door extends Fixture
         (cell) ->
             super(Types.Fixture.Door)
@@ -74,4 +88,6 @@ define [
         Web
         Tree
         Door
+        DirtWall
+        BrickWall
     }

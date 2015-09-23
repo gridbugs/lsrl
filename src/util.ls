@@ -31,6 +31,12 @@ define [
             arr[enum_l[k]] = enum_r[v]
         return arr
 
+    joinSelf = (enum_type, obj) ->
+        arr = []
+        for k, v of obj
+            arr[enum_type[k]] = enum_type[v]
+        return arr
+
     joinTableArray = (enum_l, enum_r, object) ->
         arr = []
         for k, v of object
@@ -97,6 +103,20 @@ define [
     isAlpha = (str) ->
         return (str == /^[a-zA-Z]+$/)?
 
+    createArray2d = (height, width) ->
+        outer = new Array(height)
+        for i from 0 til outer.length
+            outer[i] = new Array(width)
+        return outer
+            
+
+    createArray2dCalling = (height, width, fn) ->
+        ret = createArray2d(height, width)
+        for i from 0 til height
+            for j from 0 til width
+                ret[i][j] = fn(j, i)
+        return ret
+
     {
         isInt
         makeEnum
@@ -113,6 +133,7 @@ define [
         enumValuesForKeys
         joinArray: joinTableArray
         joinArraySelf: joinTableArraySelf
+        joinSelf
         enumKeys
         repeatWhileUndefined
         enumerate
@@ -123,4 +144,6 @@ define [
         getRandomInt
         mapTable
         isAlpha
+        createArray2d
+        createArray2dCalling
     }

@@ -20,6 +20,8 @@ define [
         \PoisonShrubbery
         \CarnivorousShrubbery
         \PlayerCharacter
+        \BrickWall
+        \DirtWall
     ]
 
     const Fixture = Util.enum [
@@ -28,6 +30,8 @@ define [
         \Web
         \Tree
         \Door
+        \BrickWall
+        \DirtWall
     ]
 
     const Ground = Util.enum [

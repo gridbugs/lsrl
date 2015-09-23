@@ -21,6 +21,8 @@ define [
         CarnivorousShrubbery: ['p', '#00FF00', 'bold']
         PoisonShrubbery: ['p', '#993399', 'bold']
         PlayerCharacter: ['@', '#ffffff', 'bold']
+        DirtWall: ['#', '#996600']
+        BrickWall: ['#', '#ff5500']
     }
 
     const UnseenColour = '#333333'

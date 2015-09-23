@@ -61,32 +61,61 @@ define [
         forEachBorder: (f) ->
             
             # north west corner
-            f(@array[0][0])
+            f(@array[0][0], Types.Direction.NorthWest)
 
             # north
             for i from 1 til @width - 1
-                f(@array[0][i])
+                f(@array[0][i], Types.Direction.North)
 
             # north east corner
-            f(@array[0][@width - 1])
+            f(@array[0][@width - 1], Types.Direction.NorthEast)
 
             # east
             for i from 1 til @height-1
-                f(@array[i][@width-1])
+                f(@array[i][@width-1], Types.Direction.East)
 
             # south east corner
-            f(@array[@height - 1][@width - 1])
+            f(@array[@height - 1][@width - 1], Types.Direction.SouthEast)
 
             # south
-            for i from (@width-1) to 1 by -1
-                f(@array[@height-1][i])
+            for i from @width-2 to 1 by -1
+                f(@array[@height-1][i], Types.Direction.South)
 
             # south west corner
-            f(@array[@height - 1][0])
+            f(@array[@height - 1][0], Types.Direction.SouthWest)
 
             # west
             for i from @height-2 til 0 by -1
-                f(@array[i][0])
+                f(@array[i][0], Types.Direction.West)
+
+        forEachBorderAtDepth: (d, f) ->
+            # north west corner
+            f(@array[d][d], Types.Direction.NorthWest)
+
+            # north
+            for i from 1 + d til @width - 1 - d
+                f(@array[d][i], Types.Direction.North)
+
+            # north east corner
+            f(@array[d][@width - 1 - d], Types.Direction.NorthEast)
+
+            # east
+            for i from 1 + d til @height - 1 - d
+                f(@array[i][@width - 1 - d], Types.Direction.East)
+
+            # south east corner
+            f(@array[@height - 1 - d][@width - 1 - d], Types.Direction.SouthEast)
+
+            # south
+            for i from @width - 2 - d to 1 + d by -1
+                f(@array[@height - 1 - d][i], Types.Direction.South)
+
+            # south west corner
+            f(@array[@height - 1 - d][d], Types.Direction.SouthWest)
+
+            # west
+            for i from @height - 2 - d til d by -1
+                f(@array[i][d], Types.Direction.West)           
 
         isBorderCoordinate: (x, y) ->
             return x == 0 or y == 0 or x == @width - 1 or y == @height - 1

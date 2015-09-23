@@ -38,6 +38,16 @@ define [
         SouthWest: [\South, \West, \SouthWest]
         NorthWest: [\West, \North, \NorthWest]
     }
+    const Opposites = Util.joinSelf Types.Direction, {
+        North: \South
+        East: \West
+        South: \North
+        West: \East
+        NorthEast: \SouthWest
+        SouthEast: \NorthWest
+        SouthWest: \NorthEast
+        NorthWest: \SouthEast
+    }
     const CardinalMap = Util.table Types.Direction, {
         North: true
         South: true
@@ -82,6 +92,7 @@ define [
         /* Mappings from one direction to related directions */
         Fronts
         FrontSides
+        Opposites
 
         /* Predicates on directions */
         isOrdinal
