@@ -45,7 +45,7 @@ define [
                     @type = i
                     @resetCandidateTypes()
                     return
-
+            
             Debug.assert(false, 'no candidate')
 
     class Room
@@ -200,9 +200,9 @@ define [
                 if global_cell.type == RoomCellType.Free
                     for i from 0 til global_cell.candidateTypes.length
                         global_cell.candidateTypes[i] = room_cell.candidateTypes[i]
-                else
+                else if room_cell.type != RoomCellType.Free
                     for i from 0 til global_cell.candidateTypes.length
-                        global_cell.candidateTypes[i] =  room_cell.candidateTypes[i]
+                        global_cell.candidateTypes[i] = room_cell.candidateTypes[i] #TODO
                      
                 if room_cell.type != RoomCellType.Free
                     global_cell.type = room_cell.type
