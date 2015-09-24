@@ -1,5 +1,5 @@
 define [
-    'interface/input_source'
+    'interface/input'
     'interface/keymap'
 ], (InputSource, Keymap) ->
 

@@ -6,7 +6,7 @@ define [
     class Hud
         (@hudWindow) ->
             @hudWindow.border()
-        
+
         updateHud: (character) ->
             @hudWindow.clear()
             @hudWindow.border()

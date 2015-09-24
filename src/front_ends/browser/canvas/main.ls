@@ -6,6 +6,6 @@ requirejs.config {
 }
 
 requirejs [
-    'front_ends/canvas/canvas_game'
+    'front_ends/browser/canvas/canvas_game'
 ], (CanvasGame) ->
     CanvasGame.main()

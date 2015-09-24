@@ -1,7 +1,7 @@
 define [
     'ncurses'
     'drawing/tile'
-    'front_ends/curses/drawing/curses_tile'
+    'front_ends/console/curses/drawing/tile'
     'types'
     'util'
 ], (Ncurses, Tile, CursesTile, Types, Util) ->
