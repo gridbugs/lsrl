@@ -3,7 +3,7 @@ define [
 ], (Debug) ->
 
     class BinaryTreeNode
-        (@key, @value) ->
+        (@key, @value, @lt, @gt) ->
             @left = void
             @right = void
 
@@ -20,7 +20,7 @@ define [
                 return node
 
         insert: (node) ->
-            if node.key < @key
+            if node.key `@lt` @key
                 @left = @leftInsert(node)
             else
                 @right = @rightInsert(node)
@@ -70,9 +70,9 @@ define [
                 return void
 
         deleteNodeByKey: (key, callback) ->
-            if key < @key
+            if key `@lt` @key
                 @left = @left?.deleteNodeByKey(key, callback)
-            else if key > @key
+            else if key `@gt` @key
                 @right = @right?.deleteNodeByKey(key, callback)
             else
                 callback?(this)
@@ -91,9 +91,9 @@ define [
             f(node.key, node.value)
 
         findNodeByKey: (key, callback) ->
-            if key < @key
+            if key `@lt` @key
                 return @left?.findNodeByKey(key, callback)
-            else if key > @key
+            else if key `@gt` @key
                 return @right?.findNodeByKey(key,  callback)
             else
                 callback?(this)
@@ -110,12 +110,12 @@ define [
                 n.right?.findAllByKey(key, callback)
 
     class BinaryTree
-        ->
+        (@lt = (<), @gt = (>))->
             @root = void
             @length = 0
 
         createNode: (key, value) ->
-            return new BinaryTreeNode(key, value)
+            return new BinaryTreeNode(key, value, @lt, @gt)
 
         tryInsert: (node) ->
             if @root?

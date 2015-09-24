@@ -6,8 +6,7 @@ define ->
         arr[j] = tmp
 
     class Heap
-        (le) ->
-            @le = le or (<=)
+        (@le = (<=)) ->
             @array = []
             @next_idx = 1
 

@@ -3,8 +3,8 @@ define [
 ], (BinaryTree) ->
 
     class AvlTreeNode extends BinaryTree.Node
-        (@key, @value) ->
-            super ...
+        (key, value, lt, gt) ->
+            super(...)
             @height = 0
 
         leftHeight: ->
@@ -70,8 +70,8 @@ define [
                 return void
 
     class AvlTree extends BinaryTree
-        ->
-            super()
+        (lt, gt)->
+            super(...)
 
         createNode: (key, value) ->
-            return new AvlTreeNode(key, value)
+            return new AvlTreeNode(key, value, @lt, @gt)
