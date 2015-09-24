@@ -8,8 +8,6 @@ define [
     const VERTICAL_PADDING = 2
     const HORIZONTAL_PADDING = 0
 
-    const UnseenColour = CanvasTile.UnseenColour
-
     class CanvasDrawer
         (@canvas, @numCols, @numRows, @input) ->
             @baseFont = "#{FONT_SIZE}px Monospace"
@@ -40,7 +38,10 @@ define [
             @__fillText(v.x, v.y, text, colour, style)
 
         __fillTextFromTileType: (x, y, type) ->
-            @__fillText(x, y, CanvasTile.AsciiTileStyles[type][0], CanvasTile.AsciiTileStyles[type][1], CanvasTile.AsciiTileStyles[type][2])
+            @__fillText(x, y, CanvasTile.TileStyles[type].character,
+                              CanvasTile.TileStyles[type].colour,
+                              CanvasTile.TileStyles[type].bold
+            )
 
         __fillTextFromTileTypeCart: (v, type) ->
             @__fillTextFromTileType(v.x, v.y, type)
@@ -49,8 +50,8 @@ define [
             @__fillTextFromTileType(cell.x, cell.y, Tile.fromCell(cell))
 
         __fillTextFromCellWithColour: (cell, colour) ->
-            tile = CanvasTile.AsciiTileStyles[Tile.fromCell(cell)]
-            @__fillText(cell.x, cell.y, tile[0], colour, tile[1])
+            tile = CanvasTile.TileStyles[Tile.fromCell(cell)]
+            @__fillText(cell.x, cell.y, tile.character, colour, tile.colour)
 
         __fillBackground: (x, y, colour) ->
             @ctx.fillStyle = colour
@@ -98,7 +99,7 @@ define [
                 if cell.timestamp == turn_count
                     @__fillTextFromCell(cell)
                 else
-                    @__fillTextFromCellWithColour(cell, UnseenColour)
+                    @__fillTextFromCellWithColour(cell, CanvasTile.SpecialColours.UnseenColour)
             else
                 @__fillUnknownCart(cell)
 
@@ -107,7 +108,8 @@ define [
             while @boldQueue.length > 0
                 [x, y, text, colour] = @boldQueue.pop()
                 @ctx.fillStyle = colour
-                @ctx.fillText text, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
+                @ctx.fillText text, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + \
+                    FONT_SIZE - VERTICAL_PADDING/2
 
             @ctx.font = @baseFont
 
@@ -129,7 +131,7 @@ define [
             @ctx.beginPath()
             @__clearAll()
 
-            @__fillBackgroundCart(select_coord, CanvasTile.SelectColour)
+            @__fillBackgroundCart(select_coord, CanvasTile.SpecialColours.SelectColour)
             @__drawCharacterKnowledge(character, game_state)
             @__processBoldQueue()
 

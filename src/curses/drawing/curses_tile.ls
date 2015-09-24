@@ -26,7 +26,6 @@ define [
             @pair = void
 
     const TileStyles = AsciiTiles.createTileTable(CursesTile)
-
     const SpecialColours = AsciiTiles.createSpecialColourTable(ColourType)
 
     {

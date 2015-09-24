@@ -1,36 +1,34 @@
 define [
+    'drawing/ascii_tiles'
     'types'
     'util'
-], (Types, Util) ->
+], (AsciiTiles, Types, Util) ->
+    
+    const ColourType =
+        White: '#ffffff'
+        Black: '#000000'
+        LightGreen: '#00ff00'
+        DarkGreen: '#669900'
+        DarkBrown: '#996600'
+        LightGrey: '#888888'
+        DarkGrey: '#666666'
+        VeryDarkGrey: '#333333'
+        LightRed: '#ff0000'
+        Yellow:  '#ffff00'
+        DarkYellow: '#888800'
+        Purple: '#993399'
 
-    const AsciiTileStyles = Util.table Types.Tile, {
-        Error:  ['?', '#ff0000']
-        Unknown:[' ', '#0000ff']
-        Stone:  ['.', '#888888']
-        Moss:   ['.', '#00ff00']
-        Dirt:   ['.', '#996600']
-        Tree:   ['&', '#669900']
-        Wall:   ['#', '#666666']
-        SpiderWeb:     ['*', '#888888']
-        ItemStone: ['[', '#666666']
-        ItemPlant: ['%', '#30b020']
-        Door: ['+', '#888888']
-        OpenDoor: ['-', '#888888']
-        Human: ['h', '#ffffff', 'bold']
-        Shrubbery: ['p', '#006600', 'bold']
-        CarnivorousShrubbery: ['p', '#00FF00', 'bold']
-        PoisonShrubbery: ['p', '#993399', 'bold']
-        PlayerCharacter: ['@', '#ffffff', 'bold']
-        DirtWall: ['#', '#996600']
-        BrickWall: ['#', '#ff5500']
-    }
+    class CanvasTile
+        (@character, colour, @bold) -> 
+            @colour = ColourType[colour]
 
+    const TileStyles = AsciiTiles.createTileTable(CanvasTile)
+    const SpecialColours = AsciiTiles.createSpecialColourTable(ColourType)
     
     const UnseenColour = '#333333'
     const SelectColour = '#888800'
 
     {
-        AsciiTileStyles
-        UnseenColour
-        SelectColour
+        TileStyles
+        SpecialColours
     }
