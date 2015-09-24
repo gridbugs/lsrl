@@ -4,9 +4,15 @@ define [
     'action/effect'
     'action/damage'
     'character/recursive_shadowcast'
-    #'character/omniscient'
+    'character/omniscient'
     'types'
-], (UserInterface, Effectable, Effect, Damage, RecursiveShadowcast, Types) ->
+    'config'
+], (UserInterface, Effectable, Effect, Damage, RecursiveShadowcast, Omniscient, Types, Config) ->
+
+    if Config.OMNISCIENT_CHARACTERS
+        Observer = Omniscient
+    else
+        Observer = RecursiveShadowcast
 
     class Character extends Effectable
         (@type, @position, @grid, @Controller) ->
@@ -28,9 +34,8 @@ define [
         getName: -> 'Character'
 
         observe: (game_state) ->
-            RecursiveShadowcast.observe(@controller, game_state)
+            Observer.observe(@controller, game_state)
             @controller.turnCount = game_state.getTurnCount()
-            #@controller.observe(game_state)
 
         getController: ->
             return @controller

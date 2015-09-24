@@ -2,7 +2,7 @@ define [
 ], ->
 
     {
-        GENERATOR: 'cell_automata'
+        GENERATOR: 'catacombs'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false
         AUTOEXPLORE_ALL: false
@@ -10,4 +10,5 @@ define [
         RANDOM_SEED: void
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: true
+        OMNISCIENT_CHARACTERS: true
     }
