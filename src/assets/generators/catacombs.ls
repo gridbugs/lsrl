@@ -307,7 +307,7 @@ define [
             @intermediateGrid = new Grid(RoomCell, width, height)
             @grid = new Grid(T, width, height)
             @grid.forEach (cell) !->
-                cell.setFixture(Fixture.Tree)
+                cell.setFixture(Fixture.DirtWall)
                 cell.setGround(Ground.Stone)
 
             @roomPlacementAttempts = 100

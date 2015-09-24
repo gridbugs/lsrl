@@ -1,7 +1,8 @@
 define [
+    'drawing/ascii_tiles'
     'types'
     'util'
-], (Types, Util) ->
+], (AsciiTiles, Types, Util) ->
 
     const ColourType =
         White: 15
@@ -9,7 +10,7 @@ define [
         LightGreen: 34
         DarkGreen: 22
         LightBrown: 94
-        DarkBrown: 58
+        DarkBrown: 130
         LightBlue: 21
         LightGrey: 250
         DarkGrey: 240
@@ -19,44 +20,17 @@ define [
         DarkYellow: 184
         Purple: 92
 
+    class CursesTile
+        (@character, colour, @bold) -> 
+            @colour = ColourType[colour]
+            @pair = void
 
-    T = (character, colour, bold) -> {
-        character: character
-        colour: ColourType[colour]
-        pair: null
-        bold: bold
-    }
+    const TileStyles = AsciiTiles.createTileTable(CursesTile)
 
-    const TileStyles = Util.table Types.Tile, {
-        Error:      T '?', \LightRed
-        Unknown:    T ' ', \Black
-        Stone:      T '.', \LightGrey
-        Dirt:       T '.', \DarkBrown
-        Tree:       T '&', \DarkGreen
-        Wall:       T '#', \DarkGrey
-        SpiderWeb:  T '*', \LightGrey
-        Moss:       T '.', \LightGreen
-        ItemStone:  T '[', \LightGrey
-        ItemPlant:  T '%', \LightGreen
-        Door:       T '+', \LightGrey
-        OpenDoor:   T '-', \LightGrey
-        Human:      T 'h', \White, true
-        Shrubbery:  T 'p', \DarkGreen, true
-        PoisonShrubbery: T 'p', \Purple, true
-        CarnivorousShrubbery: T 'p', \LightGreen, true
-        PlayerCharacter:    T '@', \White, true
-    }
-
-    const PlayerCharacterStyle = T '@', \White
-
-    const SpecialColours =
-        Unseen:     ColourType.VeryDarkGrey
-        Selected:   ColourType.DarkYellow
+    const SpecialColours = AsciiTiles.createSpecialColourTable(ColourType)
 
     {
         TileStyles
-        PlayerCharacterStyle
         ColourType
         SpecialColours
-        createTile: T
     }

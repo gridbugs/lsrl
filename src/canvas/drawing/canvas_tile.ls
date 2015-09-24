@@ -25,6 +25,7 @@ define [
         BrickWall: ['#', '#ff5500']
     }
 
+    
     const UnseenColour = '#333333'
     const SelectColour = '#888800'
 
