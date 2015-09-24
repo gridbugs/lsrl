@@ -1,7 +1,7 @@
 define [
     'drawing/tile'
     'types'
-    'canvas/drawing/canvas_tile'
+    'front_ends/canvas/drawing/canvas_tile'
 ], (Tile, Types, CanvasTile) ->
 
     const FONT_SIZE = 14

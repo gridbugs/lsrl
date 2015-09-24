@@ -1,9 +1,9 @@
 define [
     'common/game_common'
-    'canvas/drawing/canvas_drawer'
-    'canvas/interface/browser_input_source'
-    'canvas/interface/console'
-    'canvas/interface/hud'
+    'front_ends/canvas/drawing/canvas_drawer'
+    'front_ends/canvas/interface/browser_input_source'
+    'front_ends/canvas/interface/console'
+    'front_ends/canvas/interface/hud'
     'interface/keymap'
     'interface/user_interface'
     'util'

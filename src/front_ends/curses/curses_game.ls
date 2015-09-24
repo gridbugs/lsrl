@@ -1,9 +1,9 @@
 define [
     'common/game_common'
-    'curses/drawing/curses_drawer'
-    'curses/interface/curses_input_source'
-    'curses/interface/console'
-    'curses/interface/hud'
+    'front_ends/curses/drawing/curses_drawer'
+    'front_ends/curses/interface/curses_input_source'
+    'front_ends/curses/interface/console'
+    'front_ends/curses/interface/hud'
     'interface/keymap'
     'interface/user_interface'
     'util'

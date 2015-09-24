@@ -1,11 +1,11 @@
 require! requirejs
-require '../../lib/js-libs/seedrandom.js'
+require '../../../lib/js-libs/seedrandom.js'
 requirejs.config {
-    baseUrl: '../'
+    baseUrl: '../../'
     nodeRequire: require
 }
 
 requirejs [
-    'curses/curses_game'
+    'front_ends/curses/curses_game'
 ], (CursesGame) ->
     CursesGame.main()
