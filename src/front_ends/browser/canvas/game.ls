@@ -12,6 +12,9 @@ define [
 
     class Game extends GameCommon
         ->
+
+            @seedRandom()
+
             if window.location.hash == '#qwerty'
                 convert = Keymap.convertFromQwerty
             else

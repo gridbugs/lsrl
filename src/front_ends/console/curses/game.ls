@@ -1,6 +1,7 @@
 define [
     'common/game'
     'front_ends/console/curses/drawing/drawer'
+    'front_ends/console/curses/drawing/tile'
     'front_ends/console/curses/interface/input'
     'front_ends/console/curses/interface/console'
     'front_ends/console/curses/interface/hud'
@@ -8,11 +9,13 @@ define [
     'interface/user_interface'
     'util'
     'config'
-], (GameCommon, CursesDrawer, CursesInputSource, Console, Hud, Keymap, UserInterface, Util, Config) ->
+], (GameCommon, CursesDrawer, CursesTile, CursesInputSource, Console, Hud, Keymap, UserInterface, Util, Config) ->
 
     class Game extends GameCommon
         ->
-            drawer = new CursesDrawer()
+            @seedRandom()
+
+            drawer = new CursesDrawer(CursesTile.TileStyles)
 
             convert = Keymap.convertFromDvorak
             input = new CursesInputSource(drawer.gameWindow, convert)

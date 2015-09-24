@@ -10,6 +10,7 @@ define [
         (gameDrawer, gameController, gameConsole, gameHud) ->
             UserInterface.setUserInterface(gameDrawer, gameController, gameConsole, gameHud)
 
+        seedRandom: ->
             if Config.RANDOM_SEED?
                 seed = Config.RANDOM_SEED
             else
