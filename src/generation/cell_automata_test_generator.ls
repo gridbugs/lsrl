@@ -34,7 +34,7 @@ define [
     class CellAutomataTestGenerator
 
         tryGenerateGrid: (x, y) ->
-            @ca_grid = new Grid.Grid(CACell, x, y)
+            @ca_grid = new Grid(CACell, x, y)
 
             for i from 0 to 4
                 @step 4, 8, 5, 5
@@ -50,7 +50,7 @@ define [
                 if @maxSpace.length >= (x*y*OPEN_SPACE_RATIO)
                     break
 
-            game_grid = new Grid.Grid T, x, y
+            game_grid = new Grid T, x, y
             game_grid.forEach (c, i, j) ~>
                 c.setGround Ground.Dirt
                 if @ca_grid.get(i, j).alive
