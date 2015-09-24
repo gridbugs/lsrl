@@ -1,8 +1,11 @@
 define [
-], ->
+    'util'
+], (Util) ->
 
     class Drawer
         ->
 
-        drawCharacterKnowledge: ->
+        drawCharacterKnowledge: (character) ->
+            Util.printDebug character
+
         drawCellSelectOverlay: ->

@@ -56,7 +56,7 @@ define [
             looping = false
 
         progressGameState: (callback) ->
-            
+
             do
                 action_source = @gameState.getCurrentActionSource()
 
