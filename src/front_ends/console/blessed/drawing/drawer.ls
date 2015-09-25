@@ -7,8 +7,14 @@ define [
 
     class Drawer
         (@program, @tileTable, @specialColours, @left, @top, @width, @height) ->
-            @setBackground(Colours.Black)
+            @setDefaultBackground()
             @program.clear()
+
+        setDefaultBackground: ->
+            @setBackground(Colours.Black)
+
+        clearDefaultBackground: ->
+            @clearBackground(Colours.Black)
 
         setBackground: (colourId) ->
             @program.bg("#{colourId}")
@@ -64,11 +70,28 @@ define [
             else
                 @drawUnknownTile()
 
-        drawCharacterKnowledge: (character) ->
+        _drawCharacterKnowledge: (character) ->
 
             character.getKnowledge().grid.forEach (c) ~>
                 @drawKnowledgeCell(c, character.getTurnCount())
-
+        
+        drawCharacterKnowledge: (character) ->
+            @_drawCharacterKnowledge(character)
             @program.flushBuffer()
 
-        drawCellSelectOverlay: ->
+        drawCellSelectOverlay: (character, game_state, select_coord) ->
+            @_drawCharacterKnowledge(character)
+            cell = character.getKnowledge().grid.getCart(select_coord)
+            @setCursorCart(cell)
+
+            @clearDefaultBackground()
+            @setBackground(@specialColours.Selected)
+            if cell.known
+                tile = @tileTable[Tile.fromCell(cell)]
+                @drawTile(tile)
+            else
+                @drawUnknownTile()
+            @clearBackground(@specialColours.Selected)
+            @setDefaultBackground()
+
+            @program.flushBuffer()

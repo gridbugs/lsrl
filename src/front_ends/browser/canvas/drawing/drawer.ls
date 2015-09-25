@@ -99,7 +99,7 @@ define [
                 if cell.timestamp == turn_count
                     @__fillTextFromCell(cell)
                 else
-                    @__fillTextFromCellWithColour(cell, CanvasTile.SpecialColours.UnseenColour)
+                    @__fillTextFromCellWithColour(cell, CanvasTile.SpecialColours.Unseen)
             else
                 @__fillUnknownCart(cell)
 
@@ -130,8 +130,7 @@ define [
         drawCellSelectOverlay: (character, game_state, select_coord) ->
             @ctx.beginPath()
             @__clearAll()
-
-            @__fillBackgroundCart(select_coord, CanvasTile.SpecialColours.SelectColour)
+            @__fillBackgroundCart(select_coord, CanvasTile.SpecialColours.Selected)
             @__drawCharacterKnowledge(character, game_state)
             @__processBoldQueue()
 

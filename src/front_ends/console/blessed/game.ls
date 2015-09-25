@@ -24,8 +24,9 @@ define [
                 @buffer = text
 
         flush: ->
-            process.stdout.write(@buffer)
-            @buffer = void
+            if @buffer?
+                process.stdout.write(@buffer)
+                @buffer = void
 
 
     class Game extends BaseGame

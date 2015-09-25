@@ -1,7 +1,8 @@
 define [
     'interface/input'
     'interface/keymap'
-], (BaseInput, Keymap) ->
+    'interface/user_interface'
+], (BaseInput, Keymap, UserInterface) ->
 
     class ConsoleInput extends BaseInput
         (@convert = Keymap.convertFromQwerty) ->
