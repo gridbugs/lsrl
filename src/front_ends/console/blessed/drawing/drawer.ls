@@ -8,7 +8,7 @@ define [
     class Drawer
         (@program, @tileTable, @specialColours, @left, @right, @width, @height) ->
             @setBackground(Colours.Black)
- 
+
         setBackground: (colourId) ->
             @program.bg("#{colourId}")
 
@@ -42,7 +42,7 @@ define [
             if bold
                 @clearBold()
             @clearForeground(colour)
- 
+
         drawTile: (tile) ->
             @drawCharacter(tile.character, tile.colour, tile.bold)
 
@@ -67,6 +67,7 @@ define [
 
             character.getKnowledge().grid.forEach (c) ~>
                 @drawKnowledgeCell(c, character.getTurnCount())
- 
+
+            @program.flushBuffer()
 
         drawCellSelectOverlay: ->

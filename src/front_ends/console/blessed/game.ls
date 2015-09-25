@@ -10,13 +10,33 @@ define [
     'util'
 ], (Blessed, BaseGame, Drawer, Tile, Input, Console, Hud, Keymap, Util) ->
 
+    class OutputBuffer
+        ->
+            @buffer = void
+            @writable = true
+
+        on: (event) ->
+
+        write: (text) ->
+            if @buffer?
+                @buffer += text
+            else
+                @buffer = text
+
+        flush: ->
+            process.stdout.write(@buffer)
+            @buffer = void
+
+
     class Game extends BaseGame
         ->
 
             @seedRandom()
 
-            @program = Blessed.program()
-            
+            buffer = new OutputBuffer()
+            @program = Blessed.program(buffer: false, output: buffer)
+            @program.flushBuffer = buffer~flush
+
             @program.alternateBuffer()
             @program.enableMouse()
             @program.hideCursor()
@@ -29,14 +49,15 @@ define [
             input = new Input(@program)
             gconsole = new Console(@program)
             hud = new Hud(@program)
-            
+
             @program.key('C-c', @~cleanup)
 
             super(drawer, input, gconsole, hud)
 
         cleanup: ->
-            @program.clear();
-            @program.disableMouse();
-            @program.showCursor();
-            @program.normalBuffer();
-            process.exit(0);
+            @program.clear()
+            @program.disableMouse()
+            @program.showCursor()
+            @program.normalBuffer()
+            @program.flushBuffer()
+            process.exit(0)
