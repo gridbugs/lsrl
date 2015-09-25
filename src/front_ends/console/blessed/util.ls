@@ -1,7 +1,7 @@
 define [
     'front_ends/console/box'
 ], (Box) ->
-    
+
     drawBox = (program, border, left, top, width, height) ->
         Box.forEachIndexAtBorder width, height, (x, y, direction) ->
             program.move(left + x, top + y)

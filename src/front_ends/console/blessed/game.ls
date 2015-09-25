@@ -19,8 +19,6 @@ define [
         on: (event) ->
 
         write: (text) ->
-            #process.stdout.write(text)
-            #return
             if @buffer?
                 @buffer += text
             else

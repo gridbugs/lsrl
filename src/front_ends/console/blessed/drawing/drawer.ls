@@ -1,9 +1,11 @@
 define [
+    'blessed'
     'front_ends/console/colours'
+    'front_ends/console/text'
     'drawing/tile'
     'util'
     'types'
-], (Colours, Tile, Util, Types) ->
+], (Blessed, Colours, Text, Tile, Util, Types) ->
 
     class Drawer
         (@program, @tileTable, @specialColours, @left, @top, @width, @height) ->
@@ -13,26 +15,17 @@ define [
         setDefaultBackground: ->
             @setBackground(Colours.Black)
 
-        clearDefaultBackground: ->
-            @clearBackground(Colours.Black)
-
         setBackground: (colourId) ->
-            @program.bg("#{colourId}")
-
-        clearBackground: (colourId) ->
-            @program.bg("!#{colourId}")
+            @program.write(Text.setBackgroundColour(colourId))
 
         setForeground: (colourId) ->
-            @program.fg("#{colourId}")
-
-        clearForeground: (colourId) ->
-            @program.fg("!#{colourId}")
+            @program.write(Text.setForegroundColour(colourId))
 
         setBold: ->
-            @program.attr('bold', true)
+            @program.write(Text.setBoldWeight())
 
         clearBold: ->
-            @program.attr('bold', false)
+            @program.write(Text.setNormalWeight())
 
         write: (str) ->
             @program.write(str)
@@ -48,7 +41,6 @@ define [
             @write(character)
             if bold
                 @clearBold()
-            @clearForeground(colour)
 
         drawTile: (tile) ->
             @drawCharacter(tile.character, tile.colour, tile.bold)
@@ -60,41 +52,42 @@ define [
             @drawTile(@tileTable[Types.Tile.Unknown])
 
         drawKnowledgeCell: (cell, turn_count) ->
-            @setCursorCart(cell)
             if cell.known
                 tile = @tileTable[Tile.fromCell(cell)]
                 if cell.timestamp == turn_count
                     @drawTile(tile)
                 else
                     @drawUnseenTile(tile)
+            else
                 @drawUnknownTile()
 
         _drawCharacterKnowledge: (character) ->
 
-            character.getKnowledge().grid.forEach (c) ~>
-                @drawKnowledgeCell(c, character.getTurnCount())
+            turncount = character.getTurnCount()
+            grid = character.getKnowledge().grid
+
+            @program.move(0, 0)
+
+            for i from 0 til grid.height
+                for j from 0 til grid.width
+                    @drawKnowledgeCell(grid.get(j, i), turncount)
+                @program.write("\n\r")
 
         drawCharacterKnowledge: (character) ->
-            a = new Date().getTime()
             @_drawCharacterKnowledge(character)
-            b = new Date().getTime()
             @program.flushBuffer()
-            c = new Date().getTime()
-            process.stderr.write "drawCharacterKnowledge #{b - a}  #{c - b}\n"
 
         drawCellSelectOverlay: (character, game_state, select_coord) ->
             @_drawCharacterKnowledge(character)
             cell = character.getKnowledge().grid.getCart(select_coord)
             @setCursorCart(cell)
 
-            @clearDefaultBackground()
             @setBackground(@specialColours.Selected)
             if cell.known
                 tile = @tileTable[Tile.fromCell(cell)]
                 @drawTile(tile)
             else
                 @drawUnknownTile()
-            @clearBackground(@specialColours.Selected)
             @setDefaultBackground()
 
             @program.flushBuffer()

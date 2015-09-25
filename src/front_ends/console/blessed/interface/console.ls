@@ -2,8 +2,10 @@ define [
     'interface/console'
     'front_ends/console/box'
     'front_ends/console/blessed/util'
+    'front_ends/console/text'
+    'front_ends/console/colours'
     'util'
-], (BaseConsole, Box, BlessedUtil, Util) ->
+], (BaseConsole, Box, BlessedUtil, Text, Colours, Util) ->
 
     class Console extends BaseConsole implements BlessedUtil.Boxable
         (@program, @input, @left, @top, @width, @height) ->
@@ -16,18 +18,20 @@ define [
             @numLines = @height - 2
 
             @drawBox()
-        
+
         setCurrentLogEntry: (str) ->
             @log[@logIndex] = str
 
         appendCurrentLogEntry: (str) ->
             @setCurrentLogEntry([@log[@logIndex], str].join(''))
-        
+
         addNewLogEntry: ->
             ++@logIndex
             @setCurrentLogEntry("")
 
         printLog: ->
+            @program.write(Text.setForegroundColour(Colours.White))
+            @program.write(Text.setNormalWeight())
             @program.move(@left + 1, @top + 1)
             visible = @log.slice(-@numLines)
             for line in visible[0 til visible.length - 1]
@@ -36,7 +40,6 @@ define [
             @program.write(visible[visible.length - 1])
 
         refresh: ->
-            return
             @clear()
             @printLog()
             @program.flushBuffer()

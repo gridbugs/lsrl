@@ -37,13 +37,10 @@ define [
                 return t * 0.01
         gameLoop: ->
 
-            a = new Date().getTime()
             @gameState.processContinuousEffects()
             @gameState.processObservers()
             UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
             UserInterface.updateHud(@gameState.playerCharacter.character)
-            b = new Date().getTime()
-            process.stderr.write "gameLoop #{b - a}\n"
 
             looping = true
             done = false
