@@ -48,8 +48,8 @@ define [
             drawer = new Drawer(@program, Tile.TileTable, Tile.SpecialColours, 0, 0, 80, 30)
             convert = Keymap.convertFromDvorak
             input = new Input(@program, convert)
-            gconsole = new Console(@program, 0, 32, 80, 15)
-            hud = new Hud(@program)
+            gconsole = new Console(@program, input, 0, 36, 80, 12)
+            hud = new Hud(@program, 0, 32, 80, 4)
 
             @program.key('C-c', @~cleanup)
 

@@ -6,8 +6,8 @@ define [
 ], (BaseConsole, Box, BlessedUtil, Util) ->
 
     class Console extends BaseConsole implements BlessedUtil.Boxable
-        (@program, @left, @top, @width, @height) ->
-            @border = Box.BorderSingleLineUnicodeBold
+        (@program, @input, @left, @top, @width, @height) ->
+            @border = Box.BorderSingleLineUnicode
 
             @log = [""]
             @logIndex = 0
@@ -15,7 +15,7 @@ define [
 
             @numLines = @height - 2
 
-            @refresh()
+            @drawBox()
         
         setCurrentLogEntry: (str) ->
             @log[@logIndex] = str
@@ -27,12 +27,6 @@ define [
             ++@logIndex
             @setCurrentLogEntry("")
 
-        clear: ->
-            @program.move(@left + 1, @top + 1)
-            for i from 0 til @numLines
-                @program.write(' ' * @width + '\n')
-                @program.setx(@left + 1)
-
         printLog: ->
             @program.move(@left + 1, @top + 1)
             visible = @log.slice(-@numLines)
@@ -43,7 +37,6 @@ define [
 
         refresh: ->
             @clear()
-            @drawBox()
             @printLog()
             @program.flushBuffer()
 
