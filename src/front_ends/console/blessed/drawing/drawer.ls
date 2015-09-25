@@ -6,8 +6,9 @@ define [
 ], (Colours, Tile, Util, Types) ->
 
     class Drawer
-        (@program, @tileTable, @specialColours, @left, @right, @width, @height) ->
+        (@program, @tileTable, @specialColours, @left, @top, @width, @height) ->
             @setBackground(Colours.Black)
+            @program.clear()
 
         setBackground: (colourId) ->
             @program.bg("#{colourId}")

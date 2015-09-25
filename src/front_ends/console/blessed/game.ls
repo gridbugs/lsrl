@@ -47,7 +47,7 @@ define [
             drawer = new Drawer(@program, Tile.TileTable, Tile.SpecialColours, 0, 0, 80, 30)
             convert = Keymap.convertFromDvorak
             input = new Input(@program, convert)
-            gconsole = new Console(@program)
+            gconsole = new Console(@program, 0, 32, 80, 15)
             hud = new Hud(@program)
 
             @program.key('C-c', @~cleanup)
