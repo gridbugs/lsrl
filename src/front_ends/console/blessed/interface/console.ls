@@ -36,6 +36,7 @@ define [
             @program.write(visible[visible.length - 1])
 
         refresh: ->
+            return
             @clear()
             @printLog()
             @program.flushBuffer()

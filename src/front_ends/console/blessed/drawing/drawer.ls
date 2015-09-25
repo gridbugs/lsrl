@@ -67,17 +67,20 @@ define [
                     @drawTile(tile)
                 else
                     @drawUnseenTile(tile)
-            else
                 @drawUnknownTile()
 
         _drawCharacterKnowledge: (character) ->
 
             character.getKnowledge().grid.forEach (c) ~>
                 @drawKnowledgeCell(c, character.getTurnCount())
-        
+
         drawCharacterKnowledge: (character) ->
+            a = new Date().getTime()
             @_drawCharacterKnowledge(character)
+            b = new Date().getTime()
             @program.flushBuffer()
+            c = new Date().getTime()
+            process.stderr.write "drawCharacterKnowledge #{b - a}  #{c - b}\n"
 
         drawCellSelectOverlay: (character, game_state, select_coord) ->
             @_drawCharacterKnowledge(character)

@@ -8,7 +8,8 @@ define [
     'front_ends/console/blessed/interface/hud'
     'interface/keymap'
     'util'
-], (Blessed, BaseGame, Drawer, Tile, Input, Console, Hud, Keymap, Util) ->
+    'debug'
+], (Blessed, BaseGame, Drawer, Tile, Input, Console, Hud, Keymap, Util, Debug) ->
 
     class OutputBuffer
         ->
@@ -18,6 +19,8 @@ define [
         on: (event) ->
 
         write: (text) ->
+            #process.stdout.write(text)
+            #return
             if @buffer?
                 @buffer += text
             else

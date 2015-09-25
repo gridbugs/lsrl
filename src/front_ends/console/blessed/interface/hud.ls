@@ -9,6 +9,7 @@ define [
             @drawBox()
 
         updateHud: (character) ->
+            return
             @clear()
             @program.move(@left + 1, @top + 1)
             @program.write("#{character.getName()}  Curse: #{character.getCurrentHitPoints()}")
