@@ -1,13 +1,13 @@
 define [
-    'drawing/ascii_tiles'
+    'drawing/unicode_tiles'
     'front_ends/console/colours'
-], (AsciiTiles, Colours) ->
+], (Tiles, Colours) ->
 
     class Tile
         (@character, colour, @bold) ->
             @colour = Colours[colour]
 
     {
-        TileTable: AsciiTiles.createTileTable(Tile)
-        SpecialColours: AsciiTiles.createSpecialColourTable(Colours)
+        TileTable: Tiles.createTileTable(Tile)
+        SpecialColours: Tiles.createSpecialColourTable(Colours)
     }

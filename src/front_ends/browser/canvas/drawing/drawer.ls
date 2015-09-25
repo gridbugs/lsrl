@@ -29,7 +29,7 @@ define [
         __fillText: (x, y, text, colour, style) ->
             @ctx.fillStyle = colour
 
-            if style?
+            if style
                 @boldQueue.push([x, y, text, colour])
             else
                 @ctx.fillText text, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2

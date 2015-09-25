@@ -1,8 +1,8 @@
 define [
-    'drawing/ascii_tiles'
+    'drawing/unicode_tiles'
     'types'
     'util'
-], (AsciiTiles, Types, Util) ->
+], (Tiles, Types, Util) ->
     
     const ColourType =
         White: '#ffffff'
@@ -22,8 +22,8 @@ define [
         (@character, colour, @bold) -> 
             @colour = ColourType[colour]
 
-    const TileStyles = AsciiTiles.createTileTable(CanvasTile)
-    const SpecialColours = AsciiTiles.createSpecialColourTable(ColourType)
+    const TileStyles = Tiles.createTileTable(CanvasTile)
+    const SpecialColours = Tiles.createSpecialColourTable(ColourType)
     
     const UnseenColour = '#333333'
     const SelectColour = '#888800'

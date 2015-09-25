@@ -3,24 +3,6 @@ define [
     'util'
 ], (Types, Util) ->
 
-    const TileNames =
-        \ERROR
-        \UNKNOWN
-        \GRASS
-        \STONE
-        \DIRT
-        \TREE
-        \DEAD_TREE
-        \WATER
-        \WALL
-        \WOODEN_BRIDGE
-        \STONE_BRIDGE
-        \WOODEN_DOOR
-        \STONE_DOOR
-        \SPIDER_WEB
-
-    Tiles = Util.enum TileNames
-
     const FixtureTiles = Util.table Types.Fixture, {
         Wall:       -> Types.Tile.Wall
         Web:        -> Types.Tile.SpiderWeb
@@ -77,7 +59,5 @@ define [
 
 
     {
-        TileNames
-        Tiles
         fromCell
     }
