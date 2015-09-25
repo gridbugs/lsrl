@@ -12,13 +12,12 @@ define [
             @expectingSecondEnterKey = false
 
             @program.on 'keypress', (c) ~>
-
                 # Blessed sends the enter key twice when it is pressed once
-                if @expectingSecondEnterKey and c.charCodeAt(0) == ENTER_KEY
+                if @expectingSecondEnterKey and c? and c.charCodeAt(0) == ENTER_KEY
                     @expectingSecondEnterKey = false
                     return
 
-                if c.charCodeAt(0) == ENTER_KEY
+                if c? and c.charCodeAt(0) == ENTER_KEY
                     @expectingSecondEnterKey = true
 
                 @handleInputChar(c)

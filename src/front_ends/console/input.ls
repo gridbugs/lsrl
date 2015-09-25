@@ -12,6 +12,12 @@ define [
             if @currentCallback?
                 tmp = @currentCallback
                 @currentCallback = null
-                tmp(@convert(c))
+                if @native
+                    @native = false
+                    tmp(c)
+                else
+                    tmp(@convert(c))
             else
                 @dirty = true
+                @native = false
+
