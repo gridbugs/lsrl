@@ -1,6 +1,11 @@
 #!/bin/sh
 export TERM=xterm-256color
+
+echo -n Building...
 node_modules/livescript/bin/lsc -co output src
+echo done
+echo -n Loading
+
 if [ "$1" = "--blessed" ]; then
     cd output/front_ends/console/blessed
 else

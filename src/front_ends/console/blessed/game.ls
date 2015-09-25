@@ -52,6 +52,8 @@ define [
 
             @program.key('C-c', @~cleanup)
 
+            @program.flushBuffer()
+
             super(drawer, input, gconsole, hud)
 
         cleanup: ->
