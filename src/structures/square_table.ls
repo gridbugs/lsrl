@@ -19,6 +19,15 @@ define [
                 @array[x][y] = value
 
         forEach: (callback) !->
-            for i from 0 til @array.length
-                for j from 0 til @array[i].length
+            for i from 0 til @size
+                for j from 0 til @size
                     callback(@array[i][j], j, i)
+
+        forEachAssoc: (x, callback) !->
+            for i from 0 til x
+                callback(@array[x][i], i)
+
+            callback(@array[x][x], x)
+
+            for i from x + 1 til @size
+                callback(@array[i][x], i)

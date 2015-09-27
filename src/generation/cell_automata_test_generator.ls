@@ -196,7 +196,7 @@ define [
                 result = Search.findClosest(entrance.outside,
                     ((_, d) -> if Direction.isCardinal(d) then return 1 else return 100000),
                     ((cell) ~> cell.room != this),
-                    f)
+                    f, true)
 
             entrance.doorway.setFixture(Fixture.Null)
             entrance.doorway.setGround(Ground.Stone)

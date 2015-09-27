@@ -6,10 +6,61 @@ define [
     'cell/ground'
     'structures/direction'
     'structures/square_table'
+    'structures/search'
     'util'
     'types'
     'debug'
-], (Grid, Vec2, LinkedList, Fixture, Ground, Direction, SquareTable, Util, Types, Debug) ->
+], (Grid, Vec2, LinkedList, Fixture, Ground, Direction, SquareTable, Search, Util, Types, Debug) ->
+
+    class ConnectionTracker
+        (@size) ->
+            @connections = new SquareTable(@size, -> -1)
+
+            for i from 0 til @size
+                @connections.set(i, i, 0)
+
+        connect: (i, j) ->
+
+            @connections.forEachAssoc i, (v, k) ~>
+                if v != -1
+                    existing = @connections.get(j, k)
+                    if existing == -1 or v + 1 < existing
+                        @connections.set(j, k, v + 1)
+            
+            @connections.forEachAssoc j, (v, k) ~>
+                if v != -1
+                    existing = @connections.get(i, k)
+                    if existing == -1 or v + 1 < existing
+                        @connections.set(i, k, v + 1)
+
+            # for each vertex that could be connected to i
+            @connections.forEachAssoc i, (v, _j) ~>
+                # if the vertex is connected to i
+                if v != -1
+                    # for each vertex that could be connected to j
+                    @connections.forEachAssoc j, (u, _i) ~>
+                        # if the vertex is connected to j
+                        if u != -1
+                            existing = @connections.get(_i, _j)
+                            if existing  == -1 or  v + u + 1 < existing
+                                @connections.set(_i, _j, v + u + 1)
+
+            @connections.set(i, j, 1)
+
+        listConnections: ->
+            for i from 0 til @size
+                @connections.forEachAssoc i, (v, k) ->
+                    if v
+                        console.debug i, k
+
+        isConnected: (i, j) ->
+            return @connections.get(i, j) != -1
+
+        getDistance: (i, j) ->
+            ret = @connections.get(i, j)
+            if ret == -1
+                return Infinity
+            return ret
 
     RoomCellType = Util.enum [
         \Free
@@ -44,6 +95,7 @@ define [
                 if @candidateTypes[i]
                     @type = i
                     @resetCandidateTypes()
+                    @connectable = ConnectableType.Impossible
                     return
             
             Debug.assert(false, 'no candidate')
@@ -221,6 +273,48 @@ define [
                                 stack.push(n)
                     ++@numSpaces
             @spaceAdjacency = new SquareTable(@numSpaces, -> false)
+            @spaceConnections = new ConnectionTracker(@numSpaces)
+
+        classifyWalls: ->
+            @intermediateGrid.forEach (cell) !~>
+                if cell.type == RoomCellType.Wall
+                    east = cell.neighbours[Types.Direction.East]
+                    west = cell.neighbours[Types.Direction.West]
+                    north = cell.neighbours[Types.Direction.North]
+                    south = cell.neighbours[Types.Direction.South]
+
+                    count = 0
+                    
+                    if east.type == RoomCellType.Floor and west.type == RoomCellType.Free
+                        room_cell = east
+                        ++count
+
+                    if west.type == RoomCellType.Floor and east.type == RoomCellType.Free
+                        room_cell = west
+                        ++count
+
+                    if north.type == RoomCellType.Floor and south.type == RoomCellType.Free
+                        room_cell = north
+                        ++count
+
+                    if south.type == RoomCellType.Floor and north.type == RoomCellType.Free
+                        room_cell = south
+                        ++count
+
+                    if count == 1
+                        cell.roomCell = room_cell
+                    else
+                        cell.roomCell = void
+
+
+
+
+        connect: (x, y) ->
+            @spaceAdjacency.set(x, y, true)
+            @spaceConnections.connect(x, y)
+            ++@exitCount[x]
+            ++@exitCount[y]
+            
 
         connectAdjacentRooms: ->
             
@@ -243,9 +337,7 @@ define [
                 if list.length > 0
                     cell = Util.getRandomElement(list)
                     cell.connect()
-                    @spaceAdjacency.set(x, y, true)
-                    ++@exitCount[x]
-                    ++@exitCount[y]
+                    @connect(x, y)
                     
 
         connectAlmostAdjacentRooms: ->
@@ -274,9 +366,7 @@ define [
                     cells = Util.getRandomElement(list)
                     cells[0].type = RoomCellType.Floor
                     cells[1].type = RoomCellType.Floor
-                    @spaceAdjacency.set(x, y, true)
-                    ++@exitCount[x]
-                    ++@exitCount[y]
+                    @connect(x, y)
 
         flatten: ->
             @intermediateGrid.forEach (int_cell, x, y) !~>
@@ -289,12 +379,9 @@ define [
                 | RoomCellType.Floor => Fixture.Null
                 | RoomCellType.Door => @doorType
 
-                #if int_cell.isConnectable()
-                #    fixture = Fixture.BrickWall
-
                 if fixture?
                     main_cell.setFixture(fixture)
-
+                
         placeRooms: (attempts) ->
             for i from 0 til attempts
                 pos = @intermediateGrid.getRandomCoordinate()
@@ -302,6 +389,103 @@ define [
                 room = gen.getRoom()
                 if @canPlaceRoom(room, pos)
                     @placeRoom(room, pos)
+
+        findCorridorCandidates: ->
+
+            corridorStartCandidates = []
+
+            @intermediateGrid.forEach (cell, x, y) !~>
+                if not @intermediateGrid.isBorderCell(cell) and  cell.isConnectable()
+                    east = cell.neighbours[Types.Direction.East]
+                    west = cell.neighbours[Types.Direction.West]
+                    north = cell.neighbours[Types.Direction.North]
+                    south = cell.neighbours[Types.Direction.South]
+                
+                    if east.type == RoomCellType.Floor and west.type == RoomCellType.Free
+                        room_cell = east
+                        outer_cell = west
+
+                    if west.type == RoomCellType.Floor and east.type == RoomCellType.Free
+                        room_cell = west
+                        outer_cell = east
+
+                    if north.type == RoomCellType.Floor and south.type == RoomCellType.Free
+                        room_cell = north
+                        outer_cell = south
+
+                    if south.type == RoomCellType.Floor and north.type == RoomCellType.Free
+                        room_cell = south
+                        outer_cell = north
+
+                    if room_cell? and @intermediateGrid.getDistanceToEdge(cell) > 1 and @exitCount[room_cell.spaceId] < 2
+                        corridorStartCandidates.push([cell, outer_cell])
+
+            Util.shuffleArrayInPlace(corridorStartCandidates)
+
+            return corridorStartCandidates
+
+
+        addCorridors: ->
+
+            for i from 0 til 10
+                candidates = @findCorridorCandidates()
+                while candidates.length > 0
+                    @addCorridor(candidates, false)
+            
+            candidates = @findCorridorCandidates()
+            while candidates.length > 0
+                @addCorridor(candidates, true)
+ 
+
+
+
+        addCorridor: (candidates, loops) ->
+
+            [wall, start] = candidates.pop() #Util.getRandomElement(candidates)
+            
+            if loops and @exitCount[wall.roomCell.spaceId] > 2
+                return false
+
+            results = Search.findClosest(
+                start,
+                (c, d) ->
+                    if Direction.isOrdinal(d)
+                        return 1000000
+                    else
+                        return 1
+                (c) ~>
+                    return c.type == RoomCellType.Free and not @intermediateGrid.isBorderCell(c)
+                ,
+                (c) ~> 
+                    room_cell = c.roomCell
+                    if room_cell?
+                        if loops
+                            distance = @spaceConnections.getDistance(room_cell.spaceId, wall.roomCell.spaceId)
+                            return c.type == RoomCellType.Wall and distance > 1
+                        else
+                            connected = @spaceConnections.isConnected(room_cell.spaceId, wall.roomCell.spaceId)
+                            return c.type == RoomCellType.Wall and not connected
+                    else
+                        return false
+                , false
+            )
+
+            if not results?
+                return false
+
+            for c in results.path
+                c.type = RoomCellType.Floor
+            wall.type = RoomCellType.Floor
+            start.type = RoomCellType.Floor
+
+            for c in results.path.concat([start])
+                for n in c.allNeighbours
+                    if n.type == RoomCellType.Free
+                        n.type = RoomCellType.Wall
+
+            @connect(wall.roomCell.spaceId, results.cell.roomCell.spaceId)
+
+            return true
 
         generateGrid: (T, width, height) ->
             @intermediateGrid = new Grid(RoomCell, width, height)
@@ -321,12 +505,17 @@ define [
             
             @classifySpaces()
 
+            @classifyWalls()
+
             @exitCount = [0] * @numSpaces
 
             @connectAdjacentRooms()
             @connectAlmostAdjacentRooms()
 
+            @addCorridors()
+
             @flatten()
+
 
             return @grid
 

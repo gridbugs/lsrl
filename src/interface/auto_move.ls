@@ -44,8 +44,9 @@ define [
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell(), \
                         ((c, d) -> c.game_cell.getMoveOutCost d), \
-                        ((c) -> c.known and (c.game_cell.isEmpty() or c.fixture.type == Types.Fixture.Door)), \
-                        ((c) -> c.hasUnknownNeighbour())
+                        ((c) ~> c.known and (c.game_cell.character == @character or c.game_cell.isEmpty() or c.fixture.type == Types.Fixture.Door)), \
+                        ((c) -> c.hasUnknownNeighbour()), \
+                        true
             if result?
                 @directions = result.directions
                 @path = result.path
