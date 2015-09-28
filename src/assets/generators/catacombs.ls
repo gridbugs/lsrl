@@ -82,6 +82,7 @@ define [
             @connectable = ConnectableType.Impossible
             @spaceId = -1
             @resetCandidateTypes()
+            @allowRooms = true
 
         resetCandidateTypes: ->
             @candidateTypes = Object.keys(RoomCellType).map -> false
@@ -147,6 +148,8 @@ define [
             if char_desc?
                 cell.type = char_desc.type
                 cell.connectable = char_desc.connectable
+                if char_desc.allowRooms?
+                    cell.allowRooms = char_desc.allowRooms
                 return
 
             type = switch char
@@ -156,7 +159,7 @@ define [
                 | '+' => RoomCellType.Door
 
             cell.type = type
-            if type == Door
+            if type == RoomCellType.Door
                 cell.connectable = ConnectableType.Mandatory
             else
                 cell.connectable = ConnectableType.Impossible
@@ -187,6 +190,7 @@ define [
     class R2 extends StringRoomGenerator
         ->
             super([
+                \???a???????????a???
                 \###+###?????###+###
                 \#.....#?????#.....#
                 \#.....#?????#.....#
@@ -200,11 +204,13 @@ define [
                 \#.....#?????#.....#
                 \#.....#?????#.....#
                 \###+###?????###+###
+                \???a???????????a???
             ], {
                 '#': {type: RoomCellType.Wall, connectable: ConnectableType.Impossible},
                 '.': {type: RoomCellType.Floor, connectable: ConnectableType.Impossible},
                 '+': {type: RoomCellType.Door, connectable: ConnectableType.Mandatory},
-                '?': {type: RoomCellType.Free, connectable: ConnectableType.Possible}
+                '?': {type: RoomCellType.Free, connectable: ConnectableType.Possible},
+                'a': {type: RoomCellType.Free, connectable: ConnectableType.Possible, allowRooms: false},
             })
 
 
@@ -223,6 +229,9 @@ define [
                     return false
 
                 global_cell = @intermediateGrid.get(global_x, global_y)
+
+                if not global_cell.allowRooms
+                    return false
 
                 if room_cell.type == RoomCellType.Wall and
                     @intermediateGrid.isBorderCell(global_cell)
@@ -461,15 +470,7 @@ define [
                 @addCorridor(candidates, true)
  
 
-
-
-        addCorridor: (candidates, loops) ->
-
-            [wall, start] = candidates.pop() #Util.getRandomElement(candidates)
-            
-            if loops and @exitCount[wall.roomCell.spaceId] > 2
-                return false
-
+        doSearch: (wall, start, loops) ->
             results = Search.findClosest(
                 start,
                 (c, d) ->
@@ -495,6 +496,21 @@ define [
                         return false
                 , false
             )
+
+            return results
+
+        addCorridor: (candidates, loops) ->
+
+            [wall, start] = candidates.pop() #Util.getRandomElement(candidates)
+            
+            if loops and @exitCount[wall.roomCell.spaceId] > 2
+                return false
+
+            results = @doSearch(wall, start, loops)
+
+            if not results? and wall.connectable == ConnectableType.Mandatory and not loops
+                results = @doSearch(wall, start, true)
+
 
             if not results?
                 return false
