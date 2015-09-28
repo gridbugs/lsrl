@@ -90,15 +90,9 @@ define [
             return @connectable != ConnectableType.Impossible
 
         connect: ->
-
-            for i from 0 til @candidateTypes.length
-                if @candidateTypes[i]
-                    @type = i
-                    @resetCandidateTypes()
-                    @connectable = ConnectableType.Impossible
-                    return
-            
-            Debug.assert(false, 'no candidate')
+            @connectable = ConnectableType.Impossible
+            if @type == RoomCellType.Free or @type == RoomCellType.Wall
+                @type = RoomCellType.Floor
 
     class Room
         (@width, @height) ->
@@ -132,28 +126,40 @@ define [
         
 
     class StringRoomGenerator
-        (@stringArray) ->
+        (@stringArray, @description) ->
 
         getRoom: ->
             room = new Room(@stringArray[0].length, @stringArray.length)
 
             @stringArray.map (string, i) ~>
                 string.split('').map (char, j) ~>
-                    type = StringRoomGenerator.roomCellTypeFromChar(char)
                     cell = room.grid.get(j, i)
-                    cell.type = type
+                    @createCellFromChar(cell, char)
 
 
             if Math.random() > 0.5
                 room.flipDiagonal()
             return room
 
-    StringRoomGenerator.roomCellTypeFromChar = (char) ->
-        return switch char
-            | '?' => RoomCellType.Free
-            | '#' => RoomCellType.Wall
-            | '.' => RoomCellType.Floor
-            | '+' => RoomCellType.Door
+        createCellFromChar: (cell, char) ->
+
+            char_desc = @description[char]
+            if char_desc?
+                cell.type = char_desc.type
+                cell.connectable = char_desc.connectable
+                return
+
+            type = switch char
+                | '?' => RoomCellType.Free
+                | '#' => RoomCellType.Wall
+                | '.' => RoomCellType.Floor
+                | '+' => RoomCellType.Door
+
+            cell.type = type
+            if type == Door
+                cell.connectable = ConnectableType.Mandatory
+            else
+                cell.connectable = ConnectableType.Impossible
 
 
 
@@ -181,22 +187,25 @@ define [
     class R2 extends StringRoomGenerator
         ->
             super([
-                \???a???????????a???
                 \###+###?????###+###
                 \#.....#?????#.....#
                 \#.....#?????#.....#
                 \#.....#?????#.....#
-                \#.....#######.....b
-                \#.....#.....#.....b
-                \#.....+.....+.....b
-                \#.....#.....#.....b
-                \#.....#######.....b
+                \#.....#######.....#
+                \#.....#.....#.....#
+                \#.....+.....+.....#
+                \#.....#.....#.....#
+                \#.....#######.....#
                 \#.....#?????#.....#
                 \#.....#?????#.....#
                 \#.....#?????#.....#
                 \###+###?????###+###
-                \???a???????????a???
-            ])
+            ], {
+                '#': {type: RoomCellType.Wall, connectable: ConnectableType.Impossible},
+                '.': {type: RoomCellType.Floor, connectable: ConnectableType.Impossible},
+                '+': {type: RoomCellType.Door, connectable: ConnectableType.Mandatory},
+                '?': {type: RoomCellType.Free, connectable: ConnectableType.Possible}
+            })
 
 
     class CatacombsGenerator
@@ -215,18 +224,24 @@ define [
 
                 global_cell = @intermediateGrid.get(global_x, global_y)
 
+                if room_cell.type == RoomCellType.Wall and
+                    @intermediateGrid.isBorderCell(global_cell)
+                    
+                    return false
+
+                if room_cell.type == RoomCellType.Door and
+                    @intermediateGrid.getDistanceToEdge(global_cell) < 2
+
+                    return false
+
                 if not (global_cell.type == RoomCellType.Free or
                         room_cell.type == RoomCellType.Free or
                         global_cell.type == room_cell.type)
 
                     return false
 
-                if room_cell.type == RoomCellType.GroupMember and
-                    @intermediateGrid.getDistanceToEdge(global_cell) < 2
-
-                    return false
-
-                if room_cell.connectable == ConnectableType.Mandatory and
+                if global_cell.type != RoomCellType.Free and
+                    room_cell.connectable == ConnectableType.Mandatory and
                     global_cell.conenctable != ConnectableType.Mandatory
 
                     return false
@@ -277,7 +292,7 @@ define [
 
         classifyWalls: ->
             @intermediateGrid.forEach (cell) !~>
-                if cell.type == RoomCellType.Wall
+                if cell.type == RoomCellType.Wall or cell.type == RoomCellType.Door
                     east = cell.neighbours[Types.Direction.East]
                     west = cell.neighbours[Types.Direction.West]
                     north = cell.neighbours[Types.Direction.North]
@@ -364,8 +379,10 @@ define [
             candidate_lists.forEach (list, x, y) !~>
                 if list.length > 0
                     cells = Util.getRandomElement(list)
-                    cells[0].type = RoomCellType.Floor
-                    cells[1].type = RoomCellType.Floor
+                    cells[0].connect()
+                    cells[1].connect()
+                    #cells[0].type = RoomCellType.Floor
+                    #cells[1].type = RoomCellType.Floor
                     @connect(x, y)
 
         flatten: ->
@@ -392,7 +409,8 @@ define [
 
         findCorridorCandidates: ->
 
-            corridorStartCandidates = []
+            corridor_start_candidates = []
+            mandatory_candidates = []
 
             @intermediateGrid.forEach (cell, x, y) !~>
                 if not @intermediateGrid.isBorderCell(cell) and  cell.isConnectable()
@@ -418,11 +436,17 @@ define [
                         outer_cell = north
 
                     if room_cell? and @intermediateGrid.getDistanceToEdge(cell) > 1 and @exitCount[room_cell.spaceId] < 2
-                        corridorStartCandidates.push([cell, outer_cell])
+                        if cell.connectable == ConnectableType.Mandatory
+                            mandatory_candidates.push([cell, outer_cell])
+                        else
+                            corridor_start_candidates.push([cell, outer_cell])
 
-            Util.shuffleArrayInPlace(corridorStartCandidates)
-
-            return corridorStartCandidates
+            if mandatory_candidates.length == 0
+                Util.shuffleArrayInPlace(corridor_start_candidates)
+                return corridor_start_candidates
+            else
+                Util.shuffleArrayInPlace(mandatory_candidates)
+                return mandatory_candidates
 
 
         addCorridors: ->
@@ -456,7 +480,9 @@ define [
                 (c) ~>
                     return c.type == RoomCellType.Free and not @intermediateGrid.isBorderCell(c)
                 ,
-                (c) ~> 
+                (c) ~>
+                    if not c.isConnectable()
+                        return false
                     room_cell = c.roomCell
                     if room_cell?
                         if loops
@@ -475,9 +501,9 @@ define [
 
             for c in results.path
                 c.type = RoomCellType.Floor
-            wall.type = RoomCellType.Floor
-            start.type = RoomCellType.Floor
 
+            wall.connect()
+            start.connect()
             for c in results.path.concat([start])
                 for n in c.allNeighbours
                     if n.type == RoomCellType.Free
@@ -499,8 +525,11 @@ define [
             r1 = new R1()
             r2 = new R2()
             r3 = new RectangularRoomGenerator(8, 12)
+
+            #@placeRoom(r2.getRoom(), new Vec2(10, 10))
+
             
-            @generators = [r3, r3, r3, r3]
+            @generators = [r2, r3, r3, r3]
             @placeRooms(@roomPlacementAttempts)
             
             @classifySpaces()
@@ -513,7 +542,6 @@ define [
             @connectAlmostAdjacentRooms()
 
             @addCorridors()
-
             @flatten()
 
 
