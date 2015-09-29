@@ -83,6 +83,9 @@ define [
             @spaceId = -1
             @resetCandidateTypes()
             @allowRooms = true
+            @connectingSpaces = []
+            @corridorCell = void
+            @multipleCorridors = false
 
         resetCandidateTypes: ->
             @candidateTypes = Object.keys(RoomCellType).map -> false
@@ -230,7 +233,10 @@ define [
 
                 global_cell = @intermediateGrid.get(global_x, global_y)
 
-                if not global_cell.allowRooms
+                if not global_cell.allowRooms and room_cell.type != RoomCellType.Free
+                    return false
+
+                if not room_cell.allowRooms and global_cell.type != RoomCellType.Free
                     return false
 
                 if room_cell.type == RoomCellType.Wall and
@@ -282,6 +288,8 @@ define [
 
                 if room_cell.type != RoomCellType.Free
                     global_cell.type = room_cell.type
+
+                global_cell.allowRooms = room_cell.allowRooms
 
 
         classifySpaces: ->
@@ -460,25 +468,31 @@ define [
 
 
         addCorridors: ->
+            candidates = @findCorridorCandidates()
+            while candidates.length > 155
+                @addCorridor(candidates, 1)
+            @addCorridor(candidates, 1, true)
+            return
 
-            for i from 0 til 10
-                candidates = @findCorridorCandidates()
-                while candidates.length > 0
-                    @addCorridor(candidates, false)
+            return
 
             candidates = @findCorridorCandidates()
-            while candidates.length > 0
-                @addCorridor(candidates, true)
+            for i from 0 til 1 #5 #10
+                @addCorridor(candidates, 2 + i/4 )
 
+            return
+            for i from 0 til 5
+                @addCorridor(candidates, 2  )
+                @addCorridor(candidates, 2  )
+                @addCorridor(candidates, 2  )
+                @addCorridor(candidates, 2  )
+                @addCorridor(candidates, 2  )
 
-        doSearch: (wall, start, loops) ->
+        doSearch: (wall, start, min_distance, debug) ->
             results = Search.findClosest(
                 start,
                 (c, d) ->
-                    if Direction.isOrdinal(d)
-                        return 1000000
-                    else
-                        return 1
+                    return 1
                 (c) ~>
                     return c.type == RoomCellType.Free and not @intermediateGrid.isBorderCell(c)
                 ,
@@ -487,47 +501,83 @@ define [
                         return false
                     room_cell = c.roomCell
                     if room_cell?
-                        if loops
-                            distance = @spaceConnections.getDistance(room_cell.spaceId, wall.roomCell.spaceId)
-                            return c.type == RoomCellType.Wall and distance > 1
-                        else
-                            connected = @spaceConnections.isConnected(room_cell.spaceId, wall.roomCell.spaceId)
-                            return c.type == RoomCellType.Wall and not connected
-                    else
+                        distance = @spaceConnections.getDistance(room_cell.spaceId, wall.roomCell.spaceId)
+                        if distance > min_distance
+                            if debug
+                                console.debug 'room'
+                            return true
                         return false
-                , false
+
+                    corridor_cell = c.corridorCell
+                    if not c.multipleCorridors and corridor_cell?
+                        for id in corridor_cell.connectingSpaces
+                            distance = @spaceConnections.getDistance(id, wall.roomCell.spaceId)
+                            if not (distance > min_distance)
+                                return false
+
+                        if debug
+                            console.debug 'corridor'
+                        return true
+
+                    return false
+
+                , false,
+                Direction.CardinalDirections
             )
 
             return results
 
-        addCorridor: (candidates, loops) ->
+        addCorridor: (candidates, min_distance, debug) ->
+
+            if candidates.length == 0
+                return false
 
             [wall, start] = candidates.pop() #Util.getRandomElement(candidates)
 
-            if loops and @exitCount[wall.roomCell.spaceId] > 2
-                return false
+            #if loops and @exitCount[wall.roomCell.spaceId] > 2
+            #    return false
 
 
-            results = @doSearch(wall, start, loops)
-
-            if not results? and wall.connectable == ConnectableType.Mandatory and not loops
-                results = @doSearch(wall, start, true)
-
+            results = @doSearch(wall, start, min_distance, debug)
 
             if not results?
                 return false
+ 
+            if results.path.length > 15
+                return false
 
-            for c in results.path
-                c.type = RoomCellType.Floor
+            if results.cell.roomCell?
+                space_ids = [results.cell.roomCell.spaceId]
+            else
+                space_ids = results.cell.corridorCell.connectingSpaces
+
+            for c in results.path.concat([start])
+                if c.type == RoomCellType.Free or c.type == RoomCellType.Wall
+                    c.type = RoomCellType.Floor
+
+                c.connectingSpaces.push(wall.roomCell.spaceId)
+                for id in space_ids
+                    c.connectingSpaces.push(id)
 
             wall.connect()
             start.connect()
             for c in results.path.concat([start])
-                for n in c.allNeighbours
-                    if n.type == RoomCellType.Free
-                        n.type = RoomCellType.Wall
+                for d in Direction.Directions
+                    n = c.neighbours[d]
+                    if n?
+                        if n.type == RoomCellType.Free
+                            n.type = RoomCellType.Wall
 
-            @connect(wall.roomCell.spaceId, results.cell.roomCell.spaceId)
+                        if n.type == RoomCellType.Wall and Direction.isCardinal(d)
+                            n.corridorCell = c
+                            n.connectable = ConnectableType.Possible
+
+            if debug
+                wall.roomCell.type = RoomCellType.Door
+                results.cell.roomCell.type = RoomCellType.Door
+
+            for s in space_ids
+                @connect(wall.roomCell.spaceId, s)
 
             return true
 

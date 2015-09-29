@@ -19,7 +19,7 @@ define [
             path.push cell
             directions.push cell.search_direction
 
-    dijkstraFindClosest = (start_cell, cost_fn, can_enter_predicate, predicate, can_enter_dest) ->
+    dijkstraFindClosest = (start_cell, cost_fn, can_enter_predicate, predicate, can_enter_dest, direction_candidates = Direction.Directions) ->
         heap = new Heap.Heap (a, b) -> a.cost <= b.cost
 
         start_cell.search_cost = 0
@@ -48,7 +48,7 @@ define [
             if not can_enter
                 continue
 
-            for d in Direction.Directions
+            for d in direction_candidates
                 neighbour = current_cell.neighbours[d]
                 if neighbour?
                     cost = current_node.cost + cost_fn(current_cell, d)
