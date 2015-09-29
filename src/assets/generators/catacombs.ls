@@ -444,7 +444,8 @@ define [
                         room_cell = south
                         outer_cell = north
 
-                    if room_cell? and @intermediateGrid.getDistanceToEdge(cell) > 1 and @exitCount[room_cell.spaceId] < 2
+                    if room_cell? and @intermediateGrid.getDistanceToEdge(cell) > 1 and
+                        (@exitCount[room_cell.spaceId] < 2 or cell.connectable == ConnectableType.Mandatory)
                         if cell.connectable == ConnectableType.Mandatory
                             mandatory_candidates.push([cell, outer_cell])
                         else
@@ -506,8 +507,9 @@ define [
             if loops and @exitCount[wall.roomCell.spaceId] > 2
                 return false
 
-            results = @doSearch(wall, start, loops)
 
+            results = @doSearch(wall, start, loops)
+            
             if not results? and wall.connectable == ConnectableType.Mandatory and not loops
                 results = @doSearch(wall, start, true)
 
