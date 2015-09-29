@@ -64,7 +64,7 @@ define [
 
     SECTION_STACK = new Float32ArraySectionStack(100)
     COORD_IDX = new Vec2()
-    
+
     observeOctant = (
         character,
         game_state,

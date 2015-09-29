@@ -59,7 +59,7 @@ define [
             return def
 
         forEachBorder: (f) ->
-            
+
             # north west corner
             f(@array[0][0], Types.Direction.NorthWest)
 
@@ -115,7 +115,7 @@ define [
 
             # west
             for i from @height - 2 - d til d by -1
-                f(@array[i][d], Types.Direction.West)           
+                f(@array[i][d], Types.Direction.West)
 
         isBorderCoordinate: (x, y) ->
             return x == 0 or y == 0 or x == @width - 1 or y == @height - 1

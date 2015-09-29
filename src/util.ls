@@ -108,7 +108,7 @@ define [
         for i from 0 til outer.length
             outer[i] = new Array(width)
         return outer
-            
+
 
     createArray2dCalling = (height, width, fn) ->
         ret = createArray2d(height, width)

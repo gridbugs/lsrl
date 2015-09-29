@@ -5,7 +5,7 @@ define [
 
     class Hud
         (@$hud) ->
-        
+
         updateHud: (character) ->
             @$hud.empty()
             @$hud.append("<div>#{character.getName()}</div>")

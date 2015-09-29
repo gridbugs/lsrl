@@ -33,7 +33,7 @@ define [
 
         getCurrentAttackTime: ->
             return 40
-    
+
     {
         Shrubbery
         PoisonShrubbery

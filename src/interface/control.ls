@@ -42,5 +42,5 @@ define [
         'Test'
         'Wait'
     ].map(createBasicControl)
-    
+
     return Control

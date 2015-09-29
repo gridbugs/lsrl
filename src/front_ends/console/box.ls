@@ -37,7 +37,7 @@ define [
 
         # west
         for i from height - 2 - d til d by -1
-            f(d, i, Types.Direction.West)           
+            f(d, i, Types.Direction.West)
 
     {
         forEachIndexAtDepth

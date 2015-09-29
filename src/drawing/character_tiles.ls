@@ -11,7 +11,7 @@ define [
         return {
             Unseen:     colour_table['VeryDarkGrey']
             Selected:   colour_table['DarkYellow']
-        }       
+        }
 
     {
         createTileTable

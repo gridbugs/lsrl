@@ -3,7 +3,7 @@ define [
     'types'
     'util'
 ], (Tiles, Types, Util) ->
-    
+
     const ColourType =
         White: '#ffffff'
         Black: '#000000'
@@ -19,12 +19,12 @@ define [
         Purple: '#993399'
 
     class CanvasTile
-        (@character, colour, @bold) -> 
+        (@character, colour, @bold) ->
             @colour = ColourType[colour]
 
     const TileStyles = Tiles.createTileTable(CanvasTile)
     const SpecialColours = Tiles.createSpecialColourTable(ColourType)
-    
+
     const UnseenColour = '#333333'
     const SelectColour = '#888800'
 

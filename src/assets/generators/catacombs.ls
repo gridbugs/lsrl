@@ -26,7 +26,7 @@ define [
                     existing = @connections.get(j, k)
                     if existing == -1 or v + 1 < existing
                         @connections.set(j, k, v + 1)
-            
+
             @connections.forEachAssoc j, (v, k) ~>
                 if v != -1
                     existing = @connections.get(i, k)
@@ -122,9 +122,9 @@ define [
                     cell.connectable = ConnectableType.Possible
 
             return room
-                    
 
-        
+
+
 
     class StringRoomGenerator
         (@stringArray, @description) ->
@@ -235,7 +235,7 @@ define [
 
                 if room_cell.type == RoomCellType.Wall and
                     @intermediateGrid.isBorderCell(global_cell)
-                    
+
                     return false
 
                 if room_cell.type == RoomCellType.Door and
@@ -254,7 +254,7 @@ define [
                     global_cell.conenctable != ConnectableType.Mandatory
 
                     return false
-                
+
                 if room_cell.connectable != ConnectableType.Mandatory and
                     global_cell.conenctable == ConnectableType.Mandatory
 
@@ -266,20 +266,20 @@ define [
                 global_x = position.x + room_x
                 global_y = position.y + room_y
                 global_cell = @intermediateGrid.get(global_x, global_y)
-                
+
                 if global_cell.type == RoomCellType.Free
                     global_cell.connectable = room_cell.connectable
                 else if room_cell.type != RoomCellType.Free
                     if room_cell.connectable == ConnectableType.Impossible
                         global_cell.connectable = ConnectableType.Impossible
-                
+
                 if global_cell.type == RoomCellType.Free
                     for i from 0 til global_cell.candidateTypes.length
                         global_cell.candidateTypes[i] = room_cell.candidateTypes[i]
                 else if room_cell.type != RoomCellType.Free
                     for i from 0 til global_cell.candidateTypes.length
                         global_cell.candidateTypes[i] = room_cell.candidateTypes[i] #TODO
-                     
+
                 if room_cell.type != RoomCellType.Free
                     global_cell.type = room_cell.type
 
@@ -308,7 +308,7 @@ define [
                     south = cell.neighbours[Types.Direction.South]
 
                     count = 0
-                    
+
                     if east.type == RoomCellType.Floor and west.type == RoomCellType.Free
                         room_cell = east
                         ++count
@@ -338,10 +338,10 @@ define [
             @spaceConnections.connect(x, y)
             ++@exitCount[x]
             ++@exitCount[y]
-            
+
 
         connectAdjacentRooms: ->
-            
+
             candidate_lists = new SquareTable(@numSpaces, -> [])
 
             @intermediateGrid.forEach (cell) !~>
@@ -351,7 +351,7 @@ define [
                         west = cell.neighbours[Types.Direction.West]
                         north = cell.neighbours[Types.Direction.North]
                         south = cell.neighbours[Types.Direction.South]
-                        
+
                         if east.type == RoomCellType.Floor and west.type == RoomCellType.Floor
                             candidate_lists.get(east.spaceId, west.spaceId).push(cell)
                         else if north.type == RoomCellType.Floor and south.type == RoomCellType.Floor
@@ -362,10 +362,10 @@ define [
                     cell = Util.getRandomElement(list)
                     cell.connect()
                     @connect(x, y)
-                    
+
 
         connectAlmostAdjacentRooms: ->
-            
+
             candidate_lists = new SquareTable(@numSpaces, -> [])
 
             @intermediateGrid.forEach (cell) !~>
@@ -384,7 +384,7 @@ define [
                             south_south = south.neighbours[Types.Direction.South]
                             if south_south? and south_south.type == RoomCellType.Floor
                                 candidate_lists.get(north.spaceId, south_south.spaceId).push([cell, south])
-            
+
             candidate_lists.forEach (list, x, y) !~>
                 if list.length > 0
                     cells = Util.getRandomElement(list)
@@ -407,7 +407,7 @@ define [
 
                 if fixture?
                     main_cell.setFixture(fixture)
-                
+
         placeRooms: (attempts) ->
             for i from 0 til attempts
                 pos = @intermediateGrid.getRandomCoordinate()
@@ -427,7 +427,7 @@ define [
                     west = cell.neighbours[Types.Direction.West]
                     north = cell.neighbours[Types.Direction.North]
                     south = cell.neighbours[Types.Direction.South]
-                
+
                     if east.type == RoomCellType.Floor and west.type == RoomCellType.Free
                         room_cell = east
                         outer_cell = west
@@ -465,11 +465,11 @@ define [
                 candidates = @findCorridorCandidates()
                 while candidates.length > 0
                     @addCorridor(candidates, false)
-            
+
             candidates = @findCorridorCandidates()
             while candidates.length > 0
                 @addCorridor(candidates, true)
- 
+
 
         doSearch: (wall, start, loops) ->
             results = Search.findClosest(
@@ -503,13 +503,13 @@ define [
         addCorridor: (candidates, loops) ->
 
             [wall, start] = candidates.pop() #Util.getRandomElement(candidates)
-            
+
             if loops and @exitCount[wall.roomCell.spaceId] > 2
                 return false
 
 
             results = @doSearch(wall, start, loops)
-            
+
             if not results? and wall.connectable == ConnectableType.Mandatory and not loops
                 results = @doSearch(wall, start, true)
 
@@ -546,10 +546,10 @@ define [
 
             #@placeRoom(r2.getRoom(), new Vec2(10, 10))
 
-            
+
             @generators = [r2, r3, r3, r3]
             @placeRooms(@roomPlacementAttempts)
-            
+
             @classifySpaces()
 
             @classifyWalls()

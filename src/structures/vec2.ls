@@ -7,7 +7,7 @@ define [], ->
             switch idx
             |   0 => @x = val
             |   _ => @y = val
-                
+
         arrayGet: (idx) !->
             switch idx
             |   0 => return @x
