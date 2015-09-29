@@ -10,5 +10,5 @@ define [
         RANDOM_SEED: void
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: true
-        OMNISCIENT_CHARACTERS: void
+        OMNISCIENT_CHARACTERS: true
     }

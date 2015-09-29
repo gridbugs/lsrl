@@ -167,28 +167,32 @@ define [
             else
                 cell.connectable = ConnectableType.Impossible
 
-
-
+        getStandardDescription: ->
+            return {
+                '#': {type: RoomCellType.Wall, connectable: ConnectableType.Impossible},
+                '.': {type: RoomCellType.Floor, connectable: ConnectableType.Impossible},
+                '+': {type: RoomCellType.Door, connectable: ConnectableType.Mandatory},
+                '?': {type: RoomCellType.Free, connectable: ConnectableType.Possible},
+                'a': {type: RoomCellType.Free, connectable: ConnectableType.Possible, allowRooms: false}
+            }
 
     class R1 extends StringRoomGenerator
         ->
             super([
-                \?????????????????????
-                \???????#######???????
-                \?????###.....###?????
-                \???###.........###???
-                \?###.............###?
-                \##.................##
-                \#...................#
-                \#...................#
-                \#...................#
-                \#...................#
-                \#...................#
-                \#.......##+##.......#
-                \#......###.###......#
-                \##....####.####....##
-                \?#########a#########?
-            ])
+                \??????a??????
+                \????##+##????
+                \???##...##???
+                \??##.....##??
+                \?##.......##?
+                \?#.........#?
+                \a+.........+a
+                \?#.........#?
+                \?##.......##?
+                \??##.....##??
+                \???##...##???
+                \????##+##????
+                \??????a??????
+            ], @getStandardDescription())
 
     class R2 extends StringRoomGenerator
         ->
@@ -208,13 +212,7 @@ define [
                 \#.....#?????#.....#
                 \###+###?????###+###
                 \???a???????????a???
-            ], {
-                '#': {type: RoomCellType.Wall, connectable: ConnectableType.Impossible},
-                '.': {type: RoomCellType.Floor, connectable: ConnectableType.Impossible},
-                '+': {type: RoomCellType.Door, connectable: ConnectableType.Mandatory},
-                '?': {type: RoomCellType.Free, connectable: ConnectableType.Possible},
-                'a': {type: RoomCellType.Free, connectable: ConnectableType.Possible, allowRooms: false},
-            })
+            ], @getStandardDescription())
 
 
     class CatacombsGenerator
@@ -467,17 +465,17 @@ define [
                 return mandatory_candidates
 
 
-        addCorridors: (max_length) ->
+        addCorridors: (max_length, min_distance) ->
             candidates = @findCorridorCandidates()
             while candidates.length > 0
-                @addCorridor(candidates, 1, max_length)
+                @addCorridor(candidates, min_distance, max_length)
 
             candidates = @findCorridorCandidates()
             for i from 0 til 10
-                @addCorridor(candidates, 2 + i/4, max_length)
+                @addCorridor(candidates, min_distance + i/4, max_length)
 
             for i from 0 til 10
-                @addCorridor(candidates, 2, max_length)
+                @addCorridor(candidates, min_distance, max_length)
 
         doSearch: (wall, start, min_distance, debug) ->
             results = Search.findClosest(
@@ -521,6 +519,8 @@ define [
         addCorridor: (candidates, min_distance, max_length, debug) ->
 
             if candidates.length == 0
+                if debug
+                    console.debug 'no candidates'
                 return false
 
             [wall, start] = candidates.pop() #Util.getRandomElement(candidates)
@@ -532,9 +532,13 @@ define [
             results = @doSearch(wall, start, min_distance, debug)
 
             if not results?
+                if debug
+                    console.debug 'no search results'
                 return false
  
             if results.path.length > max_length
+                if debug
+                    console.debug 'too long'
                 return false
 
             if results.cell.roomCell?
@@ -549,6 +553,10 @@ define [
                 c.connectingSpaces.push(wall.roomCell.spaceId)
                 for id in space_ids
                     c.connectingSpaces.push(id)
+
+                if debug
+                    console.debug c
+                    c.type = RoomCellType.Door
 
             wall.connect()
             start.connect()
@@ -574,6 +582,11 @@ define [
                     return true
             return false
 
+        containsDisconnectedMandatoryConnection: ->
+            return @intermediateGrid.forEachExitable false, (cell) !~>
+                if cell.connectable == ConnectableType.Mandatory
+                    return true
+
         generateGrid: (T, width, height) ->
             @intermediateGrid = new Grid(RoomCell, width, height)
             @grid = new Grid(T, width, height)
@@ -587,10 +600,7 @@ define [
             r2 = new R2()
             r3 = new RectangularRoomGenerator(8, 12)
 
-            #@placeRoom(r2.getRoom(), new Vec2(10, 10))
-
-
-            @generators = [r2, r3, r3, r3]
+            @generators = [r1, r2, r3, r3]
             @placeRooms(@roomPlacementAttempts)
 
             @classifySpaces()
@@ -601,12 +611,12 @@ define [
 
             @connectAdjacentRooms()
             @connectAlmostAdjacentRooms()
-
-            @addCorridors(15)
-            if @containsDisconnectedSpace()
-                @addCorridors(100)
-
-
+            
+            
+            @addCorridors(15, 1)
+            if @containsDisconnectedSpace() or @containsDisconnectedMandatoryConnection()
+                @addCorridors(100, 0)
+            
             @flatten()
 
 
