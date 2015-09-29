@@ -2,8 +2,9 @@ define [
     'structures/heap'
     'structures/direction'
     'util'
+    'types'
     'prelude-ls'
-], (Heap, Direction, Util, Prelude) ->
+], (Heap, Direction, Util, Types, Prelude) ->
 
     const empty = Prelude.empty
 
@@ -11,21 +12,21 @@ define [
         (@cell, @cost, @path, @directions) ->
 
     class SearchNode
-        (@cell, @cost) ->
+        (@cell, @cost, @direction, @straightDistance) ->
 
     pushParentsReversed = (path, directions, cell) ->
         if cell.search_parent?
-            pushParentsReversed path, directions, cell.search_parent
-            path.push cell
-            directions.push cell.search_direction
+            pushParentsReversed(path, directions, cell.search_parent)
+            path.push(cell)
+            directions.push(cell.search_direction)
 
-    dijkstraFindClosest = (start_cell, cost_fn, can_enter_predicate, predicate, can_enter_dest, direction_candidates = Direction.Directions) ->
+    dijkstraFindClosest = (start_cell, cost_fn, can_enter_predicate, predicate, can_enter_dest = true, direction_candidates = Direction.Directions) ->
         heap = new Heap.Heap (a, b) -> a.cost <= b.cost
 
         start_cell.search_cost = 0
         marked = [start_cell]
 
-        heap.insert new SearchNode(start_cell, 0)
+        heap.insert(new SearchNode(start_cell, 0, Types.Direction.North /* arbitrary */, 0))
 
         found = false
         target = null
@@ -51,14 +52,18 @@ define [
             for d in direction_candidates
                 neighbour = current_cell.neighbours[d]
                 if neighbour?
-                    cost = current_node.cost + cost_fn(current_cell, d)
+                    if d == current_node.direction
+                        straight_distance = current_node.straightDistance + 1
+                    else
+                        straight_distance = 0
+                    cost = current_node.cost + cost_fn(current_cell, d, straight_distance)
                     existing_cost = neighbour.search_cost
                     if not existing_cost? or cost < neighbour.search_cost
                         neighbour.search_cost = cost
                         neighbour.search_parent = current_cell
                         neighbour.search_direction = d
 
-                        heap.insert(new SearchNode(neighbour, cost))
+                        heap.insert(new SearchNode(neighbour, cost, d, straight_distance))
 
                     if not existing_cost?
                         marked.push(neighbour)

@@ -467,32 +467,23 @@ define [
                 return mandatory_candidates
 
 
-        addCorridors: ->
+        addCorridors: (max_length) ->
             candidates = @findCorridorCandidates()
-            while candidates.length > 155
-                @addCorridor(candidates, 1)
-            @addCorridor(candidates, 1, true)
-            return
-
-            return
+            while candidates.length > 0
+                @addCorridor(candidates, 1, max_length)
 
             candidates = @findCorridorCandidates()
-            for i from 0 til 1 #5 #10
-                @addCorridor(candidates, 2 + i/4 )
+            for i from 0 til 10
+                @addCorridor(candidates, 2 + i/4, max_length)
 
-            return
-            for i from 0 til 5
-                @addCorridor(candidates, 2  )
-                @addCorridor(candidates, 2  )
-                @addCorridor(candidates, 2  )
-                @addCorridor(candidates, 2  )
-                @addCorridor(candidates, 2  )
+            for i from 0 til 10
+                @addCorridor(candidates, 2, max_length)
 
         doSearch: (wall, start, min_distance, debug) ->
             results = Search.findClosest(
                 start,
-                (c, d) ->
-                    return 1
+                (c, d, straight_distance) ->
+                    return (1 / (straight_distance + 1))
                 (c) ~>
                     return c.type == RoomCellType.Free and not @intermediateGrid.isBorderCell(c)
                 ,
@@ -527,7 +518,7 @@ define [
 
             return results
 
-        addCorridor: (candidates, min_distance, debug) ->
+        addCorridor: (candidates, min_distance, max_length, debug) ->
 
             if candidates.length == 0
                 return false
@@ -543,7 +534,7 @@ define [
             if not results?
                 return false
  
-            if results.path.length > 15
+            if results.path.length > max_length
                 return false
 
             if results.cell.roomCell?
@@ -572,14 +563,16 @@ define [
                             n.corridorCell = c
                             n.connectable = ConnectableType.Possible
 
-            if debug
-                wall.roomCell.type = RoomCellType.Door
-                results.cell.roomCell.type = RoomCellType.Door
-
             for s in space_ids
                 @connect(wall.roomCell.spaceId, s)
 
             return true
+
+        containsDisconnectedSpace: ->
+            for i from 0 til @numSpaces
+                if @exitCount[i] == 0
+                    return true
+            return false
 
         generateGrid: (T, width, height) ->
             @intermediateGrid = new Grid(RoomCell, width, height)
@@ -609,7 +602,11 @@ define [
             @connectAdjacentRooms()
             @connectAlmostAdjacentRooms()
 
-            @addCorridors()
+            @addCorridors(15)
+            if @containsDisconnectedSpace()
+                @addCorridors(100)
+
+
             @flatten()
 
 
