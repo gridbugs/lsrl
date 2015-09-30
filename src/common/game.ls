@@ -34,7 +34,7 @@ define [
             if Config.FAST_ANIMATION
                 return 0
             else
-                return t * 0.01
+                return t * Config.ANIMATION_TIME
         gameLoop: ->
 
             @gameState.processContinuousEffects()

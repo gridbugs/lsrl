@@ -10,7 +10,7 @@ define [
     class SurroundingCells
         (centre, direction) ->
             cells = Direction.Fronts[direction].map (centre.neighbours.)
-            @cellStates = cells.map (.isEmpty())
+            @cellStates = cells.map (c) -> c.fixture.type
 
         matches: (other) ->
             for i from 0 til @cellStates.length

@@ -5,6 +5,7 @@ define [
         GENERATOR: 'catacombs'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false
+        ANIMATION_TIME: 3
         AUTOEXPLORE_ALL: false
         RUN_TEST: false
         RANDOM_SEED: void
