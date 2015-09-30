@@ -215,8 +215,9 @@ define [
                 dest_cell = @character.grid.getCart coord
 
                 result = Search.findPath @character.getKnowledgeCell(), \
-                    ((c, d) -> c.game_cell.getMoveOutCost d), \
-                    ((c) -> c.known and c.game_cell.isEmpty()), \
+                    ((c, d) -> c.game_cell.getMoveOutCost(d)), \
+                    ((c) ~>
+                        return c.known and (c.game_cell.character == @character or c.game_cell.isEmpty())), \
                     dest_cell
 
                 if result?

@@ -93,7 +93,7 @@ define [
 
     dijkstraFindPath = (start_cell, cost_fn, can_enter_predicate, dest_cell) ->
         return dijkstraFindClosest(start_cell, cost_fn, can_enter_predicate, \
-            ((cell) -> cell.position.equals(dest_cell.position)), true
+            ((cell) -> cell.position.equals(dest_cell.position)), true, Direction.Directions
         )
 
     {
