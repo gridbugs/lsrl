@@ -21,7 +21,7 @@ define [
             directions.push(cell.search_direction)
 
     dijkstraFindClosest = (start_cell, cost_fn, can_enter_predicate, predicate, can_enter_dest = true, direction_candidates = Direction.Directions) ->
-        heap = new Heap.Heap (a, b) -> a.cost <= b.cost
+        heap = new Heap (a, b) -> a.cost <= b.cost
 
         start_cell.search_cost = 0
         marked = [start_cell]

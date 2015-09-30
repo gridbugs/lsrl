@@ -21,7 +21,7 @@ define [
 
             @absoluteTime = 0
             @turnCount = 0
-            @schedule = new Heap.Heap (a, b) -> a.time <= b.time
+            @schedule = new Heap (a, b) -> a.time <= b.time
 
             @actionQueue = []
             @continuousEffects = new LinkedList()
