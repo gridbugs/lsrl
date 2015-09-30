@@ -8,8 +8,8 @@ define [
         ANIMATION_TIME: 3
         AUTOEXPLORE_ALL: false
         RUN_TEST: false
-        RANDOM_SEED: void
+        RANDOM_SEED:  void
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: true
-        OMNISCIENT_CHARACTERS: false
+        OMNISCIENT_CHARACTERS: true
     }

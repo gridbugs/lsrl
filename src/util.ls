@@ -117,6 +117,10 @@ define [
                 ret[i][j] = fn(j, i)
         return ret
 
+    packObject = (namespace, object) ->
+        for k, v of object
+            namespace[k] = v
+
     {
         isInt
         makeEnum
@@ -146,4 +150,5 @@ define [
         isAlpha
         createArray2d
         createArray2dCalling
+        packObject
     }
