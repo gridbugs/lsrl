@@ -110,7 +110,7 @@ define [
             return room
 
     class StringRoomGenerator
-        (@stringArray, @description) ->
+        (@stringArray, @description = @getStandardDescription()) ->
 
         getRoom: ->
             room = new Room(@stringArray[0].length, @stringArray.length)
@@ -156,7 +156,7 @@ define [
                 'a': {type: RoomCellType.Free, connectable: ConnectableType.Possible, allowRooms: false}
             }
 
-    
+
     class ChaoticRoomCorridorGenerator
         ->
 
@@ -412,7 +412,7 @@ define [
             return @intermediateGrid.forEachExitable false, (cell) !->
                 if (cell.type == RoomCellType.Floor or
                     cell.type == RoomCellType.Door) and not cell.marked
-                    
+
                     if found
                         return true
 

@@ -24,7 +24,7 @@ define [
 
     class R1 extends StringRoomGenerator
         ->
-            super([
+            super [
                 \??????a??????
                 \????##+##????
                 \???##...##???
@@ -38,11 +38,11 @@ define [
                 \???##...##???
                 \????##+##????
                 \??????a??????
-            ], @getStandardDescription())
+            ]
 
     class R2 extends StringRoomGenerator
         ->
-            super([
+            super [
                 \???a???????????a???
                 \###+###?????###+###
                 \#.....#?????#.....#
@@ -58,8 +58,7 @@ define [
                 \#.....#?????#.....#
                 \###+###?????###+###
                 \???a???????????a???
-            ], @getStandardDescription())
-
+            ]
 
     class CatacombsGenerator extends RoomCorridorGenerator
 
@@ -121,7 +120,7 @@ define [
                 if debug
                     console.debug 'no search results'
                 return false
- 
+
             if results.path.length > max_length
                 if debug
                     console.debug 'too long'
@@ -191,9 +190,9 @@ define [
 
                 @connectAdjacentRooms()
                 @connectAlmostAdjacentRooms()
-                
+
                 @doorCandidates = []
-                
+
                 @addCorridors(15, 1)
                 if @containsDisconnectedSpace() or @containsDisconnectedMandatoryConnection()
                     @addCorridors(100, 0)
