@@ -39,6 +39,22 @@ define [
                 \????##+##????
                 \??????a??????
             ]
+    
+    class R3 extends StringRoomGenerator
+        ->
+            super [
+                \??????a??????
+                \?????#b#?????
+                \????##.##????
+                \???##...##???
+                \??ab.....ba??
+                \???##...##???
+                \????##.##????
+                \?????#b#?????
+                \??????a??????
+            ]
+
+
 
     class R2 extends StringRoomGenerator
         ->
@@ -177,9 +193,11 @@ define [
 
                 r1 = new R1()
                 r2 = new R2()
-                r3 = new RectangularRoomGenerator(8, 12)
+                r3 = new R3()
+                
+                rect = new RectangularRoomGenerator(8, 12)
 
-                @generators = [r1, r2, r3, r3]
+                @generators = [r1, r2, r3, rect, rect]
                 @placeRooms(@roomPlacementAttempts)
 
                 @classifySpaces()

@@ -2,7 +2,8 @@ define [
     'drawing/character_tiles'
     'util'
     'types'
-], (CharacterTiles, Util, Types) ->
+    'debug'
+], (CharacterTiles, Util, Types, Debug) ->
 
     Tiles =
         Error:                      ['?', 'LightRed',   false]
@@ -24,6 +25,9 @@ define [
         PlayerCharacter:            ['@', 'White',      true]
         DirtWall:                   ['#', 'DarkBrown',  false]
         BrickWall:                  ['#', 'LightRed',   false]
+    
+    Debug.chars.map (ch) ->
+        Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]
 
     {
         createTileTable: (T) -> CharacterTiles.createTileTable(Tiles, T)

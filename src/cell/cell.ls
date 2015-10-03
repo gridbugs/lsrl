@@ -1,13 +1,15 @@
 define [
     'structures/vec2'
     'structures/direction'
+    'structures/visitable'
+    'structures/neighbourable'
     'item/inventory'
     'action/effectable'
     'constants'
     'types'
-], (Vec2, Direction, Inventory, Effectable, Constants, Types) ->
+], (Vec2, Direction, Visitable, Neighbourable, Inventory, Effectable, Constants, Types) ->
 
-    class Cell extends Effectable
+    class Cell extends Effectable implements Visitable, Neighbourable
         (@x, @y) ->
             @position = new Vec2(@x, @y)
             @character = void

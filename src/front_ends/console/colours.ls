@@ -2,6 +2,9 @@ define [
 ], ->
 
     {
+        Red: 9
+        Green: 2
+        Blue: 4
         White: 15
         Black: 16
         LightGreen: 34
@@ -16,4 +19,5 @@ define [
         Yellow:     11
         DarkYellow: 184
         Purple: 92
+        Orange: 166
     }

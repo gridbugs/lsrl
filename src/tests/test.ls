@@ -40,8 +40,10 @@ define [
             c = new MazeGenerator.MazeGenerator()
         else if Config.GENERATOR == 'border'
             c = new border_generator.BorderGenerator()
-        else
+        else if Config.GENERATOR == 'catacombs'
             c = new Assets.Generators.Catacombs()
+        else if Config.GENERATOR == 'castle'
+            c = new Assets.Generators.Castle()
 
         grid = c.generateGrid Cell, 80, 30
 

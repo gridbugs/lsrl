@@ -2,8 +2,9 @@ define [
     'structures/direction'
     'types'
     'structures/vec2'
+    'util'
     'prelude-ls'
-], (Direction, Types, Vec2, Predule) ->
+], (Direction, Types, Vec2, Util, Predule) ->
 
     const map = Predule.map
     const join = Predule.join
@@ -142,6 +143,18 @@ define [
             return @get(c.x, c.y)
         getRandom: ->
             return @get(Math.floor(Math.random()*@width), Math.floor(Math.random()*@height))
+
+        asArray: ->
+            ret = []
+            @forEach (cell) ->
+                ret.push(cell)
+            return ret
+
+        getRandomArray: (length) ->
+            ret = @asArray()
+            Util.shuffleArrayInPlace(ret)
+            return ret.slice(0, length)
+
         getRandomCoordinate: ->
             return new Vec2(Math.floor(Math.random()*@width), Math.floor(Math.random()*@height))
 

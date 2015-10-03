@@ -1,8 +1,9 @@
 define [
     'util'
-], (Util) ->
+    'debug'
+], (Util, Debug) ->
 
-    const Tile = Util.enum [
+    const Tile = Util.enum([
         \Error
         \Unknown
         \Stone
@@ -22,9 +23,9 @@ define [
         \PlayerCharacter
         \BrickWall
         \DirtWall
-    ]
+    ] ++ Debug.chars)
 
-    const Fixture = Util.enum [
+    const Fixture = Util.enum([
         \Null
         \Wall
         \Web
@@ -32,7 +33,7 @@ define [
         \Door
         \BrickWall
         \DirtWall
-    ]
+    ] ++ Debug.chars)
 
     const Ground = Util.enum [
         \Dirt

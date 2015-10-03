@@ -120,6 +120,13 @@ define [
     packObject = (namespace, object) ->
         for k, v of object
             namespace[k] = v
+    mergeObjects = (a, b) ->
+        ret = {}
+        for k, v of a
+            ret[k] = v
+        for k, v of b
+            ret[k] = v
+        return ret
 
     {
         isInt
@@ -151,4 +158,5 @@ define [
         createArray2d
         createArray2dCalling
         packObject
+        mergeObjects
     }

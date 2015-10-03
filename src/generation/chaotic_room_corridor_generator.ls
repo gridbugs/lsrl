@@ -153,7 +153,8 @@ define [
                 '.': {type: RoomCellType.Floor, connectable: ConnectableType.Impossible},
                 '+': {type: RoomCellType.Door, connectable: ConnectableType.Mandatory},
                 '?': {type: RoomCellType.Free, connectable: ConnectableType.Possible},
-                'a': {type: RoomCellType.Free, connectable: ConnectableType.Possible, allowRooms: false}
+                'a': {type: RoomCellType.Free, connectable: ConnectableType.Possible, allowRooms: false},
+                'b': {type: RoomCellType.Floor, connectable: ConnectableType.Mandatory}
             }
 
 
@@ -246,7 +247,7 @@ define [
 
         classifyWalls: ->
             @intermediateGrid.forEach (cell) !~>
-                if cell.type == RoomCellType.Wall or cell.type == RoomCellType.Door
+                if cell.isConnectable()
                     east = cell.neighbours[Types.Direction.East]
                     west = cell.neighbours[Types.Direction.West]
                     north = cell.neighbours[Types.Direction.North]

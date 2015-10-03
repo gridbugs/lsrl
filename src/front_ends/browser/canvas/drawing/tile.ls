@@ -5,6 +5,9 @@ define [
 ], (Tiles, Types, Util) ->
 
     const ColourType =
+        Red: '#ff0000'
+        Green: '#00ff00'
+        Blue: '#0000ff'
         White: '#ffffff'
         Black: '#000000'
         LightGreen: '#00ff00'
@@ -17,6 +20,7 @@ define [
         Yellow:  '#ffff00'
         DarkYellow: '#888800'
         Purple: '#993399'
+        Orange: '#ff8800'
 
     class CanvasTile
         (@character, colour, @bold) ->

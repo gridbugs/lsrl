@@ -3,7 +3,8 @@ define [
     'action/effect'
     'action/effectable'
     'util'
-], (Types, Effect, Effectable, Util) ->
+    'debug'
+], (Types, Effect, Effectable, Util, Debug) ->
 
     class Fixture extends Effectable
         (@type) ->
@@ -82,7 +83,13 @@ define [
             @addEffect(new Effect.Solid())
 
         getName: -> 'Tree'
-    {
+
+    debugFixture = (char) ->
+        return class extends Fixture
+            (cell) ->
+                super(Types.Fixture[char])
+    
+    Util.mergeObjects {
         Null
         Wall
         Web
@@ -90,4 +97,4 @@ define [
         Door
         DirtWall
         BrickWall
-    }
+    }, {[char, debugFixture(char)] for char in Debug.chars}

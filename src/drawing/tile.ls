@@ -1,9 +1,10 @@
 define [
     'types'
     'util'
-], (Types, Util) ->
+    'debug'
+], (Types, Util, Debug) ->
 
-    const FixtureTiles = Util.table Types.Fixture, {
+    const FixtureTiles = Util.table Types.Fixture, Util.mergeObjects({
         Wall:       -> Types.Tile.Wall
         Web:        -> Types.Tile.SpiderWeb
         Tree:       -> Types.Tile.Tree
@@ -14,7 +15,8 @@ define [
                             Types.Tile.Door
         DirtWall:   -> Types.Tile.DirtWall
         BrickWall:  -> Types.Tile.BrickWall
-    }
+        /* TODO: learn how variable capture really works and make the next line less complicated */
+    }, {[char, ((x) -> ( -> x)) (Types.Tile[char])] for char in Debug.chars})
 
     const GroundTiles = Util.table Types.Ground, {
         Dirt:       -> Types.Tile.Dirt
