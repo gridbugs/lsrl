@@ -7,7 +7,7 @@ define [
     'structures/vec2'
     'structures/direction'
 ], (Grid, DoublyLinkedList, VisitedList, Fixture, Ground, Vec2, Direction) ->
- 
+
     class Endpoint
         (@cell) ->
 
@@ -15,7 +15,7 @@ define [
         if start?
             pushParentsReverse(start.getParent(), array)
             array.push(start)
-    
+
     pushParents = (start, array) ->
         if start?
             array.push(start)
@@ -90,6 +90,6 @@ define [
             @findNearestEndpointPair((endpoints.map (.cell)), grid, Direction.CardinalDirections)
 
             return grid
-        
+
         getStartingPointHint: ->
             return new Vec2(0, 0)

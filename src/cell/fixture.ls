@@ -88,7 +88,7 @@ define [
         return class extends Fixture
             (cell) ->
                 super(Types.Fixture[char])
-    
+
     Util.mergeObjects {
         Null
         Wall

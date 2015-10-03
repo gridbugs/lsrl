@@ -26,3 +26,6 @@ clean:
 
 rmtemp:
 	find src -name '.*' -exec rm {} \;
+
+stripwhitespace:
+	find -name '*.ls' -exec sed -i 's/ *$$//' {} \;

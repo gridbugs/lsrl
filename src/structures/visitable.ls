@@ -1,5 +1,5 @@
 define [
-], -> 
+], ->
     {
         _visited: false
         visit: !->
