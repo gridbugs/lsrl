@@ -2,7 +2,7 @@ define [
 ], ->
 
     {
-        GENERATOR: 'cell_automata'
+        GENERATOR: 'castle'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false
         ANIMATION_TIME: 3
@@ -11,5 +11,5 @@ define [
         RANDOM_SEED:  void
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: true
-        OMNISCIENT_CHARACTERS: true
+        OMNISCIENT_CHARACTERS: false
     }

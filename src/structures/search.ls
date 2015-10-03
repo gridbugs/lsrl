@@ -91,9 +91,9 @@ define [
 
         return ret
 
-    dijkstraFindPath = (start_cell, cost_fn, can_enter_predicate, dest_cell) ->
+    dijkstraFindPath = (start_cell, cost_fn, can_enter_predicate, dest_cell, direction = Direction.Directions) ->
         return dijkstraFindClosest(start_cell, cost_fn, can_enter_predicate, \
-            ((cell) -> cell.position.equals(dest_cell.position)), true, Direction.Directions
+            ((cell) -> cell.position.equals(dest_cell.position)), true, direction
         )
 
     {
