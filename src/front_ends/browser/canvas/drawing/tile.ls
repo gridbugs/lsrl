@@ -21,6 +21,9 @@ define [
         DarkYellow: '#888800'
         Purple: '#993399'
         Orange: '#ff8800'
+        Cyan: '#00ffff'
+        Magenta: '#ff00ff'
+        Pink: '#ff8888'
 
     class CanvasTile
         (@character, colour, @bold) ->

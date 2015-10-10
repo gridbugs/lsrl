@@ -1,4 +1,5 @@
-define ->
+define [
+], ->
     class SignedArray
         ->
             @positive = []
@@ -20,7 +21,3 @@ define ->
                 return @negative[-idx - 1]
             else
                 return @zero
-
-    {
-        SignedArray
-    }

@@ -9,13 +9,13 @@ define [
 
     class PerlinGenerator
         ->
-            @rows = new SignedArray.SignedArray!
+            @rows = new SignedArray()
 
         __generateGradient: (v) ~>
             if not @rows.get(v.y)?
-                @rows.set(v.y, new SignedArray.SignedArray!)
+                @rows.set(v.y, new SignedArray())
             if not @rows.get(v.y).get(v.x)?
-                @rows.get(v.y).set(v.x, Vec2.createRandomUnitVector!)
+                @rows.get(v.y).set(v.x, Vec2.createRandomUnitVector())
 
         __easeCurve: (x) ->
             6*Math.pow(x, 5) - 15*Math.pow(x, 4) + 10*Math.pow(x, 3)
@@ -23,6 +23,7 @@ define [
         __getGradient: (v) ~> @rows.get(v.y).get(v.x)
 
         getNoise: (v) ->
+
             top_left = new Vec2 (Math.floor v.x), (Math.floor v.y)
             corners = [
                 top_left,
@@ -44,5 +45,3 @@ define [
             avg = avg0 + weight_y * (avg1 - avg0)
 
             return avg
-
-    { PerlinGenerator }

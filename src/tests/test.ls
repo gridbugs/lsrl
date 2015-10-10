@@ -44,6 +44,8 @@ define [
             c = new Assets.Generators.Catacombs()
         else if Config.GENERATOR == 'castle'
             c = new Assets.Generators.Castle()
+        else if Config.GENERATOR == 'perlin'
+            c = new perlin_test_generator()
 
         grid = c.generateGrid Cell, 80, 30
 

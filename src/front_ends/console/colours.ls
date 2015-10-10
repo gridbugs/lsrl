@@ -20,4 +20,7 @@ define [
         DarkYellow: 184
         Purple: 92
         Orange: 166
+        Cyan: 81
+        Magenta: 125
+        Pink: 201
     }

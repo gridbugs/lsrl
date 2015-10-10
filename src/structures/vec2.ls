@@ -40,6 +40,6 @@ define [], ->
     Vec2.createFromRadial = (angle, length) ->
         return new Vec2((length * Math.cos(angle)), (length * Math.sin(angle)))
     Vec2.createRandomUnitVector = ->
-        return createFromRadial((Math.random() * Math.PI * 2), 1)
+        return Vec2.createFromRadial((Math.random() * Math.PI * 2), 1)
 
     return Vec2

@@ -8,12 +8,15 @@ define [
     chars = ['a' to 'z'] ++ ['A' to 'Z'] ++ ['0' to '9']
 
     colours = {
-        a: 'Red'
-        b: 'Blue'
-        c: 'Green'
-        d: 'Yellow'
-        e: 'Purple'
-        f: 'Orange'
+        a: 'Purple'
+        b: 'Magenta'
+        c: 'Red'
+        d: 'Pink'
+        e: 'Orange'
+        f: 'Yellow'
+        g: 'Green'
+        h: 'Cyan'
+        i: 'Blue'
     }
 
     getColour = (char, def) ->

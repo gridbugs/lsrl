@@ -3,21 +3,25 @@ define [
     'drawing/tile'
     'generation/perlin'
     'structures/vec2'
-], (Grid, Tile, Perlin, Vec2) ->
+    'cell/fixture'
+    'debug'
+    'util'
+], (Grid, Tile, Perlin, Vec2, Fixture, Debug, Util) ->
 
     const PERLIN_SCALE = 0.1
 
     class PerlinTestGenerator
         ->
-            @perlin = new Perlin.PerlinGenerator!
+            @perlin = new Perlin()
 
-        generate: (T, x, y) ->
-            grid = new Grid.Grid T, x, y
-            grid.forEach (c) ~>
-                c.type = parseInt(((@perlin.getNoise (new Vec2 (c.x * PERLIN_SCALE), (c.y * PERLIN_SCALE))) + 1) * 5.5)
+        generateGrid: (T, x, y) ->
+            @grid = new Grid(T, x, y)
+            @grid.forEach (c) ~>
+                i = parseInt(((@perlin.getNoise (new Vec2 (c.x * PERLIN_SCALE), (c.y * PERLIN_SCALE))) + 1) * 5.5)
+                c.setFixture(Fixture[Debug.chars[i]])
 
-            grid.forEachBorder (c) ->
-                c.type = Tile.Tiles.TREE
+            b = new Date().getTime()
 
-            return grid
+            return @grid
 
+        getStartingPointHint: -> @grid.get(2, 2)
