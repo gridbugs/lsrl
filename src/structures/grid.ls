@@ -1,10 +1,11 @@
 define [
     'structures/direction'
+    'structures/grid_window'
     'types'
     'structures/vec2'
     'util'
     'prelude-ls'
-], (Direction, Types, Vec2, Util, Predule) ->
+], (Direction, GridWindow, Types, Vec2, Util, Predule) ->
 
     const map = Predule.map
     const join = Predule.join
@@ -185,3 +186,6 @@ define [
 
 
         toString: -> @array |> map (join '') |> join "\n"
+
+        getWindow: (x, y, width, height) ->
+            return new GridWindow(this, x, y, width, height)

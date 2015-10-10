@@ -1,15 +1,20 @@
 define [
+    'drawing/drawer'
     'drawing/tile'
+    'structures/grid_window'
     'types'
     'front_ends/browser/canvas/drawing/tile'
-], (Tile, Types, CanvasTile) ->
+], (Drawer, Tile, GridWindow, Types, CanvasTile) ->
 
     const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
     const HORIZONTAL_PADDING = 0
 
-    class CanvasDrawer
+    class CanvasDrawer extends Drawer
         (@canvas, @numCols, @numRows, @input) ->
+
+            super(@numCols, @numRows)
+
             @baseFont = "#{FONT_SIZE}px Monospace"
 
             @ctx = @canvas.getContext '2d'
@@ -21,6 +26,8 @@ define [
             @clearColour = '#000000'
 
             @boldQueue = []
+
+            @window = new GridWindow(0, 0, @numCols, @numRows)
 
         __clearAll: ->
             @ctx.fillStyle = @clearColour
@@ -43,15 +50,15 @@ define [
                               CanvasTile.TileStyles[type].bold
             )
 
-        __fillTextFromTileTypeCart: (v, type) ->
-            @__fillTextFromTileType(v.x, v.y, type)
+        __fillTextFromTileTypeCart: (type, x, y) ->
+            @__fillTextFromTileType(x, y, type)
 
-        __fillTextFromCell: (cell) ->
-            @__fillTextFromTileType(cell.x, cell.y, Tile.fromCell(cell))
+        __fillTextFromCell: (cell, x, y) ->
+            @__fillTextFromTileType(x, y, Tile.fromCell(cell))
 
-        __fillTextFromCellWithColour: (cell, colour) ->
+        __fillTextFromCellWithColour: (cell, colour, x, y) ->
             tile = CanvasTile.TileStyles[Tile.fromCell(cell)]
-            @__fillText(cell.x, cell.y, tile.character, colour, tile.colour)
+            @__fillText(x, y, tile.character, colour, tile.colour)
 
         __fillBackground: (x, y, colour) ->
             @ctx.fillStyle = colour
@@ -60,8 +67,8 @@ define [
         __fillBackgroundCart: (v, colour) ->
             @__fillBackground(v.x, v.y, colour)
 
-        __fillUnknownCart: (v) ->
-            @__fillTextFromTileTypeCart(v, Types.Tile.Unknown)
+        __fillUnknownCart: (x, y) ->
+            @__fillTextFromTileTypeCart(Types.Tile.Unknown, x, y)
 
 
         __clearCart: (v) ->
@@ -94,14 +101,14 @@ define [
             @__drawGrid grid
             @ctx.fill!
 
-        __drawKnowledgeCell: (cell, turn_count) ->
-            if cell.known
+        __drawKnowledgeCell: (cell, turn_count, x, y) ->
+            if cell? and cell.known
                 if cell.timestamp == turn_count
-                    @__fillTextFromCell(cell)
+                    @__fillTextFromCell(cell, x, y)
                 else
-                    @__fillTextFromCellWithColour(cell, CanvasTile.SpecialColours.Unseen)
+                    @__fillTextFromCellWithColour(cell, CanvasTile.SpecialColours.Unseen, x, y)
             else
-                @__fillUnknownCart(cell)
+                @__fillUnknownCart(x, y)
 
         __processBoldQueue: ->
             @ctx.font = "bold #{@baseFont}"
@@ -113,9 +120,13 @@ define [
 
             @ctx.font = @baseFont
 
-        __drawCharacterKnowledge: (character, game_state) ->
-            character.getKnowledge().grid.forEach (c) ~>
-                @__drawKnowledgeCell(c, character.getTurnCount())
+        __drawCharacterKnowledge: (character) ->
+
+            grid = character.getKnowledge().grid
+            @adjustWindow(character, grid)
+
+            @window.forEach grid, (c, i, j) ~>
+                @__drawKnowledgeCell(c, character.getTurnCount(), j, i)
 
 
         drawCharacterKnowledge: (character, game_state) ->

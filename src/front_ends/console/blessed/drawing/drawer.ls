@@ -1,14 +1,19 @@
 define [
     'blessed'
+    'drawing/drawer'
     'front_ends/console/colours'
     'front_ends/console/text'
     'drawing/tile'
+    'interface/user_interface'
     'util'
     'types'
-], (Blessed, Colours, Text, Tile, Util, Types) ->
+], (Blessed, Drawer, Colours, Text, Tile, UserInterface, Util, Types) ->
 
-    class Drawer
+    class BlessedDrawer extends Drawer
         (@program, @tileTable, @specialColours, @left, @top, @width, @height) ->
+
+            super(@width, @height)
+
             @setDefaultBackground()
             @program.clear()
 
@@ -52,7 +57,7 @@ define [
             @drawTile(@tileTable[Types.Tile.Unknown])
 
         drawKnowledgeCell: (cell, turn_count) ->
-            if cell.known
+            if cell? and cell.known
                 tile = @tileTable[Tile.fromCell(cell)]
                 if cell.timestamp == turn_count
                     @drawTile(tile)
@@ -66,11 +71,13 @@ define [
             turncount = character.getTurnCount()
             grid = character.getKnowledge().grid
 
+            @adjustWindow(character, grid)
+
             @program.move(0, 0)
 
-            for i from 0 til grid.height
-                for j from 0 til grid.width
-                    @drawKnowledgeCell(grid.get(j, i), turncount)
+            for i from 0 til @window.height
+                for j from 0 til @window.width
+                    @drawKnowledgeCell(@window.get(grid, j, i), turncount)
                 @program.write("\n\r")
 
         drawCharacterKnowledge: (character) ->

@@ -21,7 +21,7 @@ define [
                 convert = Keymap.convertFromDvorak
 
             input = new BrowserInputSource(convert)
-            drawer = new CanvasDrawer($('#canvas')[0], 120, 40, input)
+            drawer = new CanvasDrawer($('#canvas')[0], 80, 30, input)
             game_console = new Console($('#log'))
             hud = new Hud($('#hud'))
 

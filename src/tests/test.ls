@@ -49,7 +49,7 @@ define [
         else if Config.GENERATOR == 'surface'
             c = new Assets.Generators.Surface()
 
-        grid = c.generateGrid Cell, 80, 30
+        grid = c.generateGrid Cell, 140, 50
 
         if Config.DRAW_MAP_ONLY
             drawer.drawGrid grid
