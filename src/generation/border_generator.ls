@@ -6,7 +6,8 @@ define [
 
     class BorderGenerator
         generateGrid: (T, width, height) ->
-            grid = new Grid.Grid T, width, height
+            grid = new Grid(T, width, height)
+            console.debug grid
             grid.forEach (c) ->
                 c.setGround Ground.Stone
                 c.setFixture Fixture.Null

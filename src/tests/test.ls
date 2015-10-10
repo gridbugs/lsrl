@@ -39,7 +39,7 @@ define [
         else if Config.GENERATOR == 'maze'
             c = new MazeGenerator.MazeGenerator()
         else if Config.GENERATOR == 'border'
-            c = new border_generator.BorderGenerator()
+            c = new border_generator()
         else if Config.GENERATOR == 'catacombs'
             c = new Assets.Generators.Catacombs()
         else if Config.GENERATOR == 'castle'
@@ -49,7 +49,7 @@ define [
         else if Config.GENERATOR == 'surface'
             c = new Assets.Generators.Surface()
 
-        grid = c.generateGrid Cell, 140, 50
+        grid = c.generateGrid(Cell, 80, 30)
 
         if Config.DRAW_MAP_ONLY
             drawer.drawGrid grid

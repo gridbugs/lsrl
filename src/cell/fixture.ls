@@ -75,14 +75,17 @@ define [
         unstick: ->
             @cell.setFixture Null
 
-
-
     class Tree extends Fixture
         (cell) ->
             super(Types.Fixture.Tree)
             @addEffect(new Effect.Solid())
 
         getName: -> 'Tree'
+
+    class Water extends Fixture
+        (cell) ->
+            super(Types.Fixture.Water)
+
 
     debugFixture = (char) ->
         return class extends Fixture
@@ -97,4 +100,5 @@ define [
         Door
         DirtWall
         BrickWall
+        Water
     }, {[char, debugFixture(char)] for char in Debug.chars}

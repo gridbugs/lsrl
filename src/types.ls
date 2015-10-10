@@ -23,6 +23,8 @@ define [
         \PlayerCharacter
         \BrickWall
         \DirtWall
+        \Water
+        \Grass
     ] ++ Debug.chars)
 
     const Fixture = Util.enum([
@@ -33,12 +35,14 @@ define [
         \Door
         \BrickWall
         \DirtWall
+        \Water
     ] ++ Debug.chars)
 
     const Ground = Util.enum [
         \Dirt
         \Stone
         \Moss
+        \Grass
     ]
 
     const Direction = Util.enum [

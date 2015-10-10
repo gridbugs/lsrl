@@ -1,8 +1,14 @@
 define [
-], ->
+    'util'
+], (Util) ->
 
     class GridWindow
         (@offsetX, @offsetY, @width, @height) ->
+
+        setOffsetX: (x) !->
+            @offsetX = Util.constrain(0, x, @width - 1)
+        setOffsetY: (y) !->
+            @offsetY = Util.constrain(0, y, @height - 1)
 
         forEach: (grid, f) !->
             array = grid.array

@@ -56,7 +56,7 @@ define [
                         straight_distance = current_node.straightDistance + 1
                     else
                         straight_distance = 0
-                    cost = current_node.cost + cost_fn(current_cell, d, straight_distance)
+                    cost = current_node.cost + cost_fn(current_cell, d, straight_distance, neighbour)
                     existing_cost = neighbour.search_cost
                     if not existing_cost? or cost < neighbour.search_cost
                         neighbour.search_cost = cost

@@ -15,6 +15,7 @@ define [
                             Types.Tile.Door
         DirtWall:   -> Types.Tile.DirtWall
         BrickWall:  -> Types.Tile.BrickWall
+        Water:      -> Types.Tile.Water
         /* TODO: learn how variable capture really works and make the next line less complicated */
     }, {[char, ((x) -> ( -> x)) (Types.Tile[char])] for char in Debug.chars})
 
@@ -22,6 +23,7 @@ define [
         Dirt:       -> Types.Tile.Dirt
         Stone:      -> Types.Tile.Stone
         Moss:       -> Types.Tile.Moss
+        Grass:      -> Types.Tile.Grass
     }
 
     const ItemTiles = Util.table Types.Item, {

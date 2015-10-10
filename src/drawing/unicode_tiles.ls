@@ -25,6 +25,8 @@ define [
         PlayerCharacter:            ['@', 'White',      true]
         DirtWall:                   ['#', 'DarkBrown',  false]
         BrickWall:                  ['#', 'LightRed',   false]
+        Water:                      ['~', 'Blue',       false]
+        Grass:                      ['.', 'DarkGreen',  false]
 
     Debug.chars.map (ch) ->
         Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]

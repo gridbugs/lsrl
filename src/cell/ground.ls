@@ -26,8 +26,13 @@ define [
 
         getName: -> 'Moss'
 
+    class Grass extends Ground
+        ->
+            super(Types.Ground.Grass)
+
     {
         Dirt
         Stone
         Moss
+        Grass
     }
