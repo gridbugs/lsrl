@@ -150,6 +150,9 @@ define [
                 ret.push(cell)
             return ret
 
+        asArrayWhere: (p) ->
+            return @asArray().filter(p)
+
         getRandomArray: (length) ->
             ret = @asArray()
             Util.shuffleArrayInPlace(ret)

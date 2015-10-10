@@ -8,10 +8,11 @@ define [
     'cell/ground'
     'structures/vec2'
     'structures/direction'
+    'generation/base_generator'
     'util'
     'types'
 ], (Grid, DoublyLinkedList, VisitedList, Search, ConnectionTracker,
-    Fixture, Ground, Vec2, Direction, Util, Types) ->
+    Fixture, Ground, Vec2, Direction, Generator, Util, Types) ->
 
     FREE = "free"
     ROOM_WALL = "room_wall"
@@ -36,7 +37,7 @@ define [
             array.push(start)
             pushParentsReverse(start.getParent(), array)
 
-    class SimpleRoomCorridorGenerator
+    class SimpleRoomCorridorGenerator extends Generator
         ->
             @charPolicy = {
                 '?': FREE

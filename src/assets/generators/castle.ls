@@ -82,8 +82,3 @@ define [
             @grid = grid
             return grid
 
-        getStartingPointHint: ->
-            while true
-                c = @grid.getRandom()
-                if c.fixture.type == Types.Fixture.Null
-                    return c

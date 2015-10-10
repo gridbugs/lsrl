@@ -17,7 +17,3 @@ define [
             return grid
 
         getStartingPointHint: -> @grid.get(2, 2)
-
-    {
-        BorderGenerator
-    }

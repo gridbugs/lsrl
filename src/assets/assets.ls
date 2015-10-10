@@ -3,7 +3,8 @@ define [
     'assets/characters/human'
     'assets/generators/catacombs'
     'assets/generators/castle'
-], (Shrubberies, Human, Catacombs, Castle) ->
+    'assets/generators/surface'
+], (Shrubberies, Human, Catacombs, Castle, Surface) ->
     {
         Characters: {
             Shrubberies
@@ -12,5 +13,6 @@ define [
         Generators: {
             Catacombs
             Castle
+            Surface
         }
     }

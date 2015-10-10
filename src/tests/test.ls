@@ -46,6 +46,8 @@ define [
             c = new Assets.Generators.Castle()
         else if Config.GENERATOR == 'perlin'
             c = new perlin_test_generator()
+        else if Config.GENERATOR == 'surface'
+            c = new Assets.Generators.Surface()
 
         grid = c.generateGrid Cell, 80, 30
 
