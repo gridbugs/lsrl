@@ -15,7 +15,13 @@ define [
                             Types.Tile.Door
         DirtWall:   -> Types.Tile.DirtWall
         BrickWall:  -> Types.Tile.BrickWall
-        Water:      -> Types.Tile.Water
+        Water:      (fixture) ->
+                        fixture.progress()
+                        if fixture.animationState
+                            return Types.Tile.Water
+                        else
+                            return Types.Tile.Water2
+
         Bridge:     -> Types.Tile.Bridge
         /* TODO: learn how variable capture really works and make the next line less complicated */
     }, {[char, ((x) -> ( -> x)) (Types.Tile[char])] for char in Debug.chars})

@@ -62,7 +62,8 @@ define [
             return @preWaterStart? and @postWaterEnd? and @preWaterStart.space != @postWaterEnd.space and
                    @waterStart.position.x != 0 and @waterStart.position.y != 0 and
                    @waterEnd.position.x != 0 and @waterEnd.position.y != 0 and
-                   @preWaterStart.isInLargeSpace and @postWaterEnd.isInLargeSpace
+                   @preWaterStart.isInLargeSpace and @postWaterEnd.isInLargeSpace and
+                   not @grid.isBorderCell(@preWaterStart) and not @grid.isBorderCell(@postWaterEnd)
 
         distanceToBridge: (bridge) ->
             return (@preWaterStart.position.distance(bridge.preWaterStart.position) +
@@ -347,8 +348,6 @@ define [
                 bridge.place()
                 @bridges.push(bridge)
 
-            console.debug @bridges
-            console.debug @bridges.length
             if @bridges.length != 2
                 @startCandidates = []
                 @grid.forEach (c) ~>
@@ -387,7 +386,6 @@ define [
             @connectWithPath(path_ends[0], path_ends[1])
 
         connectWithPath: (a, b) ->
-            console.debug a, b
             results = Search.findPath(a
                 , (cell) ->
                     multiplier = 1
@@ -401,6 +399,9 @@ define [
                 , b
                 , Direction.CardinalDirections
             )
+
+            if not results?
+                return void
 
             @startCandidates = []
             for c in results.fullPath

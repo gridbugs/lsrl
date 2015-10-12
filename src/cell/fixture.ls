@@ -86,6 +86,18 @@ define [
         (cell) ->
             super(Types.Fixture.Water)
             @addEffect(new Effect.Solid())
+            @animationState = Math.random() < 0.5
+            @animationCount = Math.floor(Math.random() * 20)
+
+        swapAnimationStates: ->
+            @animationState = !@animationState
+            @animationCount = Math.floor(Math.random() * 20) + 5
+
+        progress: ->
+            --@animationCount
+            if @animationCount == 0
+                @swapAnimationStates()
+
 
     class Bridge extends Fixture
         (cell) ->

@@ -24,6 +24,7 @@ define [
         \BrickWall
         \DirtWall
         \Water
+        \Water2
         \Grass
         \Bridge
     ] ++ Debug.chars)

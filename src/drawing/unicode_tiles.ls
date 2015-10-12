@@ -26,6 +26,7 @@ define [
         DirtWall:                   ['#', 'DarkBrown',  false]
         BrickWall:                  ['#', 'LightRed',   false]
         Water:                      ['~', 'Blue',       false]
+        Water2:                     ['≈', 'Blue',       false]
         Grass:                      ['.', 'DarkGreen',  false]
         Bridge:                     ['=', 'LightBrown',  false]
 
