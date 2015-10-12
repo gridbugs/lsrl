@@ -27,6 +27,7 @@ define [
         BrickWall:                  ['#', 'LightRed',   false]
         Water:                      ['~', 'Blue',       false]
         Grass:                      ['.', 'DarkGreen',  false]
+        Bridge:                     ['=', 'LightBrown',  false]
 
     Debug.chars.map (ch) ->
         Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]

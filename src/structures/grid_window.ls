@@ -5,10 +5,10 @@ define [
     class GridWindow
         (@offsetX, @offsetY, @width, @height) ->
 
-        setOffsetX: (x) !->
-            @offsetX = Util.constrain(0, x, @width - 1)
-        setOffsetY: (y) !->
-            @offsetY = Util.constrain(0, y, @height - 1)
+        setOffsetX: (grid, x) !->
+            @offsetX = Util.constrain(0, x, grid.width - @width)
+        setOffsetY: (grid, y) !->
+            @offsetY = Util.constrain(0, y, grid.height - @height)
 
         forEach: (grid, f) !->
             array = grid.array
@@ -20,7 +20,7 @@ define [
                         f(void, i, j)
                     else
                         f(array[y][x], i, j)
-        
+
         get: (grid, rel_x, rel_y) ->
             x = rel_x + @offsetX
             y = rel_y + @offsetY

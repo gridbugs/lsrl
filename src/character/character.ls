@@ -28,6 +28,9 @@ define [
             @poison = 0
             @poisonThreshold = 10
 
+        getPosition: ->
+            return @position
+
         getTurnCount: ->
             return @controller.getTurnCount()
 

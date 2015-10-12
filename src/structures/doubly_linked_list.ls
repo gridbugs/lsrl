@@ -82,4 +82,9 @@ define [
             ret.insertAtTail(x)
         return ret
 
+    DoublyLinkedList.fromSingleElement = (x) !->
+        ret = new DoublyLinkedList()
+        ret.insertAtTail(x)
+        return ret
+
     return DoublyLinkedList

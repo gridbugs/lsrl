@@ -9,7 +9,8 @@ define [
     const empty = Prelude.empty
 
     class SearchResult
-        (@cell, @cost, @path, @directions) ->
+        (@cell, @cost, @path, @directions, @start) ->
+            @fullPath = [@start].concat(@path)
 
     class SearchNode
         (@cell, @cost, @direction, @straightDistance) ->
@@ -81,7 +82,7 @@ define [
         path = []
         directions = []
         pushParentsReversed path, directions, target.cell
-        ret = new SearchResult target.cell, target.cost, path, directions
+        ret = new SearchResult(target.cell, target.cost, path, directions, start_cell)
 
         for m in marked
             m.search_cost = void

@@ -1,7 +1,7 @@
 define [
     'structures/grid_window'
 ], (GridWindow) ->
-            
+
     const PADDING = 8
 
     class Drawer
@@ -10,16 +10,15 @@ define [
 
         adjustWindow: (character, grid) ->
 
-            pos = character.character.position
+            pos = character.getPosition()
 
             if pos.y > @window.offsetY + @window.height - PADDING
-                @window.setOffsetY(pos.y - @window.height + PADDING)
+                @window.setOffsetY(grid, pos.y - @window.height + PADDING)
             else if pos.y < @window.offsetY + PADDING
-                @window.setOffsetY(pos.y - PADDING)
+                @window.setOffsetY(grid, pos.y - PADDING)
 
             if pos.x > @window.offsetX + @window.width - PADDING
-                @window.setOffsetX(pos.x - @window.width + PADDING)
+                @window.setOffsetX(grid, pos.x - @window.width + PADDING)
             else if pos.x < @window.offsetX + PADDING
-                @window.setOffsetX(pos.x - PADDING)
-
+                @window.setOffsetX(grid, pos.x - PADDING)
 

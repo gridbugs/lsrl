@@ -13,6 +13,7 @@ define [
         LightGreen: '#00ff00'
         DarkGreen: '#669900'
         DarkBrown: '#996600'
+        LightBrown: '#996633'
         LightGrey: '#888888'
         DarkGrey: '#666666'
         VeryDarkGrey: '#333333'

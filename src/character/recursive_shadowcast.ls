@@ -134,7 +134,7 @@ define [
             coord_idx = COORD_IDX
             coord_idx.arraySet(depth_index, depth_absolute_index)
             for i from start_index to stop_index
-                last_iteration = i == partial_stop_index
+                last_iteration = i == stop_index
 
                 coord_idx.arraySet(lateral_index, i)
                 cell = knowledge_grid.array[coord_idx.y][coord_idx.x]

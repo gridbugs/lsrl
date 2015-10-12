@@ -26,6 +26,9 @@ define [
 
             @turnCount = -1
 
+        getPosition: ->
+            return @character.getPosition()
+
         getTurnCount: ->
             return @turnCount
 
@@ -39,7 +42,7 @@ define [
         canSeeThrough: (cell) ->
             fixture = cell.fixture
             type = fixture.type
-            return type != Types.Fixture.Wall and (type != Types.Fixture.Door || fixture.isOpen())
+            return type != Types.Fixture.Wall and (type != Types.Fixture.Door || fixture.isOpen()) and type != Types.Fixture.Tree
 
         getAction: (game_state, cb) ->
 

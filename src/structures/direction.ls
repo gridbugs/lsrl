@@ -2,7 +2,8 @@ define [
     'types'
     'structures/vec2'
     'util'
-], (Types, Vec2, Util) ->
+    'constants'
+], (Types, Vec2, Util, Constants) ->
 
     const CardinalDirectionNames = <[North East South West]>
     const OrdinalDirectionNames = <[NorthEast SouthEast SouthWest NorthWest]>
@@ -72,6 +73,12 @@ define [
     isOrdinal = (d) -> OrdinalMap[d]
     isCardinal = (d) -> CardinalMap[d]
 
+    getMultiplier = (d) ->
+        if isOrdinal(d)
+            return Constants.SQRT2
+        else
+            return 1
+
     const Vectors = [
         new Vec2(0, -1),
         new Vec2(1, 0),
@@ -108,4 +115,6 @@ define [
 
         /* Useful functions */
         getName
+
+        getMultiplier
     }

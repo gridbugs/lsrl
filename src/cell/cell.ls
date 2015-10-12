@@ -60,3 +60,9 @@ define [
             return @fixture.type == Types.Fixture.Null and (not @character?) and
                 (@fixture.type != Types.Fixture.Door || @fixture.isOpen())
 
+        countNeighboursSatisfying: (predicate) ->
+            count = 0
+            for n in @allNeighbours
+                if predicate(n)
+                    ++count
+            return count

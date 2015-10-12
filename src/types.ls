@@ -25,6 +25,7 @@ define [
         \DirtWall
         \Water
         \Grass
+        \Bridge
     ] ++ Debug.chars)
 
     const Fixture = Util.enum([
@@ -36,6 +37,7 @@ define [
         \BrickWall
         \DirtWall
         \Water
+        \Bridge
     ] ++ Debug.chars)
 
     const Ground = Util.enum [

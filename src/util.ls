@@ -128,6 +128,18 @@ define [
             ret[k] = v
         return ret
 
+    retryWhileUndefined = (f, max_retries=100) ->
+        ret = void
+        count = 0
+        do
+            if count == max_retries
+                printDebug "retryWhileUndefined: max retries exceeded"
+                return void
+            ret = f()
+            ++count
+        until ret?
+        return ret
+
     {
         isInt
         makeEnum
@@ -159,4 +171,5 @@ define [
         createArray2dCalling
         packObject
         mergeObjects
+        retryWhileUndefined
     }

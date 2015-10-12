@@ -139,6 +139,8 @@ define [
             return x >= 0 and y >= 0 and x < @width and y < @height
 
         get: (x, y) ->
+            if not @isValidCoordinate(x, y)
+                return void
             return @array[y][x]
         getCart: (c) ->
             return @get(c.x, c.y)

@@ -85,6 +85,11 @@ define [
     class Water extends Fixture
         (cell) ->
             super(Types.Fixture.Water)
+            @addEffect(new Effect.Solid())
+
+    class Bridge extends Fixture
+        (cell) ->
+            super(Types.Fixture.Bridge)
 
 
     debugFixture = (char) ->
@@ -100,5 +105,6 @@ define [
         Door
         DirtWall
         BrickWall
-        Water
+        Water,
+        Bridge
     }, {[char, debugFixture(char)] for char in Debug.chars}
