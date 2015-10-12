@@ -200,8 +200,12 @@ define [
             @grid.forEach (cell) ~>
                 if cell.fixture.type == Types.Fixture.Water
                     cell.nextFixture = Fixture.Water
+                else if cell.fixture.type == Types.Fixture.Bridge
+                    cell.nextFixture = Fixture.Bridge
                 else if @grid.isBorderCell(cell)
                     cell.nextFixture = Fixture.Tree
+                else if cell.fixture.type == Types.Fixture.Null and cell.ground.type == Types.Ground.Dirt
+                    cell.nextFixture = Fixture.Null
                 else
                     num_adjacent_trees = cell.countNeighboursSatisfying (c) -> c.fixture.type == Types.Fixture.Tree
                     num_adjacent_water = cell.countNeighboursSatisfying (c) -> c.fixture.type == Types.Fixture.Water
@@ -343,6 +347,16 @@ define [
                 bridge.place()
                 @bridges.push(bridge)
 
+            console.debug @bridges
+            console.debug @bridges.length
+            if @bridges.length != 2
+                @startCandidates = []
+                @grid.forEach (c) ~>
+                    if c.fixture.type == Types.Fixture.Null
+                        @startCandidates.push(c)
+                return
+
+
             @bridgesStarting = []
             @bridgesEnding = []
 
@@ -373,6 +387,7 @@ define [
             @connectWithPath(path_ends[0], path_ends[1])
 
         connectWithPath: (a, b) ->
+            console.debug a, b
             results = Search.findPath(a
                 , (cell) ->
                     multiplier = 1
@@ -393,6 +408,15 @@ define [
                 c.setGround(Ground.Dirt)
                 @startCandidates.push(c)
 
+        removePathAdjacentTrees: ->
+            @grid.forEach (c) ~>
+                if c.fixture.type == Types.Fixture.Null and \
+                    c.ground.type == Types.Ground.Dirt
+
+                    for n in c.allNeighbours
+                        if n.fixture.type == Types.Fixture.Tree and not @grid.isBorderCell(n)
+                            n.setFixture(Fixture.Null)
+
         generateGrid: (@T, @width, @height) ->
             @grid = new Grid(@T, @width, @height)
 
@@ -409,6 +433,10 @@ define [
             @generateTrees()
 
             @generateBridges()
+            @removePathAdjacentTrees()
+
+            for i from 0 til 2
+                @generateTreeStep()
 
             return @grid
 
