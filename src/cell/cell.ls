@@ -57,7 +57,7 @@ define [
             @items.insertItem item
 
         isEmpty: ->
-            return @fixture.type == Types.Fixture.Null and (not @character?) and
+            return (@fixture.type == Types.Fixture.Null or @fixture.type == Types.Fixture.Bridge) and (not @character?) and
                 (@fixture.type != Types.Fixture.Door || @fixture.isOpen())
 
         countNeighboursSatisfying: (predicate) ->
