@@ -140,6 +140,16 @@ define [
         until ret?
         return ret
 
+    arrayMost = (array, f) ->
+        max = void
+        max_val = void
+        for x in array
+            val = f(x)
+            if not max_val? or val > max_val
+                max_val = val
+                max = x
+        return max
+
     {
         isInt
         makeEnum
@@ -172,4 +182,5 @@ define [
         packObject
         mergeObjects
         retryWhileUndefined
+        arrayMost
     }

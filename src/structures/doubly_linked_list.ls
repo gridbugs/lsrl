@@ -2,10 +2,32 @@ define [
     'debug'
 ], (Debug) ->
 
+    class ForwardIterator
+        (@_list) ->
+            @_current = @_list._head
+
+        hasNext: ->
+            return @_current?
+
+        next: !->
+            @_current = @_current._next
+
+        get: ->
+            return @_current._data
+
+        getNode: ->
+            return @_current
+
+        removeCurrent: ->
+            @_list.removeNode(@_current)
+
     class Node
         (@_data, @_list) ->
             @_next = void
             @_prev = void
+
+        get: ->
+            return @_data
 
     class DoublyLinkedList
         ->
@@ -75,6 +97,15 @@ define [
         pop: (x) -> return @removeHead()
         enqueue: (x) -> @insertAtHead(x)
         dequeue: (x) -> return @removeTail()
+
+        forEach: (f) ->
+            tmp = @_head
+            while tmp?
+                f(tmp._data)
+                tmp = tmp._next
+
+        getForwardIterator: ->
+            return new ForwardIterator(this)
 
     DoublyLinkedList.fromArray = (array) !->
         ret = new DoublyLinkedList()

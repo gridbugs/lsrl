@@ -6,13 +6,14 @@ define [
     'structures/search'
     'structures/direction'
     'structures/doubly_linked_list'
+    'structures/visited_list'
     'cell/fixture'
     'cell/ground'
     'constants'
     'types'
     'debug'
     'util'
-], (BaseGenerator, Perlin, Grid, Vec2, Search, Direction, DoublyLinkedList,
+], (BaseGenerator, Perlin, Grid, Vec2, Search, Direction, DoublyLinkedList, VisitedList,
     Fixture, Ground, Constants, Types, Debug, Util) ->
 
     const PERLIN_SCALE = 0.05
@@ -27,6 +28,9 @@ define [
 
     const TREE_GROW_DISTANCE_MULTIPLIER =       0.05
     const TREE_SURVIVE_DISTANCE_MULTIPLIER =    0.05
+
+    const BRIDGE_BRIDGE_PADDING = 16
+    const BRIDGE_EDGE_PADDING = 3
 
     const TreeGrowProbabilities = [
         0,      # 0
@@ -65,6 +69,10 @@ define [
                    @preWaterStart.isInLargeSpace and @postWaterEnd.isInLargeSpace and
                    not @grid.isBorderCell(@preWaterStart) and not @grid.isBorderCell(@postWaterEnd)
 
+        distanceToEdge: ->
+            return Math.min(@grid.getDistanceToEdge(@waterStart),
+                                    @grid.getDistanceToEdge(@waterEnd))
+
         distanceToBridge: (bridge) ->
             return (@preWaterStart.position.distance(bridge.preWaterStart.position) +
                    @postWaterEnd.position.distance(bridge.postWaterEnd.position)) / 2
@@ -73,6 +81,10 @@ define [
             for i from 0 til @length
                 cell.setFixture(Fixture.Bridge)
                 cell = @grid.getCart(cell.position.add(@directionVector))
+            @preWaterStart.bridges.push(this)
+            @preWaterStart.bridgeDirections.push(@direction)
+            @postWaterEnd.bridges.push(this)
+            @preWaterStart.bridgeDirections.push(Direction.Opposites[@direction])
 
     class Surface extends BaseGenerator
 
@@ -128,6 +140,8 @@ define [
 
         ################### general methods above this line ########################
 
+        createBridge: (start, end, direction, length) ->
+            return new BridgeCandidate(@grid, start, end, direction, length)
 
         getMainRiverStart: ->
             return @getRandomBorderCell()
@@ -159,9 +173,11 @@ define [
 
         generateMainRiver: ->
             path = @getMainRiverPath()
+            visited = []
             for c in path
                 c.width = 0
                 c.origin = c
+                visited.push(c)
             queue = DoublyLinkedList.fromArray(path)
 
             until queue.empty()
@@ -176,26 +192,19 @@ define [
                             n.width = current.width + MAIN_RIVER_WIDTH_OFFSET + n.absoluteNoiseValue * MAIN_RIVER_WIDTH_MULTIPLIER
                             n.origin = current.origin
                             queue.enqueue(n)
+                            visited.push(n)
 
-        generateInitialTrees: ->
-            @grid.forEachBorderAtDepth 0, (c) ->
-                if c.fixture.type != Types.Fixture.Water
-                    c.setFixture(Fixture.Tree)
+            for v in visited
+                v.width = void
+                v.origin = void
 
-            @grid.forEachBorderAtDepth 1, (c) ->
-                if c.fixture.type != Types.Fixture.Water
-                    if Math.random() < 0.5
-                        c.setFixture(Fixture.Tree)
+        generateDecayingTreesAtBorder: (depth) ->
 
-            @grid.forEachBorderAtDepth 2, (c) ->
-                if c.fixture.type != Types.Fixture.Water
-                    if Math.random() < 0.25
-                        c.setFixture(Fixture.Tree)
-
-            @grid.forEachBorderAtDepth 3, (c) ->
-                if c.fixture.type != Types.Fixture.Water
-                    if Math.random() < 0.125
-                        c.setFixture(Fixture.Tree)
+            for i from 0 til depth
+                @grid.forEachBorderAtDepth i, (c) ->
+                    if c.fixture.type != Types.Fixture.Water
+                        if Math.random() < i
+                            c.setFixture(Fixture.Tree)
 
         generateTreeStep: ->
             @grid.forEach (cell) ~>
@@ -223,15 +232,17 @@ define [
                     else
                         cell.nextFixture = Fixture.Null
 
-
             @grid.forEach (cell) ~>
                 cell.setFixture(cell.nextFixture)
 
+        generateTreeSteps: (n) ->
+            for i from 0 til n
+                @generateTreeStep()
+
         generateTrees: ->
             @computeDistancesToWater()
-            @generateInitialTrees()
-            for i from 0 til 20
-                @generateTreeStep()
+            @generateDecayingTreesAtBorder(4)
+            @generateTreeSteps(20)
 
         computeDistancesToWater: ->
             array = []
@@ -284,10 +295,6 @@ define [
             for c in @spaces[@secondLargestSpace]
                 c.isInLargeSpace = true
 
-        attemptAddBridge: (candidates, bridge) ->
-            if bridge.isValid()
-                candidates.push(bridge)
-
         getBridgeCandidates: ->
             candidates = []
 
@@ -305,7 +312,7 @@ define [
                         ++j
 
                     if j < @grid.width
-                        @attemptAddBridge(candidates, new BridgeCandidate(@grid, start, @grid.get(j - 1, i), Types.Direction.East, j - start.position.x))
+                        candidates.push(@createBridge(start, @grid.get(j - 1, i), Types.Direction.East, j - start.position.x))
 
             # traverse each column
             for j from 0 til @grid.width
@@ -320,70 +327,66 @@ define [
                     while i < @grid.height and @grid.get(j, i).fixture.type == Types.Fixture.Water
                         ++i
                     if i < @grid.height
-                        @attemptAddBridge(candidates, new BridgeCandidate(@grid, start, @grid.get(j, i - 1), Types.Direction.South, i - start.position.y))
+                       candidates.push(@createBridge(start, @grid.get(j, i - 1), Types.Direction.South, i - start.position.y))
 
-            return candidates
+            return candidates.filter (c) -> c.isValid()
 
-        generateBridges: ->
+        tryGenerateBridge: (candidate_list, bridges, bridge_padding, edge_padding, max_length) ->
+            iterator = candidate_list.getForwardIterator()
+            while iterator.hasNext()
+                current = iterator.get()
+
+                close_to_bridge = false
+                for b in bridges
+                    if current.distanceToBridge(b) <= bridge_padding
+                        close_to_bridge = true
+                        break
+
+                if not close_to_bridge and current.distanceToEdge() > edge_padding and
+                    current.length < max_length
+
+                    iterator.removeCurrent()
+                    return current
+
+                iterator.next()
+            return void
+
+        tryGenerateBridges: (bridge_padding, edge_padding, attempts, max_bridges, max_length) ->
             candidates = @getBridgeCandidates()
             Util.shuffleArrayInPlace(candidates)
 
-            short_candidates = candidates.filter (bridge) -> bridge.length < 8
+            list = DoublyLinkedList.fromArray(candidates)
+            bridges = []
+            bridge_count = 0
 
-            if short_candidates.length > 0
-                main_bridge = short_candidates.pop()
-            else
-                main_bridge = candidates.pop()
+            for i from 0 til attempts
+                bridge = @tryGenerateBridge(list, bridges, bridge_padding, edge_padding, max_length)
+                if bridge?
+                    ++bridge_count
+                    bridges.push(bridge)
 
-            main_bridge.place()
-            @bridges = [main_bridge]
+                    if bridge_count >= max_bridges
+                        break
 
-            remaining_candidates = candidates.filter (bridge) ->
-                bridge.distanceToBridge(main_bridge) > 20
-            remaining_candidates.sort (a, b) -> a.length - b.length
-            remaining_candidates = remaining_candidates.filter (bridge) -> bridge.length < 10
+            if bridges.length == 0
+                return void
 
-            if remaining_candidates.length > 0
-                bridge = remaining_candidates.pop()
-                bridge.place()
-                @bridges.push(bridge)
+            return bridges
 
-            if @bridges.length != 2
-                @startCandidates = []
-                @grid.forEach (c) ~>
-                    if c.fixture.type == Types.Fixture.Null
-                        @startCandidates.push(c)
-                return
+        generateBridges: (bridge_padding = BRIDGE_BRIDGE_PADDING, edge_padding = BRIDGE_EDGE_PADDING,
+                            attempts = 20, max_bridges = 3, min_bridges = 2, max_length = 12) ->
 
-
-            @bridgesStarting = []
-            @bridgesEnding = []
-
-            for i from 0 til @numSpaces
-                @bridgesStarting[i] = []
-                @bridgesEnding[i] = []
-
-            for b in @bridges
-                @bridgesStarting[b.preWaterStart.space].push(b)
-                @bridgesEnding[b.postWaterEnd.space].push(b)
-
-            path_ends = []
-            for b in @bridgesStarting[@largestSpace]
-                path_ends.push(b.preWaterStart)
-            for b in @bridgesEnding[@largestSpace]
-                path_ends.push(b.postWaterEnd)
-
-            @connectWithPath(path_ends[0], path_ends[1])
-
-            path_ends = []
-            for b in @bridgesStarting[@secondLargestSpace]
-                path_ends.push(b.preWaterStart)
-            for b in @bridgesEnding[@secondLargestSpace]
-                path_ends.push(b.postWaterEnd)
-
-            path_ends[0].setFixture(Fixture.A)
-            path_ends[1].setFixture(Fixture.B)
-            @connectWithPath(path_ends[0], path_ends[1])
+                bridges = @tryGenerateBridges(bridge_padding, edge_padding, attempts, max_bridges, max_length)
+                if bridges? and bridges.length >= min_bridges
+                    @bridges = bridges
+                    @grid.forEach (c) ->
+                        c.bridges = []
+                        c.bridgeDirections = []
+                    for b in @bridges
+                        b.place()
+                    return true
+                else
+                    return false
 
         connectWithPath: (a, b) ->
             results = Search.findPath(a
@@ -400,46 +403,131 @@ define [
                 , Direction.CardinalDirections
             )
 
+            return @pathFromResults(results)
+
+        pathFromResults: (results) ->
+
             if not results?
                 return void
 
-            @startCandidates = []
             for c in results.fullPath
                 c.setFixture(Fixture.Null)
                 c.setGround(Ground.Dirt)
-                @startCandidates.push(c)
 
-        removePathAdjacentTrees: ->
-            @grid.forEach (c) ~>
-                if c.fixture.type == Types.Fixture.Null and \
-                    c.ground.type == Types.Ground.Dirt
+                for n in c.allNeighbours
+                    if n.fixture.type == Types.Fixture.Tree and not @grid.isBorderCell(n)
+                        n.setFixture(Fixture.Null)
 
-                    for n in c.allNeighbours
-                        if n.fixture.type == Types.Fixture.Tree and not @grid.isBorderCell(n)
-                            n.setFixture(Fixture.Null)
+            for c in results.fullPath
+                c.path = true
+
+            return results.fullPath
+
+
+
+        computeDistancesToWater: ->
+            queue = new DoublyLinkedList()
+
+            @grid.forEach (c) ->
+                if c.fixture.type == Types.Fixture.Water
+                    c.distanceToWater = 0
+                    queue.enqueue(c)
+
+            until queue.empty()
+                current = queue.dequeue()
+                for n in current.allNeighbours
+                    if not n.distanceToWater?
+                        n.distanceToWater = current.distanceToWater + 1
+                        queue.enqueue(n)
+
+        computeDistancesToBridge: ->
+            queue = new DoublyLinkedList()
+
+            @grid.forEach (c) ->
+                if c.fixture.type == Types.Fixture.Bridge
+                    c.distanceToBridge = 0
+                    queue.enqueue(c)
+
+            until queue.empty()
+                current = queue.dequeue()
+                for n in current.allNeighbours
+                    if not n.distanceToBridge?
+                        n.distanceToBridge = current.distanceToBridge + 1
+                        queue.enqueue(n)
+
+        createPointOfInterest: (space) ->
+            candidates = space.filter (c) ~>
+                return @grid.getDistanceToEdge(c) > 2
+
+            return Util.arrayMost candidates, (c) ~>
+                return c.distanceToBridge
+
+        connectToPathOrPoint: (start, end) ->
+            results = Search.findClosest(start
+                , (cell) ->
+                    multiplier = 1
+                    if cell.fixture.type == Types.Fixture.Tree
+                        multiplier = 2
+                    return multiplier * cell.absoluteNoiseValue
+                , (cell) ~>
+                    return cell.fixture.type != Types.Fixture.Water and \
+                           cell.fixture.type != Types.Fixture.Bridge and \
+                           not @grid.isBorderCell(cell)
+                , (cell) ->
+                    return cell.path? or cell.position.equals(end.position)
+                , true
+                , Direction.CardinalDirections
+            )
+
+            return @pathFromResults(results)
+
+        addPathsToSpace: (space_id) ->
+            poi = @createPointOfInterest(@spaces[space_id])
+            path_start_candidates = []
+            for c in @spaces[space_id]
+                if c.bridges.length > 0
+                    path_start_candidates.push(c)
+
+            Util.shuffleArrayInPlace(path_start_candidates)
+
+            path_start = path_start_candidates.pop()
+
+            @connectWithPath(path_start, poi)
+            for c in path_start_candidates
+                @connectToPathOrPoint(c, poi)
+
+            return poi
 
         generateGrid: (@T, @width, @height) ->
             @grid = new Grid(@T, @width, @height)
 
-            @grid.forEach (c) ->
-                c.setFixture(Fixture.Null)
-                c.setGround(Ground.Grass)
+            done = false
 
-            @addPerlinNoise()
-            @enumerateBorder(0.3)
-            @generateMainRiver()
+            until done
+                @grid.forEach (c) ->
+                    c.setFixture(Fixture.Null)
+                    c.setGround(Ground.Grass)
+                    c.space = void
+                    c.path = void
 
-            @classifySpaces()
+                @addPerlinNoise()
+                @enumerateBorder(0.3)
+                @generateMainRiver()
 
-            @generateTrees()
+                @classifySpaces()
 
-            @generateBridges()
-            @removePathAdjacentTrees()
+                @generateTrees()
 
-            for i from 0 til 2
-                @generateTreeStep()
+                done = @generateBridges()
 
+            @computeDistancesToWater()
+            @computeDistancesToBridge()
+
+            @addPathsToSpace(@largestSpace)
+            @startPoint = @addPathsToSpace(@secondLargestSpace)
+
+            @generateTreeSteps(2)
             return @grid
 
         getStartingPointHint: ->
-            return Util.getRandomElement(@startCandidates)
+            return @startPoint
