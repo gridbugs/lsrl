@@ -1,6 +1,7 @@
 define [
     'prelude-ls'
     'generation/border_generator'
+    'generation/vision_test_generator'
     'generation/perlin_test_generator'
     'generation/cell_automata_test_generator'
     'generation/maze_generator'
@@ -25,7 +26,7 @@ define [
     'controllers/shrubbery_controllers'
     'action/effect'
     'assets/assets'
-], (prelude, border_generator, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
+], (prelude, border_generator, vision_test, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
     PlayerController, character, Vec2, GameState, Cell, Fixture, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
     Effect, Assets) ->
@@ -48,6 +49,8 @@ define [
             c = new perlin_test_generator()
         else if Config.GENERATOR == 'surface'
             c = new Assets.Generators.Surface()
+        else if Config.GENERATOR == 'vision_test'
+            c = new vision_test()
 
         grid = c.generateGrid(Cell, 80, 30)
 
