@@ -26,7 +26,7 @@ define [
 
         Bridge:     -> Types.Tile.Bridge
         /* TODO: learn how variable capture really works and make the next line less complicated */
-    }, {[char, ((x) -> ( -> x)) (Types.Tile[char])] for char in Debug.chars})
+    }, {[char, ((x) -> ( -> x)) (Types.Tile[char])] for char in Debug.Chars})
 
     const GroundTiles = Util.table Types.Ground, {
         Dirt:       -> Types.Tile.Dirt

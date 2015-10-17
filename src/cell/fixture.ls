@@ -119,4 +119,4 @@ define [
         BrickWall
         Water,
         Bridge
-    }, {[char, debugFixture(char)] for char in Debug.chars}
+    }, {[char, debugFixture(char)] for char in Debug.Chars}

@@ -30,10 +30,10 @@ define [
         Grass:                      ['.', 'DarkGreen',  false]
         Bridge:                     ['=', 'LightBrown',  false]
 
-    Debug.chars.map (ch) ->
+    Debug.Chars.map (ch) ->
         Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]
 
     {
-        createTileTable: (T) -> CharacterTiles.createTileTable(Tiles, T)
-        createSpecialColourTable: CharacterTiles.createSpecialColourTable
+        createTileSet: (T) -> CharacterTiles.createTileSet(Tiles, T)
+        TileType: CharacterTiles.TileType
     }

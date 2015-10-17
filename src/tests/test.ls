@@ -27,12 +27,17 @@ define [
     'action/effect'
     'assets/assets'
     'drawing/tile'
+    'front_ends/browser/canvas/drawing/tile'
 ], (prelude, border_generator, vision_test, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
     PlayerController, character, Vec2, GameState, Cell, Fixture, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
-    Effect, Assets, Tile) ->
+    Effect, Assets, Tile, CanvasTile) ->
+
+    const WIDTH = 80
+    const HEIGHT = 30
 
     test = ->
+
         drawer = UserInterface.Global.gameDrawer
         input_source = UserInterface.Global.gameController
 
@@ -53,7 +58,8 @@ define [
         else if Config.GENERATOR == 'vision_test'
             c = new vision_test()
 
-        grid = c.generateGrid(Cell, 80, 30)
+
+        grid = c.generateGrid(Cell, WIDTH, HEIGHT)
 
         if Config.DRAW_MAP_ONLY
             drawer.drawGrid grid
@@ -63,7 +69,7 @@ define [
 
         pos = new Vec2(sp.x, sp.y)
         char = new Assets.Characters.Human(pos, grid, PlayerController)
-        Tile.setPlayerCharacter(char)
+        drawer.tileScheme.setPlayerCharacter(char)
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
 

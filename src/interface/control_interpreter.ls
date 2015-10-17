@@ -55,8 +55,8 @@ define [
                             |   Types.Fixture.Wall => UserInterface.printLine "A wall"
                             |   Types.Fixture.Web => UserInterface.printLine "A spider web"
 
-                        if kcell.game_cell.items.length() > 0
-                            kcell.game_cell.items.forEachItemType (_, items) ->
+                        if kcell.gameCell.items.length() > 0
+                            kcell.gameCell.items.forEachItemType (_, items) ->
                                 UserInterface.printLine "#{items.length()} #{items.first().getName()}"
 
                         @character.getAction game_state, cb
@@ -215,9 +215,9 @@ define [
                 dest_cell = @character.grid.getCart coord
 
                 result = Search.findPath @character.getKnowledgeCell(), \
-                    ((c, d) -> c.game_cell.getMoveOutCost(d)), \
+                    ((c, d) -> c.gameCell.getMoveOutCost(d)), \
                     ((c) ~>
-                        return c.known and (c.game_cell.character == @character or c.game_cell.isEmpty())), \
+                        return c.known and (c.gameCell.character == @character or c.gameCell.isEmpty())), \
                     dest_cell
 
                 if result?

@@ -26,7 +26,7 @@ define [
         DirtWall:                   ['#', 'DarkBrown',  false]
         BrickWall:                  ['#', 'LightRed',   false]
 
-    Debug.chars.map (ch) ->
+    Debug.Chars.map (ch) ->
         Tiles[ch] = [ch, 'White', false]
 
     {

@@ -1,18 +1,25 @@
 define [
     'blessed'
+    'assets/assets'
     'drawing/drawer'
     'front_ends/console/colours'
     'front_ends/console/text'
+    'front_ends/console/blessed/drawing/tile'
     'drawing/tile'
     'interface/user_interface'
     'util'
     'types'
-], (Blessed, Drawer, Colours, Text, Tile, UserInterface, Util, Types) ->
+], (Blessed, Assets, Drawer, Colours, Text, BlessedTile, Tile, UserInterface, Util, Types) ->
+
+    UNSEEN_COLOUR = Colours.VeryDarkGrey
+    SELECTED_COLOUR = Colours.DarkYellow
 
     class BlessedDrawer extends Drawer
         (@program, @tileTable, @specialColours, @left, @top, @width, @height) ->
 
             super(@width, @height)
+
+            @tileScheme = new Assets.TileSchemes.Default(BlessedTile.TileSet, BlessedTile.TileType, @width, @height)
 
             @setDefaultBackground()
             @program.clear()
@@ -51,14 +58,14 @@ define [
             @drawCharacter(tile.character, tile.colour, tile.bold)
 
         drawUnseenTile: (tile) ->
-            @drawCharacter(tile.character, @specialColours.Unseen, tile.bold)
+            @drawCharacter(tile.character, UNSEEN_COLOUR, tile.bold)
 
         drawUnknownTile: ->
-            @drawTile(@tileTable[Types.Tile.Unknown])
+            @drawTile(@tileScheme.tiles.Unknown)
 
         drawKnowledgeCell: (cell, turn_count) ->
             if cell? and cell.known
-                tile = @tileTable[Tile.fromCell(cell)]
+                tile = @tileScheme.getTileFromCell(cell)
                 if cell.timestamp == turn_count
                     @drawTile(tile)
                 else
@@ -89,9 +96,9 @@ define [
             cell = character.getKnowledge().grid.getCart(select_coord)
             @setCursorCart(cell)
 
-            @setBackground(@specialColours.Selected)
+            @setBackground(SELECTED_COLOUR)
             if cell.known
-                tile = @tileTable[Tile.fromCell(cell)]
+                tile = @tileScheme.getTileFromCell(cell)
                 @drawTile(tile)
             else
                 @drawUnknownTile()

@@ -1,19 +1,43 @@
 define [
     'drawing/character_tiles'
     'util'
-    'types'
-], (CharacterTiles, Util, Types) ->
+    'debug'
+], (CharacterTiles, Util, Debug) ->
 
-    createTileTable = (Tiles, T) ->
-        return Util.mapTable(Types.Tile, Tiles, (arr) -> new T(arr[0], arr[1], arr[2]))
+    const TileType = Util.enum([
+        \Error
+        \Unknown
+        \Stone
+        \Dirt
+        \Tree
+        \Wall
+        \SpiderWeb
+        \Moss
+        \ItemStone
+        \ItemPlant
+        \Door
+        \OpenDoor
+        \Human
+        \Shrubbery
+        \PoisonShrubbery
+        \CarnivorousShrubbery
+        \PlayerCharacter
+        \BrickWall
+        \DirtWall
+        \Water
+        \Water2
+        \Grass
+        \Bridge
+    ] ++ Debug.Chars)
 
-    createSpecialColourTable = (colour_table) ->
-        return {
-            Unseen:     colour_table['VeryDarkGrey']
-            Selected:   colour_table['DarkYellow']
-        }
+    /* Given a description of character tiles with characters, colours and weights (ie. bold or not),
+     * and a constructor for a tile object, returns a table mapping tile types to objects of the
+     * given type representing the corresponding tiles.
+     */
+    createTileSet = (Tiles, T) ->
+        return Util.mapTable(TileType, Tiles, (arr) -> new T(arr[0], arr[1], arr[2]))
 
     {
-        createTileTable
-        createSpecialColourTable
+        createTileSet
+        TileType
     }

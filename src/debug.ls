@@ -5,9 +5,9 @@ define [
         if not condition
             throw message || "Assertion failed!"
 
-    chars = ['a' to 'z'] ++ ['A' to 'Z'] ++ ['0' to '9']
+    Chars = ['a' to 'z'] ++ ['A' to 'Z'] ++ ['0' to '9']
 
-    colours = {
+    Colours = {
         a: 'Purple'
         b: 'Magenta'
         c: 'Red'
@@ -20,14 +20,14 @@ define [
     }
 
     getColour = (char, def) ->
-        if colours[char]?
-            return colours[char]
+        if Colours[char]?
+            return Colours[char]
         else
             return def
 
     {
         assert
-        chars
-        colours
+        Chars
+        Colours
         getColour
     }

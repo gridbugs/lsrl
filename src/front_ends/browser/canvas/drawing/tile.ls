@@ -2,9 +2,9 @@ define [
     'drawing/unicode_tiles'
     'types'
     'util'
-], (Tiles, Types, Util) ->
+], (UnicodeTiles, Types, Util) ->
 
-    const ColourType =
+    const ColourTable =
         Red: '#ff0000'
         Green: '#00ff00'
         Blue: '#0000ff'
@@ -28,15 +28,9 @@ define [
 
     class CanvasTile
         (@character, colour, @bold) ->
-            @colour = ColourType[colour]
-
-    const TileStyles = Tiles.createTileTable(CanvasTile)
-    const SpecialColours = Tiles.createSpecialColourTable(ColourType)
-
-    const UnseenColour = '#333333'
-    const SelectColour = '#888800'
+            @colour = ColourTable[colour]
 
     {
-        TileStyles
-        SpecialColours
+        TileSet: UnicodeTiles.createTileSet(CanvasTile)
+        TileType: UnicodeTiles.TileType
     }

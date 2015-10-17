@@ -43,6 +43,12 @@ define [
             arr[enum_l[k]] = enumValuesForKeys enum_r, v
         return arr
 
+    joinObjectTable = (obj, arr) ->
+        ret = {}
+        for k, v of obj
+            ret[k] = arr[v]
+        return ret
+
     joinTableArraySelf = (enum_type, object) ->
         joinTableArray enum_type, enum_type, object
 
@@ -183,4 +189,5 @@ define [
         mergeObjects
         retryWhileUndefined
         arrayMost
+        joinObjectTable
     }

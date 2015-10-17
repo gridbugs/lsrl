@@ -112,7 +112,7 @@ define [
             # assign each cell with its noise alue
             @grid.forEach (c) ~>
                 i = @perlin.getNoise(new Vec2(c.x * PERLIN_SCALE, c.y * PERLIN_SCALE))
-                c.setFixture(Fixture[Debug.chars[parseInt((i+1)*4)]])
+                c.setFixture(Fixture[Debug.Chars[parseInt((i+1)*4)]])
                 c.noiseValue = i
                 c.positiveNoiseValue = i + 1
                 c.absoluteNoiseValue = Math.abs(i)
