@@ -21,7 +21,6 @@ define [
             @addEffect(new Effect.Solid())
 
             @controller = new @Controller(this, @position, @grid)
-            @__playerCharacter = false
 
             @hitPoints = 10
 
@@ -42,12 +41,6 @@ define [
 
         getController: ->
             return @controller
-
-        isPlayerCharacter: ->
-            return @__playerCharacter
-
-        setAsPlayerCharacter: ->
-            @__playerCharacter = true
 
         getPosition: ->
             return @position

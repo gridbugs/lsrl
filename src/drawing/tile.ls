@@ -4,6 +4,8 @@ define [
     'debug'
 ], (Types, Util, Debug) ->
 
+    PlayerCharacter = void
+
     const FixtureTiles = Util.table Types.Fixture, Util.mergeObjects({
         Wall:       -> Types.Tile.Wall
         Web:        -> Types.Tile.SpiderWeb
@@ -44,15 +46,15 @@ define [
         PoisonShrubbery: -> Types.Tile.PoisonShrubbery
         CarnivorousShrubbery: -> Types.Tile.CarnivorousShrubbery
     }, (fn) ->
-        return (character) ->
-            if character.isPlayerCharacter()
+        return (character, player_character) ->
+            if character == player_character
                 return Types.Tile.PlayerCharacter
             else
                 return fn(character)
 
     fromCell = (cell) ->
 
-        tile = CharacterTiles[cell.character?.type]?(cell.character)
+        tile = CharacterTiles[cell.character?.type]?(cell.character, @playerCharacter)
         return tile if tile?
 
         if cell.items.length() > 0
@@ -68,7 +70,10 @@ define [
 
         return Types.Tile.Error
 
+    setPlayerCharacter = (character) ->
+        @playerCharacter = character
 
     {
         fromCell
+        setPlayerCharacter
     }

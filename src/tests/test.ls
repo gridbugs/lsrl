@@ -26,10 +26,11 @@ define [
     'controllers/shrubbery_controllers'
     'action/effect'
     'assets/assets'
+    'drawing/tile'
 ], (prelude, border_generator, vision_test, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
     PlayerController, character, Vec2, GameState, Cell, Fixture, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
-    Effect, Assets) ->
+    Effect, Assets, Tile) ->
 
     test = ->
         drawer = UserInterface.Global.gameDrawer
@@ -62,7 +63,7 @@ define [
 
         pos = new Vec2(sp.x, sp.y)
         char = new Assets.Characters.Human(pos, grid, PlayerController)
-        char.setAsPlayerCharacter()
+        Tile.setPlayerCharacter(char)
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
 
