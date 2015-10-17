@@ -44,6 +44,14 @@ define [
             type = fixture.type
             return type != Types.Fixture.Wall and (type != Types.Fixture.Door || fixture.isOpen()) and type != Types.Fixture.Tree
 
+        getOpacity: (cell) ->
+            if cell.fixture.type == Types.Fixture.Tree
+                return 0.5
+            else if cell.fixture.type == Types.Fixture.Wall
+                return 1
+            else
+                return 0
+
         getAction: (game_state, cb) ->
 
             if @autoMove?

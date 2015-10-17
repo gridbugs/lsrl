@@ -11,13 +11,15 @@ define [
                 c.setGround Ground.Stone
                 c.setFixture Fixture.Null
 
-            for i from 5 til 10
+            for i from 9 til 10
                 grid.get(10, i).setFixture(Fixture.Tree)
                 grid.get(11, i).setFixture(Fixture.Tree)
+                grid.get(12, i).setFixture(Fixture.Tree)
             
-            for i from 10 til 15
+            for i from 15 til 20
                 grid.get(10, i).setFixture(Fixture.Wall)
                 grid.get(11, i).setFixture(Fixture.Wall)
+                grid.get(12, i).setFixture(Fixture.Wall)
 
 
             grid.forEachBorder (c) ->
@@ -26,4 +28,4 @@ define [
             @grid = grid
             return grid
 
-        getStartingPointHint: -> @grid.get(25, 10)
+        getStartingPointHint: -> @grid.get(11, 11)

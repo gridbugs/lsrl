@@ -4,7 +4,7 @@ define [
 
     class KnowledgeCell
         (@x, @y) ->
-            @game_cell = null
+            @gameCell = null
             @known = false
             @timestamp = -1
             @ground = void
@@ -13,20 +13,20 @@ define [
             @character = void
 
         init: (game_cell) ->
-            @game_cell = game_cell
-            @ground = @game_cell.ground
-            @fixture = @game_cell.fixture
-            @position = @game_cell.position
-            @items = @game_cell.items
-            @character = @game_cell.character
+            @gameCell = game_cell
+            @ground = @gameCell.ground
+            @fixture = @gameCell.fixture
+            @position = @gameCell.position
+            @items = @gameCell.items
+            @character = @gameCell.character
 
         see: (game_state) ->
             @known = true
             @timestamp = game_state.getTurnCount()
-            @ground = @game_cell.ground
-            @fixture = @game_cell.fixture
+            @ground = @gameCell.ground
+            @fixture = @gameCell.fixture
 
-            @character = @game_cell.character
+            @character = @gameCell.character
 
         hasUnknownNeighbour: ->
             for n in @allNeighbours
