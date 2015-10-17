@@ -20,7 +20,8 @@ define [
 
             super(@numCols, @numRows)
 
-            @tileScheme = new Assets.TileSchemes.Default(CanvasTile.TileSet, CanvasTile.TileType, @numCols, @numRows)
+            @tileScheme = new Assets.TileSchemes.Default(CanvasTile.TileSet, CanvasTile.TileType)
+            @tileState = @tileScheme.createTileStateData(@numCols, @numRows)
 
             @baseFont = "#{FONT_SIZE}px Monospace"
 
@@ -36,7 +37,7 @@ define [
             @window = new GridWindow(0, 0, @numCols, @numRows)
 
         tileFromCell: (cell) ->
-            return @tileScheme.getTileFromCell(cell)
+            return @tileState.getTileFromCell(cell)
 
         __clearAll: ->
             @ctx.fillStyle = CLEAR_COLOUR

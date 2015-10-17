@@ -44,12 +44,52 @@ define [
             @ground = void
             @groundTile = void
 
+    class TileStateData
+        (@width, @height, @scheme) ->
+            @grid = new Grid(TileCell, @width, @height)
+
+        getCachedFixture: (cell) ->
+            cached = @grid.getCart(cell)
+            if cached.fixture == cell.fixture
+                return cached.fixtureTile.getTile(cell)
+            cached.fixture = cell.fixture
+            cached.fixtureTile = @scheme.fixtureTable[cell.fixture.type]()
+            return cached.fixtureTile.getTile(cell)
+
+        getCachedGround: (cell) ->
+            cached = @grid.getCart(cell)
+            if cached.ground == cell.ground
+                return cached.groundTile.getTile(cell)
+            cached.ground = cell.ground
+            cached.groundTile = @scheme.groundTable[cell.ground.type]()
+            return cached.groundTile.getTile(cell)
+
+        getTileFromType: (type) ->
+            return @scheme.tileSet[type]
+
+        getTileFromCell: (cell, visible = true) ->
+            
+            if cell.character?
+                if cell.character == @scheme.playerCharacter
+                    return @scheme.tiles.PlayerCharacter
+                return @scheme.flatCharacterTable[cell.character.type].getTile(cell)
+
+            if cell.items.length() > 0
+                top_item = cell.items.first()
+                return @scheme.flatItemTable[top_item.type].getTile(cell)
+
+            if cell.fixture.type != Types.Fixture.Null
+                return @getCachedFixture(cell)
+
+            return @getCachedGround(cell)
+
+
     class DefaultTileScheme
 
         /* tileSet is a mapping from tile number to a representation of the tile
          * tileType is a mapping from the name of the tile to its tile number
          */
-        (@tileSet, @tileType, @width, @height) ->
+        (@tileSet, @tileType) ->
 
             @tiles = Util.joinObjectTable @tileType, @tileSet
 
@@ -91,7 +131,8 @@ define [
             @flatItemTable = @createFlatTable(@itemTable)
             @flatCharacterTable = @createFlatTable(@characterTable)
 
-            @grid = new Grid(TileCell, @width, @height)
+        createTileStateData: (width, height) ->
+            return new TileStateData(width, height, this)
 
         createFlatTable: (constructor_table) ->
             ret = []
@@ -107,38 +148,3 @@ define [
 
         setPlayerCharacter: (character) !->
             @playerCharacter = character
-
-        getCachedFixture: (cell) ->
-            cached = @grid.getCart(cell)
-            if cached.fixture == cell.fixture
-                return cached.fixtureTile.getTile(cell)
-            cached.fixture = cell.fixture
-            cached.fixtureTile = @fixtureTable[cell.fixture.type]()
-            return cached.fixtureTile.getTile(cell)
-
-        getCachedGround: (cell) ->
-            cached = @grid.getCart(cell)
-            if cached.ground == cell.ground
-                return cached.groundTile.getTile(cell)
-            cached.ground = cell.ground
-            cached.groundTile = @groundTable[cell.ground.type]()
-            return cached.groundTile.getTile(cell)
-
-        getTileFromType: (type) ->
-            return @tileSet[type]
-
-        getTileFromCell: (cell, visible = true) ->
-            
-            if cell.character?
-                if cell.character == @playerCharacter
-                    return @tiles.PlayerCharacter
-                return @flatCharacterTable[cell.character.type].getTile(cell)
-
-            if cell.items.length() > 0
-                top_item = cell.items.first()
-                return @flatItemTable[top_item.type].getTile(cell)
-
-            if cell.fixture.type != Types.Fixture.Null
-                return @getCachedFixture(cell)
-
-            return @getCachedGround(cell)
