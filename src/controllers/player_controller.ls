@@ -39,11 +39,6 @@ define [
 
         getName: -> @name
 
-        canSeeThrough: (cell) ->
-            fixture = cell.fixture
-            type = fixture.type
-            return type != Types.Fixture.Wall and (type != Types.Fixture.Door || fixture.isOpen()) and type != Types.Fixture.Tree
-
         getOpacity: (cell) ->
             if cell.fixture.type == Types.Fixture.Tree
                 return 0.5

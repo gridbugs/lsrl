@@ -26,11 +26,10 @@ define [
         Magenta: '#ff00ff'
         Pink: '#ff8888'
 
-    class CanvasTile
+    class Tile
         (@character, colour, @bold) ->
             @colour = ColourTable[colour]
 
     {
-        TileSet: UnicodeTiles.createTileSet(CanvasTile)
-        TileType: UnicodeTiles.TileType
+        TileSet: UnicodeTiles.createTileSet(Tile)
     }

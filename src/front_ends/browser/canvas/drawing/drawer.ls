@@ -1,11 +1,11 @@
 define [
-    'assets/assets'
+    'tile_schemes/default'
     'drawing/drawer'
     'drawing/tile'
     'structures/grid_window'
     'types'
     'front_ends/browser/canvas/drawing/tile'
-], (Assets, Drawer, Tile, GridWindow, Types, CanvasTile) ->
+], (DefaultTileScheme, Drawer, Tile, GridWindow, Types, CanvasTile) ->
 
     const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
@@ -16,12 +16,9 @@ define [
     const CLEAR_COLOUR = '#000000'
 
     class CanvasDrawer extends Drawer
-        (@canvas, @numCols, @numRows, @input) ->
+        (@canvas, @tileScheme, @numCols, @numRows) ->
 
             super(@numCols, @numRows)
-
-            @tileScheme = new Assets.TileSchemes.Default(CanvasTile.TileSet, CanvasTile.TileType)
-            @tileState = @tileScheme.createTileStateData(@numCols, @numRows)
 
             @baseFont = "#{FONT_SIZE}px Monospace"
 

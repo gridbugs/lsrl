@@ -34,7 +34,7 @@ define [
 
         topDepth: ->
             return @stack[@index - 2]
-        
+
         topVisibility: ->
             return @stack[@index - 1]
 
@@ -128,7 +128,6 @@ define [
 
                     cell.see(game_state)
 
-                current_opaque = not character.canSeeThrough(cell)
                 cell_opacity = character.getOpacity(cell)
                 current_visibility = Math.max(visibility - cell_opacity, 0)
 
@@ -159,11 +158,10 @@ define [
                     section_stack.push(min_slope, new_max_slope, depth + 1, previous_visibility)
 
                 min_slope = next_min_slope
-                
+
                 if not current_opaque and last_iteration
                     /* Gap between last opaque cell and edge of vision */
                     section_stack.push(min_slope, max_slope, depth + 1, current_visibility)
-                
 
                 previous_visibility = current_visibility
                 first_iteration = false
@@ -175,7 +173,7 @@ define [
         cell = character.getCell()
 
         character.getKnowledgeCell().see(game_state)
-        
+
         # \|
         observeOctant(character, game_state, cell,
             -1, 0,
@@ -183,7 +181,7 @@ define [
             Types.OrdinalDirection.SouthWest,
             -1, Vec2.X_IDX, width, height
         )
-        
+
         # |/
         observeOctant(character, game_state, cell,
             0, 1,
@@ -215,7 +213,7 @@ define [
             Types.OrdinalDirection.NorthEast,
             -1, Vec2.Y_IDX, height, width
         )
-    
+
         # "/
         observeOctant(character, game_state, cell,
             0, 1,

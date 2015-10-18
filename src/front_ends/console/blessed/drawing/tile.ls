@@ -9,5 +9,4 @@ define [
 
     {
         TileSet: UnicodeTiles.createTileSet(Tile)
-        TileType: UnicodeTiles.TileType
     }

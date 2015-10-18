@@ -1,14 +1,15 @@
 define [
     'common/game'
     'front_ends/browser/canvas/drawing/drawer'
+    'front_ends/browser/canvas/drawing/tile'
     'front_ends/browser/canvas/interface/input'
     'front_ends/browser/canvas/interface/console'
     'front_ends/browser/canvas/interface/hud'
     'interface/keymap'
-    'interface/user_interface'
+    'tile_schemes/default'
     'util'
     'config'
-], (GameCommon, CanvasDrawer, BrowserInputSource, Console, Hud, Keymap, UserInterface, Util, Config) ->
+], (GameCommon, CanvasDrawer, Tile, BrowserInputSource, Console, Hud, Keymap, DefaultTileScheme, Util, Config) ->
 
     class Game extends GameCommon
         ->
@@ -21,7 +22,7 @@ define [
                 convert = Keymap.convertFromDvorak
 
             input = new BrowserInputSource(convert)
-            drawer = new CanvasDrawer($('#canvas')[0], 80, 30, input)
+            drawer = new CanvasDrawer($('#canvas')[0], new DefaultTileScheme(Tile.TileSet), 80, 30, input)
             game_console = new Console($('#log'))
             hud = new Hud($('#hud'))
 

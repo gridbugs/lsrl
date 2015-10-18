@@ -15,7 +15,7 @@ define [
                 grid.get(10, i).setFixture(Fixture.Tree)
                 grid.get(11, i).setFixture(Fixture.Tree)
                 grid.get(12, i).setFixture(Fixture.Tree)
-            
+
             for i from 15 til 20
                 grid.get(10, i).setFixture(Fixture.Wall)
                 grid.get(11, i).setFixture(Fixture.Wall)

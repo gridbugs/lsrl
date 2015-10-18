@@ -4,7 +4,6 @@ define [
     'assets/generators/catacombs'
     'assets/generators/castle'
     'assets/generators/surface'
-    'assets/tile_schemes/default'
 ], (Shrubberies, Human, Catacombs, Castle, Surface, DefaultTileScheme) ->
     {
         Characters: {
@@ -15,8 +14,5 @@ define [
             Catacombs
             Castle
             Surface
-        },
-        TileSchemes: {
-            Default: DefaultTileScheme
         }
     }

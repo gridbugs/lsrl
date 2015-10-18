@@ -70,6 +70,7 @@ define [
         pos = new Vec2(sp.x, sp.y)
         char = new Assets.Characters.Human(pos, grid, PlayerController)
         drawer.tileScheme.setPlayerCharacter(char)
+        drawer.setTileStateData(drawer.tileScheme.createTileStateData(WIDTH, HEIGHT))
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
 

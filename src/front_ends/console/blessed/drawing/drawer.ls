@@ -1,6 +1,6 @@
 define [
     'blessed'
-    'assets/assets'
+    'tile_schemes/default'
     'drawing/drawer'
     'front_ends/console/colours'
     'front_ends/console/text'
@@ -9,17 +9,15 @@ define [
     'interface/user_interface'
     'util'
     'types'
-], (Blessed, Assets, Drawer, Colours, Text, BlessedTile, Tile, UserInterface, Util, Types) ->
+], (Blessed, DefaultTileScheme, Drawer, Colours, Text, BlessedTile, Tile, UserInterface, Util, Types) ->
 
     UNSEEN_COLOUR = Colours.VeryDarkGrey
     SELECTED_COLOUR = Colours.DarkYellow
 
     class BlessedDrawer extends Drawer
-        (@program, @tileTable, @specialColours, @left, @top, @width, @height) ->
+        (@program, @tileScheme, @left, @top, @width, @height) ->
 
             super(@width, @height)
-
-            @tileScheme = new Assets.TileSchemes.Default(BlessedTile.TileSet, BlessedTile.TileType, @width, @height)
 
             @setDefaultBackground()
             @program.clear()
@@ -65,7 +63,7 @@ define [
 
         drawKnowledgeCell: (cell, turn_count) ->
             if cell? and cell.known
-                tile = @tileScheme.getTileFromCell(cell)
+                tile = @tileState.getTileFromCell(cell)
                 if cell.timestamp == turn_count
                     @drawTile(tile)
                 else
@@ -98,7 +96,7 @@ define [
 
             @setBackground(SELECTED_COLOUR)
             if cell.known
-                tile = @tileScheme.getTileFromCell(cell)
+                tile = @tileState.getTileFromCell(cell)
                 @drawTile(tile)
             else
                 @drawUnknownTile()

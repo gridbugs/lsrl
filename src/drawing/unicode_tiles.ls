@@ -1,9 +1,10 @@
 define [
-    'drawing/character_tiles'
+    'drawing/tile'
+    'assets/tile_schemes/default'
     'util'
     'types'
     'debug'
-], (CharacterTiles, Util, Types, Debug) ->
+], (Tile, DefaultTileScheme, Util, Types, Debug) ->
 
     Tiles =
         Error:                      ['?', 'LightRed',   false]
@@ -34,6 +35,5 @@ define [
         Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]
 
     {
-        createTileSet: (T) -> CharacterTiles.createTileSet(Tiles, T)
-        TileType: CharacterTiles.TileType
+        createTileSet: (T) -> Tile.createTileSet(Tiles, DefaultTileScheme.TileType, T)
     }

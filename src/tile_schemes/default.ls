@@ -68,7 +68,7 @@ define [
             return @scheme.tileSet[type]
 
         getTileFromCell: (cell, visible = true) ->
-            
+
             if cell.character?
                 if cell.character == @scheme.playerCharacter
                     return @scheme.tiles.PlayerCharacter
@@ -83,15 +83,39 @@ define [
 
             return @getCachedGround(cell)
 
+    const TileType = Util.enum([
+        \Error
+        \Unknown
+        \Stone
+        \Dirt
+        \Tree
+        \Wall
+        \SpiderWeb
+        \Moss
+        \ItemStone
+        \ItemPlant
+        \Door
+        \OpenDoor
+        \Human
+        \Shrubbery
+        \PoisonShrubbery
+        \CarnivorousShrubbery
+        \PlayerCharacter
+        \BrickWall
+        \DirtWall
+        \Water
+        \Water2
+        \Grass
+        \Bridge
+    ] ++ Debug.Chars)
 
     class DefaultTileScheme
 
         /* tileSet is a mapping from tile number to a representation of the tile
-         * tileType is a mapping from the name of the tile to its tile number
          */
-        (@tileSet, @tileType) ->
+        (@tileSet) ->
 
-            @tiles = Util.joinObjectTable @tileType, @tileSet
+            @tiles = Util.joinObjectTable TileType, @tileSet
 
             @fixtureTable = Util.table Types.Fixture, Util.mergeObjects({
                 Wall:       ~> @simple(\Wall)
@@ -102,7 +126,7 @@ define [
                 Bridge:     ~> @simple(\Bridge)
 
                 Water:      ~> new WaterTile([@getTile(\Water), @getTile(\Water2)])
-                
+
                 Door:       ~> new DoorTile(@getTile(\OpenDoor), @getTile(\Door))
 
             }, {[char, ((c) ~> (~> @simple(c))) (char)] for char in Debug.Chars})
@@ -125,7 +149,7 @@ define [
                 PoisonShrubbery:        ~> @simple(\PoisonShrubbery)
                 CarnivorousShrubbery:   ~> @simple(\CarnivorousShrubbery)
             }
-        
+
             @flatFixtureTable = @createFlatTable(@fixtureTable)
             @flatGroundTable = @createFlatTable(@groundTable)
             @flatItemTable = @createFlatTable(@itemTable)
@@ -141,10 +165,14 @@ define [
             return ret
 
         getTile: (name) ->
-            return @tileSet[@tileType[name]]
+            return @tileSet[TileType[name]]
 
         simple: (name) ->
             return new SimpleTile(@getTile(name))
 
         setPlayerCharacter: (character) !->
             @playerCharacter = character
+
+    DefaultTileScheme.TileType = TileType
+
+    return DefaultTileScheme

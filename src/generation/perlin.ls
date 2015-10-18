@@ -35,7 +35,7 @@ define [
 
             for c in corners
                 @__generateGradient(c)
-            
+
             gradients = corners.map(@~__getGradient)
 
             dots = new Array(4)

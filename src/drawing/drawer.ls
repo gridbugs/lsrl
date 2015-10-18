@@ -22,3 +22,4 @@ define [
             else if pos.x < @window.offsetX + PADDING
                 @window.setOffsetX(grid, pos.x - PADDING)
 
+        setTileStateData: (@tileState) ->
