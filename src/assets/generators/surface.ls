@@ -9,12 +9,13 @@ define [
     'structures/visited_list'
     'cell/fixture'
     'cell/ground'
+    'cell/simple_cell'
     'constants'
     'types'
     'debug'
     'util'
 ], (BaseGenerator, Perlin, Grid, Vec2, Search, Direction, DoublyLinkedList, VisitedList,
-    Fixture, Ground, Constants, Types, Debug, Util) ->
+    Fixture, Ground, SimpleCell, Constants, Types, Debug, Util) ->
 
     const PERLIN_SCALE = 0.05
     const PERLIN_SEARCH_MULTIPLIER = 1
@@ -212,9 +213,13 @@ define [
                     cell.nextFixture = Fixture.Water
                 else if cell.fixture.type == Types.Fixture.Bridge
                     cell.nextFixture = Fixture.Bridge
+                else if cell.fixture.type == Types.Fixture.Wall
+                    cell.nextFixture = Fixture.Wall
+                else if cell.fixture.type == Types.Fixture.StoneDownwardStairs
+                    cell.nextFixture = Fixture.StoneDownwardStairs
                 else if @grid.isBorderCell(cell)
                     cell.nextFixture = Fixture.Tree
-                else if cell.fixture.type == Types.Fixture.Null and cell.ground.type == Types.Ground.Dirt
+                else if cell.fixture.type == Types.Fixture.Null and cell.path
                     cell.nextFixture = Fixture.Null
                 else
                     num_adjacent_trees = cell.countNeighboursSatisfying (c) -> c.fixture.type == Types.Fixture.Tree
@@ -292,8 +297,10 @@ define [
 
             for c in @spaces[@largestSpace]
                 c.isInLargeSpace = true
+                c.isInLargestSpace = true
             for c in @spaces[@secondLargestSpace]
                 c.isInLargeSpace = true
+                c.isInSecondLargestSpace = true
 
         getBridgeCandidates: ->
             candidates = []
@@ -394,7 +401,9 @@ define [
                     multiplier = 1
                     if cell.fixture.type == Types.Fixture.Tree
                         multiplier = 2
-                    return multiplier * cell.absoluteNoiseValue
+                    else if cell.fixture.type == Types.Fixture.Wall
+                        multiplier = 10
+                    return multiplier * cell.absoluteNoiseValue + Math.random() * 2
                 , (cell) ~>
                     return cell.fixture.type != Types.Fixture.Water and \
                            cell.fixture.type != Types.Fixture.Bridge and \
@@ -411,8 +420,10 @@ define [
                 return void
 
             for c in results.fullPath
-                c.setFixture(Fixture.Null)
-                c.setGround(Ground.Dirt)
+                if c.fixture.type != Types.Fixture.StoneDownwardStairs
+                    c.setFixture(Fixture.Null)
+                    if Math.random() < 0.2
+                        c.setGround(Ground.Dirt)
 
                 for n in c.allNeighbours
                     if n.fixture.type == Types.Fixture.Tree and not @grid.isBorderCell(n)
@@ -481,8 +492,9 @@ define [
 
             return @pathFromResults(results)
 
-        addPathsToSpace: (space_id) ->
-            poi = @createPointOfInterest(@spaces[space_id])
+        addPathsToSpace: (space_id, poi) ->
+            if not poi?
+                poi = @createPointOfInterest(@spaces[space_id])
             path_start_candidates = []
             for c in @spaces[space_id]
                 if c.bridges.length > 0
@@ -498,12 +510,55 @@ define [
 
             return poi
 
+        rectangleSatisfies: (x, y, width, height, predicate) ->
+            for i from 0 til height
+                current_y = y + i
+                for j from 0 til width
+                    current_x = x + j
+                    cell = @grid.get(current_x, current_y)
+                    if not predicate(cell)
+                        return false
+            return true
+
+        placeRuinsLayer: (ruins_grid, x, y, layer) !->
+            border = []
+            ruins_grid.forEachBorderAtDepth layer, (c) ->
+                border.push(c)
+            Util.shuffleArrayInPlace(ruins_grid)
+            border.pop()
+            for c in border
+                if Math.random() < 0.9
+                    cell = @grid.get(c.x + x, c.y + y)
+                    cell.setFixture(Fixture.Wall)
+
+
+        placeRuins: (x, y, width, height) !->
+            ruins_grid = new Grid(SimpleCell, width, height)
+            @placeRuinsLayer(ruins_grid, x, y, 0)
+            @placeRuinsLayer(ruins_grid, x, y, 2)
+            @ruinsStairs = @grid.get(x + Math.floor(width/2), y + Math.floor(height/2))
+            @ruinsStairs.setFixture(Fixture.StoneDownwardStairs)
+
+        tryPlaceRuins: (min_size, max_size, attempts) ->
+            for i from 0 til attempts
+                width = Util.getRandomInt(min_size, max_size)
+                height = Util.getRandomInt(min_size, max_size)
+                x = Util.getRandomInt(0, @grid.width - width)
+                y = Util.getRandomInt(0, @grid.height - height)
+
+                if @rectangleSatisfies(x, y, width, height, (c) ->
+                        return c.isInLargestSpace and c.distanceToWater > 2
+                        )
+
+                    @placeRuins(x, y, width, height)
+                    return true
+            return false
+
+
         generateGrid: (@T, @width, @height) ->
             @grid = new Grid(@T, @width, @height)
 
-            done = false
-
-            until done
+            while true
                 @grid.forEach (c) ->
                     c.setFixture(Fixture.Null)
                     c.setGround(Ground.Grass)
@@ -518,15 +573,22 @@ define [
 
                 @generateTrees()
 
-                done = @generateBridges()
+                @computeDistancesToWater()
 
-            @computeDistancesToWater()
+                if not @tryPlaceRuins(7, 10, 100)
+                    continue
+
+                if not @generateBridges()
+                    continue
+
+                break
+
             @computeDistancesToBridge()
 
-            @addPathsToSpace(@largestSpace)
+            @addPathsToSpace(@largestSpace, @ruinsStairs)
             @startPoint = @addPathsToSpace(@secondLargestSpace)
 
-            @generateTreeSteps(2)
+            @generateTreeSteps(3)
             return @grid
 
         getStartingPointHint: ->

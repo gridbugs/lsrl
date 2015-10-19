@@ -6,6 +6,34 @@ define [
     'debug'
 ], (Fixture, Grid, Util, Types, Debug) ->
 
+    const TileType = Util.enum([
+        \Error
+        \Unknown
+        \Stone
+        \Dirt
+        \Tree
+        \Wall
+        \SpiderWeb
+        \Moss
+        \ItemStone
+        \ItemPlant
+        \Door
+        \OpenDoor
+        \Human
+        \Shrubbery
+        \PoisonShrubbery
+        \CarnivorousShrubbery
+        \PlayerCharacter
+        \BrickWall
+        \DirtWall
+        \Water
+        \Water2
+        \Grass
+        \Bridge
+        \StoneDownwardStairs
+        \StoneUpwardStairs
+    ] ++ Debug.Chars)
+
     class SimpleTile
         (@tile) ->
 
@@ -83,32 +111,6 @@ define [
 
             return @getCachedGround(cell)
 
-    const TileType = Util.enum([
-        \Error
-        \Unknown
-        \Stone
-        \Dirt
-        \Tree
-        \Wall
-        \SpiderWeb
-        \Moss
-        \ItemStone
-        \ItemPlant
-        \Door
-        \OpenDoor
-        \Human
-        \Shrubbery
-        \PoisonShrubbery
-        \CarnivorousShrubbery
-        \PlayerCharacter
-        \BrickWall
-        \DirtWall
-        \Water
-        \Water2
-        \Grass
-        \Bridge
-    ] ++ Debug.Chars)
-
     class DefaultTileScheme
 
         /* tileSet is a mapping from tile number to a representation of the tile
@@ -124,6 +126,8 @@ define [
                 DirtWall:   ~> @simple(\DirtWall)
                 BrickWall:  ~> @simple(\BrickWall)
                 Bridge:     ~> @simple(\Bridge)
+                StoneDownwardStairs:    ~> @simple(\StoneDownwardStairs)
+                StoneUpwardStairs:      ~> @simple(\StoneUpwardStairs)
 
                 Water:      ~> new WaterTile([@getTile(\Water), @getTile(\Water2)])
 

@@ -29,7 +29,9 @@ define [
         Water:                      ['~', 'Blue',       false]
         Water2:                     ['≈', 'Blue',       false]
         Grass:                      ['.', 'DarkGreen',  false]
-        Bridge:                     ['=', 'LightBrown',  false]
+        Bridge:                     ['=', 'LightBrown', false]
+        StoneDownwardStairs:        ['>', 'DarkGrey',   true]
+        StoneUpwardStairs:          ['<', 'DarkGrey',   true]
 
     Debug.Chars.map (ch) ->
         Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]

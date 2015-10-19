@@ -39,6 +39,8 @@ define [
         \DirtWall
         \Water
         \Bridge
+        \StoneDownwardStairs
+        \StoneUpwardStairs
     ] ++ Debug.Chars)
 
     const Ground = Util.enum [

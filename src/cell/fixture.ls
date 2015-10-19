@@ -91,6 +91,13 @@ define [
         (cell) ->
             super(Types.Fixture.Bridge)
 
+    class StoneDownwardStairs extends Fixture
+        (cell) ->
+            super(Types.Fixture.StoneDownwardStairs)
+
+    class StoneUpwardStairs extends Fixture
+        (cell) ->
+            super(Types.Fixture.StoneUpwardStairs)
 
     debugFixture = (char) ->
         return class extends Fixture
@@ -106,5 +113,7 @@ define [
         DirtWall
         BrickWall
         Water,
-        Bridge
+        Bridge,
+        StoneDownwardStairs,
+        StoneUpwardStairs
     }, {[char, debugFixture(char)] for char in Debug.Chars}
