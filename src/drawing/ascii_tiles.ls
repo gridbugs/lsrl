@@ -1,6 +1,6 @@
 define [
     'drawing/tile'
-    'assets/tile_schemes/default'
+    'tile_schemes/default'
     'util'
     'types'
     'debug'
