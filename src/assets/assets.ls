@@ -1,8 +1,10 @@
 define [
     'assets/characters/characters'
     'assets/generators/generators'
-], (Characters, Generators) ->
+    'assets/features/features'
+], (Characters, Generators, Features) ->
     {
         Characters
         Generators
+        Features
     }

@@ -38,6 +38,11 @@ define [
 
     test = ->
 
+        console.debug Assets.Features
+        console.debug Types.Feature
+        console.debug Types.Fixture
+        console.debug new Assets.Features.Door()
+
         drawer = UserInterface.Global.gameDrawer
         input_source = UserInterface.Global.gameController
 
