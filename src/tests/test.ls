@@ -42,6 +42,7 @@ define [
         console.debug Types.Feature
         console.debug Types.Fixture
         console.debug new Assets.Features.Door()
+        console.debug Types.Character
 
         drawer = UserInterface.Global.gameDrawer
         input_source = UserInterface.Global.gameController

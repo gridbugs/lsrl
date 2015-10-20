@@ -1,9 +1,7 @@
 define [
-    'action/effectable'
-], (Effectable) ->
+], ->
 
-    class Fixture extends Effectable
+    class Feature
         ->
-            super()
 
     return Feature

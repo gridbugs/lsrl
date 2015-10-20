@@ -81,6 +81,10 @@ define [
             cell = @waterStart
             for i from 0 til @length
                 cell.setFixture(Fixture.Bridge)
+                if @direction == Types.Direction.East
+                    cell.bridgeDirection = Types.Direction.East
+                else
+                    cell.bridgeDirection = Types.Direction.North
                 cell = @grid.getCart(cell.position.add(@directionVector))
             @preWaterStart.bridges.push(this)
             @preWaterStart.bridgeDirections.push(@direction)

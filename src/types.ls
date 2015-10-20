@@ -3,32 +3,6 @@ define [
     'debug'
 ], (Util, Debug) ->
 
-    const Tile = Util.enum([
-        \Error
-        \Unknown
-        \Stone
-        \Dirt
-        \Tree
-        \Wall
-        \SpiderWeb
-        \Moss
-        \ItemStone
-        \ItemPlant
-        \Door
-        \OpenDoor
-        \Human
-        \Shrubbery
-        \PoisonShrubbery
-        \CarnivorousShrubbery
-        \PlayerCharacter
-        \BrickWall
-        \DirtWall
-        \Water
-        \Water2
-        \Grass
-        \Bridge
-    ] ++ Debug.Chars)
-
     const Fixture = Util.enum([
         \Null
         \Wall
@@ -104,20 +78,12 @@ define [
         \Death
     ]
 
-    const Character = Util.enum [
-        \Human
-        \Shrubbery
-        \PoisonShrubbery
-        \CarnivorousShrubbery
-    ]
-
     const Damage = Util.enum [
         \Physical
         \Poison
     ]
 
     {
-        Tile
         Fixture
         Ground
         Direction
@@ -126,6 +92,5 @@ define [
         Control
         Item
         Event
-        Character
         Damage
     }

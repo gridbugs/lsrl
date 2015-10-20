@@ -1,8 +1,10 @@
 define [
     'assets/characters/shrubberies'
     'assets/characters/human'
-], (Shrubberies, Human) ->
-    {
-        Shrubberies
+    'type_system'
+    'util'
+], (Shrubberies, Human, TypeSystem, Util) ->
+
+    TypeSystem.makeType 'Character', Util.mergeObjects Shrubberies, {
         Human
     }

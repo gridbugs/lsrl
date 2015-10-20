@@ -29,7 +29,8 @@ define [
         \Water
         \Water2
         \Grass
-        \Bridge
+        \BridgeEastWest
+        \BridgeNorthSouth
         \StoneDownwardStairs
         \StoneUpwardStairs
     ] ++ Debug.Chars)
@@ -65,6 +66,16 @@ define [
                 @currentIdx = (@currentIdx + 1) % @frames.length
             return ret
 
+    class BridgeTile
+        (cell, north, east) ->
+            if cell?.gameCell.bridgeDirection == Types.Direction.North
+                @tile = north
+            else
+                @tile = east
+
+        getTile: (cell) ->
+            return @tile
+
     class TileCell
         (@x, @y) ->
             @fixture = void
@@ -81,7 +92,7 @@ define [
             if cached.fixture == cell.fixture
                 return cached.fixtureTile.getTile(cell)
             cached.fixture = cell.fixture
-            cached.fixtureTile = @scheme.fixtureTable[cell.fixture.type]()
+            cached.fixtureTile = @scheme.fixtureTable[cell.fixture.type](cell)
             return cached.fixtureTile.getTile(cell)
 
         getCachedGround: (cell) ->
@@ -89,7 +100,7 @@ define [
             if cached.ground == cell.ground
                 return cached.groundTile.getTile(cell)
             cached.ground = cell.ground
-            cached.groundTile = @scheme.groundTable[cell.ground.type]()
+            cached.groundTile = @scheme.groundTable[cell.ground.type](cell)
             return cached.groundTile.getTile(cell)
 
         getTileFromType: (type) ->
@@ -125,13 +136,14 @@ define [
                 Tree:       ~> @simple(\Tree)
                 DirtWall:   ~> @simple(\DirtWall)
                 BrickWall:  ~> @simple(\BrickWall)
-                Bridge:     ~> @simple(\Bridge)
                 StoneDownwardStairs:    ~> @simple(\StoneDownwardStairs)
                 StoneUpwardStairs:      ~> @simple(\StoneUpwardStairs)
 
                 Water:      ~> new WaterTile([@getTile(\Water), @getTile(\Water2)])
 
                 Door:       ~> new DoorTile(@getTile(\OpenDoor), @getTile(\Door))
+
+                Bridge:     (cell) ~> new BridgeTile(cell, @getTile(\BridgeNorthSouth), @getTile(\BridgeEastWest))
 
             }, {[char, ((c) ~> (~> @simple(c))) (char)] for char in Debug.Chars})
 
