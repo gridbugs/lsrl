@@ -7,7 +7,7 @@ define [
     'structures/direction'
     'structures/doubly_linked_list'
     'structures/visited_list'
-    'cell/fixture'
+    'assets/features/features'
     'cell/ground'
     'cell/simple_cell'
     'constants'
@@ -15,7 +15,7 @@ define [
     'debug'
     'util'
 ], (BaseGenerator, Perlin, Grid, Vec2, Search, Direction, DoublyLinkedList, VisitedList,
-    Fixture, Ground, SimpleCell, Constants, Types, Debug, Util) ->
+    Feature, Ground, SimpleCell, Constants, Types, Debug, Util) ->
 
     const PERLIN_SCALE = 0.05
     const PERLIN_SEARCH_MULTIPLIER = 1
@@ -80,7 +80,7 @@ define [
         place: ->
             cell = @waterStart
             for i from 0 til @length
-                cell.setFixture(Fixture.Bridge)
+                cell.feature = new Feature.Bridge()
                 if @direction == Types.Direction.East
                     cell.bridgeDirection = Types.Direction.East
                 else
@@ -117,7 +117,7 @@ define [
             # assign each cell with its noise alue
             @grid.forEach (c) ~>
                 i = @perlin.getNoise(new Vec2(c.x * PERLIN_SCALE, c.y * PERLIN_SCALE))
-                c.setFixture(Fixture[Debug.Chars[parseInt((i+1)*4)]])
+                c.feature = new Feature[Debug.Chars[parseInt((i+1)*4)]]()
                 c.noiseValue = i
                 c.positiveNoiseValue = i + 1
                 c.absoluteNoiseValue = Math.abs(i)
@@ -187,7 +187,7 @@ define [
 
             until queue.empty()
                 current = queue.dequeue()
-                current.setFixture(Fixture.Water)
+                current.feature = new Feature.Water()
                 if @grid.getDistanceToEdge(current.origin) > RIVER_HARD_PADDING and @grid.getDistanceToEdge(current) <= RIVER_HARD_PADDING
                     continue
 
@@ -207,42 +207,42 @@ define [
 
             for i from 0 til depth
                 @grid.forEachBorderAtDepth i, (c) ->
-                    if c.fixture.type != Types.Fixture.Water
+                    if c.feature.type != Types.Feature.Water
                         if Math.random() < i
-                            c.setFixture(Fixture.Tree)
+                            c.feature = new Feature.Tree()
 
         generateTreeStep: ->
             @grid.forEach (cell) ~>
-                if cell.fixture.type == Types.Fixture.Water
-                    cell.nextFixture = Fixture.Water
-                else if cell.fixture.type == Types.Fixture.Bridge
-                    cell.nextFixture = Fixture.Bridge
-                else if cell.fixture.type == Types.Fixture.Wall
-                    cell.nextFixture = Fixture.Wall
-                else if cell.fixture.type == Types.Fixture.StoneDownwardStairs
-                    cell.nextFixture = Fixture.StoneDownwardStairs
+                if cell.feature.type == Types.Feature.Water
+                    cell.nextFeature = Feature.Water
+                else if cell.feature.type == Types.Feature.Bridge
+                    cell.nextFeature = Feature.Bridge
+                else if cell.feature.type == Types.Feature.Wall
+                    cell.nextFeature = Feature.Wall
+                else if cell.feature.type == Types.Feature.StoneDownwardStairs
+                    cell.nextFeature = Feature.StoneDownwardStairs
                 else if @grid.isBorderCell(cell)
-                    cell.nextFixture = Fixture.Tree
-                else if cell.fixture.type == Types.Fixture.Null and cell.path
-                    cell.nextFixture = Fixture.Null
+                    cell.nextFeature = Feature.Tree
+                else if cell.feature.type == Types.Feature.Null and cell.path
+                    cell.nextFeature = Feature.Null
                 else
-                    num_adjacent_trees = cell.countNeighboursSatisfying (c) -> c.fixture.type == Types.Fixture.Tree
-                    num_adjacent_water = cell.countNeighboursSatisfying (c) -> c.fixture.type == Types.Fixture.Water
+                    num_adjacent_trees = cell.countNeighboursSatisfying (c) -> c.feature.type == Types.Feature.Tree
+                    num_adjacent_water = cell.countNeighboursSatisfying (c) -> c.feature.type == Types.Feature.Water
 
                     distance = Math.min(cell.distanceToWater, @grid.getDistanceToEdge(cell))
 
-                    if cell.fixture.type == Types.Fixture.Null
+                    if cell.feature.type == Types.Feature.Null
                         probability = TreeGrowProbabilities[num_adjacent_trees] - TREE_GROW_DISTANCE_MULTIPLIER * distance
                     else
                         probability = TreeSurviveProbabilities[num_adjacent_trees] - TREE_SURVIVE_DISTANCE_MULTIPLIER * distance
 
                     if Math.random() < probability
-                        cell.nextFixture = Fixture.Tree
+                        cell.nextFeature = Feature.Tree
                     else
-                        cell.nextFixture = Fixture.Null
+                        cell.nextFeature = Feature.Null
 
             @grid.forEach (cell) ~>
-                cell.setFixture(cell.nextFixture)
+                cell.feature = new cell.nextFeature()
 
         generateTreeSteps: (n) ->
             for i from 0 til n
@@ -256,7 +256,7 @@ define [
         computeDistancesToWater: ->
             array = []
             @grid.forEach (cell) ->
-                if cell.fixture.type == Types.Fixture.Water
+                if cell.feature.type == Types.Feature.Water
                     cell.distanceToWater = 0
                     array.push(cell)
 
@@ -276,7 +276,7 @@ define [
             @spaceSizes = []
             @spaces = []
             @grid.forEach (c) ~>
-                if c.fixture.type != Types.Fixture.Water and not c.space?
+                if c.feature.type != Types.Feature.Water and not c.space?
                     @spaces[@numSpaces] = []
                     @spaceSizes[@numSpaces] = 0
                     queue = DoublyLinkedList.fromSingleElement(c)
@@ -287,7 +287,7 @@ define [
                         ++@spaceSizes[@numSpaces]
 
                         for n in current.allNeighbours
-                            if n.fixture.type != Types.Fixture.Water and not n.space?
+                            if n.feature.type != Types.Feature.Water and not n.space?
                                 queue.enqueue(n)
                                 n.space = @numSpaces
 
@@ -314,12 +314,12 @@ define [
                 j = 0
                 while j < @grid.width
                     start = void
-                    while j < @grid.width and @grid.get(j, i).fixture.type != Types.Fixture.Water
+                    while j < @grid.width and @grid.get(j, i).feature.type != Types.Feature.Water
                         ++j
                     if j >= @grid.width
                         break
                     start = @grid.get(j, i)
-                    while j < @grid.width and @grid.get(j, i).fixture.type == Types.Fixture.Water
+                    while j < @grid.width and @grid.get(j, i).feature.type == Types.Feature.Water
                         ++j
 
                     if j < @grid.width
@@ -330,12 +330,12 @@ define [
                 i = 0
                 while i < @grid.height
                     start = void
-                    while i < @grid.height and @grid.get(j, i).fixture.type != Types.Fixture.Water
+                    while i < @grid.height and @grid.get(j, i).feature.type != Types.Feature.Water
                         ++i
                     if i >= @grid.height
                         break
                     start = @grid.get(j, i)
-                    while i < @grid.height and @grid.get(j, i).fixture.type == Types.Fixture.Water
+                    while i < @grid.height and @grid.get(j, i).feature.type == Types.Feature.Water
                         ++i
                     if i < @grid.height
                        candidates.push(@createBridge(start, @grid.get(j, i - 1), Types.Direction.South, i - start.position.y))
@@ -403,14 +403,14 @@ define [
             results = Search.findPath(a
                 , (cell) ->
                     multiplier = 1
-                    if cell.fixture.type == Types.Fixture.Tree
+                    if cell.feature.type == Types.Feature.Tree
                         multiplier = 2
-                    else if cell.fixture.type == Types.Fixture.Wall
+                    else if cell.feature.type == Types.Feature.Wall
                         multiplier = 10
                     return multiplier * cell.absoluteNoiseValue + Math.random() * 2
                 , (cell) ~>
-                    return cell.fixture.type != Types.Fixture.Water and \
-                           cell.fixture.type != Types.Fixture.Bridge and \
+                    return cell.feature.type != Types.Feature.Water and \
+                           cell.feature.type != Types.Feature.Bridge and \
                            not @grid.isBorderCell(cell)
                 , b
                 , Direction.CardinalDirections
@@ -424,14 +424,14 @@ define [
                 return void
 
             for c in results.fullPath
-                if c.fixture.type != Types.Fixture.StoneDownwardStairs
-                    c.setFixture(Fixture.Null)
+                if c.feature.type != Types.Feature.StoneDownwardStairs
+                    c.feature = new Feature.Null()
                     if Math.random() < 0.2
-                        c.setGround(Ground.Dirt)
+                        c.ground = new Ground.Dirt()
 
                 for n in c.allNeighbours
-                    if n.fixture.type == Types.Fixture.Tree and not @grid.isBorderCell(n)
-                        n.setFixture(Fixture.Null)
+                    if n.feature.type == Types.Feature.Tree and not @grid.isBorderCell(n)
+                        n.feature = new Feature.Null()
 
             for c in results.fullPath
                 c.path = true
@@ -444,7 +444,7 @@ define [
             queue = new DoublyLinkedList()
 
             @grid.forEach (c) ->
-                if c.fixture.type == Types.Fixture.Water
+                if c.feature.type == Types.Feature.Water
                     c.distanceToWater = 0
                     queue.enqueue(c)
 
@@ -459,7 +459,7 @@ define [
             queue = new DoublyLinkedList()
 
             @grid.forEach (c) ->
-                if c.fixture.type == Types.Fixture.Bridge
+                if c.feature.type == Types.Feature.Bridge
                     c.distanceToBridge = 0
                     queue.enqueue(c)
 
@@ -481,12 +481,12 @@ define [
             results = Search.findClosest(start
                 , (cell) ->
                     multiplier = 1
-                    if cell.fixture.type == Types.Fixture.Tree
+                    if cell.feature.type == Types.Feature.Tree
                         multiplier = 2
                     return multiplier * cell.absoluteNoiseValue
                 , (cell) ~>
-                    return cell.fixture.type != Types.Fixture.Water and \
-                           cell.fixture.type != Types.Fixture.Bridge and \
+                    return cell.feature.type != Types.Feature.Water and \
+                           cell.feature.type != Types.Feature.Bridge and \
                            not @grid.isBorderCell(cell)
                 , (cell) ->
                     return cell.path? or cell.position.equals(end.position)
@@ -533,7 +533,7 @@ define [
             for c in border
                 if Math.random() < 0.9
                     cell = @grid.get(c.x + x, c.y + y)
-                    cell.setFixture(Fixture.Wall)
+                    cell.feature = new Feature.Wall()
 
 
         placeRuins: (x, y, width, height) !->
@@ -541,7 +541,7 @@ define [
             @placeRuinsLayer(ruins_grid, x, y, 0)
             @placeRuinsLayer(ruins_grid, x, y, 2)
             @ruinsStairs = @grid.get(x + Math.floor(width/2), y + Math.floor(height/2))
-            @ruinsStairs.setFixture(Fixture.StoneDownwardStairs)
+            @ruinsStairs.feature = new Feature.StoneDownwardStairs()
 
         tryPlaceRuins: (min_size, max_size, attempts) ->
             for i from 0 til attempts
@@ -564,8 +564,8 @@ define [
 
             while true
                 @grid.forEach (c) ->
-                    c.setFixture(Fixture.Null)
-                    c.setGround(Ground.Grass)
+                    c.feature = new Feature.Null()
+                    c.ground = new Ground.Grass()
                     c.space = void
                     c.path = void
 

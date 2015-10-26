@@ -53,9 +53,42 @@ define [
         getOpacity: ->
             return 0.5
 
+    class Water extends SolidFeature
+        ->
+            super()
+
+        getOpacity: ->
+            return 0
+
+        isSolid: ->
+            return true
+
+    class Bridge extends Feature
+        ->
+            super()
+
+        getOpacity: ->
+            return 0
+
+        isSolid: ->
+            return false
+
+    class StoneDownwardStairs extends Feature
+        ->
+            super()
+
+        getOpacity: ->
+            return 0
+
+        isSolid: ->
+            return false
+
     Util.mergeObjects Feature.DebugFeatures, TypeSystem.makeType 'Feature', {
         Wall
         Door
         Tree
+        Water
+        Bridge
+        StoneDownwardStairs
         Null: Feature.NullFeature
     }

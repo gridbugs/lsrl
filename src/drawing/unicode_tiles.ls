@@ -29,8 +29,8 @@ define [
         Water:                      ['~', 'Blue',       false]
         Water2:                     ['≈', 'Blue',       false]
         Grass:                      ['.', 'DarkGreen',  false]
-        BridgeEastWest:             ['ǁ', 'LightBrown', false]
-        BridgeNorthSouth:           ['=', 'LightBrown', false]
+        BridgeEastWest:             ['=', 'LightBrown', false]
+        BridgeNorthSouth:           ['ǁ', 'LightBrown', false]
         StoneDownwardStairs:        ['>', 'DarkGrey',   true]
         StoneUpwardStairs:          ['<', 'DarkGrey',   true]
 

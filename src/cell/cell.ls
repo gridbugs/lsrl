@@ -35,35 +35,8 @@ define [
             else
                 return @moveOutCost * Constants.SQRT2
 
-        setGround: (G) ->
-            @ground = new G this
-        setFeature: (F) ->
-            #@feature = new F this
-            @feature = new F()
-        setFeature: (F) ->
-            @feature = new F()
-
-        forEachEffectInGroup: (group, f) ->
-            for element in group
-                element.forEachEffect f
-
-        forEachEffect: (f) ->
-            @ground.forEachEffect(f)
-            @feature.forEachEffect(f)
-            super(f)
-
-        forEachMatchingEffect: (event_type, f) ->
-            @ground.forEachMatchingEffect(event_type, f)
-            @feature.forEachMatchingEffect(event_type, f)
-            @character?.forEachMatchingEffect(event_type, f)
-            super(event_type, f)
-
         addItem: (item) ->
             @items.insertItem item
-
-        isEmpty: ->
-            return (@feature.type == Types.Feature.Null or @feature.type == Types.Feature.Bridge) and (not @character?) and
-                (@feature.type != Types.Feature.Door || @feature.isOpen())
 
         countNeighboursSatisfying: (predicate) ->
             count = 0

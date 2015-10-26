@@ -80,9 +80,6 @@ define [
                 if current.type == ROOM_WALL or current.type == FLOOR
                     continue
 
-                current.setFeature(Feature.e)
-
-
                 for d in directions
                     n = current.neighbours[d]
                     if n?
@@ -199,7 +196,7 @@ define [
                 |   DEBUG_D => Feature.d
 
                 if fixture?
-                    cell.setFeature(fixture)
+                    cell.feature = new fixture()
 
         getEndpointCandidates: (grid) ->
             candidates = []
@@ -236,7 +233,7 @@ define [
             grid = new Grid(T, width, height)
 
             grid.forEach (c) ->
-                c.setGround(Ground.Stone)
+                c.ground = new Ground.Stone()
                 c.type = FREE
 
             @numRooms = 0

@@ -1,10 +1,8 @@
 define [
-    'assets/generators/catacombs'
     'assets/generators/castle'
     'assets/generators/surface'
-], (Catacombs, Castle, Surface) ->
+], (Castle, Surface) ->
     {
-        Catacombs
         Castle
         Surface
     }
