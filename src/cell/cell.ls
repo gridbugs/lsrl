@@ -9,12 +9,12 @@ define [
     'types'
 ], (Vec2, Direction, Visitable, Neighbourable, Inventory, Effectable, Constants, Types) ->
 
-    class Cell extends Effectable implements Visitable, Neighbourable
+    class Cell implements Visitable, Neighbourable
         (@x, @y) ->
             @position = new Vec2(@x, @y)
             @character = void
             @ground = void
-            @fixture = void
+            @feature = void
             @items = new Inventory()
             @characters = []
             @centre = new Vec2 (@x+0.5), (@y+0.5)
@@ -25,7 +25,9 @@ define [
             @corners[Types.OrdinalDirection.SouthEast] = new Vec2((@x+1), (@y+1))
 
             @moveOutCost = 40
-            super()
+
+        notify: (action, relationship, game_state) ->
+            @feature.notify(action, relationship, game_state)
 
         getMoveOutCost: (direction) ->
             if Direction.isCardinal direction
@@ -35,8 +37,11 @@ define [
 
         setGround: (G) ->
             @ground = new G this
-        setFixture: (F) ->
-            @fixture = new F this
+        setFeature: (F) ->
+            #@feature = new F this
+            @feature = new F()
+        setFeature: (F) ->
+            @feature = new F()
 
         forEachEffectInGroup: (group, f) ->
             for element in group
@@ -44,12 +49,12 @@ define [
 
         forEachEffect: (f) ->
             @ground.forEachEffect(f)
-            @fixture.forEachEffect(f)
+            @feature.forEachEffect(f)
             super(f)
 
         forEachMatchingEffect: (event_type, f) ->
             @ground.forEachMatchingEffect(event_type, f)
-            @fixture.forEachMatchingEffect(event_type, f)
+            @feature.forEachMatchingEffect(event_type, f)
             @character?.forEachMatchingEffect(event_type, f)
             super(event_type, f)
 
@@ -57,8 +62,8 @@ define [
             @items.insertItem item
 
         isEmpty: ->
-            return (@fixture.type == Types.Fixture.Null or @fixture.type == Types.Fixture.Bridge) and (not @character?) and
-                (@fixture.type != Types.Fixture.Door || @fixture.isOpen())
+            return (@feature.type == Types.Feature.Null or @feature.type == Types.Feature.Bridge) and (not @character?) and
+                (@feature.type != Types.Feature.Door || @feature.isOpen())
 
         countNeighboursSatisfying: (predicate) ->
             count = 0

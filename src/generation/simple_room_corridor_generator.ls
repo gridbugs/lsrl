@@ -4,7 +4,7 @@ define [
     'structures/visited_list'
     'structures/search'
     'structures/connection_tracker'
-    'cell/fixture'
+    'assets/features/features'
     'cell/ground'
     'structures/vec2'
     'structures/direction'
@@ -12,7 +12,7 @@ define [
     'util'
     'types'
 ], (Grid, DoublyLinkedList, VisitedList, Search, ConnectionTracker,
-    Fixture, Ground, Vec2, Direction, Generator, Util, Types) ->
+    Feature, Ground, Vec2, Direction, Generator, Util, Types) ->
 
     FREE = "free"
     ROOM_WALL = "room_wall"
@@ -80,7 +80,7 @@ define [
                 if current.type == ROOM_WALL or current.type == FLOOR
                     continue
 
-                current.setFixture(Fixture.e)
+                current.setFeature(Feature.e)
 
 
                 for d in directions
@@ -183,23 +183,23 @@ define [
 
             grid.forEach (cell) ->
                 fixture = switch cell.type
-                |   FREE => Fixture.DirtWall
-                |   ROOM_WALL, HALLWAY_WALL => Fixture.Wall
-                |   ENDPOINT_CANDIDATE => Fixture.Wall
-                |   FLOOR => Fixture.Null
-                |   DOOR => Fixture.Door
+                |   FREE => Feature.Wall
+                |   ROOM_WALL, HALLWAY_WALL => Feature.Wall
+                |   ENDPOINT_CANDIDATE => Feature.Wall
+                |   FLOOR => Feature.Null
+                |   DOOR => Feature.Door
                 |   DOOR_CANDIDATE =>
                     if has_doors[cell.room] and Math.random() < door_prob
-                        Fixture.Door
+                        Feature.Door
                     else
-                        Fixture.Null
-                |   DEBUG_A => Fixture.a
-                |   DEBUG_B => Fixture.b
-                |   DEBUG_C => Fixture.c
-                |   DEBUG_D => Fixture.d
+                        Feature.Null
+                |   DEBUG_A => Feature.a
+                |   DEBUG_B => Feature.b
+                |   DEBUG_C => Feature.c
+                |   DEBUG_D => Feature.d
 
                 if fixture?
-                    cell.setFixture(fixture)
+                    cell.setFeature(fixture)
 
         getEndpointCandidates: (grid) ->
             candidates = []

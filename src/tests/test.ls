@@ -38,12 +38,6 @@ define [
 
     test = ->
 
-        console.debug Assets.Features
-        console.debug Types.Feature
-        console.debug Types.Fixture
-        console.debug new Assets.Features.Door()
-        console.debug Types.Character
-
         drawer = UserInterface.Global.gameDrawer
         input_source = UserInterface.Global.gameController
 
@@ -94,14 +88,14 @@ define [
                         c.addItem new Item.Plant()
                 else if Math.random() < 0.01
                     if c.fixture.type == Types.Fixture.Null
-                        c.character = new Assets.Characters.Shrubberies.Shrubbery(c.position, grid, NullController)
+                        c.character = new Assets.Characters.Shrubbery(c.position, grid, NullController)
                 else if Math.random() < 0.005
                     if c.fixture.type == Types.Fixture.Null and not c.character?
-                        c.character = new Assets.Characters.Shrubberies.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
+                        c.character = new Assets.Characters.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
                 else if Math.random() < 0.005
                     if c.fixture.type == Types.Fixture.Null and not c.character?
-                        c.character = new Assets.Characters.Shrubberies.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
+                        c.character = new Assets.Characters.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
 
         gs.registerObserver(char)

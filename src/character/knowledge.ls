@@ -8,14 +8,14 @@ define [
             @known = false
             @timestamp = -1
             @ground = void
-            @fixture = void
+            @feature = void
             @items = void
             @character = void
 
         init: (game_cell) ->
             @gameCell = game_cell
             @ground = @gameCell.ground
-            @fixture = @gameCell.fixture
+            @feature = @gameCell.feature
             @position = @gameCell.position
             @items = @gameCell.items
             @character = @gameCell.character
@@ -24,7 +24,7 @@ define [
             @known = true
             @timestamp = game_state.getTurnCount()
             @ground = @gameCell.ground
-            @fixture = @gameCell.fixture
+            @feature = @gameCell.feature
 
             @character = @gameCell.character
 

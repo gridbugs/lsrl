@@ -14,10 +14,9 @@ define [
     else
         Observer = RecursiveShadowcast
 
-    class Character extends Effectable
+    class Character implements Effectable
         (@type, @position, @grid, @Controller) ->
-            super()
-
+            @effects = []
             @addEffect(new Effect.Solid())
 
             @controller = new @Controller(this, @position, @grid)

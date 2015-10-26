@@ -1,15 +1,15 @@
 define [
-    'structures/avl_tree'
-], (AvlTree) ->
-    class Effectable
-        ->
-            @effects = new AvlTree()
+], ->
+    {
+        notifyRegisteredEffects: (action, relationship, game_state) ->
+            for e in @effects
+                e.notify(action, relationship, game_state)
 
-        forEachMatchingEffect: (event_type, callback) ->
-            @effects.findAllByKey(event_type, callback)
+        notify: (action, relationship, game_state) ->
+            @notifyRegisteredEffects(action, relationship, game_state)
 
-        forEachEffect: (callback) ->
-            @effects.forEach(callback)
+        registerEffect: (effect) ->
+            @effects.push(effect)
 
         addEffect: (effect) ->
-            @effects.insert(effect.eventType, effect)
+    }

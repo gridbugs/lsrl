@@ -1,5 +1,5 @@
 define [
-    'action/action'
+    'assets/actions/actions'
     'interface/auto_move'
     'types'
     'structures/search'
@@ -23,7 +23,10 @@ define [
                     if action.toCell.character?
                         action = new Action.Attack(@character, control.direction)
 
-                    cb action
+                    if action.toCell.feature.type == Types.Feature.Door and action.toCell.feature.isClosed()
+                        action = new Action.OpenDoor(@character, control.direction)
+
+                    cb(action)
             |   Types.Control.AutoDirection
                     @character.setAutoMove(
                         new AutoMove.StraightLineMove @character, control.direction
@@ -47,13 +50,13 @@ define [
                             return
 
                         kcell = @character.getKnowledge().grid.getCart(coord)
-                        if kcell.fixture.type == Types.Fixture.Null
+                        if kcell.feature.type == Types.Feature.Null
                             switch (kcell.ground.type)
                             |   Types.Ground.Dirt => UserInterface.printLine "Dirt floor"
                         else
-                            switch (kcell.fixture.type)
-                            |   Types.Fixture.Wall => UserInterface.printLine "A wall"
-                            |   Types.Fixture.Web => UserInterface.printLine "A spider web"
+                            switch (kcell.feature.type)
+                            |   Types.Feature.Wall => UserInterface.printLine "A wall"
+                            |   Types.Feature.Web => UserInterface.printLine "A spider web"
 
                         if kcell.gameCell.items.length() > 0
                             kcell.gameCell.items.forEachItemType (_, items) ->
@@ -64,13 +67,13 @@ define [
                     , (coord) ~>
                         UserInterface.clearLine()
                         kcell = @character.getKnowledge().grid.getCart(coord)
-                        if kcell.fixture.type == Types.Fixture.Null
+                        if kcell.feature.type == Types.Feature.Null
                             switch (kcell.ground.type)
                             |   Types.Ground.Dirt => UserInterface.print "Dirt floor"
                         else
-                            switch (kcell.fixture.type)
-                            |   Types.Fixture.Wall => UserInterface.print "A wall"
-                            |   Types.Fixture.Web => UserInterface.print "A spider web"
+                            switch (kcell.feature.type)
+                            |   Types.Feature.Wall => UserInterface.print "A wall"
+                            |   Types.Feature.Web => UserInterface.print "A spider web"
 
 
 
@@ -217,7 +220,7 @@ define [
                 result = Search.findPath @character.getKnowledgeCell(), \
                     ((c, d) -> c.gameCell.getMoveOutCost(d)), \
                     ((c) ~>
-                        return c.known and (c.gameCell.character == @character or c.gameCell.isEmpty())), \
+                        return c.known and (c.gameCell.character == @character or (not c.gameCell.feature.isSolid()))), \
                     dest_cell
 
                 if result?

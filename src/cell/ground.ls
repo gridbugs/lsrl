@@ -4,9 +4,8 @@ define [
     'action/effectable'
 ], (Types, Effect, Effectable) ->
 
-    class Ground extends Effectable
+    class Ground implements Effectable
         (@type) ->
-            super()
 
     class Dirt extends Ground
         ->

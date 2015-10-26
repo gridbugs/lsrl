@@ -12,8 +12,8 @@ define [
             i = 0
             for k, v of object
                 type[k] = i
-                v.prototype.type = i
-                v.prototype.typeName = k
+                v::type = i
+                v::typeName = k
                 ++i
             Types[name] = type
 

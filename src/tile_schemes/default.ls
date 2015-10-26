@@ -1,10 +1,10 @@
 define [
-    'cell/fixture'
+    'assets/features/features'
     'structures/grid'
     'util'
     'types'
     'debug'
-], (Fixture, Grid, Util, Types, Debug) ->
+], (Feature, Grid, Util, Types, Debug) ->
 
     const TileType = Util.enum([
         \Error
@@ -45,7 +45,7 @@ define [
         (@openTile, @closedTile) ->
 
         getTile: (cell) ->
-            if cell.fixture.isOpen()
+            if cell.feature.isOpen()
                 return @openTile
             else
                 return @closedTile
@@ -78,8 +78,8 @@ define [
 
     class TileCell
         (@x, @y) ->
-            @fixture = void
-            @fixtureTile = void
+            @feature = void
+            @featureTile = void
             @ground = void
             @groundTile = void
 
@@ -87,13 +87,13 @@ define [
         (@width, @height, @scheme) ->
             @grid = new Grid(TileCell, @width, @height)
 
-        getCachedFixture: (cell) ->
+        getCachedFeature: (cell) ->
             cached = @grid.getCart(cell)
-            if cached.fixture == cell.fixture
-                return cached.fixtureTile.getTile(cell)
-            cached.fixture = cell.fixture
-            cached.fixtureTile = @scheme.fixtureTable[cell.fixture.type](cell)
-            return cached.fixtureTile.getTile(cell)
+            if cached.feature == cell.feature
+                return cached.featureTile.getTile(cell)
+            cached.feature = cell.feature
+            cached.featureTile = @scheme.featureTable[cell.feature.type](cell)
+            return cached.featureTile.getTile(cell)
 
         getCachedGround: (cell) ->
             cached = @grid.getCart(cell)
@@ -117,8 +117,8 @@ define [
                 top_item = cell.items.first()
                 return @scheme.flatItemTable[top_item.type].getTile(cell)
 
-            if cell.fixture.type != Types.Fixture.Null
-                return @getCachedFixture(cell)
+            if cell.feature.type != Types.Feature.Null
+                return @getCachedFeature(cell)
 
             return @getCachedGround(cell)
 
@@ -130,7 +130,7 @@ define [
 
             @tiles = Util.joinObjectTable TileType, @tileSet
 
-            @fixtureTable = Util.table Types.Fixture, Util.mergeObjects({
+            @featureTable = Util.table Types.Feature, Util.mergeObjects({
                 Wall:       ~> @simple(\Wall)
                 Web:        ~> @simple(\SpiderWeb)
                 Tree:       ~> @simple(\Tree)
@@ -166,7 +166,7 @@ define [
                 CarnivorousShrubbery:   ~> @simple(\CarnivorousShrubbery)
             }
 
-            @flatFixtureTable = @createFlatTable(@fixtureTable)
+            @flatFeatureTable = @createFlatTable(@featureTable)
             @flatGroundTable = @createFlatTable(@groundTable)
             @flatItemTable = @createFlatTable(@itemTable)
             @flatCharacterTable = @createFlatTable(@characterTable)

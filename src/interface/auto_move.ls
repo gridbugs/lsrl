@@ -1,5 +1,5 @@
 define [
-    'action/action'
+    'assets/actions/actions'
     'structures/search'
     'structures/direction'
     'types'
@@ -10,7 +10,7 @@ define [
     class SurroundingCells
         (centre, direction) ->
             cells = Direction.Fronts[direction].map (centre.neighbours.)
-            @cellStates = cells.map (c) -> c.fixture.type
+            @cellStates = cells.map (c) -> c.feature.type
 
         matches: (other) ->
             for i from 0 til @cellStates.length
@@ -25,12 +25,13 @@ define [
 
         hasAction: ->
             dest = @character.getCell().neighbours[@direction]
-            if not dest.isEmpty()
+            if dest.feature.isSolid()
                 return false
             surroundings = new SurroundingCells(@character.getCell(), @direction)
             return surroundings.matches(@initialSurroundings)
 
-        canStart: -> @character.getCell().fixture.type == Types.Fixture.Null
+        canStart: ->
+            return not @character.getCell().feature.isSolid()
 
         getAction: (game_state, cb) ->
             cb(new Action.Move(@character, @direction, game_state))
@@ -44,7 +45,7 @@ define [
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell(), \
                         ((c, d) -> c.gameCell.getMoveOutCost d), \
-                        ((c) ~> c.known and (c.gameCell.character == @character or c.gameCell.isEmpty() or c.fixture.type == Types.Fixture.Door)), \
+                        ((c) ~> c.known and (c.gameCell.character == @character or (not c.gameCell.feature.isSolid()) or c.feature.type == Types.Feature.Door)), \
                         ((c) -> c.hasUnknownNeighbour()), \
                         true
             if result?
@@ -62,14 +63,14 @@ define [
 
         getAction: (game_state, cb) ->
 
-            if @path[@nextIndex].fixture.type == Types.Fixture.Door and not @path[@nextIndex].fixture.isOpen()
-                action = new Action.Move(@character, @directions[@nextIndex], game_state)
+            if @path[@nextIndex].feature.type == Types.Feature.Door and not @path[@nextIndex].feature.isOpen()
+                action = new Action.OpenDoor(@character, @directions[@nextIndex])
                 @atDestination = true
                 cb(action)
                 return
 
 
-            action = new Action.Move(@character, @directions[@nextIndex], game_state)
+            action = new Action.Move(@character, @directions[@nextIndex])
             ++@nextIndex
             if @nextIndex == @directions.length
                 @atDestination = true

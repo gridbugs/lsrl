@@ -6,11 +6,6 @@ define [
     'types'
 ], (Event, Action, Damage, UserInterface, Types) ->
 
-    class Effectable
-        forEachEffect: (f) ->
-            for e in @effects
-                f e
-
     class ContinuousEffect
 
     class Poisoned extends ContinuousEffect
@@ -118,7 +113,6 @@ define [
 
 
     {
-        Effectable
         CellIsSolid
         CellIsSticky
         CellIsOpenable

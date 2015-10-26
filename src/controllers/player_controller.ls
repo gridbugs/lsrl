@@ -33,19 +33,13 @@ define [
             return @turnCount
 
         getKnowledge: -> @knowledge
-        canEnterCell: (c) -> not (c.fixture.type == Types.Fixture.Wall)
         getCell: -> @character.getCell()
         getKnowledgeCell: -> @knowledge.grid.getCart(@character.getPosition())
 
         getName: -> @name
 
         getOpacity: (cell) ->
-            if cell.fixture.type == Types.Fixture.Tree
-                return 0.5
-            else if cell.fixture.type == Types.Fixture.Wall
-                return 1
-            else
-                return 0
+            return cell.feature.getOpacity()
 
         getAction: (game_state, cb) ->
 

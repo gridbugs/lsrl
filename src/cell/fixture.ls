@@ -1,14 +1,15 @@
 define [
+    'assets/effects/effects'
     'types'
     'action/effect'
     'action/effectable'
     'util'
     'debug'
-], (Types, Effect, Effectable, Util, Debug) ->
+], (Effects, Types, Effect, Effectable, Util, Debug) ->
 
-    class Fixture extends Effectable
+    class Fixture implements Effectable
         (@type) ->
-            super()
+            @effects = []
 
     class Null extends Fixture
         (cell) ->
@@ -19,7 +20,7 @@ define [
     class Wall extends Fixture
         (cell) ->
             super(Types.Fixture.Wall)
-            @addEffect(new Effect.Solid())
+            @registerEffect(new Effects.Solid())
 
         getName: -> 'Wall'
 
