@@ -1,11 +1,12 @@
 define [
     'structures/grid'
-    'cell/fixture'
+    'assets/features/features'
     'cell/ground'
     'structures/vec2'
+    'types'
     'util'
     'prelude-ls'
-], (Grid, Fixture, Ground, Vec2, Util, Prelude) ->
+], (Grid, Feature, Ground, Vec2, Types, Util, Prelude) ->
 
     filter = Prelude.filter
     map = Prelude.map
@@ -21,7 +22,7 @@ define [
     class Vertex
         (@grid, @x, @y) ->
             @cell = @grid.get(@x, @y)
-            @cell.setFixture Fixture.Tree
+            @cell.feature = new Feature.Tree()
             @visited = false
             coord = new Vec2(@x, @y)
             neighbour_coords = [
@@ -60,8 +61,8 @@ define [
             vertex_grid = new Grid(VertexCell, width, height)
             vertices = []
             grid.forEach (c, i, j) ~>
-                c.setGround Ground.Stone
-                c.setFixture Fixture.Wall
+                c.ground = new Ground.Stone()
+                c.feature = new Feature.Wall()
                 if i % 2 == 1 and j % 2 == 1 and i < width - 1 and j < height - 1
                     v = new Vertex grid, i, j
                     vertex_grid.get(i, j).vertex = v
@@ -77,8 +78,8 @@ define [
 
         getStartingPointHint: ->
             while true
-                c = @grid.getRandom!
-                if c.fixture.getName! == 'Null'
+                c = @grid.getRandom()
+                if c.feature.type == Types.Fixture.Null
                     return c
 
         createMazeDepthFirst: (start_vertex, grid) ->
@@ -87,10 +88,10 @@ define [
             stack = [new SearchNode(start_vertex, null)]
 
             while not empty stack
-                current = stack.pop!
-                current.vertex.cell.setFixture Fixture.Null
+                current = stack.pop()
+                current.vertex.cell.feature = new Feature.Null()
                 if current.edge_cell?
-                    current.edge_cell.setFixture Fixture.Null
+                    current.edge_cell.feature = new Feature.Null()
 
                 for n in current.vertex.neighbours
                     if not n.vertex.visited

@@ -1,17 +1,17 @@
 define [
-    'cell/fixture'
+    'assets/features/features'
     'cell/ground'
     'structures/grid'
-], (Fixture, Ground, Grid) ->
+], (Feature, Ground, Grid) ->
 
     class BorderGenerator
         generateGrid: (T, width, height) ->
             grid = new Grid(T, width, height)
             grid.forEach (c) ->
-                c.setGround Ground.Stone
-                c.setFixture Fixture.Null
+                c.ground = new Ground.Stone()
+                c.feature = new Feature.Null()
             grid.forEachBorder (c) ->
-                c.setFixture Fixture.Wall
+                c.feature = new Feature.Wall()
 
             @grid = grid
             return grid

@@ -21,16 +21,6 @@ define [
     class ReactiveEffect
         (@eventType) ->
 
-    class Solid extends ReactiveEffect
-        ->
-            super(Types.Event.MoveToCell)
-
-        apply: (status) ->
-            status.fail('attempted to enter solid cell')
-            status.gameState.enqueueAction(
-                new Action.BumpIntoWall(status.action.character)
-            )
-
     class WebEntry extends ReactiveEffect
         ->
             super(Types.Event.MoveToCell)
@@ -50,18 +40,6 @@ define [
                 new Action.StruggleInWeb(status.action.character)
             )
 
-    class OpenOnEnter extends ReactiveEffect
-        ->
-            super(Types.Event.MoveToCell)
-
-        apply: (status) ->
-            cell = status.action.toCell
-            if cell.fixture.isClosed()
-                status.fail('opening door instead')
-                status.gameState.enqueueAction(
-                    new Action.OpenDoor(status.action.character, cell)
-                )
-
     class ResurrectOnDeath extends ReactiveEffect
         ->
             super(Types.Event.Death)
@@ -71,31 +49,6 @@ define [
             status.gameState.enqueueAction(
                 new Action.Resurrect(status.action.character)
             )
-
-    class CellIsSolid
-        (@cell) ->
-
-        match: (event) ->
-            event.type == Types.Event.MoveToCell and event.cell == @cell
-
-        cancells: (event) -> true
-
-        getActions: (event, game_state) ->
-            [new Action.BumpIntoWall(event.character, game_state)]
-
-    class CellIsOpenable
-        (@cell) ->
-
-        match: (event) ->
-            event.type == Types.Event.MoveToCell and event.cell == @cell
-
-        cancells: (event) -> not @cell.fixture.isOpen()
-
-        getActions: (event, game_state) ->
-            if @cell.fixture.isOpen()
-                []
-            else
-                [new Action.Open(event.character, @cell, game_state)]
 
     class CellIsSticky
         (@cell, @fixture) ->
@@ -113,13 +66,8 @@ define [
 
 
     {
-        CellIsSolid
-        CellIsSticky
-        CellIsOpenable
-        Solid
         WebEntry
         WebExit
-        OpenOnEnter
         Poisoned
         ResurrectOnDeath
     }

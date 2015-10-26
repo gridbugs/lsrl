@@ -14,6 +14,9 @@ define [
         isSolid: ->
             return true
 
+        isBenign: ->
+            return true
+
     # create debugging features for cells
     debugFeatureObj = {}
     for c in Debug.Chars

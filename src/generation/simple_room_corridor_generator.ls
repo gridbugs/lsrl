@@ -179,7 +179,7 @@ define [
             has_doors = [Math.random() < room_door_prob for _ from 0 til @numRooms]
 
             grid.forEach (cell) ->
-                fixture = switch cell.type
+                feature = switch cell.type
                 |   FREE => Feature.Wall
                 |   ROOM_WALL, HALLWAY_WALL => Feature.Wall
                 |   ENDPOINT_CANDIDATE => Feature.Wall
@@ -195,8 +195,8 @@ define [
                 |   DEBUG_C => Feature.c
                 |   DEBUG_D => Feature.d
 
-                if fixture?
-                    cell.feature = new fixture()
+                if feature?
+                    cell.feature = new feature()
 
         getEndpointCandidates: (grid) ->
             candidates = []

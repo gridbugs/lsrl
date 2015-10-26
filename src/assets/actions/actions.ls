@@ -65,8 +65,21 @@ define [
         commit: ->
             @doorCell.feature.open()
 
+    class Wait extends Action implements Action.CharacterAction
+        (@character, @time = 1) ->
+        
+        Relationships: Util.enum [
+            'Character'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+
+        commit: ->
+
     TypeSystem.makeType 'Action', {
         Move
         BumpIntoWall
         OpenDoor
+        Wait
     }

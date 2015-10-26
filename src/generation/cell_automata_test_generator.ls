@@ -1,5 +1,5 @@
 define [
-    'cell/fixture'
+    'assets/features/features'
     'cell/ground'
     'structures/grid'
     'util'
@@ -9,7 +9,7 @@ define [
     'interface/user_interface'
     'structures/search'
     'prelude-ls'
-], (Fixture, Ground, Grid, Util, Types, Debug, Direction, UserInterface, Search, Prelude) ->
+], (Feature, Ground, Grid, Util, Types, Debug, Direction, UserInterface, Search, Prelude) ->
 
     const filter = Prelude.filter
     const map = Prelude.map
@@ -52,11 +52,11 @@ define [
 
             game_grid = new Grid T, x, y
             game_grid.forEach (c, i, j) ~>
-                c.setGround Ground.Dirt
+                c.ground = new Ground.Dirt()
                 if @ca_grid.get(i, j).alive
-                    c.setFixture Fixture.Wall
+                    c.feature = new Feature.Wall()
                 else
-                    c.setFixture Fixture.Null
+                    c.feature = new Feature.Null()
 
             @maxGridSpace = @maxSpace |> map (x)~>game_grid.getCart x
 
@@ -143,7 +143,7 @@ define [
                     c = @grid.get(@x + j, @y + i)
                     @cells.push(c)
                     c.room = this
-                    c.setGround(Ground.Stone)
+                    c.ground = new Ground.Stone()
 
             @entranceCandidates = []
             for s in @sides
@@ -175,45 +175,44 @@ define [
 
                 count = 0
                 for d in Direction.CardinalDirections
-                    if entrance.doorway.neighbours[d].fixture.type != Types.Fixture.Wall
+                    if entrance.doorway.neighbours[d].feature.type != Types.Feature.Wall
                         ++count
 
                 if count >= 3
                     return
 
 
-                if entrance.outside.fixture.type == Types.Fixture.Null
-                    entrance.doorway.setFixture(Fixture.Null)
-                    entrance.doorway.setGround(Ground.Stone)
+                if entrance.outside.feature.type == Types.Feature.Null
+                    entrance.doorway.feature = new Feature.Null()
+                    entrance.doorway.ground = new Ground.Stone()
                     return
 
                 if main_only
-                    f = (cell) ~> cell.fixture.type == Types.Fixture.Null and cell.main?
+                    f = (cell) ~> cell.feature.type == Types.Feature.Null and cell.main?
                 else
-                    f = (cell) ~> cell.fixture.type == Types.Fixture.Null
+                    f = (cell) ~> cell.feature.type == Types.Feature.Null
 
-                #entrance.outside.setFixture(Fixture.Null)
                 result = Search.findClosest(entrance.outside,
                     ((_, d) -> if Direction.isCardinal(d) then return 1 else return 100000),
                     ((cell) ~> cell.room != this),
                     f, true)
 
-            entrance.doorway.setFixture(Fixture.Null)
-            entrance.doorway.setGround(Ground.Stone)
+            entrance.doorway.feature = new Feature.Null()
+            entrance.doorway.ground = new Ground.Stone()
 
-            entrance.outside.setFixture(Fixture.Null)
-            entrance.outside.setGround(Ground.Stone)
+            entrance.outside.feature = new Feature.Null()
+            entrance.outside.ground = new Ground.Stone()
             for c in result.path
-                c.setFixture(Fixture.Null)
-                c.setGround(Ground.Stone)
+                c.feature = new Feature.Null()
+                c.ground = new Ground.Stone()
 
             count = 0
             for d in Direction.CardinalDirections
-                if entrance.doorway.neighbours[d].fixture.type != Types.Fixture.Wall
+                if entrance.doorway.neighbours[d].feature.type != Types.Feature.Wall
                     ++count
 
             if count == 2
-                entrance.doorway.setFixture(Fixture.Door)
+                entrance.doorway.feature = new Feature.Door()
 
     Room.createRandom = (min, max) ->
         new Room(Util.getRandomInt(min, max), Util.getRandomInt(min, max))
@@ -228,7 +227,7 @@ define [
                         grid.getCart(c).main = true
                 else
                     for c in s
-                        grid.getCart(c).setFixture Fixture.Wall
+                        grid.getCart(c).feature = new Feature.Wall()
 
             @rooms = []
 
@@ -257,17 +256,17 @@ define [
             for i from 0 til room.height
                 for j from 0 til room.width
                     c = grid.get(j + x, i + y)
-                    Debug.assert(c.fixture.type == Types.Fixture.Wall)
-                    c.setFixture(Fixture.Null)
+                    Debug.assert(c.feature.type == Types.Feature.Wall)
+                    c.feature = new Feature.Null()
 
         roomValidAtPosition: (grid, room, x, y) ->
             for i from 0 til room.height
                 for j from 0 til room.width
                     c = grid.get(j + x, i + y)
-                    if c.fixture.type != Types.Fixture.Wall
+                    if c.feature.type != Types.Feature.Wall
                         return false
                     for n in c.neighbours
-                        if not n? or n.fixture.type != Types.Fixture.Wall
+                        if not n? or n.feature.type != Types.Feature.Wall
                             return false
 
             return true

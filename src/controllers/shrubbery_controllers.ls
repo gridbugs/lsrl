@@ -1,6 +1,6 @@
 define [
     'controllers/controller'
-    'action/action'
+    'assets/actions/actions'
     'types'
     'util'
 ], (Controller, Action, Types, Util) ->

@@ -10,7 +10,7 @@ define [
     'structures/vec2'
     'common/game_state'
     'cell/cell'
-    'cell/fixture'
+    'assets/features/features'
     'util'
     'structures/linked_list'
     'structures/binary_tree'
@@ -29,7 +29,7 @@ define [
     'drawing/tile'
     'front_ends/browser/canvas/drawing/tile'
 ], (prelude, border_generator, vision_test, perlin_test_generator, cell_automata_test_generator, MazeGenerator, \
-    PlayerController, character, Vec2, GameState, Cell, Fixture, Util, LinkedList, BinaryTree, \
+    PlayerController, character, Vec2, GameState, Cell, Feature, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
     Effect, Assets, Tile, CanvasTile) ->
 
@@ -77,24 +77,24 @@ define [
         if Config.GENERATOR == 'cell_automata'
             grid.forEach (c) ->
                 if Math.random() < 0.03
-                    if c.fixture.type == Types.Fixture.Null
-                        c.setFixture Fixture.Web
+                    if c.feature.type == Types.Feature.Null
+                        c.feature = new Feature.Web()
                 else if Math.random() < 0.03
-                    if c.fixture.type == Types.Fixture.Null
+                    if c.feature.type == Types.Feature.Null
                         item = new Item.Stone()
                         c.addItem item
                 else if Math.random() < 0.03
-                    if c.fixture.type == Types.Fixture.Null
+                    if c.feature.type == Types.Feature.Null
                         c.addItem new Item.Plant()
                 else if Math.random() < 0.01
-                    if c.fixture.type == Types.Fixture.Null
+                    if c.feature.type == Types.Feature.Null
                         c.character = new Assets.Characters.Shrubbery(c.position, grid, NullController)
                 else if Math.random() < 0.005
-                    if c.fixture.type == Types.Fixture.Null and not c.character?
+                    if c.feature.type == Types.Feature.Null and not c.character?
                         c.character = new Assets.Characters.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
                 else if Math.random() < 0.005
-                    if c.fixture.type == Types.Fixture.Null and not c.character?
+                    if c.feature.type == Types.Feature.Null and not c.character?
                         c.character = new Assets.Characters.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
 

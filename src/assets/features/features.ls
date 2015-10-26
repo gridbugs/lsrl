@@ -83,6 +83,19 @@ define [
         isSolid: ->
             return false
 
+    class Web extends Feature
+        ->
+            super()
+
+        getOpacity: ->
+            return 0.3
+
+        isSolid: ->
+            return false
+
+        isBenign: ->
+            return false
+
     Util.mergeObjects Feature.DebugFeatures, TypeSystem.makeType 'Feature', {
         Wall
         Door
@@ -90,5 +103,6 @@ define [
         Water
         Bridge
         StoneDownwardStairs
+        Web
         Null: Feature.NullFeature
     }
