@@ -3,20 +3,6 @@ define [
     'debug'
 ], (Util, Debug) ->
 
-    const Fixture = Util.enum([
-        \Null
-        \Wall
-        \Web
-        \Tree
-        \Door
-        \BrickWall
-        \DirtWall
-        \Water
-        \Bridge
-        \StoneDownwardStairs
-        \StoneUpwardStairs
-    ] ++ Debug.Chars)
-
     const Ground = Util.enum [
         \Dirt
         \Stone
@@ -71,26 +57,11 @@ define [
         \Plant
     ]
 
-    const Event = Util.enum [
-        \MoveToCell
-        \MoveFromCell
-        \CharacterMove
-        \Death
-    ]
-
-    const Damage = Util.enum [
-        \Physical
-        \Poison
-    ]
-
     {
-        Fixture
         Ground
         Direction
         CardinalDirection
         OrdinalDirection
         Control
         Item
-        Event
-        Damage
     }

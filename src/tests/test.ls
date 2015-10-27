@@ -22,14 +22,13 @@ define [
     'config'
     'types'
     'controllers/shrubbery_controllers'
-    'action/effect'
     'assets/assets'
     'drawing/tile'
     'front_ends/browser/canvas/drawing/tile'
 ], (prelude, border_generator, cell_automata_test_generator, MazeGenerator, \
     PlayerController, character, Vec2, GameState, Cell, Feature, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
-    Effect, Assets, Tile, CanvasTile) ->
+    Assets, Tile, CanvasTile) ->
 
     const WIDTH = 80
     const HEIGHT = 30
@@ -92,7 +91,6 @@ define [
                         gs.scheduleActionSource(c.character.controller, 0)
 
         gs.registerObserver(char)
-        char.addEffect(new Effect.ResurrectOnDeath())
 
         return gs
 

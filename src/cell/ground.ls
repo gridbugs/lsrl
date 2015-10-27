@@ -1,8 +1,7 @@
 define [
     'types'
-    'action/effect'
     'action/effectable'
-], (Types, Effect, Effectable) ->
+], (Types, Effectable) ->
 
     class Ground implements Effectable
         (@type) ->

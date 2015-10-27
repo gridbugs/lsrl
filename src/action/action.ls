@@ -1,9 +1,8 @@
 define [
-    'action/action_status'
     'interface/user_interface'
     'types'
     'type_system'
-], (ActionStatus, UserInterface, Types, TypeSystem) ->
+], (UserInterface, Types, TypeSystem) ->
 
     class Action
         ->

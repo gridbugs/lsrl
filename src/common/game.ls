@@ -5,7 +5,7 @@ define [
     'assets/require'
     'config'
     'debug'
-], (UserInterface, Test, Util, _, Config, Debug) ->
+], (UserInterface, Test, Util, Require, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->

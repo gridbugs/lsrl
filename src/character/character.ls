@@ -1,13 +1,11 @@
 define [
     'interface/user_interface'
     'action/effectable'
-    'action/effect'
-    'action/damage'
     'character/recursive_shadowcast'
     'character/omniscient'
     'types'
     'config'
-], (UserInterface, Effectable, Effect, Damage, RecursiveShadowcast, Omniscient, Types, Config) ->
+], (UserInterface, Effectable, RecursiveShadowcast, Omniscient, Types, Config) ->
 
     if Config.OMNISCIENT_CHARACTERS
         Observer = Omniscient
@@ -17,13 +15,8 @@ define [
     class Character implements Effectable
         (@type, @position, @grid, @Controller) ->
             @effects = []
-
             @controller = new @Controller(this, @position, @grid)
-
             @hitPoints = 10
-
-            @poison = 0
-            @poisonThreshold = 10
             @alive = true
 
         getPosition: ->
@@ -41,14 +34,8 @@ define [
         getController: ->
             return @controller
 
-        getPosition: ->
-            return @position
-
         getCell: ->
             return @grid.getCart(@getPosition())
-
-        getCurrentMoveTime: ->
-            return 10
 
         getKnowledgeCell: ->
             @controller.getKnowledgeCell()
@@ -68,34 +55,11 @@ define [
         getCurrentAttackDamage: ->
             return new Damage.PhysicalDamage(3)
 
-        getCurrentAttackTime: ->
-            10
-
-        getCurrentResistance: ->
-            return 3
-
         getCurrentHitPoints: ->
             return @hitPoints
 
         takeDamage: (damage) ->
             @hitPoints = Math.max(0, @hitPoints - damage)
-
-        isAlive: ->
-            @hitPoints > 0
-
-        accumulatePoison: (amount) ->
-            @poison += amount
-
-        isPoisoned: ->
-            return @poison > @poisonThreshold
-
-        clearPoison: ->
-            @poison = 0
-
-        becomePoisoned: (game_state, damage_rate, duration) ->
-            @clearPoison()
-            UserInterface.printLine "Becomes poisoned."
-            game_state.registerContinuousEffect(new Effect.Poisoned(this, damage_rate), duration)
 
         setObserverNode: (node) ->
             @observerNode = node

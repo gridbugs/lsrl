@@ -1,9 +1,8 @@
 define [
     'character/character'
     'assets/weapon/weapon'
-    'action/damage'
     'types'
-], (Character, Weapons, Damage, Types) ->
+], (Character, Weapons, Types) ->
 
     class Shrubbery extends Character
         (position, grid, Controller) ->
@@ -21,12 +20,6 @@ define [
 
         getName: -> 'Poison Shrubbery'
 
-        getCurrentAttackTime: ->
-            return 40
-
-        getCurrentAttackDamage: ->
-            return new Damage.PoisoningPhysicalDamage(1, 100, 0.01, 50)
-
     class CarnivorousShrubbery extends Character
         (position, grid, Controller) ->
             super(Types.Character.CarnivorousShrubbery, position, grid, Controller)
@@ -34,9 +27,6 @@ define [
             @weapon = new Weapons.ShrubberyTeeth()
 
         getName: -> 'Carnivorous Shrubbery'
-
-        getCurrentAttackTime: ->
-            return 40
 
     {
         Shrubbery
