@@ -6,4 +6,5 @@ define [
             super()
 
         getAction: (game_state, callback) ->
+            @active = false
             callback(@action)

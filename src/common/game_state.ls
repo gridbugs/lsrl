@@ -74,9 +74,18 @@ define [
         enqueueAction: (action) ->
             @actionQueue.push(action)
 
-        applyAction: (action) ->
+        applyAction: (action, source) ->
             @enqueueAction(action)
+            @processFirstAction(source)
             @processActions()
+
+        processFirstAction: (source) ->
+            while @actionQueue.length != 0
+                current_action = @actionQueue.pop()
+                if current_action.apply(this)
+                    if source.active
+                        @scheduleActionSource(source, current_action.time)
+                    return
 
         processActions: ->
             while @actionQueue.length != 0

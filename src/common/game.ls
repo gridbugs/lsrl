@@ -66,7 +66,7 @@ define [
 
             UserInterface.updateHud(@gameState.playerCharacter.character)
             action_source.getAction @gameState, (action) ~>
-                @gameState.applyAction(action)
+                @gameState.applyAction(action, action_source)
 
                 /* Get time until current action source (in game time) */
                 time = @gameState.getCurrentTimeDelta()

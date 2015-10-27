@@ -18,9 +18,8 @@ define [
 
             if @success
                 @commit(game_state)
-
-                if @rescheduleRequired
-                    game_state.scheduleActionSource(@getSource(), @time)
+                return true
+            return false
 
         prepare: ->
         commit: ->
