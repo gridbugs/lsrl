@@ -1,5 +1,5 @@
 define [
-    'assets/actions/actions'
+    'assets/action/action'
     'structures/search'
     'structures/direction'
     'types'
@@ -45,7 +45,7 @@ define [
         findDestination: ->
             result = Search.findClosest @character.getKnowledgeCell(), \
                         ((c, d) -> c.gameCell.getMoveOutCost d), \
-                        ((c) ~> c.known and (c.gameCell.character == @character or (not c.gameCell.feature.isSolid()) or c.feature.type == Types.Feature.Door)), \
+                        ((c) ~> c.known and (c.gameCell.character == @character or (c.gameCell.feature.isBenign() and not c.gameCell.feature.isSolid()) or c.feature.type == Types.Feature.Door)), \
                         ((c) -> c.hasUnknownNeighbour()), \
                         true
             if result?

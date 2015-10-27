@@ -7,7 +7,7 @@ define [
     'structures/direction'
     'structures/doubly_linked_list'
     'structures/visited_list'
-    'assets/features/features'
+    'assets/feature/feature'
     'cell/ground'
     'cell/simple_cell'
     'constants'

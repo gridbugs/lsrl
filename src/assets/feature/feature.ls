@@ -1,9 +1,11 @@
 define [
     'cell/feature'
-    'assets/effects/effects'
-    'type_system'
+    'assets/action/action'
+    'assets/effect/reactive_effect'
+    'asset_system'
     'util'
-], (Feature, Effects, TypeSystem, Util) ->
+    'types'
+], (Feature, Actions, Effects, AssetSystem, Util, Types) ->
 
     class SolidFeature extends Feature
         ->
@@ -84,11 +86,12 @@ define [
             return false
 
     class Web extends Feature
-        ->
+        (@cell) ->
             super()
+            @strength = Util.getRandomInt(3, 6)
 
         getOpacity: ->
-            return 0.3
+            return 0
 
         isSolid: ->
             return false
@@ -96,7 +99,22 @@ define [
         isBenign: ->
             return false
 
-    Util.mergeObjects Feature.DebugFeatures, TypeSystem.makeType 'Feature', {
+        notify: (action, relationship, game_state) ->
+            if action.type == Types.Action.Move and relationship == action.Relationships.SourceCell
+                action.success = false
+                game_state.enqueueAction(new Actions.StruggleInWeb(action.character, @cell))
+            else if action.type == Types.Action.StruggleInWeb and relationship == action.Relationships.Cell and @strength == 0
+                action.success = false
+                game_state.enqueueAction(new Actions.BreakWeb(action.character, @cell))
+            @notifyRegisteredEffects()
+
+        weaken: ->
+            --@strength
+
+        break: ->
+            @cell.feature = new Feature.NullFeature()
+
+    AssetSystem.exposeAssets 'Feature', Util.mergeObjects Feature.DebugFeatures, {
         Wall
         Door
         Tree

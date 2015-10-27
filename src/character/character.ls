@@ -17,7 +17,6 @@ define [
     class Character implements Effectable
         (@type, @position, @grid, @Controller) ->
             @effects = []
-            @addEffect(new Effect.Solid())
 
             @controller = new @Controller(this, @position, @grid)
 
@@ -25,6 +24,7 @@ define [
 
             @poison = 0
             @poisonThreshold = 10
+            @alive = true
 
         getPosition: ->
             return @position
@@ -77,14 +77,11 @@ define [
         getCurrentHitPoints: ->
             return @hitPoints
 
-        takeNetDamage: (damage) ->
+        takeDamage: (damage) ->
             @hitPoints = Math.max(0, @hitPoints - damage)
 
         isAlive: ->
             @hitPoints > 0
-
-        resurrect: ->
-            @hitPoints = 10
 
         accumulatePoison: (amount) ->
             @poison += amount
@@ -104,7 +101,13 @@ define [
             @observerNode = node
 
         die: (game_state) ->
-            @controller.deactivate()
-            if @observerNode?
-                game_state.removeObserverNode(@observerNode)
-            @getCell().character = void
+            if @alive
+                @alive = false
+                @controller.deactivate()
+                if @observerNode?
+                    game_state.removeObserverNode(@observerNode)
+                @getCell().character = void
+
+        notify: (action, relationship, game_state) ->
+            @weapon.notify(action, relationship, game_state)
+            @notifyRegisteredEffects()

@@ -2,12 +2,13 @@ define [
     'action/action_status'
     'interface/user_interface'
     'types'
-], (ActionStatus, UserInterface, Types) ->
+    'type_system'
+], (ActionStatus, UserInterface, Types, TypeSystem) ->
 
     class Action
         ->
             @success = true
-            @time = 0
+            @time = 1
             @rescheduleRequired = true
 
         addTime: (time) ->
@@ -17,7 +18,7 @@ define [
             @prepare(game_state)
 
             if @success
-                @commit()
+                @commit(game_state)
 
                 if @rescheduleRequired
                     game_state.scheduleActionSource(@getSource(), @time)
@@ -31,5 +32,20 @@ define [
         getSource: ->
             return @character.getController()
     }
+
+    class RemoveContinuousEffect extends Action
+        (@node, @effect) ->
+            super()
+            @rescheduleRequired = false
+
+        commit: (game_state) ->
+            @effect.finish()
+            game_state.removeContinuousEffectNode(@node)
+
+    TypeSystem.makeType 'Action', {
+        RemoveContinuousEffect
+    }
+
+    Action.RemoveContinuousEffect = RemoveContinuousEffect
 
     return Action

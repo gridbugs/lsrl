@@ -1,5 +1,5 @@
 define [
-    'assets/features/features'
+    'assets/feature/feature'
     'cell/ground'
     'structures/grid'
 ], (Feature, Ground, Grid) ->

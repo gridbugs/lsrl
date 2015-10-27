@@ -1,6 +1,6 @@
 define [
     'controllers/controller'
-    'action/action'
+    'assets/action/action'
 ], (Controller, Action) ->
 
     class NullController extends Controller

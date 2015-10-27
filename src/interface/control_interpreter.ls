@@ -1,5 +1,5 @@
 define [
-    'assets/actions/actions'
+    'assets/action/action'
     'interface/auto_move'
     'types'
     'structures/search'
@@ -22,8 +22,7 @@ define [
 
                     if action.toCell.character?
                         action = new Action.Attack(@character, control.direction)
-
-                    if action.toCell.feature.type == Types.Feature.Door and action.toCell.feature.isClosed()
+                    else if action.toCell.feature.type == Types.Feature.Door and action.toCell.feature.isClosed()
                         action = new Action.OpenDoor(@character, control.direction)
 
                     cb(action)

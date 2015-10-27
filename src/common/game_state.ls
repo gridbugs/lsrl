@@ -43,6 +43,8 @@ define [
                 @continuousEffects.forEach (effect) ~>
                     effect.apply(@timeDelta, this)
 
+                @processActions()
+
         registerContinuousEffect: (effect, length) ->
             node = @continuousEffects.insert(effect)
             remover = new Action.RemoveContinuousEffect(node, effect)

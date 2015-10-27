@@ -1,0 +1,16 @@
+define [
+    'effect/continuous_effect'
+    'assets/assets'
+    'asset_system'
+], (ContinuousEffect, Assets, AssetSystem) ->
+
+    class Poisoned extends ContinuousEffect
+        (@character) ->
+
+        apply: (time_delta, game_state) ->
+            game_state.enqueueAction(new Assets.Action.TakeDamage(@character, time_delta))
+            
+
+    AssetSystem.exposeAssets 'ContinuousEffect', {
+        Poisoned
+    }

@@ -4,7 +4,7 @@ define [
     'structures/visited_list'
     'structures/search'
     'structures/connection_tracker'
-    'assets/features/features'
+    'assets/feature/feature'
     'cell/ground'
     'structures/vec2'
     'structures/direction'

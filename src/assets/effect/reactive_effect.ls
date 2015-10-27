@@ -1,8 +1,8 @@
 define [
-    'assets/actions/actions'
+    'assets/action/action'
     'types'
-    'type_system'
-], (Actions, Types, TypeSystem) ->
+    'asset_system'
+], (Actions, Types, AssetSystem) ->
 
     class Solid
         notify: (action, relationship, game_state) ->
@@ -11,6 +11,6 @@ define [
 
                 game_state.enqueueAction(new Actions.BumpIntoWall(action.character, action.toCell))
 
-    TypeSystem.makeType 'Effect', {
+    AssetSystem.exposeAssets 'ReactiveEffect', {
         Solid
     }

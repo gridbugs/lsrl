@@ -6,9 +6,7 @@ define [
     'types'
 ], (Event, Action, Damage, UserInterface, Types) ->
 
-    class ContinuousEffect
-
-    class Poisoned extends ContinuousEffect
+    class Poisoned
         (@character, @damage_rate) ->
 
         apply: (time_delta, game_state) ->

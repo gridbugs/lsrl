@@ -2,9 +2,10 @@ define [
     'interface/user_interface'
     'tests/test'
     'util'
+    'assets/require'
     'config'
     'debug'
-], (UserInterface, Test, Util, Config, Debug) ->
+], (UserInterface, Test, Util, _, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->
@@ -36,9 +37,8 @@ define [
             else
                 return t * Config.ANIMATION_TIME
         gameLoop: ->
-
-            @gameState.processContinuousEffects()
             @gameState.processObservers()
+            @gameState.processContinuousEffects()
             UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
             UserInterface.updateHud(@gameState.playerCharacter.character)
 
@@ -64,8 +64,8 @@ define [
                 @gameState.progressSchedule()
             until action_source.isActive()
 
+            UserInterface.updateHud(@gameState.playerCharacter.character)
             action_source.getAction @gameState, (action) ~>
-
                 @gameState.applyAction(action)
 
                 /* Get time until current action source (in game time) */

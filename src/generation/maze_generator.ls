@@ -1,6 +1,6 @@
 define [
     'structures/grid'
-    'assets/features/features'
+    'assets/feature/feature'
     'cell/ground'
     'structures/vec2'
     'types'
