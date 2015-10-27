@@ -117,8 +117,6 @@ define [
             coord_idx = COORD_IDX
             coord_idx.arraySet(depth_index, depth_absolute_index)
 
-            in_range = false
-
             for i from start_index to stop_index
                 last_iteration = i == stop_index
 
@@ -126,11 +124,11 @@ define [
                 cell = knowledge_grid.array[coord_idx.y][coord_idx.x]
 
                 if (cell.gameCell.position.distanceSquared(eye_cell.position)) < (character.viewDistanceSquared)
-                    in_range = true
                     if cell.timestamp != game_state.getTurnCount()
                         cell.see(game_state)
 
                 cell_opacity = character.getOpacity(cell)
+                
                 current_visibility = Math.max(visibility - cell_opacity, 0)
 
                 next_min_slope = min_slope
@@ -168,10 +166,6 @@ define [
                 previous_visibility = current_visibility
                 first_iteration = false
 
-            if not in_range
-                until section_stack.empty()
-                    section_stack.pop()
-                return
 
 
     observe = (character, game_state) !->
@@ -244,7 +238,6 @@ define [
             Types.OrdinalDirection.NorthEast,
             1, Vec2.Y_IDX, height, width
         )
-
     {
         observe
     }

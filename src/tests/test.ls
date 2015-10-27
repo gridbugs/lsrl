@@ -45,11 +45,11 @@ define [
         else if Config.GENERATOR == 'border'
             c = new border_generator()
         else if Config.GENERATOR == 'catacombs'
-            c = new Assets.Generators.Catacombs()
+            c = new Assets.Generator.Catacombs()
         else if Config.GENERATOR == 'castle'
-            c = new Assets.Generators.Castle()
+            c = new Assets.Generator.Castle()
         else if Config.GENERATOR == 'surface'
-            c = new Assets.Generators.Surface()
+            c = new Assets.Generator.Surface()
 
         grid = c.generateGrid(Cell, WIDTH, HEIGHT)
 

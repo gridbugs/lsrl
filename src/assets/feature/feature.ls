@@ -91,7 +91,7 @@ define [
             @strength = Util.getRandomInt(3, 6)
 
         getOpacity: ->
-            return 0
+            return 0.3
 
         isSolid: ->
             return false
