@@ -5,7 +5,7 @@ define [
     'structures/search'
     'structures/connection_tracker'
     'assets/feature/feature'
-    'cell/ground'
+    'assets/ground/ground'
     'structures/vec2'
     'structures/direction'
     'generation/base_generator'

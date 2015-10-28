@@ -3,13 +3,6 @@ define [
     'debug'
 ], (Util, Debug) ->
 
-    const Ground = Util.enum [
-        \Dirt
-        \Stone
-        \Moss
-        \Grass
-    ]
-
     const Direction = Util.enum [
         \North
         \East
@@ -58,7 +51,6 @@ define [
     ]
 
     {
-        Ground
         Direction
         CardinalDirection
         OrdinalDirection

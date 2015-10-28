@@ -1,8 +1,7 @@
 define [
     'action/effectable'
     'debug'
-    'type_system'
-], (Effectable, Debug, TypeSystem) ->
+], (Effectable, Debug) ->
 
     class Feature implements Effectable
         ->
@@ -22,7 +21,7 @@ define [
     for c in Debug.Chars
         debugFeatureObj[c] = class extends Feature
 
-    Feature.DebugFeatures = TypeSystem.makeType('Feature', debugFeatureObj)
+    Feature.DebugFeatures = debugFeatureObj
 
     Feature.NullFeature  = class extends Feature
         isSolid: ->

@@ -2,7 +2,7 @@ define [
 ], ->
 
     {
-        GENERATOR: 'cell_automata'
+        GENERATOR: 'castle'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false
         ANIMATION_TIME: 3

@@ -1,8 +1,6 @@
 define [
     'interface/user_interface'
-    'types'
-    'type_system'
-], (UserInterface, Types, TypeSystem) ->
+], (UserInterface) ->
 
     class Action
         ->
@@ -30,20 +28,5 @@ define [
         getSource: ->
             return @character.getController()
     }
-
-    class RemoveContinuousEffect extends Action
-        (@node, @effect) ->
-            super()
-            @rescheduleRequired = false
-
-        commit: (game_state) ->
-            @effect.finish()
-            game_state.removeContinuousEffectNode(@node)
-
-    TypeSystem.makeType 'Action', {
-        RemoveContinuousEffect
-    }
-
-    Action.RemoveContinuousEffect = RemoveContinuousEffect
 
     return Action

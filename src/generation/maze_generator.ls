@@ -1,7 +1,7 @@
 define [
     'structures/grid'
     'assets/feature/feature'
-    'cell/ground'
+    'assets/ground/ground'
     'structures/vec2'
     'types'
     'util'
@@ -79,7 +79,7 @@ define [
         getStartingPointHint: ->
             while true
                 c = @grid.getRandom()
-                if c.feature.type == Types.Fixture.Null
+                if c.feature.type == Types.Feature.Null
                     return c
 
         createMazeDepthFirst: (start_vertex, grid) ->

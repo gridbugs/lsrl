@@ -8,7 +8,7 @@ define [
     'structures/doubly_linked_list'
     'structures/visited_list'
     'assets/feature/feature'
-    'cell/ground'
+    'assets/ground/ground'
     'cell/simple_cell'
     'constants'
     'types'
