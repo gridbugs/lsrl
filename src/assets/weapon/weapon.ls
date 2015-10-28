@@ -1,9 +1,10 @@
 define [
     'system/weapon'
     'assets/action/action'
-    'type_system'
+    'assets/effect/reactive_effect'
+    'asset_system'
     'types'
-], (Weapon, Actions, TypeSystem, Types) ->
+], (Weapon, Actions, ReactiveEffect, AssetSystem, Types) ->
 
     class BareHands extends Weapon
         ->
@@ -22,19 +23,19 @@ define [
     class ShrubberyPoisonSpikes extends Weapon
         ->
             super()
+            @poisons = new ReactiveEffect.PoisonOnHit()
 
         getAttackDamage: ->
             return 1
 
         notifyEffectable: (action, relationship, game_state) ->
-            if action.type == Types.Action.AttackHit and relationship == action.Relationships.Attacker
-                game_state.enqueueAction(new Actions.BecomePoisoned(action.targetCharacter))
+            @poisons.notify(action, relationship, game_state)
 
     class Null extends Weapon
         ->
             super()
 
-    TypeSystem.makeType 'Weapon', {
+    AssetSystem.exposeAssets 'Weapon', {
         BareHands
         ShrubberyTeeth
         ShrubberyPoisonSpikes
