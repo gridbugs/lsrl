@@ -12,10 +12,8 @@ define [
             super()
             @solid = new Effects.Solid()
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             @solid.notify(action, relationship, game_state)
-            @notifyRegisteredEffects()
-
 
     class Wall extends SolidFeature
         ->
@@ -34,10 +32,9 @@ define [
         open: -> @_isOpen = true
         close: -> @_isOpen = false
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             if not @isOpen()
                 @solid.notify(action, relationship, game_state)
-            @notifyRegisteredEffects()
 
         getOpacity: ->
             if @isOpen()
@@ -99,14 +96,13 @@ define [
         isBenign: ->
             return false
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             if action.type == Types.Action.Move and relationship == action.Relationships.SourceCell
                 action.success = false
                 game_state.enqueueAction(new Actions.StruggleInWeb(action.character, @cell))
             else if action.type == Types.Action.StruggleInWeb and relationship == action.Relationships.Cell and @strength == 0
                 action.success = false
                 game_state.enqueueAction(new Actions.BreakWeb(action.character, @cell))
-            @notifyRegisteredEffects()
 
         weaken: ->
             --@strength

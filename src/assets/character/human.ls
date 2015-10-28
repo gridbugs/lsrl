@@ -11,10 +11,9 @@ define [
 
             @weapon = new Weapons.BareHands()
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             if action.type == Types.Action.Die
                 action.success = false
                 game_state.enqueueAction(new Action.Restore(action.character))
-            @notifyRegisteredEffects()
 
         getName: -> 'Human'

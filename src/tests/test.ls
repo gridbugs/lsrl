@@ -100,8 +100,6 @@ define [
         for c in characters
             gs.registerCharacter(c)
 
-        console.debug char
-
         return gs
 
     {

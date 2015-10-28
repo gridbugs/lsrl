@@ -6,7 +6,7 @@ define [
 
     class Feature implements Effectable
         ->
-            @effects = []
+            @initEffectable()
 
         getOpacity: ->
             return 0

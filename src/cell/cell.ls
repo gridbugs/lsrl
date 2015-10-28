@@ -9,8 +9,9 @@ define [
     'types'
 ], (Vec2, Direction, Visitable, Neighbourable, Inventory, Effectable, Constants, Types) ->
 
-    class Cell implements Visitable, Neighbourable
+    class Cell implements Visitable, Neighbourable, Effectable
         (@x, @y) ->
+            @initEffectable()
             @position = new Vec2(@x, @y)
             @character = void
             @ground = void
@@ -26,7 +27,7 @@ define [
 
             @moveOutCost = 40
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             @feature.notify(action, relationship, game_state)
 
         getMoveOutCost: (direction) ->

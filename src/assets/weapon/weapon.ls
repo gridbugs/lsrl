@@ -26,11 +26,9 @@ define [
         getAttackDamage: ->
             return 1
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             if action.type == Types.Action.AttackHit and relationship == action.Relationships.Attacker
                 game_state.enqueueAction(new Actions.BecomePoisoned(action.targetCharacter))
-
-            @notifyRegisteredEffects()
 
     class Null extends Weapon
         ->

@@ -14,7 +14,7 @@ define [
 
     class Character implements Effectable
         (@type, @position, @grid, @Controller) ->
-            @effects = []
+            @initEffectable()
             @controller = new @Controller(this, @position, @grid)
             @hitPoints = 10
             @alive = true
@@ -75,6 +75,5 @@ define [
                     game_state.removeObserverNode(@observerNode)
                 @getCell().character = void
 
-        notify: (action, relationship, game_state) ->
+        notifyEffectable: (action, relationship, game_state) ->
             @weapon.notify(action, relationship, game_state)
-            @notifyRegisteredEffects()

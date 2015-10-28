@@ -4,7 +4,7 @@ define [
 
     class Weapon implements Effectable
         ->
-            @effects = []
+            @initEffectable()
 
         getAttackDamage: ->
             return 0
