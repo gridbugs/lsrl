@@ -5,11 +5,11 @@ define [
 ], (ContinuousEffect, Assets, AssetSystem) ->
 
     class Poisoned extends ContinuousEffect
-        (@character) ->
+        (@character, duration) ->
+            super(@character, duration)
 
-        apply: (time_delta, game_state) ->
+        _apply: (time_delta, game_state) ->
             game_state.enqueueAction(new Assets.Action.TakeDamage(@character, time_delta))
-            
 
     AssetSystem.exposeAssets 'ContinuousEffect', {
         Poisoned

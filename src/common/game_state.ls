@@ -1,11 +1,12 @@
 define [
     'structures/heap'
     'structures/linked_list'
+    'structures/distributed_list'
     'action/action'
     'controllers/single_action_controller'
     'util'
     'debug'
-], (Heap, LinkedList, Action, SingleActionController, Util, Debug) ->
+], (Heap, LinkedList, DistributedList, Action, SingleActionController, Util, Debug) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -24,7 +25,7 @@ define [
             @schedule = new Heap (a, b) -> a.time <= b.time
 
             @actionQueue = []
-            @continuousEffects = new LinkedList()
+            @continuousEffects = new DistributedList()
             @observers = new LinkedList()
 
         processObservers: ->
@@ -34,6 +35,9 @@ define [
         registerObserver: (observer) ->
             node = @observers.insert(observer)
             observer.setObserverNode(node)
+
+        registerCharacter: (character) ->
+            character.initGameState(this)
 
         removeObserverNode: (node) ->
             @observers.removeNode(node)
@@ -45,14 +49,9 @@ define [
 
                 @processActions()
 
-        registerContinuousEffect: (effect, length) ->
-            node = @continuousEffects.insert(effect)
-            remover = new Action.RemoveContinuousEffect(node, effect)
-            remover_controller = new SingleActionController(remover)
-            @scheduleActionSource(remover_controller, length)
-
-        removeContinuousEffectNode: (node) ->
-            @continuousEffects.removeNode(node)
+        registerContinuousEffect: (effect, length, character) ->
+            node = character.continuousEffects.insert(effect)
+            effect.setNode(node)
 
         getTurnCount: ->
             return @turnCount

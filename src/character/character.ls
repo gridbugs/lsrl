@@ -19,6 +19,9 @@ define [
             @hitPoints = 10
             @alive = true
 
+        initGameState: (game_state) ->
+            @continuousEffects = game_state.continuousEffects.createChild()
+
         getPosition: ->
             return @position
 

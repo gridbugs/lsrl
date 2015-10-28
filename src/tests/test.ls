@@ -66,6 +66,8 @@ define [
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
 
+        characters = [char]
+
         if Config.GENERATOR == 'cell_automata'
             grid.forEach (c) ->
                 if Math.random() < 0.03
@@ -81,16 +83,24 @@ define [
                 else if Math.random() < 0.01
                     if c.feature.type == Types.Feature.Null
                         c.character = new Assets.Character.Shrubbery(c.position, grid, NullController)
+                        characters.push(c.character)
                 else if Math.random() < 0.005
                     if c.feature.type == Types.Feature.Null and not c.character?
                         c.character = new Assets.Character.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
+                        characters.push(c.character)
                 else if Math.random() < 0.005
                     if c.feature.type == Types.Feature.Null and not c.character?
                         c.character = new Assets.Character.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
+                        characters.push(c.character)
 
         gs.registerObserver(char)
+
+        for c in characters
+            gs.registerCharacter(c)
+
+        console.debug char
 
         return gs
 
