@@ -24,6 +24,10 @@ define [
             @_list.removeNode(node._child_node)
             @_master._list.removeNode(node._master_node)
 
+        forEach: (f) ->
+            @_list.forEach (node) ->
+                f(node.data)
+
     class DistributedList
         ->
             @_list = new LinkedList()

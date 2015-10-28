@@ -199,7 +199,7 @@ define [
             @character.notify(this, @Relationships.Character, game_state)
 
         commit: (game_state) ->
-            game_state.registerContinuousEffect(new Assets.ContinuousEffect.Poisoned(@character), 10, @character)
+            game_state.registerContinuousEffect(new Assets.ContinuousEffect.Poisoned(@character, 5), @character)
 
     class Restore extends Action
         (@character) ->

@@ -49,7 +49,7 @@ define [
 
                 @processActions()
 
-        registerContinuousEffect: (effect, length, character) ->
+        registerContinuousEffect: (effect, character) ->
             node = character.continuousEffects.insert(effect)
             effect.setNode(node)
 

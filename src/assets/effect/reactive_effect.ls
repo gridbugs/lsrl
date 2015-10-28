@@ -20,7 +20,13 @@ define [
     class PoisonOnHit
         notify: (action, relationship, game_state) ->
             if action.type == Types.Action.AttackHit and relationship == action.Relationships.Attacker
-                game_state.enqueueAction(new Action.BecomePoisoned(action.targetCharacter))
+                found = false
+                action.targetCharacter.continuousEffects.forEach (effect) ->
+                    if effect.type == Types.ContinuousEffect.Poisoned
+                        effect.remainingTime += 5
+                        found := true
+                if not found
+                    game_state.enqueueAction(new Action.BecomePoisoned(action.targetCharacter))
 
     AssetSystem.exposeAssets 'ReactiveEffect', {
         Solid
