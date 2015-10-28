@@ -15,7 +15,7 @@ define [
                 base[name] = {}
             for k, v of assetObject
                 base[name][k] = v
-            
+
             return assetObject
 
         exposeAsset: (name, cl, base=Assets) ->

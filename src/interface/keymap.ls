@@ -70,6 +70,10 @@ define [
     convertFromQwerty = (c) -> c
 
     const Controls = Util.joinObject Control, {
+        (String.fromCharCode(37)): \West
+        (String.fromCharCode(38)): \North
+        (String.fromCharCode(39)): \East
+        (String.fromCharCode(40)): \South
         h: \West
         j: \South
         k: \North

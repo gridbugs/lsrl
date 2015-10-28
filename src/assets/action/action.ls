@@ -70,7 +70,7 @@ define [
         (@character, @time = 0) ->
             super()
             @time += 1
-        
+
         Relationships: Util.enum [
             'Character'
         ]

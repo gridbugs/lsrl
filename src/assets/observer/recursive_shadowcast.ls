@@ -128,7 +128,7 @@ define [
                         cell.see(game_state)
 
                 cell_opacity = character.getOpacity(cell)
-                
+
                 current_visibility = Math.max(visibility - cell_opacity, 0)
 
                 next_min_slope = min_slope
