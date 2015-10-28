@@ -1,5 +1,5 @@
 define [
-    'controllers/controller'
+    'system/controller'
     'assets/action/action'
     'types'
     'util'

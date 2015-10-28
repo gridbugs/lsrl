@@ -1,5 +1,5 @@
 define [
-    'cell/ground'
+    'system/ground'
     'asset_system'
 ], (Ground, AssetSystem) ->
 

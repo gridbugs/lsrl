@@ -1,5 +1,5 @@
 define [
-    'effect/continuous_effect'
+    'system/continuous_effect'
     'assets/assets'
     'asset_system'
 ], (ContinuousEffect, Assets, AssetSystem) ->

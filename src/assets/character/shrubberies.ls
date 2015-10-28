@@ -1,5 +1,5 @@
 define [
-    'character/character'
+    'system/character'
     'assets/weapon/weapon'
     'types'
 ], (Character, Weapons, Types) ->

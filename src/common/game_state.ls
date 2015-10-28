@@ -2,11 +2,10 @@ define [
     'structures/heap'
     'structures/linked_list'
     'structures/distributed_list'
-    'action/action'
-    'controllers/single_action_controller'
+    'system/action'
     'util'
     'debug'
-], (Heap, LinkedList, DistributedList, Action, SingleActionController, Util, Debug) ->
+], (Heap, LinkedList, DistributedList, Action, Util, Debug) ->
 
     class ScheduleEntry
         (action_source, time) ->

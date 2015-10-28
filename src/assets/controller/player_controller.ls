@@ -1,8 +1,8 @@
 define [
-    'controllers/controller'
-    'character/knowledge'
+    'system/controller'
+    'system/knowledge'
     'interface/control_interpreter'
-    'item/inventory'
+    'system/inventory'
     'interface/user_interface'
     'types'
     'util'

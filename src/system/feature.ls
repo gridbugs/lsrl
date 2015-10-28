@@ -1,5 +1,5 @@
 define [
-    'action/effectable'
+    'system/effectable'
     'debug'
 ], (Effectable, Debug) ->
 

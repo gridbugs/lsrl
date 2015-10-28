@@ -1,5 +1,5 @@
 define [
-    'character/character'
+    'system/character'
     'assets/action/action'
     'assets/weapon/weapon'
     'assets/effect/reactive_effect'

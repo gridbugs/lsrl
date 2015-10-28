@@ -1,5 +1,5 @@
 define [
-    'action/action'
+    'system/action'
     'assets/assets'
     'util'
     'asset_system'

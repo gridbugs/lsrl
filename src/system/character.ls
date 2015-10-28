@@ -1,8 +1,8 @@
 define [
     'interface/user_interface'
-    'action/effectable'
-    'character/recursive_shadowcast'
-    'character/omniscient'
+    'system/effectable'
+    'assets/observer/recursive_shadowcast'
+    'assets/observer/omniscient'
     'types'
     'config'
 ], (UserInterface, Effectable, RecursiveShadowcast, Omniscient, Types, Config) ->

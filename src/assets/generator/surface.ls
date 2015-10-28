@@ -9,7 +9,7 @@ define [
     'structures/visited_list'
     'assets/feature/feature'
     'assets/ground/ground'
-    'cell/simple_cell'
+    'structures/simple_cell'
     'constants'
     'types'
     'debug'

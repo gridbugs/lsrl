@@ -1,5 +1,5 @@
 define [
-    'action/effectable'
+    'system/effectable'
     'util'
 ], (Effectable, Util) ->
 

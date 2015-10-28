@@ -3,8 +3,8 @@ define [
     'structures/direction'
     'structures/visitable'
     'structures/neighbourable'
-    'item/inventory'
-    'action/effectable'
+    'system/inventory'
+    'system/effectable'
     'constants'
     'types'
 ], (Vec2, Direction, Visitable, Neighbourable, Inventory, Effectable, Constants, Types) ->

@@ -1,5 +1,5 @@
 define [
-    'cell/feature'
+    'system/feature'
     'assets/action/action'
     'assets/effect/reactive_effect'
     'asset_system'

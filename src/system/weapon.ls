@@ -1,5 +1,5 @@
 define [
-    'action/effectable'
+    'system/effectable'
 ], (Effectable) ->
 
     class Weapon implements Effectable
