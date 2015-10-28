@@ -99,8 +99,3 @@ define [
                         n.vertex.visited = true
                         node = new SearchNode n.vertex, edge_cell
                         stack.push node
-
-
-    {
-        MazeGenerator
-    }

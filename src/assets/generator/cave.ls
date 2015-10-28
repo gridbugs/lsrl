@@ -271,8 +271,6 @@ define [
 
             return true
 
+    CellAutomataTestGenerator.Rooms = CellAutomataTestGeneratorRooms
 
-    {
-        CellAutomataTestGenerator
-        CellAutomataTestGeneratorRooms
-    }
+    return CellAutomataTestGenerator

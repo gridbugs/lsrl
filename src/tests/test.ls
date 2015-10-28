@@ -1,8 +1,8 @@
 define [
     'prelude-ls'
-    'generation/border_generator'
-    'generation/cell_automata_test_generator'
-    'generation/maze_generator'
+    'assets/generator/border'
+    'assets/generator/cave'
+    'assets/generator/maze'
     'assets/controller/player_controller'
     'system/character'
     'structures/vec2'
@@ -38,14 +38,12 @@ define [
         drawer = UserInterface.Global.gameDrawer
         input_source = UserInterface.Global.gameController
 
-        if Config.GENERATOR == 'cell_automata'
-            c = new cell_automata_test_generator.CellAutomataTestGeneratorRooms()
+        if Config.GENERATOR == 'cave'
+            c = new cell_automata_test_generator.Rooms()
         else if Config.GENERATOR == 'maze'
-            c = new MazeGenerator.MazeGenerator()
+            c = new MazeGenerator()
         else if Config.GENERATOR == 'border'
             c = new border_generator()
-        else if Config.GENERATOR == 'catacombs'
-            c = new Assets.Generator.Catacombs()
         else if Config.GENERATOR == 'castle'
             c = new Assets.Generator.Castle()
         else if Config.GENERATOR == 'surface'
@@ -68,7 +66,7 @@ define [
 
         characters = [char]
 
-        if Config.GENERATOR == 'cell_automata'
+        if Config.GENERATOR == 'cave'
             grid.forEach (c) ->
                 if Math.random() < 0.03
                     if c.feature.type == Types.Feature.Null

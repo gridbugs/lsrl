@@ -167,77 +167,74 @@ define [
                 first_iteration = false
 
 
+    class RecursiveShadowcast
+        observe: (character, game_state) !->
+            width = character.knowledge.grid.width - 1
+            height = character.knowledge.grid.height - 1
+            cell = character.getCell()
 
-    observe = (character, game_state) !->
-        width = character.knowledge.grid.width - 1
-        height = character.knowledge.grid.height - 1
-        cell = character.getCell()
+            character.getKnowledgeCell().see(game_state)
 
-        character.getKnowledgeCell().see(game_state)
+            # \|
+            observeOctant(character, game_state, cell,
+                -1, 0,
+                Types.OrdinalDirection.NorthWest,
+                Types.OrdinalDirection.SouthWest,
+                -1, Vec2.X_IDX, width, height
+            )
 
-        # \|
-        observeOctant(character, game_state, cell,
-            -1, 0,
-            Types.OrdinalDirection.NorthWest,
-            Types.OrdinalDirection.SouthWest,
-            -1, Vec2.X_IDX, width, height
-        )
+            # |/
+            observeOctant(character, game_state, cell,
+                0, 1,
+                Types.OrdinalDirection.SouthWest,
+                Types.OrdinalDirection.NorthWest,
+                -1, Vec2.X_IDX, width, height
+            )
 
-        # |/
-        observeOctant(character, game_state, cell,
-            0, 1,
-            Types.OrdinalDirection.SouthWest,
-            Types.OrdinalDirection.NorthWest,
-            -1, Vec2.X_IDX, width, height
-        )
+            # /|
+            observeOctant(character, game_state, cell,
+                -1, 0,
+                Types.OrdinalDirection.SouthWest,
+                Types.OrdinalDirection.NorthWest,
+                1, Vec2.X_IDX, width, height
+            )
 
-        # /|
-        observeOctant(character, game_state, cell,
-            -1, 0,
-            Types.OrdinalDirection.SouthWest,
-            Types.OrdinalDirection.NorthWest,
-            1, Vec2.X_IDX, width, height
-        )
+            # |\
+            observeOctant(character, game_state, cell,
+                0, 1,
+                Types.OrdinalDirection.NorthWest,
+                Types.OrdinalDirection.SouthWest,
+                1, Vec2.X_IDX, width, height
+            )
 
-        # |\
-        observeOctant(character, game_state, cell,
-            0, 1,
-            Types.OrdinalDirection.NorthWest,
-            Types.OrdinalDirection.SouthWest,
-            1, Vec2.X_IDX, width, height
-        )
+            # _\
+            observeOctant(character, game_state, cell,
+                -1, 0,
+                Types.OrdinalDirection.NorthWest,
+                Types.OrdinalDirection.NorthEast,
+                -1, Vec2.Y_IDX, height, width
+            )
 
-        # _\
-        observeOctant(character, game_state, cell,
-            -1, 0,
-            Types.OrdinalDirection.NorthWest,
-            Types.OrdinalDirection.NorthEast,
-            -1, Vec2.Y_IDX, height, width
-        )
+            # "/
+            observeOctant(character, game_state, cell,
+                0, 1,
+                Types.OrdinalDirection.NorthEast,
+                Types.OrdinalDirection.NorthWest,
+                -1, Vec2.Y_IDX, height, width
+            )
 
-        # "/
-        observeOctant(character, game_state, cell,
-            0, 1,
-            Types.OrdinalDirection.NorthEast,
-            Types.OrdinalDirection.NorthWest,
-            -1, Vec2.Y_IDX, height, width
-        )
+            # /_
+            observeOctant(character, game_state, cell,
+                -1, 0,
+                Types.OrdinalDirection.NorthEast,
+                Types.OrdinalDirection.NorthWest,
+                1, Vec2.Y_IDX, height, width
+            )
 
-        # /_
-        observeOctant(character, game_state, cell,
-            -1, 0,
-            Types.OrdinalDirection.NorthEast,
-            Types.OrdinalDirection.NorthWest,
-            1, Vec2.Y_IDX, height, width
-        )
-
-        # \"
-        observeOctant(character, game_state, cell,
-            0, 1,
-            Types.OrdinalDirection.NorthWest,
-            Types.OrdinalDirection.NorthEast,
-            1, Vec2.Y_IDX, height, width
-        )
-    {
-        observe
-    }
+            # \"
+            observeOctant(character, game_state, cell,
+                0, 1,
+                Types.OrdinalDirection.NorthWest,
+                Types.OrdinalDirection.NorthEast,
+                1, Vec2.Y_IDX, height, width
+            )

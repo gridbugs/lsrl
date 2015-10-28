@@ -4,4 +4,5 @@ define [
     'assets/effect/effect'
     'assets/generator/generator'
     'assets/item/item'
+    'assets/observer/observer'
 ], ->

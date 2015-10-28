@@ -8,9 +8,9 @@ define [
 ], (UserInterface, Effectable, RecursiveShadowcast, Omniscient, Types, Config) ->
 
     if Config.OMNISCIENT_CHARACTERS
-        Observer = Omniscient
+        Observer = new Omniscient()
     else
-        Observer = RecursiveShadowcast
+        Observer = new RecursiveShadowcast()
 
     class Character implements Effectable
         (@type, @position, @grid, @Controller) ->
