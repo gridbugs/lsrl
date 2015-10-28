@@ -22,11 +22,4 @@ define [
         prepare: ->
         commit: ->
 
-
-    /* An action which is clearly done by a single character. */
-    Action.CharacterAction = {
-        getSource: ->
-            return @character.getController()
-    }
-
     return Action

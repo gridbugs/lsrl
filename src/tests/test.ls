@@ -14,7 +14,7 @@ define [
     'structures/binary_tree'
     'structures/avl_tree'
     'structures/group_tree'
-    'item/item'
+    'assets/item/item'
     'structures/search'
     'interface/auto_move'
     'interface/user_interface'

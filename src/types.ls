@@ -45,15 +45,9 @@ define [
         \Wait
     ]
 
-    const Item = Util.enum [
-        \Stone
-        \Plant
-    ]
-
     {
         Direction
         CardinalDirection
         OrdinalDirection
         Control
-        Item
     }

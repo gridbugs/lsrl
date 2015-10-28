@@ -1,13 +1,14 @@
 define [
-    'types'
+    'action/effectable'
     'util'
-], (Types, Util) ->
+], (Effectable, Util) ->
 
-    GlobalItemId = Object.keys(Types.Item).length
+    GlobalItemId = 100
     getItemId = -> (GlobalItemId++)
 
-    class Item
+    class Item implements Effectable
         ->
+            @initEffectable()
             @collection = void
             @id = getItemId()
             @groupable = false
@@ -18,25 +19,11 @@ define [
 
     class GroupableItem extends Item
         ->
-            super ...
+            super()
             @groupable = true
 
         getGroupId: -> @type
 
-    class Stone extends GroupableItem
-        ->
-            super()
-            @type = Types.Item.Stone
+    Item.GroupableItem = GroupableItem
 
-        getName: -> "stone"
-
-    class Plant extends GroupableItem
-        ->
-            super()
-            @type = Types.Item.Plant
-        getName: -> "plant"
-
-    {
-        Stone
-        Plant
-    }
+    return Item

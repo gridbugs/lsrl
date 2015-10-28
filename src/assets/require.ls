@@ -3,4 +3,5 @@ define [
     'assets/action/action'
     'assets/effect/effect'
     'assets/generator/generator'
+    'assets/item/item'
 ], ->

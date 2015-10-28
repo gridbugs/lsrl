@@ -6,7 +6,7 @@ define [
     'types'
 ], (Action, Assets, Util, AssetSystem, Types) ->
 
-    class Move extends Action implements Action.CharacterAction
+    class Move extends Action
         (@character, @direction) ->
             super()
             @fromCell = @character.getCell()
@@ -28,7 +28,7 @@ define [
             @fromCell.character = void
             @toCell.character = @character
 
-    class BumpIntoWall extends Action implements Action.CharacterAction
+    class BumpIntoWall extends Action
         (@character, @cell) ->
             super()
 
@@ -43,7 +43,7 @@ define [
 
         commit: ->
 
-    class OpenDoor extends Action implements Action.CharacterAction
+    class OpenDoor extends Action
         (@character, @direction) ->
             super()
             @doorCell = @character.getCell().neighbours[@direction]
@@ -66,7 +66,7 @@ define [
         commit: ->
             @doorCell.feature.open()
 
-    class Wait extends Action implements Action.CharacterAction
+    class Wait extends Action
         (@character, @time = 0) ->
             super()
             @time += 1
@@ -80,7 +80,7 @@ define [
 
         commit: ->
 
-    class Attack extends Action implements Action.CharacterAction
+    class Attack extends Action
         (@character, @direction) ->
             super()
             @targetCell = @character.getCell().neighbours[@direction]
@@ -102,7 +102,7 @@ define [
         commit: (game_state) ->
             game_state.enqueueAction(new AttackHit(@character, @targetCharacter))
 
-    class AttackHit extends Action implements Action.CharacterAction
+    class AttackHit extends Action
         (@character, @targetCharacter) ->
             super()
             @rescheduleRequired = false
@@ -120,7 +120,7 @@ define [
             damage = @character.weapon.getAttackDamage()
             game_state.enqueueAction(new TakeDamage(@targetCharacter, damage))
 
-    class TakeDamage extends Action implements Action.CharacterAction
+    class TakeDamage extends Action
         (@character, @damage) ->
             super()
             @rescheduleRequired = false
@@ -137,7 +137,7 @@ define [
             if @character.hitPoints <= 0
                 game_state.enqueueAction(new Die(@character))
 
-    class Die extends Action implements Action.CharacterAction
+    class Die extends Action
         (@character) ->
             super()
             @rescheduleRequired = false
@@ -154,7 +154,7 @@ define [
         commit: (game_state) ->
             @character.die(game_state)
 
-    class StruggleInWeb extends Action implements Action.CharacterAction
+    class StruggleInWeb extends Action
         (@character, @cell) ->
             super()
 
@@ -170,7 +170,7 @@ define [
         commit: ->
             @cell.feature.weaken()
 
-    class BreakWeb extends Action implements Action.CharacterAction
+    class BreakWeb extends Action
         (@character, @cell) ->
             super()
 
@@ -186,7 +186,7 @@ define [
         commit: ->
             @cell.feature.break()
 
-    class BecomePoisoned extends Action implements Action.CharacterAction
+    class BecomePoisoned extends Action
         (@character) ->
             super()
             @rescheduleRequired = false
@@ -201,7 +201,7 @@ define [
         commit: (game_state) ->
             game_state.registerContinuousEffect(new Assets.ContinuousEffect.Poisoned(@character), 10, @character)
 
-    class Restore extends Action implements Action.CharacterAction
+    class Restore extends Action
         (@character) ->
             super()
 
@@ -214,6 +214,42 @@ define [
 
         commit: (game_state) ->
             @character.hitPoints = 10
+
+    class Take extends Action
+        (@character, @groupId, @numItems) ->
+            super()
+            @items = @character.getCell().items.removeItemsByGroupId(@groupId, @numItems)
+
+        Relationships: Util.enum [
+            'Character'
+            'Item'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @items.forEach (item) ~>
+                item.notify(this, @Relationships.Item, game_state)
+
+        commit: ->
+            letter = @character.getInventory().insertItems(@items)
+
+    class Drop extends Action
+        (@character, @groupId, @numItems) ->
+            super()
+            @items = @character.getInventory().removeItemsByGroupId(@groupId, @numItems)
+
+        Relationships: Util.enum [
+            'Character'
+            'Item'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @items.forEach (item) ~>
+                item.notify(this, @Relationships.Item, game_state)
+
+        commit: ->
+            @character.getCell().items.insertItems(@items)
 
     class Null extends Action
         ->
@@ -233,5 +269,7 @@ define [
         BreakWeb
         BecomePoisoned
         Restore
+        Take
+        Drop
         Null
     }

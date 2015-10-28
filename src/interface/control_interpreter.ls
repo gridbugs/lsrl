@@ -83,12 +83,12 @@ define [
                         UserInterface.printLine "You see no items here."
                         @character.getAction game_state, cb
                     else if cell.items.length() == 1
-                        action = new Action.Take(@character, cell.items.first().groupId, 1)
+                        action = new Action.Take(@character, cell.items.first().getGroupId(), 1)
                         cb(action)
                     else if cell.items.numTypes() == 1
                         UserInterface.print "How many? "
                         num_items <~ UserInterface.readInteger(cell.items.length())
-                        action = new Action.Take(@character, cell.items.first().groupId, num_items)
+                        action = new Action.Take(@character, cell.items.first().getGroupId(), num_items)
                         cb(action)
                     else
                         UserInterface.printLine "Select item to pick up:"
