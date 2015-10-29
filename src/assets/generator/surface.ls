@@ -568,6 +568,8 @@ define [
                     c.ground = new Ground.Grass()
                     c.space = void
                     c.path = void
+                    c.isInLargestSpace = false
+                    c.isInSecondLargestSpace = false
 
                 @addPerlinNoise()
                 @enumerateBorder(0.3)
