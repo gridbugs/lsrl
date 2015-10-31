@@ -3,13 +3,15 @@ define [
     'tests/test'
     'util'
     'assets/require'
+    'assets/assets'
     'config'
     'debug'
-], (UserInterface, Test, Util, Require, Config, Debug) ->
+], (UserInterface, Test, Util, Require, Assets, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->
             UserInterface.setUserInterface(gameDrawer, gameController, gameConsole, gameHud)
+            Assets.Describer.English.install()
 
         seedRandom: ->
             if Config.RANDOM_SEED?

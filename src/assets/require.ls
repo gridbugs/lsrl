@@ -5,4 +5,5 @@ define [
     'assets/generator/generator'
     'assets/item/item'
     'assets/observer/observer'
+    'assets/describer/describer'
 ], ->

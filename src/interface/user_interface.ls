@@ -14,6 +14,8 @@ define [
             @readString = bind(gameConsole, 'readString')
             @print = bind(gameConsole, 'print')
             @printLine = bind(gameConsole, 'printLine')
+            @printDescription = bind(gameConsole, 'printDescription')
+            @printDescriptionLine = bind(gameConsole, 'printDescriptionLine')
             @clearLine = bind(gameConsole, 'clearLine')
             @newLine = bind(gameConsole, 'newLine')
 

@@ -10,6 +10,6 @@ define [
         RUN_TEST: false
         RANDOM_SEED: void
         DEBUG_PRINTOUTS: true
-        DEBUG_PRINT_CONSOLE: true
+        DEBUG_PRINT_CONSOLE: false
         OMNISCIENT_CHARACTERS: false
     }

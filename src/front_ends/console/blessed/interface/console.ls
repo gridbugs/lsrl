@@ -4,8 +4,9 @@ define [
     'front_ends/console/blessed/util'
     'front_ends/console/text'
     'front_ends/console/colours'
+    'front_ends/console/description_interpreter'
     'util'
-], (BaseConsole, Box, BlessedUtil, Text, Colours, Util) ->
+], (BaseConsole, Box, BlessedUtil, Text, Colours, DescriptionInterpreter, Util) ->
 
     const KEYCODE_BACKSPACE = 127
 
@@ -52,6 +53,10 @@ define [
                 @newLineOnNextPrint = false
             @appendCurrentLogEntry(str)
             @refresh()
+
+        printDescription: (description) ->
+            @print(DescriptionInterpreter.descriptionToConsoleString(description))
+
         newLine: ->
             @newLineOnNextPrint = true
         clearLine: ->

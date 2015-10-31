@@ -40,3 +40,7 @@ define [
             for i from 0 til grid.height
                 for j from 0 til grid.width
                     @grid.get(j, i).init grid.get(j, i)
+
+    Knowledge.KnowledgeCell = KnowledgeCell
+
+    return Knowledge

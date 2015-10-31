@@ -47,34 +47,14 @@ define [
                         if not coord?
                             @character.getAction game_state, cb
                             return
-
                         kcell = @character.getKnowledge().grid.getCart(coord)
-                        if kcell.feature.type == Types.Feature.Null
-                            switch (kcell.ground.type)
-                            |   Types.Ground.Dirt => UserInterface.printLine "Dirt floor"
-                        else
-                            switch (kcell.feature.type)
-                            |   Types.Feature.Wall => UserInterface.printLine "A wall"
-                            |   Types.Feature.Web => UserInterface.printLine "A spider web"
-
-                        if kcell.gameCell.items.length() > 0
-                            kcell.gameCell.items.forEachItemType (_, items) ->
-                                UserInterface.printLine "#{items.length()} #{items.first().getName()}"
-
+                        UserInterface.printDescriptionLine(kcell.describe())
                         @character.getAction game_state, cb
 
                     , (coord) ~>
                         UserInterface.clearLine()
                         kcell = @character.getKnowledge().grid.getCart(coord)
-                        if kcell.feature.type == Types.Feature.Null
-                            switch (kcell.ground.type)
-                            |   Types.Ground.Dirt => UserInterface.print "Dirt floor"
-                        else
-                            switch (kcell.feature.type)
-                            |   Types.Feature.Wall => UserInterface.print "A wall"
-                            |   Types.Feature.Web => UserInterface.print "A spider web"
-
-
+                        UserInterface.printDescription(kcell.describe())
 
             |   Types.Control.Get
                     cell = @character.getCell()

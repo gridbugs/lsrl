@@ -1,8 +1,9 @@
 define [
+    'front_ends/browser/html_description_interpreter'
     'interface/console'
     'util'
     'config'
-], (GenericConsole, Util, Config) ->
+], (DescriptionInterpreter, GenericConsole, Util, Config) ->
 
     const KEYCODE_ENTER = 13
 
@@ -16,6 +17,8 @@ define [
             if Config.DEBUG_PRINT_CONSOLE
                 Util.printDebug(str)
 
+        printDescription: (description) ->
+            @print(DescriptionInterpreter.descriptionToHtmlString(description))
 
         newLine: ->
             @$current = $("<div class='line'>")
