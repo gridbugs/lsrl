@@ -19,10 +19,12 @@ define [
             style = @init()
 
             Cell::describe = ->
-                if @feature.type == Types.Feature.Null or not @feature.describe?
-                    return @ground.describe()
-                else
+                if @character? and @character.describe?
+                    return @character.describe()
+                else if @feature.type != Types.Feature.Null and @feature.describe?
                     return @feature.describe()
+                else
+                    return @ground.describe()
 
             Knowledge.KnowledgeCell::describe = ->
                 return @gameCell.describe()
@@ -51,5 +53,11 @@ define [
 
             Assets.Feature.StoneDownwardStairs::describe = ->
                 return new Description(['a stone staircase leading downwards'])
+
+            Assets.Character.Spider::describe = ->
+                return new Description(['spider'])
+
+            Assets.Character.Human::describe = ->
+                return new Description(['human'])
                 
     }
