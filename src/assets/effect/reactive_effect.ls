@@ -9,7 +9,14 @@ define [
             if action.type == Types.Action.Move and relationship == action.Relationships.DestinationCell
                 action.success = false
 
-                game_state.enqueueAction(new Action.BumpIntoWall(action.character, action.toCell))
+                game_state.enqueueAction(new Action.BumpIntoWall(action.character, action.toCell.feature))
+
+    class SolidCharacter
+        notify: (action, relationship, game_state) ->
+            if action.type == Types.Action.Move and relationship == action.Relationships.DestinationCell
+                action.success = false
+
+                game_state.enqueueAction(new Action.BumpIntoWall(action.character, action.toCell.character))
 
     class ResurrectOnDeath
         notify: (action, relationship, game_state) ->
@@ -30,6 +37,7 @@ define [
 
     AssetSystem.exposeAssets 'ReactiveEffect', {
         Solid
+        SolidCharacter
         ResurrectOnDeath
         PoisonOnHit
     }

@@ -8,6 +8,7 @@ define [
         'Red': [make_colour_span('red'), '</span>']
         'Green': [make_colour_span('green'), '</span>']
         'Purple': [make_colour_span('purple'), '</span>']
+        'Yellow': [make_colour_span('yellow'), '</span>']
         'Bold': ["<span style='font-weight: bold'>", '</span>']
     }
 

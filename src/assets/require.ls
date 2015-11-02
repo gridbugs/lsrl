@@ -7,4 +7,5 @@ define [
     'assets/observer/observer'
     'assets/describer/describer'
     'assets/controller/controller'
+    'assets/description_profile/description_profile'
 ], ->

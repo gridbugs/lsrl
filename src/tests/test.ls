@@ -62,7 +62,7 @@ define [
         drawer.tileScheme.setPlayerCharacter(char)
         drawer.setTileStateData(drawer.tileScheme.createTileStateData(WIDTH, HEIGHT))
         grid.get(sp.x, sp.y).character = char
-        gs = new GameState(grid, char.controller)
+        gs = new GameState(grid, char.controller, new Assets.DescriptionProfile.Default(char))
         Assets.Describer.English.installPlayerCharacter(char)
         characters = [char]
 

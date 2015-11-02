@@ -3,9 +3,10 @@ define [
     'structures/linked_list'
     'structures/distributed_list'
     'system/action'
+    'interface/user_interface'
     'util'
     'debug'
-], (Heap, LinkedList, DistributedList, Action, Util, Debug) ->
+], (Heap, LinkedList, DistributedList, Action, UserInterface, Util, Debug) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -13,7 +14,7 @@ define [
             @time = time
 
     class GameState
-        (grid, character) ->
+        (grid, character, @descriptionProfile) ->
             @playerCharacter = character
             @characters = [character]
             @grid = grid
@@ -73,8 +74,10 @@ define [
             @actionQueue.push(action)
 
         applySingleAction: (action) ->
-            action.apply(this)
-
+            ret = action.apply(this)
+            if @descriptionProfile.accept(action) and action.describe?
+                UserInterface.printDescriptionLine(action.describe())
+            return ret
 
         applyAction: (action, source) ->
             @enqueueAction(action)

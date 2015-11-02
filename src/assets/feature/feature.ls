@@ -97,7 +97,11 @@ define [
             return false
 
         notifyEffectable: (action, relationship, game_state) ->
-            if action.type == Types.Action.Move and relationship == action.Relationships.SourceCell and \
+            if action.type == Types.Action.Move and relationship == action.Relationships.DestinationCell and \
+                action.character.type != Types.Character.Spider
+
+                game_state.enqueueAction(new Actions.GetStuckInWeb(action.character, @cell))
+            else if action.type == Types.Action.Move and relationship == action.Relationships.SourceCell and \
                 action.character.type != Types.Character.Spider
 
                 action.success = false

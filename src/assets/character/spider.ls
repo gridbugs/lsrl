@@ -9,8 +9,8 @@ define [
         (position, grid, Controller) ->
             super(position, grid, Controller)
             @weapon = new Weapons.SpiderFangs()
-            @solid = new ReactiveEffects.Solid()
-        
+            @solid = new ReactiveEffects.SolidCharacter()
+
         notifyEffectable: (action, relationship, game_state) ->
             super(action, relationship, game_state)
             @solid.notify(action, relationship, game_state)

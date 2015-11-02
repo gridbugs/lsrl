@@ -31,17 +31,17 @@ define [
             @toCell.character = @character
 
     class BumpIntoWall extends Action
-        (@character, @cell) ->
+        (@character, @object) ->
             super()
 
         Relationships: Util.enum [
-            'WallCell'
+            'CollisionObject'
             'Character'
         ]
 
         prepare: (game_state) ->
             @character.notify(this, @Relationships.Character, game_state)
-            @cell.notify(this, @Relationships.WallCell, game_state)
+            @object.notify(this, @Relationships.CollisionObject, game_state)
 
         commit: ->
 
@@ -156,6 +156,21 @@ define [
         commit: (game_state) ->
             @character.die(game_state)
 
+    class GetStuckInWeb extends Action
+        (@character, @cell) ->
+            super()
+
+        Relationships: Util.enum [
+            'Character'
+            'Cell'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @cell.notify(this, @Relationships.Cell, game_state)
+
+        commit: ->
+
     class StruggleInWeb extends Action
         (@character, @cell) ->
             super()
@@ -216,7 +231,7 @@ define [
             @character.notify(this, @Relationships.Character, game_state)
 
         commit: (game_state) ->
-            @character.hitPoints = 10
+            @character.hitPoints = 100
 
     class Take extends Action
         (@character, @groupId, @numItems) ->
@@ -268,6 +283,7 @@ define [
         AttackHit
         TakeDamage
         Die
+        GetStuckInWeb
         StruggleInWeb
         BreakWeb
         BecomePoisoned
