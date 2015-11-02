@@ -63,7 +63,7 @@ define [
         drawer.setTileStateData(drawer.tileScheme.createTileStateData(WIDTH, HEIGHT))
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller)
-
+        Assets.Describer.English.installPlayerCharacter(char)
         characters = [char]
 
         if Config.GENERATOR == 'cave'
@@ -95,7 +95,7 @@ define [
         else if Config.GENERATOR == 'surface'
             grid.forEach (c) ->
                 if c.feature.type == Types.Feature.Null and Math.random() < 0.05
-                    s = new Assets.Character.Spider(c.position, grid, NullController)
+                    s = new Assets.Character.Spider(c.position, grid, Assets.Controller.MoveRandomly)
                     c.character = s
                     characters.push(s)
 
@@ -103,6 +103,7 @@ define [
 
         for c in characters
             gs.registerCharacter(c)
+            gs.scheduleActionSource(c.controller, 0)
 
         return gs
 

@@ -59,5 +59,9 @@ define [
 
             Assets.Character.Human::describe = ->
                 return new Description(['human'])
+
+        installPlayerCharacter: (pc) ->
+            pc.describe = ->
+                return new Description(['you'])
                 
     }
