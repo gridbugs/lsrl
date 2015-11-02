@@ -33,6 +33,7 @@ define [
         BridgeNorthSouth:           ['ǁ', 'LightBrown', false]
         StoneDownwardStairs:        ['>', 'DarkGrey',   true]
         StoneUpwardStairs:          ['<', 'DarkGrey',   true]
+        Spider:                     ['s', 'White',      true]
 
     Debug.Chars.map (ch) ->
         Tiles[ch] = [ch, Debug.getColour(ch, 'White'), false]

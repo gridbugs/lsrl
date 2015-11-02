@@ -10,7 +10,8 @@ define [
                 Types[name] = {}
                 Types.__counts[name] = 0
 
-            Types[name][cl.displayName] = cl
+            Types[name][cl.displayName] = Types.__counts[name]
+            cl::type = Types.__counts[name]
             ++Types.__counts[name]
 
             return cl

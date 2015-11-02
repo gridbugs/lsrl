@@ -33,6 +33,7 @@ define [
         \BridgeNorthSouth
         \StoneDownwardStairs
         \StoneUpwardStairs
+        \Spider
     ] ++ Debug.Chars)
 
     class SimpleTile
@@ -107,10 +108,10 @@ define [
             return @scheme.tileSet[type]
 
         getTileFromCell: (cell, visible = true) ->
-
             if cell.character?
                 if cell.character == @scheme.playerCharacter
                     return @scheme.tiles.PlayerCharacter
+
                 return @scheme.flatCharacterTable[cell.character.type].getTile(cell)
 
             if cell.items.length() > 0
@@ -164,6 +165,7 @@ define [
                 Shrubbery:              ~> @simple(\Shrubbery)
                 PoisonShrubbery:        ~> @simple(\PoisonShrubbery)
                 CarnivorousShrubbery:   ~> @simple(\CarnivorousShrubbery)
+                Spider:                 ~> @simple(\Spider)
             }
 
             @flatFeatureTable = @createFlatTable(@featureTable)

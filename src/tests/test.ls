@@ -92,6 +92,12 @@ define [
                         c.character = new Assets.Character.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
                         gs.scheduleActionSource(c.character.controller, 0)
                         characters.push(c.character)
+        else if Config.GENERATOR == 'surface'
+            grid.forEach (c) ->
+                if c.feature.type == Types.Feature.Null and Math.random() < 0.05
+                    s = new Assets.Character.Spider(c.position, grid, NullController)
+                    c.character = s
+                    characters.push(s)
 
         gs.registerObserver(char)
 
