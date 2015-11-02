@@ -1,7 +1,8 @@
 define [
     'system/controller'
     'assets/action/action'
-], (Controller, Action) ->
+    'asset_system'
+], (Controller, Action, AssetSystem) ->
 
     class NullController extends Controller
         (@character, @position, @grid) ->
@@ -11,3 +12,5 @@ define [
 
         getAction: (game_state, callback) ->
             callback(new Action.Null())
+
+    AssetSystem.exposeAsset('Controller', NullController)

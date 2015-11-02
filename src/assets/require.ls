@@ -6,4 +6,5 @@ define [
     'assets/item/item'
     'assets/observer/observer'
     'assets/describer/describer'
+    'assets/controller/controller'
 ], ->

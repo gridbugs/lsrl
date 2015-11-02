@@ -3,7 +3,8 @@ define [
     'assets/action/action'
     'types'
     'util'
-], (Controller, Action, Types, Util) ->
+    'asset_system'
+], (Controller, Action, Types, Util, AssetSystem) ->
 
     class ShrubberyController extends Controller
         (@character, @position, @grid) ->
@@ -33,7 +34,7 @@ define [
             super(character, position, grid)
 
 
-    {
+    AssetSystem.exposeAssets 'Controller', {
         PoisonShrubberyController
         CarnivorousShrubberyController
     }

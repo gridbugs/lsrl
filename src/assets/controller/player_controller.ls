@@ -7,8 +7,9 @@ define [
     'types'
     'util'
     'config'
+    'asset_system'
 ], (Controller, Knowledge, ControlInterpreter, \
-    Inventory, UserInterface, Types, Util, Config) ->
+    Inventory, UserInterface, Types, Util, Config, AssetSystem) ->
 
     class PlayerController extends Controller
         (@character, @position, @grid) ->
@@ -62,3 +63,5 @@ define [
 
         clearAutoMove: ->
             @autoMove = void
+
+    AssetSystem.exposeAsset('Controller', PlayerController)
