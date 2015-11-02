@@ -85,23 +85,21 @@ define [
                 else if Math.random() < 0.005
                     if c.feature.type == Types.Feature.Null and not c.character?
                         c.character = new Assets.Character.PoisonShrubbery(c.position, grid, ShrubberyControllers.PoisonShrubberyController)
-                        gs.scheduleActionSource(c.character.controller, 0)
                         characters.push(c.character)
                 else if Math.random() < 0.005
                     if c.feature.type == Types.Feature.Null and not c.character?
                         c.character = new Assets.Character.CarnivorousShrubbery(c.position, grid, ShrubberyControllers.CarnivorousShrubberyController)
-                        gs.scheduleActionSource(c.character.controller, 0)
                         characters.push(c.character)
         else if Config.GENERATOR == 'surface'
             grid.forEach (c) ->
-                if c.feature.type == Types.Feature.Null and Math.random() < 0.05
-                    s = new Assets.Character.Spider(c.position, grid, Assets.Controller.MoveRandomly)
+                if c.feature.type == Types.Feature.Null and Math.random() < 0.01
+                    s = new Assets.Character.Spider(c.position, grid, Assets.Controller.SpiderController)
                     c.character = s
+                    c.feature = new Assets.Feature.Web(c)
                     characters.push(s)
 
-        gs.registerObserver(char)
-
         for c in characters
+            gs.registerObserver(c)
             gs.registerCharacter(c)
             gs.scheduleActionSource(c.controller, 0)
 

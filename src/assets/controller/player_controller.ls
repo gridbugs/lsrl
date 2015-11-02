@@ -13,9 +13,8 @@ define [
 
     class PlayerController extends Controller
         (@character, @position, @grid) ->
-            super()
+            super(@grid)
 
-            @knowledge = new Knowledge(@grid)
             @viewDistance = 20
             @viewDistanceSquared = @viewDistance * @viewDistance
 
@@ -34,13 +33,9 @@ define [
             return @turnCount
 
         getKnowledge: -> @knowledge
-        getCell: -> @character.getCell()
-        getKnowledgeCell: -> @knowledge.grid.getCart(@character.getPosition())
 
         getName: -> @name
 
-        getOpacity: (cell) ->
-            return cell.feature.getOpacity()
 
         getAction: (game_state, cb) ->
 

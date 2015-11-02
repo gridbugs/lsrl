@@ -11,6 +11,7 @@ define [
     Description.Styles = Util.enum [
         'Red'
         'Green'
+        'Purple'
         'Bold'
     ]
 
@@ -19,6 +20,7 @@ define [
         red: (text) -> @colour(text, Description.Styles.Red)
         green: (text) -> @colour(text, Description.Styles.Green)
         bold: (text) -> @colour(text, Description.Styles.Bold)
+        purple: (text) -> @colour(text, Description.Styles.Purple)
     }
 
     descriptionToString = (description, table) ->

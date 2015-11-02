@@ -1,12 +1,18 @@
 define [
     'system/character'
     'assets/weapon/weapon'
+    'assets/effect/reactive_effect'
     'asset_system'
-], (Character, Weapons, AssetSystem) ->
+], (Character, Weapons, ReactiveEffects, AssetSystem) ->
 
     class Spider extends Character
         (position, grid, Controller) ->
             super(position, grid, Controller)
-            @weapon = new Weapons.BareHands()
+            @weapon = new Weapons.SpiderFangs()
+            @solid = new ReactiveEffects.Solid()
+        
+        notifyEffectable: (action, relationship, game_state) ->
+            super(action, relationship, game_state)
+            @solid.notify(action, relationship, game_state)
 
     AssetSystem.exposeAsset('Character', Spider)

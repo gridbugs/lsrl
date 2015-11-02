@@ -29,6 +29,7 @@ define [
 
         notifyEffectable: (action, relationship, game_state) ->
             @feature.notify(action, relationship, game_state)
+            @character?.notify(action, relationship, game_state)
 
         getMoveOutCost: (direction) ->
             if Direction.isCardinal direction

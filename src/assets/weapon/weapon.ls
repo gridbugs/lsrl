@@ -31,6 +31,18 @@ define [
         notifyEffectable: (action, relationship, game_state) ->
             @poisons.notify(action, relationship, game_state)
 
+    class SpiderFangs extends Weapon
+        ->
+            super()
+            @poisons = new ReactiveEffect.PoisonOnHit()
+
+        getAttackDamage: ->
+            return 1
+
+        notifyEffectable: (action, relationship, game_state) ->
+            if Math.random() < 0.5
+                @poisons.notify(action, relationship, game_state)
+
     class Null extends Weapon
         ->
             super()
@@ -39,5 +51,6 @@ define [
         BareHands
         ShrubberyTeeth
         ShrubberyPoisonSpikes
+        SpiderFangs
         Null
     }

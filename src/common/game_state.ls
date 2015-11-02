@@ -72,6 +72,10 @@ define [
         enqueueAction: (action) ->
             @actionQueue.push(action)
 
+        applySingleAction: (action) ->
+            action.apply(this)
+
+
         applyAction: (action, source) ->
             @enqueueAction(action)
             @processFirstAction(source)
@@ -80,7 +84,7 @@ define [
         processFirstAction: (source) ->
             while @actionQueue.length != 0
                 current_action = @actionQueue.pop()
-                if current_action.apply(this)
+                if @applySingleAction(current_action)
                     if source.active
                         @scheduleActionSource(source, current_action.time)
                     return
@@ -88,7 +92,7 @@ define [
         processActions: ->
             while @actionQueue.length != 0
                 current_action = @actionQueue.pop()
-                current_action.apply(this)
+                @applySingleAction(current_action)
 
         progressTurnCount: ->
             ++@turnCount

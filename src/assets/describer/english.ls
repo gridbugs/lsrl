@@ -60,6 +60,9 @@ define [
             Assets.Character.Human::describe = ->
                 return new Description(['human'])
 
+            Assets.ContinuousEffect.Poisoned::describe = ->
+                return new Description([style.purple(["Poisoned: #{@remainingTime}"])])
+
         installPlayerCharacter: (pc) ->
             pc.describe = ->
                 return new Description(['you'])

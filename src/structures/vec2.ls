@@ -34,6 +34,9 @@ define [], ->
 
         equals: (v) -> @x == v.x and @y == v.y
 
+        clone: ->
+            return new Vec2(@x, @y)
+
     Vec2.X_IDX = 0
     Vec2.Y_IDX = 1
     Vec2.otherIndex = (index) -> 1 - index

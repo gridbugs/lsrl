@@ -7,6 +7,7 @@ define [
     DescriptionStyleTable = Util.table Description.Styles, {
         'Red': [make_colour_span('red'), '</span>']
         'Green': [make_colour_span('green'), '</span>']
+        'Purple': [make_colour_span('purple'), '</span>']
         'Bold': ["<span style='font-weight: bold'>", '</span>']
     }
 

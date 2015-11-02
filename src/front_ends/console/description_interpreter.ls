@@ -11,6 +11,7 @@ define [
     DescriptionStyleTable = Util.table Description.Styles, {
         'Red': [Text.setForegroundColour(Colours.Red), white_text]
         'Green': [Text.setForegroundColour(Colours.Green), white_text]
+        'Purple': [Text.setForegroundColour(Colours.Purple), white_text]
         'Bold': [Text.setBoldWeight(), Text.setNormalWeight()]
     }
 

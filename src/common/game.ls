@@ -29,8 +29,6 @@ define [
             if Config.DRAW_MAP_ONLY
                 return
 
-            @gameState.scheduleActionSource(@gameState.playerCharacter, 10)
-
             @gameLoop()
 
         gameTimeToMs: (t) ->

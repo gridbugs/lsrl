@@ -31,8 +31,10 @@ define [
         getName: -> 'Character'
 
         observe: (game_state) ->
+            @controller.knowledge.beforeObserve()
             Observer.observe(@controller, game_state)
             @controller.turnCount = game_state.getTurnCount()
+            @controller.knowledge.afterObserve()
 
         getController: ->
             return @controller

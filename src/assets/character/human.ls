@@ -9,6 +9,7 @@ define [
     class Human extends Character
         (position, grid, Controller) ->
             super(position, grid, Controller)
+            @hitPoints = 100
             @weapon = new Weapons.BareHands()
             @resurrect = new ReactiveEffect.ResurrectOnDeath()
 

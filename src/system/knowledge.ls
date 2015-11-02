@@ -12,7 +12,7 @@ define [
             @items = void
             @character = void
 
-        init: (game_cell) ->
+        init: (game_cell, @knowledge) ->
             @gameCell = game_cell
             @ground = @gameCell.ground
             @feature = @gameCell.feature
@@ -28,6 +28,9 @@ define [
 
             @character = @gameCell.character
 
+            if @character? and @character != @knowledge.character
+                @knowledge.visibleCharacters.push(@character)
+
         hasUnknownNeighbour: ->
             for n in @allNeighbours
                 if not n.known
@@ -35,11 +38,19 @@ define [
             return false
 
     class Knowledge
-        (grid) ->
+        (grid, @controller) ->
             @grid = new Grid(KnowledgeCell, grid.width, grid.height)
             for i from 0 til grid.height
                 for j from 0 til grid.width
-                    @grid.get(j, i).init grid.get(j, i)
+                    @grid.get(j, i).init(grid.get(j, i), this)
+
+            @character = @controller.character
+            @visibleCharacters = []
+
+        beforeObserve: ->
+            @visibleCharacters = []
+
+        afterObserve: ->
 
     Knowledge.KnowledgeCell = KnowledgeCell
 

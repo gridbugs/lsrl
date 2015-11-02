@@ -4,7 +4,8 @@ define [
     'util'
     'asset_system'
     'types'
-], (Action, Assets, Util, AssetSystem, Types) ->
+    'debug'
+], (Action, Assets, Util, AssetSystem, Types, Debug) ->
 
     class Move extends Action
         (@character, @direction) ->
@@ -24,6 +25,7 @@ define [
             @toCell.notify(this, @Relationships.DestinationCell, game_state)
 
         commit: ->
+            Debug.assert(@toCell.character == void)
             @character.position = @toCell.position
             @fromCell.character = void
             @toCell.character = @character
@@ -157,6 +159,7 @@ define [
     class StruggleInWeb extends Action
         (@character, @cell) ->
             super()
+            @time = 10
 
         Relationships: Util.enum [
             'Character'

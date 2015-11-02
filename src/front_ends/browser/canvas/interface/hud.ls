@@ -1,7 +1,8 @@
 define [
+    'front_ends/browser/html_description_interpreter'
     'util'
     'config'
-], (Util, Config) ->
+], (DescriptionInterpreter, Util, Config) ->
 
     class Hud
         (@$hud) ->
@@ -11,4 +12,4 @@ define [
             @$hud.append("<div>#{character.getName()}</div>")
             @$hud.append("<div>Curse: #{character.getCurrentHitPoints()}</div>")
             character.continuousEffects.forEach (effect) ~>
-                @$hud.append("<div style='color:purple'>#{effect.toString()}</div>")
+                @$hud.append("<div>#{DescriptionInterpreter.descriptionToHtmlString(effect.describe())}</div>")
