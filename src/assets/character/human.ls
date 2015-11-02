@@ -3,12 +3,12 @@ define [
     'assets/action/action'
     'assets/weapon/weapon'
     'assets/effect/reactive_effect'
-    'types'
-], (Character, Action, Weapons, ReactiveEffect, Types) ->
+    'asset_system'
+], (Character, Action, Weapons, ReactiveEffect, AssetSystem) ->
 
     class Human extends Character
         (position, grid, Controller) ->
-            super(Types.Character.Human, position, grid, Controller)
+            super(position, grid, Controller)
             @weapon = new Weapons.BareHands()
             @resurrect = new ReactiveEffect.ResurrectOnDeath()
 
@@ -16,3 +16,5 @@ define [
             @resurrect.notify(action, relationship, game_state)
 
         getName: -> 'Human'
+
+    AssetSystem.exposeAsset('Character', Human)

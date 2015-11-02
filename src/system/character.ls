@@ -13,7 +13,7 @@ define [
         Observer = new RecursiveShadowcast()
 
     class Character implements Effectable
-        (@type, @position, @grid, @Controller) ->
+        (@position, @grid, @Controller) ->
             @initEffectable()
             @controller = new @Controller(this, @position, @grid)
             @hitPoints = 10

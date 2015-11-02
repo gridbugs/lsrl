@@ -1,12 +1,12 @@
 define [
     'system/character'
     'assets/weapon/weapon'
-    'types'
-], (Character, Weapons, Types) ->
+    'asset_system'
+], (Character, Weapons, AssetSystem) ->
 
     class Shrubbery extends Character
         (position, grid, Controller) ->
-            super(Types.Character.Shrubbery, position, grid, Controller)
+            super(position, grid, Controller)
             @hitPoints = 5
             @weapon = new Weapons.Null()
 
@@ -14,7 +14,7 @@ define [
 
     class PoisonShrubbery extends Character
         (position, grid, Controller) ->
-            super(Types.Character.PoisonShrubbery, position, grid, Controller)
+            super(position, grid, Controller)
             @hitPoints = 10
             @weapon = new Weapons.ShrubberyPoisonSpikes()
 
@@ -22,13 +22,13 @@ define [
 
     class CarnivorousShrubbery extends Character
         (position, grid, Controller) ->
-            super(Types.Character.CarnivorousShrubbery, position, grid, Controller)
+            super(position, grid, Controller)
             @hitPoints = 20
             @weapon = new Weapons.ShrubberyTeeth()
 
         getName: -> 'Carnivorous Shrubbery'
 
-    {
+    AssetSystem.exposeAssets 'Character', {
         Shrubbery
         PoisonShrubbery
         CarnivorousShrubbery
