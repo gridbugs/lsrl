@@ -12,4 +12,6 @@ define [
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: false
         OMNISCIENT_CHARACTERS: false
+        DEFAULT_WIDTH: 80
+        DEFAULT_HEIGHT: 30
     }

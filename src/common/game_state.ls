@@ -14,10 +14,7 @@ define [
             @time = time
 
     class GameState
-        (grid, character, @descriptionProfile) ->
-            @playerCharacter = character
-            @characters = [character]
-            @grid = grid
+        ->
             @timeDelta = 0
 
             @absoluteTime = 0
@@ -27,6 +24,8 @@ define [
             @actionQueue = []
             @continuousEffects = new DistributedList()
             @observers = new LinkedList()
+
+        setDescriptionProfile: (@descriptionProfile) ->
 
         processObservers: ->
             @observers.forEach (observer) ~>
