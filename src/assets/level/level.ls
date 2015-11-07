@@ -1,0 +1,3 @@
+define [
+    'assets/level/start'
+]

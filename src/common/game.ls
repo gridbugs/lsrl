@@ -22,10 +22,25 @@ define [
             Util.printDebug "RNG Seed: #{seed}"
             Math.seedrandom(seed)
 
-        test: -> Test.test()
+        setupPlayerCharacter: ->
+            pc = @level.gameState.playerCharacter
+            Assets.Describer.English.installPlayerCharacter(pc)
+
+        setupStartLevel: ->
+            @level = new Assets.Level[Config.START_LEVEL_NAME]()
+            @level.generate()
+            @gameState = @level.gameState
+
+        setupDrawer: ->
+            drawer = UserInterface.Global.gameDrawer
+            drawer.tileScheme.setPlayerCharacter(@level.gameState.playerCharacter)
+            drawer.setTileStateData(drawer.tileScheme.createTileStateData(@level.width, @level.height))
 
         start: ->
-            @gameState = @test()
+            @setupStartLevel()
+            @setupPlayerCharacter()
+            @setupDrawer()
+
             if Config.DRAW_MAP_ONLY
                 return
 
@@ -40,7 +55,7 @@ define [
             @gameState.processObservers()
             @gameState.processContinuousEffects()
             UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
-            UserInterface.updateHud(@gameState.playerCharacter.character)
+            UserInterface.updateHud(@gameState.playerCharacter)
 
             looping = true
             done = false
@@ -64,7 +79,7 @@ define [
                 @gameState.progressSchedule()
             until action_source.isActive()
 
-            UserInterface.updateHud(@gameState.playerCharacter.character)
+            UserInterface.updateHud(@gameState.playerCharacter)
             action_source.getAction @gameState, (action) ~>
                 @gameState.applyAction(action, action_source)
 

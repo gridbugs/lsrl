@@ -27,6 +27,8 @@ define [
 
         setDescriptionProfile: (@descriptionProfile) ->
 
+        setPlayerCharacter: (@playerCharacter) ->
+
         processObservers: ->
             @observers.forEach (observer) ~>
                 observer.observe(this)
