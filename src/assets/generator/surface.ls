@@ -10,12 +10,13 @@ define [
     'assets/feature/feature'
     'assets/ground/ground'
     'structures/simple_cell'
+    'assets/assets'
     'constants'
     'types'
     'debug'
     'util'
 ], (BaseGenerator, Perlin, Grid, Vec2, Search, Direction, DoublyLinkedList, VisitedList,
-    Feature, Ground, SimpleCell, Constants, Types, Debug, Util) ->
+    Feature, Ground, SimpleCell, Assets, Constants, Types, Debug, Util) ->
 
     const PERLIN_SCALE = 0.05
     const PERLIN_SEARCH_MULTIPLIER = 1
@@ -214,17 +215,17 @@ define [
         generateTreeStep: ->
             @grid.forEach (cell) ~>
                 if cell.feature.type == Types.Feature.Water
-                    cell.nextFeature = Feature.Water
+                    cell.nextFeature = cell.feature
                 else if cell.feature.type == Types.Feature.Bridge
-                    cell.nextFeature = Feature.Bridge
+                    cell.nextFeature = cell.feature
                 else if cell.feature.type == Types.Feature.Wall
-                    cell.nextFeature = Feature.Wall
+                    cell.nextFeature = cell.feature
                 else if cell.feature.type == Types.Feature.StoneDownwardStairs
-                    cell.nextFeature = Feature.StoneDownwardStairs
+                    cell.nextFeature = cell.feature
                 else if @grid.isBorderCell(cell)
-                    cell.nextFeature = Feature.Tree
+                    cell.nextFeature = new Feature.Tree()
                 else if cell.feature.type == Types.Feature.Null and cell.path
-                    cell.nextFeature = Feature.Null
+                    cell.nextFeature = cell.feature
                 else
                     num_adjacent_trees = cell.countNeighboursSatisfying (c) -> c.feature.type == Types.Feature.Tree
                     num_adjacent_water = cell.countNeighboursSatisfying (c) -> c.feature.type == Types.Feature.Water
@@ -237,12 +238,12 @@ define [
                         probability = TreeSurviveProbabilities[num_adjacent_trees] - TREE_SURVIVE_DISTANCE_MULTIPLIER * distance
 
                     if Math.random() < probability
-                        cell.nextFeature = Feature.Tree
+                        cell.nextFeature = new Feature.Tree()
                     else
-                        cell.nextFeature = Feature.Null
+                        cell.nextFeature = new Feature.Null()
 
             @grid.forEach (cell) ~>
-                cell.feature = new cell.nextFeature()
+                cell.feature = cell.nextFeature
 
         generateTreeSteps: (n) ->
             for i from 0 til n
@@ -541,7 +542,7 @@ define [
             @placeRuinsLayer(ruins_grid, x, y, 0)
             @placeRuinsLayer(ruins_grid, x, y, 2)
             @ruinsStairs = @grid.get(x + Math.floor(width/2), y + Math.floor(height/2))
-            @ruinsStairs.feature = new Feature.StoneDownwardStairs()
+            @ruinsStairs.feature = @fromConnections[0].fromFeature
 
         tryPlaceRuins: (min_size, max_size, attempts) ->
             for i from 0 til attempts
@@ -553,13 +554,15 @@ define [
                 if @rectangleSatisfies(x, y, width, height, (c) ->
                         return c.isInLargestSpace and c.distanceToWater > 2
                         )
+                    
 
                     @placeRuins(x, y, width, height)
                     return true
             return false
 
 
-        generateGrid: (@T, @width, @height) ->
+        generateGrid: (@T, @width, @height, @fromConnections, @toConnections) ->
+            console.debug this
             @grid = new Grid(@T, @width, @height)
 
             while true
@@ -593,6 +596,8 @@ define [
 
             @addPathsToSpace(@largestSpace, @ruinsStairs)
             @startPoint = @addPathsToSpace(@secondLargestSpace)
+
+            @startPoint.feature = @fromConnections[1].fromFeature
 
             @generateTreeSteps(3)
             return @grid

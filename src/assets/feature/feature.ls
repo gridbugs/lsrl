@@ -73,7 +73,7 @@ define [
             return false
 
     class StoneDownwardStairs extends Feature
-        ->
+        (@descendDestination) ->
             super()
 
         getOpacity: ->
@@ -81,6 +81,23 @@ define [
 
         isSolid: ->
             return false
+
+        isDescendable: ->
+            return true
+
+    class StoneUpwardStairs extends Feature
+        (@ascendDestination) ->
+            super()
+
+        getOpacity: ->
+            return 0
+
+        isSolid: ->
+            return false
+
+        isAscendable: ->
+            return true
+
 
     class Web extends Feature
         (@cell) ->
@@ -123,6 +140,7 @@ define [
         Water
         Bridge
         StoneDownwardStairs
+        StoneUpwardStairs
         Web
         Null: Feature.NullFeature
     }

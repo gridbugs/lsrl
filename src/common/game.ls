@@ -51,6 +51,7 @@ define [
                 return 0
             else
                 return t * Config.ANIMATION_TIME
+
         gameLoop: ->
             @gameState.processObservers()
             @gameState.processContinuousEffects()

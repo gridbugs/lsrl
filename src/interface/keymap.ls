@@ -101,6 +101,8 @@ define [
         i: \Inventory
         t: \Test
         '.': \Wait
+        'V': \Descend
+        'W': \Ascend
     }
 
     {

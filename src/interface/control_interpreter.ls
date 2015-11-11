@@ -15,7 +15,6 @@ define [
 
         getAction: (game_state, cb) ->
             control <~ Util.repeatWhileUndefined(UserInterface.getControl)
-
             switch control.type
             |   Types.Control.Direction
                     action = new Action.Move(@character, control.direction)
@@ -167,6 +166,16 @@ define [
                     UserInterface.readString "hello", (i) ~>
                         UserInterface.printLine "You entered: #{i}"
                         @character.getAction game_state, cb
+
+            |   Types.Control.Descend
+                cell = @character.getCell()
+                if not cell.feature.isDescendable()
+                    UserInterface.print "Cannot descend here."
+                    return @character.getAction game_state, cb
+
+                console.debug cell.feature
+                cell.feature.descendDestination.generate()
+
 
             |   otherwise
                     @character.getAction game_state, cb

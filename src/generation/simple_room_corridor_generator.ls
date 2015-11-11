@@ -229,7 +229,7 @@ define [
                 string_array = @rotateRoomStringArrayClockwise(string_array)
             return string_array
 
-        generateGrid: (T, width, height) ->
+        generateGrid: (T, width, height, @fromConnections, @toConnections) ->
             grid = new Grid(T, width, height)
 
             grid.forEach (c) ->
@@ -242,3 +242,19 @@ define [
 
         preConnect: ->
             @connections = new ConnectionTracker(@numRooms)
+
+        resolveConnections: ->
+            stairs = @toConnections[0].toFeature
+            while true
+                cell = @grid.getRandom()
+                if @grid.isBorderCell(cell)
+                    continue
+                empty_neighbours = cell.countNeighboursSatisfying (c) -> c.feature.type == Types.Feature.Null
+                if empty_neighbours != 8
+                    continue
+
+                cell.feature = stairs
+                console.debug cell
+                break
+
+

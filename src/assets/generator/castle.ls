@@ -9,9 +9,9 @@ define [
         ->
             super()
 
-        generateGrid: (T, width, height) ->
+        generateGrid: (T, width, height, fromConnections, toConnections) ->
 
-            grid = super(T, width, height)
+            grid = super(T, width, height, fromConnections, toConnections)
 
             custom_rooms = [
                 [
@@ -80,5 +80,8 @@ define [
             @translateTypes(grid)
 
             @grid = grid
+
+            @resolveConnections()
+
             return grid
 

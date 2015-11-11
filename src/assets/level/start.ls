@@ -2,20 +2,34 @@ define [
     'system/level'
     'assets/assets'
     'asset_system'
+    'util'
     'types'
     'config'
-], (Level, Assets, AssetSystem, Types, Config) ->
+], (Level, Assets, AssetSystem, Util, Types, Config) ->
 
     class Start extends Level
+
         (@width = Config.DEFAULT_WIDTH, @height = Config.DEFAULT_HEIGHT) ->
             super()
             @generator = new Assets.Generator.Surface()
 
-        populate: ->
+            @children = [
+                new @createChild(new Assets.Level.BasicDungeon())
+                new @createChild(new Assets.Level.BasicDungeon())
+            ]
 
-            pc = new Assets.Character.Human(@generator.getStartingPointHint().position, @grid, Assets.Controller.PlayerController)
-            @addPlayerCharacter(pc)
-            @gameState.setDescriptionProfile(new Assets.DescriptionProfile.Default(pc))
+            for c in @children
+                c.createConnections(
+                    1,
+                    Assets.Feature.StoneDownwardStairs,
+                    Assets.Feature.StoneUpwardStairs
+                )
+                c.level.addConnections(c.connections)
+
+            @fromConnections = @getAllConnections(@children)
+
+        populate: ->
+            @addDefaultPlayerCharacter()
 
             @grid.forEach (c) ~>
                 if c.feature.type == Types.Feature.Null and Math.random() < 0.01

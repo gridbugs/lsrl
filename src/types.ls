@@ -43,6 +43,8 @@ define [
         \Inventory
         \Test
         \Wait
+        \Descend
+        \Ascend
     ]
 
     {

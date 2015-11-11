@@ -16,6 +16,12 @@ define [
         isBenign: ->
             return true
 
+        isDescendable: ->
+            return false
+
+        isAscendable: ->
+            return false
+
     # create debugging features for cells
     debugFeatureObj = {}
     for c in Debug.Chars

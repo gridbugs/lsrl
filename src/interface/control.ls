@@ -41,6 +41,8 @@ define [
         'Inventory'
         'Test'
         'Wait'
+        'Descend'
+        'Ascend'
     ].map(createBasicControl)
 
     return Control
