@@ -8,11 +8,6 @@ define [
     'debug'
 ], (Heap, LinkedList, DistributedList, Action, UserInterface, Util, Debug) ->
 
-    class ScheduleEntry
-        (action_source, time) ->
-            @actionSource = action_source
-            @time = time
-
     class GameState
         ->
             @timeDelta = 0
@@ -25,23 +20,29 @@ define [
             @continuousEffects = new DistributedList()
             @observers = new LinkedList()
 
+        setLevel: (@level) ->
+            @levelState = @level.levelState
+
         setDescriptionProfile: (@descriptionProfile) ->
+            @levelState.setDescriptionProfile(@descriptionProfile)
 
         setPlayerCharacter: (@playerCharacter) ->
+            @levelState.setPlayerCharacter(@playerCharacter)
+
+        getPlayerCharacter: ->
+            return @levelState.playerCharacter
 
         processObservers: ->
-            @observers.forEach (observer) ~>
-                observer.observe(this)
+            @levelState.processObservers()
 
         registerObserver: (observer) ->
-            node = @observers.insert(observer)
-            observer.setObserverNode(node)
+            @levelState.registerObserver(observer)
 
         registerCharacter: (character) ->
             character.initGameState(this)
 
         removeObserverNode: (node) ->
-            @observers.removeNode(node)
+            @levelState.removeObserverNode(node)
 
         processContinuousEffects: ->
             if @timeDelta > 0
@@ -60,49 +61,32 @@ define [
         getTime: ->
             return @absoluteTime
 
-        scheduleActionSource: (as, relative_time) ->
-            entry = new ScheduleEntry as, (relative_time + @absoluteTime)
-            @schedule.insert(entry)
+        scheduleActionSource: (source, relative_time) ->
+            @levelState.scheduleActionSource(source, relative_time + @absoluteTime)
 
         getCurrentActionSource: ->
-            top = @schedule.peak()
-            if top?
-                return top.actionSource
-            else
-                Debug.assert(false, 'No action sources remaining!')
+            return @levelState.getCurrentActionSource()
 
         enqueueAction: (action) ->
-            @actionQueue.push(action)
+            @levelState.enqueueAction(action)
 
         applySingleAction: (action) ->
-            ret = action.apply(this)
-            if @descriptionProfile.accept(action) and action.describe?
-                UserInterface.printDescriptionLine(action.describe())
-            return ret
+            return @levelState.applySingleAction(action)
 
         applyAction: (action, source) ->
-            @enqueueAction(action)
-            @processFirstAction(source)
-            @processActions()
+            @levelState.applyAction(action, source)
 
         processFirstAction: (source) ->
-            while @actionQueue.length != 0
-                current_action = @actionQueue.pop()
-                if @applySingleAction(current_action)
-                    if source.active
-                        @scheduleActionSource(source, current_action.time)
-                    return
+            @levelState.processFirstAction(source)
 
         processActions: ->
-            while @actionQueue.length != 0
-                current_action = @actionQueue.pop()
-                @applySingleAction(current_action)
+            @levelState.processActions()
 
         progressTurnCount: ->
             ++@turnCount
 
         progressSchedule: ->
-            prev = @schedule.pop()
+            prev = @levelState.schedule.pop()
             nextTime = prev.time
             @timeDelta = nextTime - @absoluteTime
             @absoluteTime = nextTime

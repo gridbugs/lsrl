@@ -562,7 +562,6 @@ define [
 
 
         generateGrid: (@T, @width, @height, @fromConnections, @toConnections) ->
-            console.debug this
             @grid = new Grid(@T, @width, @height)
 
             while true

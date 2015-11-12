@@ -1,4 +1,5 @@
 define [
+    'common/game_state'
     'interface/user_interface'
     'tests/test'
     'util'
@@ -6,7 +7,7 @@ define [
     'assets/assets'
     'config'
     'debug'
-], (UserInterface, Test, Util, Require, Assets, Config, Debug) ->
+], (GameState, UserInterface, Test, Util, Require, Assets, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->
@@ -23,17 +24,20 @@ define [
             Math.seedrandom(seed)
 
         setupPlayerCharacter: ->
-            pc = @level.gameState.playerCharacter
+            pc = @gameState.getPlayerCharacter()
             Assets.Describer.English.installPlayerCharacter(pc)
 
         setupStartLevel: ->
-            @level = new Assets.Level[Config.START_LEVEL_NAME]()
+            @gameState = new GameState()
+            
+            @level = new Assets.Level[Config.START_LEVEL_NAME](@gameState)
             @level.generate()
-            @gameState = @level.gameState
+
+            @gameState.setLevel(@level)
 
         setupDrawer: ->
             drawer = UserInterface.Global.gameDrawer
-            drawer.tileScheme.setPlayerCharacter(@level.gameState.playerCharacter)
+            drawer.tileScheme.setPlayerCharacter(@gameState.getPlayerCharacter())
             drawer.setTileStateData(drawer.tileScheme.createTileStateData(@level.width, @level.height))
 
         start: ->
@@ -55,8 +59,8 @@ define [
         gameLoop: ->
             @gameState.processObservers()
             @gameState.processContinuousEffects()
-            UserInterface.drawCharacterKnowledge(@gameState.playerCharacter, @gameState)
-            UserInterface.updateHud(@gameState.playerCharacter)
+            UserInterface.drawCharacterKnowledge(@gameState.getPlayerCharacter(), @gameState)
+            UserInterface.updateHud(@gameState.getPlayerCharacter())
 
             looping = true
             done = false
@@ -80,12 +84,12 @@ define [
                 @gameState.progressSchedule()
             until action_source.isActive()
 
-            UserInterface.updateHud(@gameState.playerCharacter)
+            UserInterface.updateHud(@gameState.getPlayerCharacter())
             action_source.getAction @gameState, (action) ~>
                 @gameState.applyAction(action, action_source)
 
                 /* Get time until current action source (in game time) */
                 time = @gameState.getCurrentTimeDelta()
 
-                callback(time, action_source == @gameState.playerCharacter)
+                callback(time, action_source == @gameState.getPlayerCharacter())
 
