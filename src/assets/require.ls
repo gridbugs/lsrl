@@ -9,4 +9,5 @@ define [
     'assets/controller/controller'
     'assets/description_profile/description_profile'
     'assets/level/level'
+    'assets/control_scheme/control_scheme'
 ]

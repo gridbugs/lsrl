@@ -5,9 +5,10 @@ define [
     'util'
     'assets/require'
     'assets/assets'
+    'interface/key'
     'config'
     'debug'
-], (GameState, UserInterface, Test, Util, Require, Assets, Config, Debug) ->
+], (GameState, UserInterface, Test, Util, Require, Assets, Key, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->
@@ -45,6 +46,8 @@ define [
             @setupStartLevel()
             @setupPlayerCharacter()
             @setupDrawer()
+
+            Key::ControlScheme = new Assets.ControlScheme.Dvorak()
 
             if Config.DRAW_MAP_ONLY
                 return

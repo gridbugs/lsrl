@@ -7,15 +7,16 @@ define [
             @currentCallback = void
             @native = false
 
-        getControl: (cb) ->
-            @getChar (c) ->
-                cb(Keymap.Controls[c])
-
-        getChar: (cb) ->
+        getKey: (callback) ->
             @dirty = false
-            @currentCallback = cb
+            @currentCallback = callback
 
-        getCharNative: (cb) ->
-            @dirty = false
-            @currentCallback = cb
-            @native = true
+        getControl: (callback) ->
+            key <- @getKey()
+            process.stderr.write('' + key.char + "\n")
+            process.stderr.write('' + key.getIndex() + "\n")
+            callback(key.getControl())
+
+        getChar: (callback) ->
+            key <- @getKey()
+            callback(key.getChar())

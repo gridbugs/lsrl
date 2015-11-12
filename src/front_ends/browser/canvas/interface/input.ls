@@ -1,22 +1,26 @@
 define [
     'interface/input'
     'interface/keymap'
-], (InputSource, Keymap) ->
+    'interface/key'
+], (InputSource, Keymap, Key) ->
 
     class BrowserInputSource extends InputSource
-        (@convert = Keymap.convertFromQwerty) ->
+        ->
             super()
 
             $(window).keydown (e) ~>
                 if @currentCallback?
-                    tmp = @currentCallback
+                    callback = @currentCallback
                     @currentCallback = null
-                    key = String.fromCharCode e.keyCode
-                    if e.shiftKey
-                        ch = key.toUpperCase()
-                    else
-                        ch = key.toLowerCase()
 
-                    tmp(@convert(ch))
+                    key = new Key(
+                        String.fromCharCode(e.keyCode),
+                        e.keyCode,
+                        e.shiftKey,
+                        e.ctrlKey,
+                        e.metaKey
+                    )
+
+                    callback(key)
                 else
                     @dirty = true

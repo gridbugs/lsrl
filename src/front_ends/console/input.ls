@@ -8,15 +8,11 @@ define [
         (@convert = Keymap.convertFromQwerty) ->
             super()
 
-        handleInputChar: (c) ->
+        handleInputKey: (k) ->
             if @currentCallback?
-                tmp = @currentCallback
+                callback = @currentCallback
                 @currentCallback = null
-                if @native
-                    @native = false
-                    tmp(c)
-                else
-                    tmp(@convert(c))
+                callback(k)
             else
                 @dirty = true
                 @native = false
