@@ -12,6 +12,9 @@ define [
             @fromConnections = []
             @toConnections = []
 
+            @id = Level.globalCount
+            ++Level.globalCount
+
         addConnections: (connections) ->
             @toConnections = @toConnections.concat(connections)
 
@@ -37,7 +40,7 @@ define [
             @levelState.scheduleActionSource(c.controller, 0)
 
         addDefaultPlayerCharacter: (C = Assets.Character.Human) ->
-            pc = new C(@generator.getStartingPointHint().position, @grid, Assets.Controller.PlayerController)
+            pc = new C(@generator.getStartingPointHint().position, @grid, this, Assets.Controller.PlayerController)
             @addPlayerCharacter(pc)
             @levelState.setDescriptionProfile(new Assets.DescriptionProfile.Default(pc))
 
@@ -46,7 +49,8 @@ define [
 
         getAllConnections: (children) ->
             Prelude.flatten(children.map (c) -> c.connections)
-            
+
+    Level.globalCount = 0       
 
     Level.Child = class
         (@parent, @level) ->

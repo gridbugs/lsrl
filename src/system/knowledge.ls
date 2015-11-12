@@ -38,14 +38,35 @@ define [
             return false
 
     class Knowledge
-        (grid, @controller) ->
-            @grid = new Grid(KnowledgeCell, grid.width, grid.height)
+        (@character) ->
+            @visibleCharacters = []
+            @levelGrids = []
+
+        createLevelGrid: (level) ->
+            grid = new Grid(KnowledgeCell, level.width, level.height)
             for i from 0 til grid.height
                 for j from 0 til grid.width
-                    @grid.get(j, i).init(grid.get(j, i), this)
+                    grid.get(j, i).init(level.grid.get(j, i), this)
 
-            @character = @controller.character
-            @visibleCharacters = []
+            @levelGrids[level.id] = grid
+            return grid
+
+        getLevel: ->
+            return @character.level
+
+        getLevelId: ->
+            return @getLevel().id
+
+        getGameGrid: ->
+            return @getLevel().grid
+
+        getGrid: ->
+            id = @getLevelId()
+            grid = @levelGrids[id]
+            if grid?
+                return grid
+
+            return @createLevelGrid(@getLevel())
 
         beforeObserve: ->
             @visibleCharacters = []

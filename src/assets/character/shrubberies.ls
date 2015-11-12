@@ -5,24 +5,24 @@ define [
 ], (Character, Weapons, AssetSystem) ->
 
     class Shrubbery extends Character
-        (position, grid, Controller) ->
-            super(position, grid, Controller)
+        (position, grid, level, Controller) ->
+            super(position, grid, level, Controller)
             @hitPoints = 5
             @weapon = new Weapons.Null()
 
         getName: -> 'Shrubbery'
 
     class PoisonShrubbery extends Character
-        (position, grid, Controller) ->
-            super(position, grid, Controller)
+        (position, grid, level, Controller) ->
+            super(position, grid, level, Controller)
             @hitPoints = 10
             @weapon = new Weapons.ShrubberyPoisonSpikes()
 
         getName: -> 'Poison Shrubbery'
 
     class CarnivorousShrubbery extends Character
-        (position, grid, Controller) ->
-            super(position, grid, Controller)
+        (position, grid, level, Controller) ->
+            super(position, grid, level, Controller)
             @hitPoints = 20
             @weapon = new Weapons.ShrubberyTeeth()
 

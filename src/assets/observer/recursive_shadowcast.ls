@@ -47,6 +47,7 @@ define [
 
     observeOctant = (
         character,
+        knowledge_grid,
         game_state,
         eye_cell,
         min_slope_initial,
@@ -58,7 +59,6 @@ define [
         lateral_max,        /* grid width or height */
         depth_max
     ) !->
-        knowledge_grid = character.knowledge.grid
         depth_index = Vec2.otherIndex(lateral_index)
 
         section_stack = SECTION_STACK
@@ -169,14 +169,16 @@ define [
 
     class RecursiveShadowcast
         observe: (character, game_state) !->
-            width = character.knowledge.grid.width - 1
-            height = character.knowledge.grid.height - 1
+            knowledge_grid = character.knowledge.getGrid()
+
+            width = knowledge_grid.width - 1
+            height = knowledge_grid.height - 1
             cell = character.getCell()
 
             character.getKnowledgeCell().see(game_state)
 
             # \|
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 -1, 0,
                 Types.OrdinalDirection.NorthWest,
                 Types.OrdinalDirection.SouthWest,
@@ -184,7 +186,7 @@ define [
             )
 
             # |/
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 0, 1,
                 Types.OrdinalDirection.SouthWest,
                 Types.OrdinalDirection.NorthWest,
@@ -192,7 +194,7 @@ define [
             )
 
             # /|
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 -1, 0,
                 Types.OrdinalDirection.SouthWest,
                 Types.OrdinalDirection.NorthWest,
@@ -200,7 +202,7 @@ define [
             )
 
             # |\
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 0, 1,
                 Types.OrdinalDirection.NorthWest,
                 Types.OrdinalDirection.SouthWest,
@@ -208,7 +210,7 @@ define [
             )
 
             # _\
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 -1, 0,
                 Types.OrdinalDirection.NorthWest,
                 Types.OrdinalDirection.NorthEast,
@@ -216,7 +218,7 @@ define [
             )
 
             # "/
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 0, 1,
                 Types.OrdinalDirection.NorthEast,
                 Types.OrdinalDirection.NorthWest,
@@ -224,7 +226,7 @@ define [
             )
 
             # /_
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 -1, 0,
                 Types.OrdinalDirection.NorthEast,
                 Types.OrdinalDirection.NorthWest,
@@ -232,7 +234,7 @@ define [
             )
 
             # \"
-            observeOctant(character, game_state, cell,
+            observeOctant(character, knowledge_grid, game_state, cell,
                 0, 1,
                 Types.OrdinalDirection.NorthWest,
                 Types.OrdinalDirection.NorthEast,

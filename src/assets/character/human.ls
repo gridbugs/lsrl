@@ -7,8 +7,8 @@ define [
 ], (Character, Action, Weapons, ReactiveEffect, AssetSystem) ->
 
     class Human extends Character
-        (position, grid, Controller) ->
-            super(position, grid, Controller)
+        (position, grid, level, Controller) ->
+            super(position, grid, level, Controller)
             @hitPoints = 100
             @weapon = new Weapons.BareHands()
             @resurrect = new ReactiveEffect.ResurrectOnDeath()

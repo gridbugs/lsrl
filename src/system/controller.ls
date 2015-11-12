@@ -5,7 +5,7 @@ define [
     class Controller
         (@grid) ->
             @active = true
-            @knowledge = new Knowledge(@grid, this)
+            @knowledge = new Knowledge(@character)
 
         deactivate: ->
             @active = false
@@ -13,7 +13,9 @@ define [
         isActive: ->
             return @active
         
-        getCell: -> @character.getCell()
-        getKnowledgeCell: -> @knowledge.grid.getCart(@character.getPosition())
+        getCell: ->
+            return @character.getCell()
+        getKnowledgeCell: ->
+            return @knowledge.getGrid().getCart(@character.getPosition())
         getOpacity: (cell) ->
             return cell.feature.getOpacity()

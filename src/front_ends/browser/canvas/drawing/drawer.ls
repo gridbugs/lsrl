@@ -92,7 +92,7 @@ define [
 
         __drawCharacterKnowledge: (character) ->
 
-            grid = character.getKnowledge().grid
+            grid = character.getKnowledge().getGrid()
             @adjustWindow(character, grid)
 
             @window.forEach grid, (c, i, j) ~>

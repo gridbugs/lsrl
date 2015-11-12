@@ -6,8 +6,8 @@ define [
 ], (Character, Weapons, ReactiveEffects, AssetSystem) ->
 
     class Spider extends Character
-        (position, grid, Controller) ->
-            super(position, grid, Controller)
+        (position, grid, level, Controller) ->
+            super(position, grid, level, Controller)
             @weapon = new Weapons.SpiderFangs()
             @solid = new ReactiveEffects.SolidCharacter()
 

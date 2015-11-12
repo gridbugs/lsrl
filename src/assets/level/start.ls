@@ -33,7 +33,7 @@ define [
 
             @grid.forEach (c) ~>
                 if c.feature.type == Types.Feature.Null and Math.random() < 0.01
-                    @addCharacter(new Assets.Character.Spider(c.position, @grid, Assets.Controller.SpiderController))
+                    @addCharacter(new Assets.Character.Spider(c.position, @grid, this, Assets.Controller.SpiderController))
                     c.feature = new Assets.Feature.Web(c)
 
     AssetSystem.exposeAsset('Level', Start)
