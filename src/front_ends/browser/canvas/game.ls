@@ -5,23 +5,17 @@ define [
     'front_ends/browser/canvas/interface/input'
     'front_ends/browser/canvas/interface/console'
     'front_ends/browser/canvas/interface/hud'
-    'interface/keymap'
     'tile_schemes/default'
     'util'
     'config'
-], (GameCommon, CanvasDrawer, Tile, BrowserInputSource, Console, Hud, Keymap, DefaultTileScheme, Util, Config) ->
+], (GameCommon, CanvasDrawer, Tile, BrowserInputSource, Console, Hud, DefaultTileScheme, Util, Config) ->
 
     class Game extends GameCommon
         ->
 
             @seedRandom()
 
-            if window.location.hash == '#qwerty'
-                convert = Keymap.convertFromQwerty
-            else
-                convert = Keymap.convertFromDvorak
-
-            input = new BrowserInputSource(convert)
+            input = new BrowserInputSource()
             drawer = new CanvasDrawer($('#canvas')[0], new DefaultTileScheme(Tile.TileSet), 80, 30, input)
             game_console = new Console($('#log'))
             hud = new Hud($('#hud'))
@@ -29,7 +23,14 @@ define [
             super(drawer, input, game_console, hud)
 
 
-    main = -> new Game().start()
+    main = ->
+
+        pairs = window.location.search.split("?").filter (.length)
+        for p in pairs
+            [key, value] = p.split("=")
+            Config[key] = value
+
+        new Game().start()
 
     {
         Game

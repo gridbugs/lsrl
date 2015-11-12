@@ -47,7 +47,7 @@ define [
             @setupPlayerCharacter()
             @setupDrawer()
 
-            Key::ControlScheme = new Assets.ControlScheme.Dvorak()
+            Key::ControlScheme = new Assets.ControlScheme[Config.Controls]()
 
             if Config.DRAW_MAP_ONLY
                 return

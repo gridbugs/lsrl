@@ -1,8 +1,7 @@
 define [
     'interface/input'
-    'interface/keymap'
     'interface/key'
-], (InputSource, Keymap, Key) ->
+], (InputSource, Key) ->
 
     class BrowserInputSource extends InputSource
         ->

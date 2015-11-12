@@ -6,11 +6,10 @@ define [
     'front_ends/console/blessed/interface/input'
     'front_ends/console/blessed/interface/console'
     'front_ends/console/blessed/interface/hud'
-    'interface/keymap'
     'tile_schemes/default'
     'util'
     'debug'
-], (Blessed, BaseGame, Drawer, Tile, Input, Console, Hud, Keymap, DefaultTileScheme, Util, Debug) ->
+], (Blessed, BaseGame, Drawer, Tile, Input, Console, Hud, DefaultTileScheme, Util, Debug) ->
 
     class OutputBuffer
         ->
@@ -48,8 +47,7 @@ define [
             @program.on 'mouse', ->
 
             drawer = new Drawer(@program, new DefaultTileScheme(Tile.TileSet), 0, 0, 80, 30)
-            convert = Keymap.convertFromDvorak
-            input = new Input(@program, convert)
+            input = new Input(@program)
             gconsole = new Console(@program, input, 0, 36, 80, 12)
             hud = new Hud(@program, 0, 32, 80, 4)
 

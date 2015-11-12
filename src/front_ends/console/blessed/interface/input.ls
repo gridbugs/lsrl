@@ -1,8 +1,7 @@
 define [
     'front_ends/console/input'
-    'interface/keymap'
     'interface/key'
-], (BaseInput, Keymap, Key) ->
+], (BaseInput, Key) ->
 
     const ENTER_KEY = 13
 
@@ -31,7 +30,6 @@ define [
                     @expectingSecondEnterKey = true
 
                 code = NameToCode[obj.name]
-                process.stderr.write '' + code + " |" +obj.name+ "|" + Object.keys(NameToCode) + "|" + NameToCode["left"] + "\n"
                 if not code?
                     code = obj.name.charCodeAt(0)
                 key = new Key(

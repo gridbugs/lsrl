@@ -30,5 +30,8 @@ define [
     Key.RIGHT = 39
     Key.DOWN = 40
     Key.ESCAPE = 27
+    Key.ENTER = 13
+    Key.PERIOD = 190
+    Key.COMMA = 188
 
     return Key

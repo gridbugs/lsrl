@@ -1,6 +1,5 @@
 define [
-    'interface/keymap'
-], (Keymap) ->
+], ->
 
     class InputSource
         ->
@@ -13,8 +12,6 @@ define [
 
         getControl: (callback) ->
             key <- @getKey()
-            process.stderr.write('' + key.char + "\n")
-            process.stderr.write('' + key.getIndex() + "\n")
             callback(key.getControl())
 
         getChar: (callback) ->

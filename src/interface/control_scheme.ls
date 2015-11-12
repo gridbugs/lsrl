@@ -3,8 +3,10 @@ define [
 ], (Control) ->
 
     class ControlScheme
-        (object) ->
+        ->
             @array = []
+
+        add: (object) ->
 
             for k, v of object
                 @array[parseInt(k)] = Control[v]
