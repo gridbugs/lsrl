@@ -269,6 +269,24 @@ define [
         commit: ->
             @character.getCell().items.insertItems(@items)
 
+    class Descend extends Action
+        (@character, @cell) ->
+            super()
+            @stairs = @cell.feature
+
+        Relationships: Util.enum [
+            'Character'
+            'Stairs'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @stairs.notify(this, @Relationships.Stairs, game_state)
+
+        commit: (game_state) ->
+            game_state.switchCharacterLevel(@character, @stairs.destination)
+
+
     class Null extends Action
         ->
             super()
@@ -290,5 +308,6 @@ define [
         Restore
         Take
         Drop
+        Descend
         Null
     }

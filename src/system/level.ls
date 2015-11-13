@@ -8,12 +8,19 @@ define [
 
     class Level
         (@gameState) ->
-            @levelState = new LevelState(@gameState)
+            @levelState = new LevelState(this, @gameState)
             @fromConnections = []
             @toConnections = []
 
             @id = Level.globalCount
             ++Level.globalCount
+
+            @generated = false
+
+        beforeSwitchTo: ->
+            if not @generated
+                @generate()
+                @generated = true
 
         addConnections: (connections) ->
             @toConnections = @toConnections.concat(connections)
@@ -26,18 +33,24 @@ define [
             @grid = @generator.generateGrid(Cell, @width, @height, @fromConnections, @toConnections)
             @populate()
 
-        
-
         addPlayerCharacter: (pc) ->
-            @addCharacter(pc)
+            @addCharacterInitial(pc)
+            @gameState.setPlayerCharacter(pc)
             @levelState.setPlayerCharacter(pc)
+
+        addCharacterInitial: (c) ->
+            @gameState.registerCharacter(c)
+            @addCharacter(c)
 
         addCharacter: (c) ->
             @grid.getCart(c.position).character = c
-            @gameState.registerCharacter(c)
-            
             @levelState.registerObserver(c)
             @levelState.scheduleActionSource(c.controller, 0)
+
+        removeCharacter: (c) ->
+            @levelState.removeObserverNode(c.observerNode)
+            @levelState.purgeActionSource(c.controller)
+            @grid.getCart(c.position).character = void
 
         addDefaultPlayerCharacter: (C = Assets.Character.Human) ->
             pc = new C(@generator.getStartingPointHint().position, @grid, this, Assets.Controller.PlayerController)

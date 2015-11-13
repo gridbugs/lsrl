@@ -25,9 +25,9 @@ define ->
 
         peak: -> if @size! > 0 then @array[1] else void
         size: -> @next_idx - 1
-        empty: -> @size! == 0
+        empty: -> @size() == 0
         pop: ->
-            return void if @empty!
+            return void if @empty()
 
             ret = @array[1]
             @next_idx--
@@ -57,3 +57,7 @@ define ->
                 break
 
             return ret
+
+        forEach: (f) ->
+            for i from 0 til @next_idx
+                f(@array[i])

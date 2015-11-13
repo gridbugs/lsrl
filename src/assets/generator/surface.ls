@@ -542,7 +542,7 @@ define [
             @placeRuinsLayer(ruins_grid, x, y, 0)
             @placeRuinsLayer(ruins_grid, x, y, 2)
             @ruinsStairs = @grid.get(x + Math.floor(width/2), y + Math.floor(height/2))
-            @ruinsStairs.feature = @fromConnections[0].fromFeature
+            @fromConnections[0].connectFromCell(@ruinsStairs)
 
         tryPlaceRuins: (min_size, max_size, attempts) ->
             for i from 0 til attempts
@@ -596,7 +596,7 @@ define [
             @addPathsToSpace(@largestSpace, @ruinsStairs)
             @startPoint = @addPathsToSpace(@secondLargestSpace)
 
-            @startPoint.feature = @fromConnections[1].fromFeature
+            @fromConnections[1].connectFromCell(@startPoint)
 
             @generateTreeSteps(3)
             return @grid

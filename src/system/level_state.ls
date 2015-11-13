@@ -12,9 +12,10 @@ define [
         (action_source, time) ->
             @actionSource = action_source
             @time = time
+            @active = true
 
     class LevelState
-        (@gameState) ->
+        (@level, @gameState) ->
 
             @schedule = new Heap (a, b) -> a.time <= b.time
 
@@ -43,8 +44,17 @@ define [
             entry = new ScheduleEntry(source, (@gameState.getTime() + relatitve_time))
             @schedule.insert(entry)
 
+        purgeActionSource: (source) ->
+            @schedule.forEach (entry) ->
+                if entry.actionSource == source
+                    entry.active = false
+
         getCurrentActionSource: ->
-            top = @schedule.peak()
+            top = void
+            do
+                top = @schedule.peak()
+            until top.active
+
             if top?
                 return top.actionSource
             else

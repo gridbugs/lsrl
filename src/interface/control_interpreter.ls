@@ -173,9 +173,7 @@ define [
                     UserInterface.print "Cannot descend here."
                     return @character.getAction game_state, cb
 
-                console.debug cell.feature
-                cell.feature.descendDestination.generate()
-
+                cb(new Action.Descend(@character, cell))
 
             |   otherwise
                     @character.getAction game_state, cb

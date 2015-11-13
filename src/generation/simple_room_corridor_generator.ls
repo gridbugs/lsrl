@@ -244,7 +244,6 @@ define [
             @connections = new ConnectionTracker(@numRooms)
 
         resolveConnections: ->
-            stairs = @toConnections[0].toFeature
             while true
                 cell = @grid.getRandom()
                 if @grid.isBorderCell(cell)
@@ -253,8 +252,7 @@ define [
                 if empty_neighbours != 8
                     continue
 
-                cell.feature = stairs
-                console.debug cell
+                @toConnections[0].connectToCell(cell)
                 break
 
 

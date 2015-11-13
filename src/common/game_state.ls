@@ -23,11 +23,21 @@ define [
         setLevel: (@level) ->
             @levelState = @level.levelState
 
+        switchCharacterLevel: (character, destination) ->
+            level = destination.level
+            level.beforeSwitchTo()
+
+            cell = destination.cell
+
+            console.debug character
+            console.debug level
+            console.debug cell
+            character.switchToLevel(level)
+
         setDescriptionProfile: (@descriptionProfile) ->
             @levelState.setDescriptionProfile(@descriptionProfile)
 
         setPlayerCharacter: (@playerCharacter) ->
-            @levelState.setPlayerCharacter(@playerCharacter)
 
         getPlayerCharacter: ->
             return @levelState.playerCharacter
