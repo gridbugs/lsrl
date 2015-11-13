@@ -269,7 +269,7 @@ define [
         commit: ->
             @character.getCell().items.insertItems(@items)
 
-    class Descend extends Action
+    class ChangeLevels extends Action
         (@character, @cell) ->
             super()
             @stairs = @cell.feature
@@ -286,6 +286,13 @@ define [
         commit: (game_state) ->
             game_state.switchCharacterLevel(@character, @stairs.destination)
 
+    class Descend extends ChangeLevels
+        (@character, @cell) ->
+            super(@character, @cell)
+
+    class Ascend extends ChangeLevels
+        (@character, @cell) ->
+            super(@character, @cell)
 
     class Null extends Action
         ->
@@ -309,5 +316,6 @@ define [
         Take
         Drop
         Descend
+        Ascend
         Null
     }

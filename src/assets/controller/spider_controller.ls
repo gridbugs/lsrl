@@ -23,7 +23,7 @@ define [
 
     class Attack
         (@character, @target) ->
-        
+
         run: (game_state) ->
             path = pathThroughEmptyCells(@character.getCell(), @target.getCell())
             if path?

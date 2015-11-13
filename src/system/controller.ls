@@ -12,7 +12,7 @@ define [
 
         isActive: ->
             return @active
-        
+
         getCell: ->
             return @character.getCell()
         getKnowledgeCell: ->

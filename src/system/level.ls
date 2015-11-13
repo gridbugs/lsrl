@@ -20,7 +20,6 @@ define [
         beforeSwitchTo: ->
             if not @generated
                 @generate()
-                @generated = true
 
         addConnections: (connections) ->
             @toConnections = @toConnections.concat(connections)
@@ -32,6 +31,7 @@ define [
 
             @grid = @generator.generateGrid(Cell, @width, @height, @fromConnections, @toConnections)
             @populate()
+            @generated = true
 
         addPlayerCharacter: (pc) ->
             @addCharacterInitial(pc)
@@ -62,7 +62,7 @@ define [
         getAllConnections: (children) ->
             Prelude.flatten(children.map (c) -> c.connections)
 
-    Level.globalCount = 0       
+    Level.globalCount = 0
 
     Level.Child = class
         (@parent, @level) ->
@@ -73,6 +73,6 @@ define [
                 @connections.push(new Connection(
                     @parent, @level, new FromFeature(@level), new ToFeature(@parent)
                 ))
-                
+
 
     return Level

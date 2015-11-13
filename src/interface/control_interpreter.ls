@@ -174,7 +174,13 @@ define [
                     return @character.getAction game_state, cb
 
                 cb(new Action.Descend(@character, cell))
+            |   Types.Control.Ascend
+                cell = @character.getCell()
+                if not cell.feature.isAscendable()
+                    UserInterface.print "Cannot ascend here."
+                    return @character.getAction game_state, cb
 
+                cb(new Action.Ascend(@character, cell))
             |   otherwise
                     @character.getAction game_state, cb
 

@@ -554,7 +554,7 @@ define [
                 if @rectangleSatisfies(x, y, width, height, (c) ->
                         return c.isInLargestSpace and c.distanceToWater > 2
                         )
-                    
+
 
                     @placeRuins(x, y, width, height)
                     return true

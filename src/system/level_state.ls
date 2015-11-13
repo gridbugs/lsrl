@@ -52,15 +52,14 @@ define [
                     entry.active = false
 
         getCurrentActionSource: ->
-            top = void
-            do
+            while true
                 top = @schedule.peak()
-            until top.active
+                Debug.assert(top?, 'No action sources remaining!')
 
-            if top?
-                return top.actionSource
-            else
-                Debug.assert(false, 'No action sources remaining!')
+                if top.active
+                    return top.actionSource
+
+                @schedule.pop()
 
         enqueueAction: (action) ->
             @actionQueue.push(action)

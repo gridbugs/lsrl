@@ -29,11 +29,11 @@ define [
 
         setupStartLevel: ->
             @gameState = new GameState()
-            
+
             @level = new Assets.Level[Config.START_LEVEL_NAME](@gameState)
 
             @gameState.setLevel(@level)
-            
+
             @level.generate()
 
         setupDrawer: ->
@@ -78,7 +78,6 @@ define [
             looping = false
 
         progressGameState: (callback) ->
-
             do
                 action_source = @gameState.getCurrentActionSource()
 

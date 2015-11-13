@@ -13,11 +13,11 @@ define [
 
             @fromFeature.destination = @toDestination
             @toFeature.destination = @fromDestination
-    
+
         connectFromCell: (@fromCell) ->
             @fromCell.feature = @fromFeature
             @fromDestination.setCell(@fromCell)
-        
+
         connectToCell: (@toCell) ->
             @toCell.feature = @toFeature
             @toDestination.setCell(@toCell)
