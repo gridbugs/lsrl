@@ -74,7 +74,7 @@ define [
         _drawCharacterKnowledge: (character) ->
 
             turncount = character.getTurnCount()
-            grid = character.getKnowledge().grid
+            grid = character.getKnowledge().getGrid()
 
             @adjustWindow(character, grid)
 
@@ -91,7 +91,7 @@ define [
 
         drawCellSelectOverlay: (character, game_state, select_coord) ->
             @_drawCharacterKnowledge(character)
-            cell = character.getKnowledge().grid.getCart(select_coord)
+            cell = character.getKnowledge().getGrid().getCart(select_coord)
             @setCursorCart(cell)
 
             @setBackground(SELECTED_COLOUR)
