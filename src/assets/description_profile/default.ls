@@ -32,6 +32,10 @@ define [
                     return action.character == @character
             |   Types.Action.Wait
                     return action.character == @character
+            |   Types.Action.Ascend
+                    return action.character == @character
+            |   Types.Action.Descend
+                    return action.character == @character
 
             return false
 

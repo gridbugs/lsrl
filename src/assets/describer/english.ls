@@ -191,6 +191,18 @@ define [
                 desc.capitaliseFirstLetter()
                 return desc
 
+            Assets.Action.Descend::describe = ->
+                desc = getCharacterActionDescription(@character, 'descend')
+                desc.append(' the stairs.')
+                desc.capitaliseFirstLetter()
+                return desc
+
+            Assets.Action.Ascend::describe = ->
+                desc = getCharacterActionDescription(@character, 'ascend')
+                desc.append(' the stairs.')
+                desc.capitaliseFirstLetter()
+                return desc
+
         installPlayerCharacter: (pc) ->
             pc.describe = ->
                 return new Description.PluralDescription(['you'])
