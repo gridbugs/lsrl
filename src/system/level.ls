@@ -55,7 +55,6 @@ define [
         addDefaultPlayerCharacter: (C = Assets.Character.Human) ->
             pc = new C(@generator.getStartingPointHint().position, @grid, this, Assets.Controller.PlayerController)
             @addPlayerCharacter(pc)
-            @levelState.setDescriptionProfile(new Assets.DescriptionProfile.Default(pc))
 
         createChild: (level) ->
             return new Level.Child(this, level)

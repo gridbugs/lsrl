@@ -8,8 +8,8 @@ define [
 
     class BasicDungeon extends Level
 
-        (@width = Config.DEFAULT_WIDTH, @height = Config.DEFAULT_HEIGHT) ->
-            super()
+        (@gameState, @width = Config.DEFAULT_WIDTH, @height = Config.DEFAULT_HEIGHT) ->
+            super(@gameState)
             @generator = new Assets.Generator.Castle()
 
         populate: ->

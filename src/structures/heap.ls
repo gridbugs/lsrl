@@ -59,5 +59,5 @@ define ->
             return ret
 
         forEach: (f) ->
-            for i from 0 til @next_idx
+            for i from 1 til @next_idx
                 f(@array[i])

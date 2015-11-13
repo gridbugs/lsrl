@@ -31,9 +31,10 @@ define [
             @gameState = new GameState()
             
             @level = new Assets.Level[Config.START_LEVEL_NAME](@gameState)
-            @level.generate()
 
             @gameState.setLevel(@level)
+            
+            @level.generate()
 
         setupDrawer: ->
             drawer = UserInterface.Global.gameDrawer

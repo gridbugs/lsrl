@@ -19,7 +19,8 @@ define [
             @hitPoints = 10
             @alive = true
 
-        switchToLevel: (level) ->
+        setLevel: (@level) ->
+            @grid = @level.grid
 
         initGameState: (game_state) ->
             @continuousEffects = game_state.continuousEffects.createChild()

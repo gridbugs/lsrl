@@ -4,9 +4,10 @@ define [
     'structures/distributed_list'
     'system/action'
     'interface/user_interface'
+    'assets/assets'
     'util'
     'debug'
-], (Heap, LinkedList, DistributedList, Action, UserInterface, Util, Debug) ->
+], (Heap, LinkedList, DistributedList, Action, UserInterface, Assets, Util, Debug) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -25,6 +26,7 @@ define [
         setDescriptionProfile: (@descriptionProfile) ->
 
         setPlayerCharacter: (@playerCharacter) ->
+            @setDescriptionProfile(new Assets.DescriptionProfile.Default(@playerCharacter))
 
         processObservers: ->
             @observers.forEach (observer) ~>

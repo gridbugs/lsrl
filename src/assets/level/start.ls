@@ -14,8 +14,8 @@ define [
             @generator = new Assets.Generator.Surface()
 
             @children = [
-                @createChild(new Assets.Level.BasicDungeon()),
-                @createChild(new Assets.Level.BasicDungeon())
+                @createChild(new Assets.Level.BasicDungeon(@gameState)),
+                @createChild(new Assets.Level.BasicDungeon(@gameState))
             ]
 
             for c in @children

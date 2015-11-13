@@ -29,18 +29,26 @@ define [
 
             cell = destination.cell
 
-            console.debug character
-            console.debug level
-            console.debug cell
-            character.switchToLevel(level)
+            character.level.removeCharacter(character)
+
+            character.position = cell.position
+
+            level.addCharacter(character)
+
+            character.setLevel(level)
+
+            if character == @getPlayerCharacter()
+                @setLevel(level)
+                level.levelState.setPlayerCharacter(character)
 
         setDescriptionProfile: (@descriptionProfile) ->
             @levelState.setDescriptionProfile(@descriptionProfile)
 
         setPlayerCharacter: (@playerCharacter) ->
+            @levelState.setPlayerCharacter(@playerCharacter)
 
         getPlayerCharacter: ->
-            return @levelState.playerCharacter
+            return @playerCharacter
 
         processObservers: ->
             @levelState.processObservers()
