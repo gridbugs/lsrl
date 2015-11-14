@@ -46,13 +46,13 @@ define [
                         if not coord?
                             @character.getAction game_state, cb
                             return
-                        kcell = @character.getKnowledge().grid.getCart(coord)
+                        kcell = @character.getKnowledge().getGrid().getCart(coord)
                         UserInterface.printDescriptionLine(kcell.describe())
                         @character.getAction game_state, cb
 
                     , (coord) ~>
                         UserInterface.clearLine()
-                        kcell = @character.getKnowledge().grid.getCart(coord)
+                        kcell = @character.getKnowledge().getGrid().getCart(coord)
                         UserInterface.printDescription(kcell.describe())
 
             |   Types.Control.Get

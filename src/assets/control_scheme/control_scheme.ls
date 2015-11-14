@@ -24,7 +24,7 @@ define [
                 (Key.DOWN .|. Key.CONTROL):         'SouthEast'
 
                 /* Interface */
-                (Key.Enter):                    'Accept'
+                (Key.ENTER):                    'Accept'
                 (Key.ESCAPE):                   'Escape'
             }
 

@@ -11,27 +11,22 @@ define [
         up: Key.UP
         down: Key.DOWN
         escape: Key.ESCAPE
+        return: Key.ENTER
     }
 
     class Input extends BaseInput
-        (@program, convert = Keymap.convertFromQwerty) ->
-            super(convert)
-
-            @expectingSecondEnterKey = false
+        (@program) ->
+            super()
 
             @program.on 'keypress', (c, obj) ~>
 
-                # Blessed sends the enter key twice when it is pressed once
-                if @expectingSecondEnterKey and c? and c.charCodeAt(0) == ENTER_KEY
-                    @expectingSecondEnterKey = false
+                if obj.name == 'enter'
                     return
-
-                if c? and c.charCodeAt(0) == ENTER_KEY
-                    @expectingSecondEnterKey = true
 
                 code = NameToCode[obj.name]
                 if not code?
-                    code = obj.name.charCodeAt(0)
+                    code = obj.name.toUpperCase().charCodeAt(0)
+
                 key = new Key(
                     obj.name,
                     code,
