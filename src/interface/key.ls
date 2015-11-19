@@ -33,5 +33,7 @@ define [
     Key.ENTER = 13
     Key.PERIOD = 190
     Key.COMMA = 188
+    Key.COLON = 58
+    Key.SEMICOLON = 59
 
     return Key

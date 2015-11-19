@@ -12,6 +12,8 @@ define [
         down: Key.DOWN
         escape: Key.ESCAPE
         return: Key.ENTER
+        ';': Key.SEMICOLON
+        ':': Key.COLON
     }
 
     class Input extends BaseInput
@@ -25,7 +27,8 @@ define [
 
                 code = NameToCode[obj.name]
                 if not code?
-                    code = obj.name.toUpperCase().charCodeAt(0)
+                    if obj.name?
+                        code = obj.name.toUpperCase().charCodeAt(0)
 
                 key = new Key(
                     obj.name,
