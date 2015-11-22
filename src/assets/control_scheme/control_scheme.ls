@@ -23,6 +23,17 @@ define [
                 (Key.UP .|. Key.CONTROL):           'NorthWest'
                 (Key.DOWN .|. Key.CONTROL):         'SouthEast'
 
+                /* Arrow key movement */
+                (Key.LEFT .|. Key.SHIFT):         'AutoWest'
+                (Key.RIGHT .|. Key.SHIFT):        'AutoEast'
+                (Key.UP .|. Key.SHIFT):           'AutoNorth'
+                (Key.DOWN .|. Key.SHIFT):         'AutoSouth'
+
+                (Key.LEFT .|. Key.CONTROL .|. Key.SHIFT):         'AutoSouthWest'
+                (Key.RIGHT .|. Key.CONTROL .|. Key.SHIFT):        'AutoNorthEast'
+                (Key.UP .|. Key.CONTROL .|. Key.SHIFT):           'AutoNorthWest'
+                (Key.DOWN .|. Key.CONTROL .|. Key.SHIFT):         'AutoSouthEast'
+
                 /* Interface */
                 (Key.ENTER):                    'Accept'
                 (Key.ESCAPE):                   'Escape'
