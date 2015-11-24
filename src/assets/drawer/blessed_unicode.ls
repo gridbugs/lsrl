@@ -1,21 +1,19 @@
 define [
-    'tile_schemes/default'
+    'assets/assets'
     'drawing/drawer'
     'front_ends/console/colours'
     'front_ends/console/text'
-    'front_ends/console/blessed/drawing/tile'
-    'drawing/tile'
     'interface/user_interface'
     'util'
     'types'
     'asset_system'
-], (DefaultTileScheme, Drawer, Colours, Text, BlessedTile, Tile, UserInterface, Util, Types, AssetSystem) ->
+], (Assets, Drawer, Colours, Text, UserInterface, Util, Types, AssetSystem) ->
 
     UNSEEN_COLOUR = Colours.VeryDarkGrey
     SELECTED_COLOUR = Colours.DarkYellow
 
     class BlessedUnicodeDrawer extends Drawer
-        (@program, @tileScheme, @left, @top, @width, @height) ->
+        (@program, @left, @top, @width, @height) ->
 
             super(@width, @height)
 
@@ -59,7 +57,7 @@ define [
             @drawCharacter(tile.character, UNSEEN_COLOUR, tile.bold)
 
         drawUnknownTile: ->
-            @drawTile(@tileScheme.tiles.Unknown)
+            @drawTile(Assets.TileSet.Default.Tiles.Unknown)
 
         getTileFromCell: (cell) ->
             return cell.getTile()

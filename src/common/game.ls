@@ -40,8 +40,6 @@ define [
 
         setupDrawer: ->
             drawer = UserInterface.Global.gameDrawer
-            drawer.tileScheme.setPlayerCharacter(@gameState.getPlayerCharacter())
-            drawer.setTileStateData(drawer.tileScheme.createTileStateData(@level.width, @level.height))
 
         start: ->
             @setupStartLevel()

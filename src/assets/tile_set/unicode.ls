@@ -60,14 +60,14 @@ define [
                 Spider:                     ['s', 'White',      true]
             }
 
-            @tiles = {}
+            @Tiles = {}
             for k, v of tiles
-                @tiles[k] = new Tile(v[0], Assets.Colour[v[1]], v[2])
+                @Tiles[k] = new Tile(v[0], Assets.Colour[v[1]], v[2])
 
         install: ->
             @init()
 
-            tiles = @tiles
+            tiles = @Tiles
 
             Knowledge.KnowledgeCell::getTile = ->
                 if @character?
@@ -136,7 +136,7 @@ define [
 
 
         installPlayerCharacter: (pc) ->
-            tiles = @tiles
+            tiles = @Tiles
 
             pc.getTile = ->
                 return tiles.PlayerCharacter

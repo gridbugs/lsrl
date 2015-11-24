@@ -1,12 +1,10 @@
 define [
-    'tile_schemes/default'
+    'assets/assets'
     'drawing/drawer'
-    'drawing/tile'
     'structures/grid_window'
     'types'
-    'front_ends/browser/canvas/drawing/tile'
     'asset_system'
-], (DefaultTileScheme, Drawer, Tile, GridWindow, Types, CanvasTile, AssetSystem) ->
+], (Assets, Drawer, GridWindow, Types, AssetSystem) ->
 
     const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
@@ -17,7 +15,7 @@ define [
     const CLEAR_COLOUR = '#000000'
 
     class CanvasUnicodeDrawer extends Drawer
-        (@canvas, @tileScheme, @numCols, @numRows) ->
+        (@canvas, @numCols, @numRows) ->
 
             super(@numCols, @numRows)
 
@@ -70,7 +68,7 @@ define [
             @__fillBackground(v.x, v.y, colour)
 
         __fillUnknownCart: (x, y) ->
-            @__fillTextFromTile(x, y, @tileScheme.tiles.Unknown)
+            @__fillTextFromTile(x, y, Assets.TileSet.Default.Tiles.Unknown)
 
         __drawKnowledgeCell: (cell, turn_count, x, y) ->
             if cell? and cell.known

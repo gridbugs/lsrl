@@ -23,12 +23,10 @@ define [
     'types'
     'assets/controller/shrubbery_controllers'
     'assets/assets'
-    'drawing/tile'
-    'front_ends/browser/canvas/drawing/tile'
 ], (prelude, border_generator, cell_automata_test_generator, MazeGenerator, \
     PlayerController, character, Vec2, GameState, Cell, Feature, Util, LinkedList, BinaryTree, \
     AvlTree, GroupTree, Item, Search, AutoMove, UserInterface, NullController, Config, Types, ShrubberyControllers, \
-    Assets, Tile, CanvasTile) ->
+    Assets) ->
 
     const WIDTH = 80
     const HEIGHT = 30
@@ -59,8 +57,6 @@ define [
 
         pos = new Vec2(sp.x, sp.y)
         char = new Assets.Character.Human(pos, grid, PlayerController)
-        drawer.tileScheme.setPlayerCharacter(char)
-        drawer.setTileStateData(drawer.tileScheme.createTileStateData(WIDTH, HEIGHT))
         grid.get(sp.x, sp.y).character = char
         gs = new GameState(grid, char.controller, new Assets.DescriptionProfile.Default(char))
         Assets.Describer.English.installPlayerCharacter(char)

@@ -1,15 +1,13 @@
 define [
     'blessed'
     'common/game'
-    'front_ends/console/blessed/drawing/tile'
     'front_ends/console/blessed/interface/input'
     'front_ends/console/blessed/interface/console'
     'front_ends/console/blessed/interface/hud'
-    'tile_schemes/default'
     'assets/assets'
     'util'
     'debug'
-], (Blessed, BaseGame, Tile, Input, Console, Hud, DefaultTileScheme, Assets, Util, Debug) ->
+], (Blessed, BaseGame, Input, Console, Hud, Assets, Util, Debug) ->
 
     class OutputBuffer
         ->
@@ -50,7 +48,7 @@ define [
 
             @program.on 'mouse', ->
 
-            drawer = new Assets.Drawer.BlessedUnicodeDrawer(@program, new DefaultTileScheme(Tile.TileSet), 0, 0, 80, 30)
+            drawer = new Assets.Drawer.BlessedUnicodeDrawer(@program, 0, 0, 80, 30)
             input = new Input(@program)
             gconsole = new Console(@program, input, 0, 36, 80, 12)
             hud = new Hud(@program, 0, 32, 80, 4)
