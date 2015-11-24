@@ -27,6 +27,7 @@ define [
         setupPlayerCharacter: ->
             pc = @gameState.getPlayerCharacter()
             Assets.Describer.English.installPlayerCharacter(pc)
+            Assets.TileSet.Default.installPlayerCharacter(pc)
 
         setupStartLevel: ->
             @gameState = new GameState()

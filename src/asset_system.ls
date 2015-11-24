@@ -18,7 +18,7 @@ define [
 
             return assetObject
 
-        exposeAsset: (name, cl, base=Assets) ->
+        exposeAsset: (name, cl, base=Assets, m) ->
             @makeAsset(name, cl, base)
             return TypeSystem.makeTypeSingle(name, cl)
 

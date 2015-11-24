@@ -81,7 +81,7 @@ define [
         place: ->
             cell = @waterStart
             for i from 0 til @length
-                cell.feature = new Feature.Bridge()
+                cell.feature = new Feature.Bridge(@direction)
                 if @direction == Types.Direction.East
                     cell.bridgeDirection = Types.Direction.East
                 else

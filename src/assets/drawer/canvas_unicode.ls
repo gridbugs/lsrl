@@ -5,7 +5,8 @@ define [
     'structures/grid_window'
     'types'
     'front_ends/browser/canvas/drawing/tile'
-], (DefaultTileScheme, Drawer, Tile, GridWindow, Types, CanvasTile) ->
+    'asset_system'
+], (DefaultTileScheme, Drawer, Tile, GridWindow, Types, CanvasTile, AssetSystem) ->
 
     const FONT_SIZE = 14
     const VERTICAL_PADDING = 2
@@ -15,7 +16,7 @@ define [
     const SELECTED_COLOUR = '#888800'
     const CLEAR_COLOUR = '#000000'
 
-    class CanvasDrawer extends Drawer
+    class CanvasUnicodeDrawer extends Drawer
         (@canvas, @tileScheme, @numCols, @numRows) ->
 
             super(@numCols, @numRows)
@@ -34,7 +35,7 @@ define [
             @window = new GridWindow(0, 0, @numCols, @numRows)
 
         tileFromCell: (cell) ->
-            return @tileState.getTileFromCell(cell)
+            return cell.getTile()
 
         __clearAll: ->
             @ctx.fillStyle = CLEAR_COLOUR
@@ -115,3 +116,5 @@ define [
             @__processBoldQueue()
 
             @ctx.fill()
+
+    AssetSystem.exposeAsset('Drawer', CanvasUnicodeDrawer)

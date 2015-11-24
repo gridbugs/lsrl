@@ -10,4 +10,7 @@ define [
     'assets/description_profile/description_profile'
     'assets/level/level'
     'assets/control_scheme/control_scheme'
+    'assets/drawer/drawer'
+    'assets/colour/colour'
+    'assets/tile_set/tile_set'
 ]

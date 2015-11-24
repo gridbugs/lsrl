@@ -63,7 +63,7 @@ define [
             return true
 
     class Bridge extends Feature
-        ->
+        (@direction) ->
             super()
 
         getOpacity: ->
