@@ -79,7 +79,7 @@ define [
             while @actionQueue.length != 0
                 current_action = @actionQueue.pop()
                 if @applySingleAction(current_action)
-                    if source.active
+                    if source.active and current_action.shouldReschedule
                         @scheduleActionSource(source, current_action.time)
                     return
 

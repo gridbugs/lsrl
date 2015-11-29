@@ -274,6 +274,8 @@ define [
             super()
             @stairs = @cell.feature
 
+        shouldReschedule: false
+
         Relationships: Util.enum [
             'Character'
             'Stairs'

@@ -23,7 +23,7 @@ define ->
                     swap @array, idx, parent_idx
                     idx = parent_idx
 
-        peak: -> if @size! > 0 then @array[1] else void
+        peak: -> if @size() > 0 then @array[1] else void
         size: -> @next_idx - 1
         empty: -> @size() == 0
         pop: ->

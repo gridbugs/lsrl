@@ -8,6 +8,8 @@ define [
             @time = 1
             @rescheduleRequired = true
 
+        shouldReschedule: true
+
         addTime: (time) ->
             @time += time
 
