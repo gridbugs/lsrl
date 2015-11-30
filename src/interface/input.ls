@@ -11,9 +11,11 @@ define [
             @currentCallback = callback
 
         getControl: (callback) ->
+            @acceptMouse = true
             key <- @getKey()
             callback(key.getControl())
 
         getChar: (callback) ->
+            @acceptMouse = false
             key <- @getKey()
             callback(key.getChar())

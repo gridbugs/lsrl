@@ -19,7 +19,7 @@ define [
 
             on_each?(@selectedPosition)
 
-            control <~ Util.repeatWhileUndefined(UserInterface.getControl)
+            [control, extra] <~ Util.repeatWhileUndefined(UserInterface.getControl)
 
             switch control.type
             |   Types.Control.Direction

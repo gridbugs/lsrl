@@ -19,6 +19,7 @@ define [
 
             input = new BrowserInputSource()
             drawer = new Assets.Drawer.CanvasUnicodeDrawer($('#canvas')[0], Config.DEFAULT_WIDTH, Config.DEFAULT_HEIGHT, input)
+            input.setDrawer(drawer)
             game_console = new Console($('#log'))
             hud = new Hud($('#hud'))
 

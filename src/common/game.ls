@@ -6,9 +6,10 @@ define [
     'assets/require'
     'assets/assets'
     'interface/key'
+    'interface/mouse_event'
     'config'
     'debug'
-], (GameState, UserInterface, Test, Util, Require, Assets, Key, Config, Debug) ->
+], (GameState, UserInterface, Test, Util, Require, Assets, Key, MouseEvent, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->
@@ -46,7 +47,9 @@ define [
             @setupPlayerCharacter()
             @setupDrawer()
 
-            Key::ControlScheme = new Assets.ControlScheme[Config.Controls]()
+            control_scheme = new Assets.ControlScheme[Config.Controls]()
+            Key::ControlScheme = control_scheme
+            MouseEvent::ControlScheme = control_scheme
 
             if Config.DRAW_MAP_ONLY
                 return

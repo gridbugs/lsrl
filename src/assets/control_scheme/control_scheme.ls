@@ -1,13 +1,22 @@
 define [
     'interface/key'
     'interface/control_scheme'
+    'interface/control'
     'asset_system'
-], (Key, ControlScheme, AssetSystem) ->
+], (Key, ControlScheme, Control, AssetSystem) ->
 
     code = (char) ->
         return char.toUpperCase().charCodeAt(0)
 
-    class ArrowKeys extends ControlScheme
+    class MouseControlScheme extends ControlScheme
+        ->
+            super()
+
+        getMouseControl: (mouse_event) ->
+            return [Control.NavigateToCell, mouse_event.coord]
+        
+
+    class ArrowKeys extends MouseControlScheme
         ->
             super()
 

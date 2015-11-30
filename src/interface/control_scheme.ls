@@ -12,4 +12,8 @@ define [
                 @array[parseInt(k)] = Control[v]
 
         getControl: (index) ->
-            return @array[index]
+            control = @array[index]
+            if control?
+                return [control]
+            else
+                return void

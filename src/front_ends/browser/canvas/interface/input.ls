@@ -1,7 +1,9 @@
 define [
     'interface/input'
     'interface/key'
-], (InputSource, Key) ->
+    'interface/mouse_event'
+    'structures/vec2'
+], (InputSource, Key, MouseEvent, Vec2) ->
 
     class BrowserInputSource extends InputSource
         ->
@@ -23,3 +25,22 @@ define [
                     callback(key)
                 else
                     @dirty = true
+
+            $(window).mousedown (e) ~>
+                if @acceptMouse and @currentCallback?
+                    x = parseInt(e.clientX / @drawer.cellWidth)
+                    y = parseInt(e.clientY / @drawer.cellHeight)
+
+                    if x >= @drawer.gridWidth or y >= @drawer.gridHeight
+                        return
+
+                    callback = @currentCallback
+                    @currentCallback = null
+
+                    event = new MouseEvent(true, true, new Vec2(x, y))
+                    callback(event)
+                else
+                    @dirty = true
+
+
+        setDrawer: (@drawer) ->

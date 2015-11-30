@@ -14,7 +14,7 @@ define [
             @selector = new CellSelector()
 
         getAction: (game_state, cb) ->
-            control <~ Util.repeatWhileUndefined(UserInterface.getControl)
+            [control, extra] <~ Util.repeatWhileUndefined(UserInterface.getControl)
             switch control.type
             |   Types.Control.Direction
                     action = new Action.Move(@character, control.direction)
@@ -36,6 +36,26 @@ define [
                     )
                     @character.getAction game_state, cb
             |   Types.Control.NavigateToCell
+                    if extra?
+                        coord = extra
+                        dest_cell = @character.grid.getCart coord
+                        kcell = @character.getKnowledgeCell()
+                        console.debug kcell
+                        console.debug dest_cell
+
+                        result = Search.findPath kcell, \
+                            ((c, d) -> c.gameCell.getMoveOutCost(d)), \
+                            ((c) ~>
+                                return c.known and (c.gameCell.character == @character or (not c.gameCell.feature.isSolid()))), \
+                            dest_cell
+
+                        if result?
+                            @character.setAutoMove(new AutoMove.FollowPath(@character, result.directions))
+                            @character.getAction game_state, cb
+                        else
+                            UserInterface.printLine "Can't reach selected cell."
+                            @character.getAction game_state, cb
+                        return
                     @navigateToCell(@character.position, game_state, cb)
             |   Types.Control.Wait
                     cb(new Action.Wait(@character, 10))
