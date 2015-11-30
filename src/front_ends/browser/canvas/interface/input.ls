@@ -42,5 +42,16 @@ define [
                 else
                     @dirty = true
 
+            $(window).mousemove (e) ~>
+                if @acceptMouse
+                    coord = @coordFromMouseEvent(e)
+                    @drawer.drawCellSelectOverlay(@character, @gameState, coord)
+
+        coordFromMouseEvent: (e) ->
+            x = parseInt(e.clientX / @drawer.cellWidth)
+            y = parseInt(e.clientY / @drawer.cellHeight)
+            return new Vec2(x, y)
 
         setDrawer: (@drawer) ->
+        setCharacter: (@character) ->
+        setGameState: (@gameState) ->

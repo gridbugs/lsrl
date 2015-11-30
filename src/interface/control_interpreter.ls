@@ -40,8 +40,6 @@ define [
                         coord = extra
                         dest_cell = @character.grid.getCart coord
                         kcell = @character.getKnowledgeCell()
-                        console.debug kcell
-                        console.debug dest_cell
 
                         result = Search.findPath kcell, \
                             ((c, d) -> c.gameCell.getMoveOutCost(d)), \

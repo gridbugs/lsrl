@@ -29,9 +29,12 @@ define [
             pc = @gameState.getPlayerCharacter()
             Assets.Describer.English.installPlayerCharacter(pc)
             Assets.TileSet.Default.installPlayerCharacter(pc)
+            UserInterface.Global.gameController.setCharacter(pc)
 
         setupStartLevel: ->
             @gameState = new GameState()
+            
+            UserInterface.Global.gameController.setGameState(@gameState)
 
             @level = new Assets.Level[Config.START_LEVEL_NAME](@gameState)
 
