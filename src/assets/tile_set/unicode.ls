@@ -11,7 +11,7 @@ define [
         (@character, @colour, @bold) ->
 
     class Animator
-        (@frames, @low = 8, @high = 16) ->
+        (@frames, @low = 20, @high = 40) ->
             @nextChangeTime = Util.getRandomInt(0, @high)
             @tileIndex = Util.getRandomInt(0, @frames.length)
 
@@ -101,7 +101,7 @@ define [
                 return @UnicodeTileSet_Animator.getTile()
             
             Assets.Feature.Bridge::getTile = ->
-                if @direction == Types.Direction.North
+                if @direction == Types.Direction.South
                     return tiles.BridgeNorthSouth
                 else
                     return tiles.BridgeEastWest
