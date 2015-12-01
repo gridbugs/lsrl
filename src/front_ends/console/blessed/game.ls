@@ -46,13 +46,9 @@ define [
             @program.hideCursor()
             @program.clear()
 
-            @program.on 'mouse', (e) ->
-                process.stderr.write "#{Object.keys(e)}\n"
-                process.stderr.write "#{e.x}, #{e.y}, #{e.action}, #{e.name} #{e.type}\n"
-                process.stderr.write "\n================\n"
-
             drawer = new Assets.Drawer.BlessedUnicodeDrawer(@program, 0, 0, 80, 30)
             input = new Input(@program)
+            input.setDrawer(drawer)
             gconsole = new Console(@program, input, 0, 36, 80, 12)
             hud = new Hud(@program, 0, 32, 80, 4)
 

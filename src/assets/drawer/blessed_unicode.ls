@@ -60,7 +60,7 @@ define [
             @drawTile(Assets.TileSet.Default.Tiles.Unknown)
 
         getTileFromCell: (cell) ->
-            return cell.getTile()
+            return cell.getTile(cell.timestamp)
 
         drawKnowledgeCell: (cell, turn_count) ->
             if cell? and cell.known

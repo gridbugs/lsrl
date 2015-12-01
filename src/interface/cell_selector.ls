@@ -22,13 +22,15 @@ define [
             [control, extra] <~ Util.repeatWhileUndefined(UserInterface.getControl)
 
             switch control.type
+            |   Types.Control.NavigateToCell
+                    cb(extra)
             |   Types.Control.Direction
                     change = Direction.Vectors[control.direction]
                     @selectedPosition = @selectedPosition.add(change)
                     @selectCellLoop(character, game_state, cb, on_each)
             |   Types.Control.Accept
                     UserInterface.drawCharacterKnowledge(character, game_state)
-                    cb @selectedPosition
+                    cb(@selectedPosition)
             |   Types.Control.Escape
                     UserInterface.drawCharacterKnowledge(character, game_state)
                     cb(void)

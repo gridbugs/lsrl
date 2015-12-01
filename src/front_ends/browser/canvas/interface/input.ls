@@ -28,16 +28,14 @@ define [
 
             $(window).mousedown (e) ~>
                 if @acceptMouse and @currentCallback?
-                    x = parseInt(e.clientX / @drawer.cellWidth)
-                    y = parseInt(e.clientY / @drawer.cellHeight)
-
-                    if x >= @drawer.gridWidth or y >= @drawer.gridHeight
+                    coord = @coordFromMouseEvent(e)
+                    if coord.x >= @drawer.numCols or coord.y >= @drawer.numRows
                         return
 
                     callback = @currentCallback
                     @currentCallback = null
 
-                    event = new MouseEvent(true, true, new Vec2(x, y))
+                    event = new MouseEvent(true, true, coord)
                     callback(event)
                 else
                     @dirty = true
@@ -45,7 +43,10 @@ define [
             $(window).mousemove (e) ~>
                 if @acceptMouse
                     coord = @coordFromMouseEvent(e)
-                    @drawer.drawCellSelectOverlay(@character, @gameState, coord)
+                    if coord.x >= @drawer.numCols or coord.y >= @drawer.numRows
+                        @drawer.drawCharacterKnowledge(@character)
+                    else
+                        @drawer.drawCellSelectOverlay(@character, @gameState, coord)
 
         coordFromMouseEvent: (e) ->
             x = parseInt(e.clientX / @drawer.cellWidth)
