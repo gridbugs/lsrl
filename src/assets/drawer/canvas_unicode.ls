@@ -33,7 +33,7 @@ define [
             @window = new GridWindow(0, 0, @numCols, @numRows)
 
         tileFromCell: (cell) ->
-            return cell.getTile()
+            return cell.getTile(cell.timestamp)
 
         __clearAll: ->
             @ctx.fillStyle = CLEAR_COLOUR

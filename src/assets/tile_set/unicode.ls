@@ -12,17 +12,15 @@ define [
 
     class Animator
         (@frames, @low = 8, @high = 16) ->
-            @timeRemaining = Util.getRandomInt(0, @high)
+            @nextChangeTime = Util.getRandomInt(0, @high)
             @tileIndex = Util.getRandomInt(0, @frames.length)
 
-        progressTime: ->
-            if @timeRemaining == 0
-                @timeRemaining = Util.getRandomInt(@low, @high)
+        progressTime: (time) ->
+            if time >= @nextChangeTime
+                @nextChangeTime = time + Util.getRandomInt(@low, @high)
                 ++@tileIndex
                 if @tileIndex == @frames.length
                     @tileIndex = 0
-            else
-                --@timeRemaining
 
         getTile: ->
             return @frames[@tileIndex]
@@ -69,19 +67,19 @@ define [
 
             tiles = @Tiles
 
-            Knowledge.KnowledgeCell::getTile = ->
+            Knowledge.KnowledgeCell::getTile = (time) ->
                 if @character?
                     if @character.getTile?
-                        return @character.getTile()
+                        return @character.getTile(time)
                     else
                         return tiles.Error
                 else if @feature.type != Types.Feature.Null
                     if @feature.getTile?
-                        return @feature.getTile()
+                        return @feature.getTile(time)
                     else
                         return tiles.Error
                 else if @ground.getTile?
-                    return @ground.getTile()
+                    return @ground.getTile(time)
                 else
                     return tiles.Error
 
@@ -95,11 +93,11 @@ define [
             Assets.Feature.StoneUpwardStairs::getTile = ->
                 return tiles.StoneUpwardStairs
 
-            Assets.Feature.Water::getTile = ->
+            Assets.Feature.Water::getTile = (animation_time) ->
                 if not @UnicodeTileSet_Animator?
                     @UnicodeTileSet_Animator = new Animator([tiles.Water0, tiles.Water1])
 
-                @UnicodeTileSet_Animator.progressTime()
+                @UnicodeTileSet_Animator.progressTime(animation_time)
                 return @UnicodeTileSet_Animator.getTile()
             
             Assets.Feature.Bridge::getTile = ->
