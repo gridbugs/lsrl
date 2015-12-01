@@ -2,10 +2,11 @@ define [
     'assets/action/action'
     'structures/search'
     'structures/direction'
+    'interface/user_interface'
     'types'
     'util'
     'debug'
-], (Action, Search, Direction, Types, Util, Debug) ->
+], (Action, Search, Direction, UserInterface, Types, Util, Debug) ->
 
     class SurroundingCells
         (centre, direction) ->
@@ -59,7 +60,12 @@ define [
 
         canStart: -> not (@atDestination or @allExplored)
 
-        hasAction: -> not (@atDestination or @allExplored)
+        hasAction: ->
+            vc = @character.getKnowledge().visibleCharacters
+            if vc.length > 0
+                UserInterface.printLine("You see a #{vc[0].describe().toString()}.")
+                return false
+            return not (@atDestination or @allExplored)
 
         getAction: (game_state, cb) ->
 
@@ -84,7 +90,7 @@ define [
             if @atDestination
                 @findDestination()
 
-            return super ...
+            return super()
 
     class FollowPath
         (@character, @directions) ->
