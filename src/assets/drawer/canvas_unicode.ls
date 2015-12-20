@@ -40,11 +40,11 @@ define [
             @ctx.fillRect 0, 0, @gridWidth, @gridHeight
 
         __fillText: (x, y, text, colour, style) ->
-            @ctx.fillStyle = colour
 
             if style
                 @boldQueue.push([x, y, text, colour])
             else
+                @ctx.fillStyle = colour
                 @ctx.fillText text, x * @cellWidth + HORIZONTAL_PADDING/2, y * @cellHeight + FONT_SIZE - VERTICAL_PADDING/2
 
         __fillTextFromTile: (x, y, tile) ->

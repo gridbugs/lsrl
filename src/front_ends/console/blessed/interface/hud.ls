@@ -16,7 +16,8 @@ define [
             @program.move(@left + 1, @top + 1)
             @program.write(Text.setForegroundColour(Colours.White))
             @program.write(Text.setNormalWeight())
-            @program.write("#{character.getName()}  Curse: #{character.getCurrentHitPoints()}")
+            @program.write("#{character.getName()}  HP: #{character.getCurrentHitPoints()}")
+            @program.write(" | Depth: #{character.level.depth}")
             character.continuousEffects.forEach (effect) ~>
                 @program.write(" | #{DescriptionInterpreter.descriptionToConsoleString(effect.describe())}")
             @program.flushBuffer()

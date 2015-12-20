@@ -31,10 +31,10 @@ define [
             tiles = {
                 Error:                      ['?', 'LightRed',   false]
                 Unknown:                    [' ', 'Black',      false]
-                Stone:                      ['.', 'LightGrey',  false]
+                Stone:                      ['.', 'DarkGrey',  false]
                 Dirt:                       ['.', 'DarkBrown',  false]
                 Tree:                       ['&', 'DarkGreen',  false]
-                Wall:                       ['#', 'DarkGrey',   false]
+                Wall:                       ['#', 'MediumGrey',   false]
                 Web:                        ['*', 'LightGrey',  false]
                 Moss:                       ['.', 'LightGreen', false]
                 ItemStone:                  ['[', 'LightGrey',  false]
@@ -53,8 +53,8 @@ define [
                 Grass:                      ['.', 'DarkGreen',  false]
                 BridgeEastWest:             ['=', 'LightBrown', false]
                 BridgeNorthSouth:           ['ǁ', 'LightBrown', false]
-                StoneDownwardStairs:        ['>', 'DarkGrey',   true]
-                StoneUpwardStairs:          ['<', 'DarkGrey',   true]
+                StoneDownwardStairs:        ['>', 'MediumGrey',   true]
+                StoneUpwardStairs:          ['<', 'MediumGrey',   true]
                 Spider:                     ['s', 'White',      true]
             }
 

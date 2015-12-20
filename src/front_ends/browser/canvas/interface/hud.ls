@@ -10,6 +10,7 @@ define [
         updateHud: (character) ->
             @$hud.empty()
             @$hud.append("<div>#{character.getName()}</div>")
-            @$hud.append("<div>Curse: #{character.getCurrentHitPoints()}</div>")
+            @$hud.append("<div>HP: #{character.getCurrentHitPoints()}</div>")
+            @$hud.append("<div>Depth: #{character.level.depth}</div>")
             character.continuousEffects.forEach (effect) ~>
                 @$hud.append("<div>#{DescriptionInterpreter.descriptionToHtmlString(effect.describe())}</div>")

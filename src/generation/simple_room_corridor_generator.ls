@@ -9,10 +9,11 @@ define [
     'structures/vec2'
     'structures/direction'
     'generation/base_generator'
+    'generation/connection'
     'util'
     'types'
 ], (Grid, DoublyLinkedList, VisitedList, Search, ConnectionTracker,
-    Feature, Ground, Vec2, Direction, Generator, Util, Types) ->
+    Feature, Ground, Vec2, Direction, Generator, Connection, Util, Types) ->
 
     FREE = "free"
     ROOM_WALL = "room_wall"
@@ -231,7 +232,6 @@ define [
 
         generateGrid: (T, width, height, @fromConnections, @toConnections) ->
             grid = new Grid(T, width, height)
-
             grid.forEach (c) ->
                 c.ground = new Ground.Stone()
                 c.type = FREE
@@ -244,7 +244,12 @@ define [
             @connections = new ConnectionTracker(@numRooms)
 
         resolveConnections: ->
-            while true
+            @resolveConnectionsFromArray(@toConnections, Connection.TO)
+            @resolveConnectionsFromArray(@fromConnections, Connection.FROM)
+
+        resolveConnectionsFromArray: (connections, direction) ->
+            found = 0
+            while found < connections.length
                 cell = @grid.getRandom()
                 if @grid.isBorderCell(cell)
                     continue
@@ -252,7 +257,7 @@ define [
                 if empty_neighbours != 8
                     continue
 
-                @toConnections[0]?.connectToCell(cell)
+                connections[found].connect(cell, direction)
                 break
 
 

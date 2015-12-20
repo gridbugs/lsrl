@@ -2,7 +2,7 @@ define [
 ], ->
 
     {
-        START_LEVEL_NAME: 'BasicDungeon'
+        START_LEVEL_NAME: 'SimpleDungeonTop'
         Controls: 'Dvorak'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false
@@ -12,7 +12,7 @@ define [
         RANDOM_SEED: void
         DEBUG_PRINTOUTS: true
         DEBUG_PRINT_CONSOLE: false
-        OMNISCIENT_CHARACTERS: false
+        OMNISCIENT_CHARACTERS: true
         DEFAULT_WIDTH: 80
         DEFAULT_HEIGHT: 30
     }

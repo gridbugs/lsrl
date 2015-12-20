@@ -6,13 +6,12 @@ define [
     'config'
 ], (Level, Assets, AssetSystem, Types, Config) ->
 
-    class BasicDungeon extends Level
+    class SimpleDungeonBottom extends Level
 
-        (@gameState, @width = Config.DEFAULT_WIDTH, @height = Config.DEFAULT_HEIGHT) ->
+        (@gameState, @depth, @width = Config.DEFAULT_WIDTH, @height = Config.DEFAULT_HEIGHT) ->
             super(@gameState)
             @generator = new Assets.Generator.Castle()
 
         populate: ->
 
-    AssetSystem.exposeAsset('Level', BasicDungeon)
-
+    AssetSystem.exposeAsset('Level', SimpleDungeonBottom)

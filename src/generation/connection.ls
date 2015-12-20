@@ -21,3 +21,13 @@ define [
         connectToCell: (@toCell) ->
             @toCell.feature = @toFeature
             @toDestination.setCell(@toCell)
+
+        connect: (cell, direction) ->
+            switch direction
+            |   Connection.TO => @connectToCell(cell)
+            |   Connection.FROM => @connectFromCell(cell)
+
+    Connection.TO = 'TO'
+    Connection.FROM = 'FROM'
+
+    return Connection
