@@ -2,9 +2,10 @@ define [
     'system/weapon'
     'assets/action/action'
     'assets/effect/reactive_effect'
+    'system/item'
     'asset_system'
     'types'
-], (Weapon, Actions, ReactiveEffect, AssetSystem, Types) ->
+], (Weapon, Actions, ReactiveEffect, Item, AssetSystem, Types) ->
 
     class BareHands extends Weapon
         ->
@@ -47,10 +48,18 @@ define [
         ->
             super()
 
+    class RustySword extends Weapon implements Item.Itemable
+        ->
+            super()
+
+        getAttackDamage: ->
+            return 1
+
     AssetSystem.exposeAssets 'Weapon', {
         BareHands
         ShrubberyTeeth
         ShrubberyPoisonSpikes
         SpiderFangs
+        RustySword
         Null
     }

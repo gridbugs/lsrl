@@ -56,6 +56,7 @@ define [
                 StoneDownwardStairs:        ['>', 'MediumGrey',   true]
                 StoneUpwardStairs:          ['<', 'MediumGrey',   true]
                 Spider:                     ['s', 'White',      true]
+                RustySword:                 ['[', 'Red',        false]
             }
 
             @Tiles = {}
@@ -132,6 +133,10 @@ define [
             Assets.Character.Spider::getTile = ->
                 return tiles.Spider
 
+
+            # Weapons
+            Assets.Weapon.RustySword::getTile = ->
+                return tiles.RustySword
 
         installPlayerCharacter: (pc) ->
             tiles = @Tiles

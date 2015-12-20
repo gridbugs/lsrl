@@ -26,4 +26,8 @@ define [
 
     Item.GroupableItem = GroupableItem
 
+    Item.Itemable = {
+        getGroupId: -> @type
+    }
+
     return Item

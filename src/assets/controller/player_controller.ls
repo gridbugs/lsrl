@@ -2,14 +2,14 @@ define [
     'system/controller'
     'system/knowledge'
     'interface/control_interpreter'
-    'system/inventory'
+    'system/flat_inventory'
     'interface/user_interface'
     'types'
     'util'
     'config'
     'asset_system'
 ], (Controller, Knowledge, ControlInterpreter, \
-    Inventory, UserInterface, Types, Util, Config, AssetSystem) ->
+    FlatInventory, UserInterface, Types, Util, Config, AssetSystem) ->
 
     class PlayerController extends Controller
         (@character, @position, @grid) ->
@@ -20,7 +20,7 @@ define [
 
             @autoMove = null
             @interpreter = new ControlInterpreter(@character)
-            @inventory = new Inventory()
+            @inventory = new FlatInventory(Config.INVENTORY_SLOTS)
 
             @name = "The player"
 

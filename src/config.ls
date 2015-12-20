@@ -15,4 +15,5 @@ define [
         OMNISCIENT_CHARACTERS: true
         DEFAULT_WIDTH: 80
         DEFAULT_HEIGHT: 30
+        INVENTORY_SLOTS: 12
     }
