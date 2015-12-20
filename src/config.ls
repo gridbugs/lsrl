@@ -2,8 +2,7 @@ define [
 ], ->
 
     {
-        GENERATOR: 'surface'
-        START_LEVEL_NAME: 'Start'
+        START_LEVEL_NAME: 'BasicDungeon'
         Controls: 'Dvorak'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false

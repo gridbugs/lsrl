@@ -89,7 +89,7 @@ define [
 
             Assets.Feature.StoneDownwardStairs::getTile = ->
                 return tiles.StoneDownwardStairs
-            
+
             Assets.Feature.StoneUpwardStairs::getTile = ->
                 return tiles.StoneUpwardStairs
 
@@ -99,19 +99,19 @@ define [
 
                 @UnicodeTileSet_Animator.progressTime(animation_time)
                 return @UnicodeTileSet_Animator.getTile()
-            
+
             Assets.Feature.Bridge::getTile = ->
                 if @direction == Types.Direction.South
                     return tiles.BridgeNorthSouth
                 else
                     return tiles.BridgeEastWest
-            
+
             Assets.Feature.Web::getTile = ->
                 return tiles.Web
-            
+
             Assets.Feature.Wall::getTile = ->
                 return tiles.Wall
-            
+
             Assets.Feature.Door::getTile = ->
                 if @isOpen()
                     return tiles.OpenDoor
@@ -121,10 +121,10 @@ define [
             # Ground
             Assets.Ground.Grass::getTile = ->
                 return tiles.Grass
-            
+
             Assets.Ground.Dirt::getTile = ->
                 return tiles.Dirt
-            
+
             Assets.Ground.Stone::getTile = ->
                 return tiles.Stone
 

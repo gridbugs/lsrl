@@ -53,7 +53,7 @@ define [
                 , /* cost */(c, d, straight_distance) ->
                     return 1000 - (straight_distance * 0.001)
                 , /* can enter */(c) ->
-                    return c.type == FREE or c.type == ENDPOINT_CANDIDATE
+                    return c.type == FREE or c == p or c == q
                 , q, Direction.CardinalDirections
 
             if result?
@@ -252,7 +252,7 @@ define [
                 if empty_neighbours != 8
                     continue
 
-                @toConnections[0].connectToCell(cell)
+                @toConnections[0]?.connectToCell(cell)
                 break
 
 

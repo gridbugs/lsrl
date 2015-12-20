@@ -50,7 +50,7 @@ define [
 
                             if coord.x >= @drawer.width or coord.y >= @drawer.height
                                 return
-                            
+
                             callback = @currentCallback
                             @currentCallback = null
 
@@ -65,7 +65,7 @@ define [
 
         coordFromMouseEvent: (e) ->
             return new Vec2(e.x, e.y)
-            
+
         setDrawer: (@drawer) ->
         setCharacter: (@character) ->
         setGameState: (@gameState) ->

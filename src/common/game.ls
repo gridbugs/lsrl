@@ -33,7 +33,7 @@ define [
 
         setupStartLevel: ->
             @gameState = new GameState()
-            
+
             UserInterface.Global.gameController.setGameState(@gameState)
 
             @level = new Assets.Level[Config.START_LEVEL_NAME](@gameState)

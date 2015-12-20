@@ -13,6 +13,7 @@ define [
             @generator = new Assets.Generator.Castle()
 
         populate: ->
+            @addDefaultPlayerCharacter()
 
     AssetSystem.exposeAsset('Level', BasicDungeon)
 

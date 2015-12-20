@@ -32,7 +32,7 @@ define [
         ->
 
             @seedRandom()
-            
+
             Assets.Colour = Assets.ConsoleColour
             Assets.TileSet.UnicodeTileSet.install()
             Assets.TileSet.Default = Assets.TileSet.UnicodeTileSet

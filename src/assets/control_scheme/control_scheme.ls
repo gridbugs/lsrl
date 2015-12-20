@@ -14,7 +14,7 @@ define [
 
         getMouseControl: (mouse_event) ->
             return [Control.NavigateToCell, mouse_event.coord]
-        
+
 
     class ArrowKeys extends MouseControlScheme
         ->
