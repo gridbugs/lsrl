@@ -1,7 +1,6 @@
 define [
     'common/game_state'
     'interface/user_interface'
-    'tests/test'
     'util'
     'assets/require'
     'assets/assets'
@@ -9,7 +8,7 @@ define [
     'interface/mouse_event'
     'config'
     'debug'
-], (GameState, UserInterface, Test, Util, Require, Assets, Key, MouseEvent, Config, Debug) ->
+], (GameState, UserInterface, Util, Require, Assets, Key, MouseEvent, Config, Debug) ->
 
     class GameCommon
         (gameDrawer, gameController, gameConsole, gameHud) ->
