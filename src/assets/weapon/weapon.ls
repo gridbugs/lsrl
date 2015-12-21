@@ -1,11 +1,12 @@
 define [
     'system/weapon'
+    'system/equipable'
     'assets/action/action'
     'assets/effect/reactive_effect'
     'system/item'
     'asset_system'
     'types'
-], (Weapon, Actions, ReactiveEffect, Item, AssetSystem, Types) ->
+], (Weapon, Equipable, Actions, ReactiveEffect, Item, AssetSystem, Types) ->
 
     class BareHands extends Weapon
         ->
@@ -48,7 +49,7 @@ define [
         ->
             super()
 
-    class RustySword extends Weapon implements Item.Itemable
+    class RustySword extends Weapon implements Equipable
         ->
             super()
 

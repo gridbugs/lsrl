@@ -3,9 +3,8 @@ define [
     'system/item'
 ], (Effectable, Item) ->
 
-    class Weapon implements Effectable, Item
+    class MiscelaneousItem implements Effectable, Item
         ->
             @initEffectable()
 
-        getAttackDamage: ->
-            return 0
+    return MiscelaneousItem

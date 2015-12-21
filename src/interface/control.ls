@@ -43,6 +43,7 @@ define [
         'Wait'
         'Descend'
         'Ascend'
+        'Equip'
     ].map(createBasicControl)
 
     return Control

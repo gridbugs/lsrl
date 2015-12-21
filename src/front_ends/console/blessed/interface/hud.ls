@@ -18,6 +18,7 @@ define [
             @program.write(Text.setNormalWeight())
             @program.write("#{character.getName()}  HP: #{character.getCurrentHitPoints()}")
             @program.write(" | Depth: #{character.level.depth}")
+            @program.write(" | Weapon: #{character.weapon.describe().toTitleString()}")
             character.continuousEffects.forEach (effect) ~>
                 @program.write(" | #{DescriptionInterpreter.descriptionToConsoleString(effect.describe())}")
             @program.flushBuffer()

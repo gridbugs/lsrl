@@ -1,7 +1,8 @@
 define [
     'structures/heap'
+    'structures/avl_tree'
     'debug'
-], (Heap, Debug) ->
+], (Heap, AvlTree, Debug) ->
 
     class ItemSlot
         (@inventory, @key, @item) ->
@@ -19,15 +20,16 @@ define [
 
             @items = {}
             @numItems = 0
+            @activeLetters = new AvlTree()
 
         addItem: (item) ->
-            letter = @freeLetters.pop()
+            letter = @allocateLetter()
             if letter?
                 @items[letter] = item
                 ++@numItems
-                return true
+                return letter
             else
-                return false
+                return void
 
         isFull: ->
             return @freeLetters.empty()
@@ -37,11 +39,20 @@ define [
 
         getItemCount: -> @numItems
 
+        allocateLetter: ->
+            letter = @freeLetters.pop()
+            @activeLetters.insert(letter)
+            return letter
+
+        deallocateLetter: (letter) ->
+            @freeLetters.insert(letter)
+            @activeLetters.deleteByKey(letter)
+
         removeItemByLetter: (letter) ->
             item = @items[letter]
             if item?
                 delete @items[letter]
-                @freeLetters.insert(letter)
+                @deallocateLetter(letter)
                 --@numItems
             return item
 
@@ -56,12 +67,14 @@ define [
                 return void
 
         forEach: (f) ->
-            for _, item of @items
+            @activeLetters.forEachKey (letter) ~>
+                item = @items[letter]
                 if item?
                     f(item)
 
         forEachMapping: (f) ->
-            for letter, item of @items
+            @activeLetters.forEachKey (letter) ~>
+                item = @items[letter]
                 if item?
                     f(letter, item)
 
@@ -76,4 +89,4 @@ define [
                 if item?
                     return new ItemSlot(this, key, item)
             return void
-            
+

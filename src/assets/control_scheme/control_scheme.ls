@@ -83,6 +83,7 @@ define [
                 (code('e')):            'Drop'
                 (code('c')):            'Inventory'
                 (code('v')):            'Wait'
+                (Key.PERIOD):           'Equip'
 
                 /* Stairs */
                 (code('v') .|. Key.SHIFT):  'Descend'
@@ -124,6 +125,7 @@ define [
                 (code('d')):            'Drop'
                 (code('i')):            'Inventory'
                 (Key.PERIOD):           'Wait'
+                (code('e')):            'Equip'
 
                 /* Stairs */
                 (Key.PERIOD .|. Key.SHIFT):     'Descend'

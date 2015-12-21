@@ -45,6 +45,7 @@ define [
         \Wait
         \Descend
         \Ascend
+        \Equip
     ]
 
     {

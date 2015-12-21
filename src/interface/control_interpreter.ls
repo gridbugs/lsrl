@@ -148,6 +148,8 @@ define [
                     return @character.getAction game_state, cb
 
                 cb(new Action.Ascend(@character, cell))
+            |   Types.Control.Equip
+                    console.debug 'hi'
             |   otherwise
                     @character.getAction game_state, cb
 

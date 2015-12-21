@@ -1,19 +1,17 @@
 define [
-    'system/item'
+    'system/miscelaneous_item'
     'asset_system'
-], (Item, AssetSystem) ->
+], (MiscelaneousItem, AssetSystem) ->
 
-    class Stone extends Item.GroupableItem
+    class HealingPlant extends MiscelaneousItem
         ->
             super()
-        getName: -> "Stone"
 
-    class Plant extends Item.GroupableItem
+    class HealingFruit extends MiscelaneousItem
         ->
             super()
-        getName: -> "Plant"
 
     AssetSystem.exposeAssets 'Item', {
-        Stone
-        Plant
+        HealingPlant
+        HealingFruit
     }

@@ -32,5 +32,7 @@ define [
                 if cell.feature.type == Types.Feature.Null
                     cell.addItem(new Assets.Weapon.RustySword())
                     break
+            @grid.get(67, 27).addItem(new Assets.Item.HealingPlant())
+            @grid.get(67, 26).addItem(new Assets.Item.HealingFruit())
 
     AssetSystem.exposeAsset('Level', SimpleDungeonTop)

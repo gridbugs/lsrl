@@ -207,7 +207,7 @@ define [
                 desc = getCharacterActionDescription(@character, 'take')
                 desc.append(' the ')
                 desc.append(@item.describe().toTitle())
-                desc.append('.')
+                desc.append(" (#{@destinationKey}).")
                 desc.capitaliseFirstLetter()
                 return desc
 
@@ -221,6 +221,15 @@ define [
 
             Assets.Weapon.RustySword::describe = ->
                 return new Description(['rusty sword'])
+
+            Assets.Weapon.BareHands::describe = ->
+                return new Description(['bare hands'])
+
+            Assets.Item.HealingPlant::describe = ->
+                return new Description(['healing plant'])
+
+            Assets.Item.HealingFruit::describe = ->
+                return new Description(['healing fruit'])
 
         installPlayerCharacter: (pc) ->
             pc.describe = ->

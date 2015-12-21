@@ -249,7 +249,7 @@ define [
 
         commit: ->
             @slot.removeItem()
-            @character.getInventory().addItem(@item)
+            @destinationKey = @character.getInventory().addItem(@item)
 
     class Drop extends Action
         (@character, @slot) ->
@@ -266,6 +266,7 @@ define [
             @item.notify(this, @Relationships.Item, game_state)
 
         commit: ->
+            @slot.removeItem()
             @character.getCell().items.addItem(@item)
 
     class ChangeLevels extends Action
