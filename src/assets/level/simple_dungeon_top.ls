@@ -31,7 +31,6 @@ define [
                 cell = @grid.getRandom()
                 if cell.feature.type == Types.Feature.Null
                     cell.addItem(new Assets.Weapon.RustySword())
-                    console.debug cell
                     break
 
     AssetSystem.exposeAsset('Level', SimpleDungeonTop)

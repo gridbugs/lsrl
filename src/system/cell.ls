@@ -3,11 +3,11 @@ define [
     'structures/direction'
     'structures/visitable'
     'structures/neighbourable'
-    'system/inventory'
+    'system/flat_inventory'
     'system/effectable'
     'constants'
     'types'
-], (Vec2, Direction, Visitable, Neighbourable, Inventory, Effectable, Constants, Types) ->
+], (Vec2, Direction, Visitable, Neighbourable, FlatInventory, Effectable, Constants, Types) ->
 
     class Cell implements Visitable, Neighbourable, Effectable
         (@x, @y) ->
@@ -16,9 +16,9 @@ define [
             @character = void
             @ground = void
             @feature = void
-            @items = new Inventory()
+            @items = new FlatInventory()
             @characters = []
-            @centre = new Vec2 (@x+0.5), (@y+0.5)
+            @centre = new Vec2((@x+0.5), (@y+0.5))
             @corners = []
             @corners[Types.OrdinalDirection.NorthWest] = new Vec2(@x, @y)
             @corners[Types.OrdinalDirection.NorthEast] = new Vec2((@x+1), @y)
@@ -38,7 +38,7 @@ define [
                 return @moveOutCost * Constants.SQRT2
 
         addItem: (item) ->
-            @items.insertItem item
+            return @items.addItem(item)
 
         countNeighboursSatisfying: (predicate) ->
             count = 0

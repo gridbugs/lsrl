@@ -36,6 +36,10 @@ define [
                     return action.character == @character
             |   Types.Action.Descend
                     return action.character == @character
+            |   Types.Action.Take
+                    return action.character == @character
+            |   Types.Action.Drop
+                    return action.character == @character
 
             return false
 

@@ -79,6 +79,8 @@ define [
                         return @feature.getTile(time)
                     else
                         return tiles.Error
+                else if not @items.isEmpty()
+                    return @items.getAny().getTile(time)
                 else if @ground.getTile?
                     return @ground.getTile(time)
                 else

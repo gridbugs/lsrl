@@ -27,7 +27,8 @@ define ->
         size: -> @next_idx - 1
         empty: -> @size() == 0
         pop: ->
-            return void if @empty()
+            if @empty()
+                return void
 
             ret = @array[1]
             @next_idx--

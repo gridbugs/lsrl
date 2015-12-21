@@ -203,6 +203,25 @@ define [
                 desc.capitaliseFirstLetter()
                 return desc
 
+            Assets.Action.Take::describe = ->
+                desc = getCharacterActionDescription(@character, 'take')
+                desc.append(' the ')
+                desc.append(@item.describe().toTitle())
+                desc.append('.')
+                desc.capitaliseFirstLetter()
+                return desc
+
+            Assets.Action.Drop::describe = ->
+                desc = getCharacterActionDescription(@character, 'drop')
+                desc.append(' the ')
+                desc.append(@item.describe().toTitle())
+                desc.append('.')
+                desc.capitaliseFirstLetter()
+                return desc
+
+            Assets.Weapon.RustySword::describe = ->
+                return new Description(['rusty sword'])
+
         installPlayerCharacter: (pc) ->
             pc.describe = ->
                 return new Description.PluralDescription(['you'])

@@ -9,6 +9,11 @@ define [
     'debug'
 ], (Action, AutoMove, Types, Search, UserInterface, CellSelector, Util, Debug) ->
 
+    printCharacterInventory = (character) ->
+        character.getInventory().forEachMapping (ch, item) ->
+            name = item.describe().toTitleString()
+            UserInterface.printLine "#{ch}: #{name}"
+
     class ControlInterpreter
         (@character) ->
             @selector = new CellSelector()
@@ -76,105 +81,49 @@ define [
             |   Types.Control.Get
                     cell = @character.getCell()
 
-                    if cell.items.empty()
-                        UserInterface.printLine "You see no items here."
+                    if cell.items.isEmpty()
+                        UserInterface.printLine "There's nothing here to pick up."
                         @character.getAction game_state, cb
-                    else if cell.items.length() == 1
-                        action = new Action.Take(@character, cell.items.first().getGroupId(), 1)
-                        cb(action)
-                    else if cell.items.numTypes() == 1
-                        UserInterface.print "How many? "
-                        num_items <~ UserInterface.readInteger(cell.items.length())
-                        action = new Action.Take(@character, cell.items.first().getGroupId(), num_items)
+                    else if cell.items.getItemCount() == 1
+                        action = new Action.Take(@character, cell.items.getAnySlot())
                         cb(action)
                     else
                         UserInterface.printLine "Select item to pick up:"
-                        cell.items.forEachMapping (ch, items) ->
-                            Debug.assert(items.length() > 0, "No items")
-                            name = items.first().getName()
-                            if items.length() == 1
-                                UserInterface.printLine "#{ch}: #{name}"
-                            else if items.length() > 1
-                                UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
+                        cell.items.forEachMapping (ch, item) ->
+                            name = item.describe().toTitleString()
+                            UserInterface.printLine "#{ch}: #{name}"
 
-                        @chooseItem cell, (group) ~>
-                            if group?
-                                if group.length() > 1
-                                    UserInterface.print "How many? "
-                                    num_items <~ UserInterface.readInteger(group.length())
-                                    action = new Action.Take(@character, group.groupId, num_items)
-                                    cb(action)
-                                else
-                                    action = new Action.Take(@character, group.groupId, 1)
-                                    cb(action)
-
-                            else
-                                UserInterface.printLine "No such item!"
-                                @character.getAction game_state, cb
-
+                        slot <~ @chooseItemSlot(cell)
+                        if slot?
+                            action = new Action.Take(@character, slot)
+                            cb(action)
+                        else
+                            UserInterface.printLine "No such item!"
+                            @character.getAction game_state, cb
 
             |   Types.Control.Inventory
                     UserInterface.printLine "Inventory:"
-                    if @character.getInventory().empty()
+                    if @character.getInventory().isEmpty()
                         UserInterface.printLine "(empty)"
-                    @character.getInventory().forEachMapping (ch, items) ->
-                        Debug.assert(items.length() > 0, "No items")
-                        name = items.first().getName()
-                        if items.length() == 1
-                            UserInterface.printLine "#{ch}: #{name}"
-                        else if items.length() > 1
-                            UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
+                    else
+                        printCharacterInventory(@character)
 
                     @character.getAction game_state, cb
             |   Types.Control.Drop
 
-                    if @character.getInventory().empty()
+                    if @character.getInventory().isEmpty()
                         UserInterface.printLine "You're not carrying any items."
                         @character.getAction game_state, cb
                         return
 
-                    if @character.getInventory().length() == 1
-                        action = new Action.Drop(@character, @character.getInventory().first().groupId, 1)
-                        cb(action)
-                        return
-
-                    if @character.getInventory().numTypes() == 1
-                        do
-                            name = @character.getInventory().first().getName()
-                            UserInterface.print "How many #{name}s? "
-                            length = @character.getInventory().length()
-                            num_items <~ UserInterface.readInteger(length)
-                            if num_items > length
-                                UserInterface.printLine "You don't have that many. Dropping #{length}."
-                                num_items = length
-
-                            action = new Action.Drop(@character, @character.getInventory().first().groupId, num_items)
-                            cb(action)
-                        return
-
                     UserInterface.printLine "Select item to drop:"
 
-                    @character.getInventory().forEachMapping (ch, items) ->
-                        Debug.assert(items.length() > 0, "No items")
-                        name = items.first().getName()
-                        if items.length() == 1
-                            UserInterface.printLine "#{ch}: #{name}"
-                        else if items.length() > 1
-                            UserInterface.printLine "#{ch}: #{items.length()} x #{name}"
+                    printCharacterInventory(@character)
 
-                    items <~ @chooseInventoryItem()
-                    if items?
-                        if items.length() > 1
-                            UserInterface.print "How many? "
-                            num_items <~ UserInterface.readInteger(items.length())
-                            if num_items > items.length()
-                                UserInterface.printLine "You don't have that many. Dropping #{items.length()}."
-                                num_items = items.length()
-                            action = new Action.Drop(@character, items.groupId, num_items)
-                            cb(action)
-                        else
-                            action = new Action.Drop(@character, items.groupId, 1)
-                            cb(action)
+                    slot <~ @chooseInventorySlot()
+                    if slot?
+                        action = new Action.Drop(@character, slot)
+                        cb(action)
                     else
                         UserInterface.printLine "You aren't carrying any such item."
                         @character.getAction game_state, cb
@@ -202,21 +151,15 @@ define [
             |   otherwise
                     @character.getAction game_state, cb
 
-        chooseInventoryItem: (cb) ->
+        chooseInventorySlot: (cb) ->
             char <~ UserInterface.getChar()
-            item = @character.getInventory().getGroupByLetter(char)
-            if item?
-                cb(item)
-            else
-                cb(void)
+            item = @character.getInventory().getSlotByLetter(char)
+            cb(item)
 
-        chooseItem: (cell, cb) ->
+        chooseItemSlot: (cell, cb) ->
             char <~ UserInterface.getChar()
-            group = cell.items.getGroupByLetter(char)
-            if group?
-                cb(group)
-            else
-                cb(void)
+            slot = cell.items.getSlotByLetter(char)
+            cb(slot)
 
         navigateToCell: (start_coord, game_state, cb) ->
             UserInterface.printLine "Select cell to move to."

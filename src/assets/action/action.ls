@@ -234,9 +234,9 @@ define [
             @character.hitPoints = 100
 
     class Take extends Action
-        (@character, @groupId, @numItems) ->
+        (@character, @slot) ->
             super()
-            @items = @character.getCell().items.removeItemsByGroupId(@groupId, @numItems)
+            @item = @slot.item
 
         Relationships: Util.enum [
             'Character'
@@ -245,16 +245,16 @@ define [
 
         prepare: (game_state) ->
             @character.notify(this, @Relationships.Character, game_state)
-            @items.forEach (item) ~>
-                item.notify(this, @Relationships.Item, game_state)
+            @item.notify(this, @Relationships.Item, game_state)
 
         commit: ->
-            letter = @character.getInventory().insertItems(@items)
+            @slot.removeItem()
+            @character.getInventory().addItem(@item)
 
     class Drop extends Action
-        (@character, @groupId, @numItems) ->
+        (@character, @slot) ->
             super()
-            @items = @character.getInventory().removeItemsByGroupId(@groupId, @numItems)
+            @item = @slot.item
 
         Relationships: Util.enum [
             'Character'
@@ -263,11 +263,10 @@ define [
 
         prepare: (game_state) ->
             @character.notify(this, @Relationships.Character, game_state)
-            @items.forEach (item) ~>
-                item.notify(this, @Relationships.Item, game_state)
+            @item.notify(this, @Relationships.Item, game_state)
 
         commit: ->
-            @character.getCell().items.insertItems(@items)
+            @character.getCell().items.addItem(@item)
 
     class ChangeLevels extends Action
         (@character, @cell) ->

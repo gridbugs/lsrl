@@ -2,6 +2,13 @@ define [
     'util'
 ], (Util) ->
 
+    capitaliseFirstLetterOfString = (str) ->
+        return str.slice(0, 1).toUpperCase().concat(str.slice(1))
+
+    capitaliseFirstLetterOfEachWordInString = (str) ->
+        return str.split(' ').map(capitaliseFirstLetterOfString).join(' ')
+
+
     class Description
         (@parts, @style = void) ->
             @thirdPersonSingular = true
@@ -13,7 +20,7 @@ define [
         capitaliseFirstLetter: ->
             first_part = @parts[0]
             if typeof first_part == 'string'
-                @parts[0] = first_part.slice(0, 1).toUpperCase().concat(first_part.slice(1))
+                @parts[0] = capitaliseFirstLetterOfString(first_part)
             else
                 first_part.capitaliseFirstLetter()
 
@@ -22,6 +29,22 @@ define [
         append: (desc) ->
             @parts.push(desc)
             return this
+
+        capitaliseFirstLetterOfEachWord: ->
+            for i from 0 til @parts.length
+                if typeof @parts[i] == 'string'
+                    @parts[i] = capitaliseFirstLetterOfEachWordInString(@parts[i])
+                else
+                    @parts[i].capitaliseFirstLetterOfEachWord()
+
+            return this
+
+        toTitle: ->
+            return @capitaliseFirstLetterOfEachWord()
+
+        toTitleString: ->
+            return @toTitle().toString()
+
 
     Description.PluralDescription = class extends Description
         (@parts, @style = void) ->
