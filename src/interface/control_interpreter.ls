@@ -202,7 +202,8 @@ define [
                     else
                         action = new Action.Equip(@character, slot, item_slot)
                         cb(action)
-
+            |   Types.Control.SwapWeapons
+                    cb(new Action.SwapWeapons(@character))
             |   otherwise
                     @character.getAction game_state, cb
 

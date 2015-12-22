@@ -34,6 +34,6 @@ define [
     Key.PERIOD = 190
     Key.COMMA = 188
     Key.COLON = 58
-    Key.SEMICOLON = 59
+    Key.SEMICOLON = 186
 
     return Key

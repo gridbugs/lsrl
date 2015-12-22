@@ -84,6 +84,7 @@ define [
                 (code('c')):            'Inventory'
                 (code('v')):            'Wait'
                 (Key.PERIOD):           'Equip'
+                (Key.SEMICOLON):        'SwapWeapons'
 
                 /* Stairs */
                 (code('v') .|. Key.SHIFT):  'Descend'
@@ -126,6 +127,7 @@ define [
                 (code('i')):            'Inventory'
                 (Key.PERIOD):           'Wait'
                 (code('e')):            'Equip'
+                (code('z')):            'SwapWeapons'
 
                 /* Stairs */
                 (Key.PERIOD .|. Key.SHIFT):     'Descend'

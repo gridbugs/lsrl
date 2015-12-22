@@ -46,6 +46,7 @@ define [
         \Descend
         \Ascend
         \Equip
+        \SwapWeapons
     ]
 
     {

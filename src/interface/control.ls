@@ -44,6 +44,7 @@ define [
         'Descend'
         'Ascend'
         'Equip'
+        'SwapWeapons'
     ].map(createBasicControl)
 
     return Control

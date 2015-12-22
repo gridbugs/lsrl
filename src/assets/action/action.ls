@@ -349,7 +349,32 @@ define [
         commit: ->
             @character.unequipItem(@equipmentSlot)
 
+    class SwapWeapons extends Action
+        (@character) ->
+            super()
+            @toEquip = @character.equipmentSlots.preparedWeapon
+            @toUnequip = @character.equipmentSlots.weapon
+        
+        Relationships: Util.enum [
+            'Character'
+            'UnequippedItem'
+            'EquippedItem'
+        ]
 
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @toUnequip.item.notify(this, @Relationships.UnequippedItem, game_state)
+            @toEquip.item.notify(this, @Relationships.EquippedItem, game_state)
+
+        commit: ->
+            if @toEquip.item.isEquipable()
+                @toEquip.item.equip(@toUnequip)
+            if @toUnequip.item.isEquipable()
+                @toUnequip.item.equip(@toEquip)
+
+            tmp = @toEquip.item
+            @toEquip.item = @toUnequip.item
+            @toUnequip.item = tmp
 
     class Null extends Action
         ->
@@ -376,5 +401,6 @@ define [
         Ascend
         Equip
         Unequip
+        SwapWeapons
         Null
     }
