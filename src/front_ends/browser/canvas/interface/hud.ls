@@ -9,9 +9,8 @@ define [
 
         updateHud: (character) ->
             @$hud.empty()
-            @$hud.append("<div>#{character.getName()}</div>")
             @$hud.append("<div>HP: #{character.getCurrentHitPoints()}</div>")
             @$hud.append("<div>Depth: #{character.level.depth}</div>")
-            @$hud.append("<div>Weapon: #{character.weapon.describe().toTitleString()}</div>")
+            @$hud.append("<div>Weapon: #{character.getWeapon().describe().toTitleString()}</div>")
             character.continuousEffects.forEach (effect) ~>
                 @$hud.append("<div>#{DescriptionInterpreter.descriptionToHtmlString(effect.describe())}</div>")

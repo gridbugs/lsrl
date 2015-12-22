@@ -66,7 +66,7 @@ define [
 
         applySingleAction: (action) ->
             ret = action.apply(@gameState)
-            if @descriptionProfile.accept(action) and action.describe?
+            if action.success and @descriptionProfile.accept(action) and action.describe?
                 UserInterface.printDescriptionLine(action.describe())
             return ret
 

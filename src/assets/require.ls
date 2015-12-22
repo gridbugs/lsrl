@@ -13,4 +13,5 @@ define [
     'assets/drawer/drawer'
     'assets/colour/colour'
     'assets/tile_set/tile_set'
+    'assets/equipment_slot/equipment_slot'
 ]

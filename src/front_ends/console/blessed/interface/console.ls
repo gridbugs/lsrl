@@ -3,7 +3,7 @@ define [
     'front_ends/console/box'
     'front_ends/console/blessed/util'
     'front_ends/console/text'
-    'front_ends/console/colours'
+    'assets/colour/console'
     'front_ends/console/description_interpreter'
     'util'
 ], (BaseConsole, Box, BlessedUtil, Text, Colours, DescriptionInterpreter, Util) ->

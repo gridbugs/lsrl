@@ -34,5 +34,6 @@ define [
                     break
             @grid.get(67, 27).addItem(new Assets.Item.HealingPlant())
             @grid.get(67, 26).addItem(new Assets.Item.HealingFruit())
+            @grid.get(67, 25).addItem(new Assets.Weapon.BentSpear())
 
     AssetSystem.exposeAsset('Level', SimpleDungeonTop)

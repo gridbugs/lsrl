@@ -156,6 +156,16 @@ define [
                 max = x
         return max
 
+    getNthLetter = (n) ->
+        return String.fromCharCode('a'.charCodeAt(0) + n)
+
+    capitaliseFirstLetterOfString = (str) ->
+        return str.slice(0, 1).toUpperCase().concat(str.slice(1))
+
+    capitaliseFirstLetterOfEachWordInString = (str) ->
+        return str.split(' ').map(capitaliseFirstLetterOfString).join(' ')
+
+
     {
         isInt
         makeEnum
@@ -190,4 +200,7 @@ define [
         retryWhileUndefined
         arrayMost
         joinObjectTable
+        getNthLetter
+        capitaliseFirstLetterOfEachWordInString
+        capitaliseFirstLetterOfString
     }

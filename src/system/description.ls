@@ -2,12 +2,6 @@ define [
     'util'
 ], (Util) ->
 
-    capitaliseFirstLetterOfString = (str) ->
-        return str.slice(0, 1).toUpperCase().concat(str.slice(1))
-
-    capitaliseFirstLetterOfEachWordInString = (str) ->
-        return str.split(' ').map(capitaliseFirstLetterOfString).join(' ')
-
 
     class Description
         (@parts, @style = void) ->
@@ -20,7 +14,7 @@ define [
         capitaliseFirstLetter: ->
             first_part = @parts[0]
             if typeof first_part == 'string'
-                @parts[0] = capitaliseFirstLetterOfString(first_part)
+                @parts[0] = Util.capitaliseFirstLetterOfString(first_part)
             else
                 first_part.capitaliseFirstLetter()
 
@@ -33,7 +27,7 @@ define [
         capitaliseFirstLetterOfEachWord: ->
             for i from 0 til @parts.length
                 if typeof @parts[i] == 'string'
-                    @parts[i] = capitaliseFirstLetterOfEachWordInString(@parts[i])
+                    @parts[i] = Util.capitaliseFirstLetterOfEachWordInString(@parts[i])
                 else
                     @parts[i].capitaliseFirstLetterOfEachWord()
 

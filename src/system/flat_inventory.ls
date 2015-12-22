@@ -1,8 +1,9 @@
 define [
     'structures/heap'
     'structures/avl_tree'
+    'util'
     'debug'
-], (Heap, AvlTree, Debug) ->
+], (Heap, AvlTree, Util, Debug) ->
 
     class ItemSlot
         (@inventory, @key, @item) ->
@@ -16,7 +17,7 @@ define [
         (@numSlots = 26) ->
             @freeLetters = new Heap()
             for i from 0 til @numSlots
-                @freeLetters.insert(String.fromCharCode('a'.charCodeAt(0) + i))
+                @freeLetters.insert(Util.getNthLetter(i))
 
             @items = {}
             @numItems = 0

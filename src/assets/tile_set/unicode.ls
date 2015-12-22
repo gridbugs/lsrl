@@ -57,6 +57,7 @@ define [
                 StoneUpwardStairs:          ['<', 'MediumGrey',   true]
                 Spider:                     ['s', 'White',      true]
                 RustySword:                 ['[', 'Red',        true]
+                BentSpear:                  ['[', 'Blue',        true]
                 HealingPlant:               ['%', 'Green',      true]
                 HealingFruit:               ['*', 'Orange',      true]
             }
@@ -140,6 +141,8 @@ define [
             # Weapons
             Assets.Weapon.RustySword::getTile = ->
                 return tiles.RustySword
+            Assets.Weapon.BentSpear::getTile = ->
+                return tiles.BentSpear
 
             # Misc Items
             Assets.Item.HealingPlant::getTile = ->

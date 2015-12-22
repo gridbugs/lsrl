@@ -40,6 +40,10 @@ define [
                     return action.character == @character
             |   Types.Action.Drop
                     return action.character == @character
+            |   Types.Action.Equip
+                    return action.character == @character
+            |   Types.Action.Unequip
+                    return action.character == @character
 
             return false
 

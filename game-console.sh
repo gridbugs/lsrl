@@ -1,6 +1,6 @@
 #!/bin/sh
 export TERM=xterm-256color
-
+echo NodeJS Version: `node -v`
 echo -n Building...
 node_modules/livescript/bin/lsc -co output src
 echo done

@@ -296,6 +296,61 @@ define [
         (@character, @cell) ->
             super(@character, @cell)
 
+    class Equip extends Action
+        (@character, @equipmentSlot, @inventorySlot) ->
+            super()
+            @item = @inventorySlot.item
+
+        Relationships: Util.enum [
+            'Character'
+            'Item'
+        ]
+
+        prepare: (game_state) ->
+            if @item.isEquipped()
+                # need to unequip the item first before equipping it in a different slot
+                @success = false
+
+                # in reverse order because the action queue is a stack
+                game_state.enqueueAction(new Equip(@character, @equipmentSlot, @inventorySlot))
+                game_state.enqueueAction(new Unequip(@character, @item.getSlot()))
+                return
+
+            if @equipmentSlot.containsItem()
+                # need to clear the equipment slot before equipping a new item there
+                @success = false
+
+                # in reverse order because the action queue is a stack
+                game_state.enqueueAction(new Equip(@character, @equipmentSlot, @inventorySlot))
+                game_state.enqueueAction(new Unequip(@character, @equipmentSlot))
+                return
+
+            @character.notify(this, @Relationships.Character, game_state)
+            @item.notify(this, @Relationships.Item, game_state)
+
+        commit: ->
+            @character.equipItem(@item, @equipmentSlot)
+
+
+    class Unequip extends Action
+        (@character, @equipmentSlot) ->
+            super()
+            @item = @equipmentSlot.item
+
+        Relationships: Util.enum [
+            'Character'
+            'Item'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @item.notify(this, @Relationships.Item, game_state)
+
+        commit: ->
+            @character.unequipItem(@equipmentSlot)
+
+
+
     class Null extends Action
         ->
             super()
@@ -319,5 +374,7 @@ define [
         Drop
         Descend
         Ascend
+        Equip
+        Unequip
         Null
     }

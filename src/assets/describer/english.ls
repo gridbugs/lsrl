@@ -5,10 +5,13 @@ define [
     'system/knowledge'
     'system/character'
     'system/weapon'
+    'system/equipment_slot_table'
     'asset_system'
     'types'
     'util'
-], (Description, Assets, Cell, Knowledge, Character, Weapon, AssetSystem, Types, Util) ->
+], (Description, Assets, Cell, Knowledge, Character, Weapon, EquipmentSlotTable,
+    AssetSystem, Types, Util) ->
+
     AssetSystem.makeAsset 'Describer', {
         displayName: 'English'
         init: ->
@@ -219,17 +222,59 @@ define [
                 desc.capitaliseFirstLetter()
                 return desc
 
+            Assets.Action.Equip::describe = ->
+                desc = getCharacterActionDescription(@character, @equipmentSlot.type.getEquipVerb())
+                desc.append(' the ')
+                desc.append(@item.describe().toTitle())
+                desc.append('.')
+                desc.capitaliseFirstLetter()
+                return desc
+
+            Assets.Action.Unequip::describe = ->
+                desc = getCharacterActionDescription(@character, 'unequip')
+                desc.append(' the ')
+                desc.append(@item.describe().toTitle())
+                desc.append('.')
+                desc.capitaliseFirstLetter()
+                return desc
+
             Assets.Weapon.RustySword::describe = ->
                 return new Description(['rusty sword'])
 
+            Assets.Weapon.BentSpear::describe = ->
+                return new Description(['bent spear'])
+
             Assets.Weapon.BareHands::describe = ->
-                return new Description(['bare hands'])
+                return new Description(['(unarmed)'])
 
             Assets.Item.HealingPlant::describe = ->
                 return new Description(['healing plant'])
 
             Assets.Item.HealingFruit::describe = ->
                 return new Description(['healing fruit'])
+
+
+            # Equipment Slots
+            EquipmentSlotTable.EquipmentSlot::describe = ->
+                return @type.describe()
+
+            Assets.EquipmentSlot.Weapon.describe = ->
+                return new Description(['weapon'])
+
+            Assets.EquipmentSlot.Weapon.getEquipVerb = ->
+                return 'equip'
+
+            Assets.EquipmentSlot.Weapon.getEquippedVerb = ->
+                return 'equipped'
+
+            Assets.EquipmentSlot.PreparedWeapon.describe = ->
+                return new Description(['prepared weapon'])
+
+            Assets.EquipmentSlot.PreparedWeapon.getEquipVerb = ->
+                return 'prepare'
+
+            Assets.EquipmentSlot.PreparedWeapon.getEquippedVerb = ->
+                return 'prepared'
 
         installPlayerCharacter: (pc) ->
             pc.describe = ->
@@ -240,4 +285,7 @@ define [
 
             pc.needsArticle = ->
                 return false
+
+            pc.asStandardCharacter = ->
+                return pc.constructor.prototype
     }

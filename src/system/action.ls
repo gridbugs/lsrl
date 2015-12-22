@@ -15,7 +15,6 @@ define [
 
         apply: (game_state) ->
             @prepare(game_state)
-
             if @success
                 @commit(game_state)
                 return true

@@ -9,14 +9,28 @@ define [
     'debug'
 ], (Action, AutoMove, Types, Search, UserInterface, CellSelector, Util, Debug) ->
 
-    printCharacterInventory = (character) ->
-        character.getInventory().forEachMapping (ch, item) ->
-            name = item.describe().toTitleString()
-            UserInterface.printLine "#{ch}: #{name}"
-
     class ControlInterpreter
         (@character) ->
             @selector = new CellSelector()
+
+        printCharacterInventory: (predicate = -> true) ->
+            count = 0
+            @character.getInventory().forEachMapping (ch, item) ->
+                if predicate(item)
+                    name = item.describe().toTitleString()
+                    equippedStr = ""
+                    if item.isEquipped()
+                        equippedStr = " [#{item.equippedInSlot.type.getEquippedVerb()}]"
+                    UserInterface.printLine "(#{ch}) #{name}#{equippedStr}"
+                    count := count + 1
+            return count
+
+        printCharacterEquipmentSlots: ->
+            @character.equipmentSlots.forEachMapping (letter, slot) ->
+                if slot.containsItem()
+                    UserInterface.printLine "(#{letter}) #{slot.describe().toTitleString()}: #{slot.item.describe().toTitleString()}"
+                else
+                    UserInterface.printLine "(#{letter}) #{slot.describe().toTitleString()}"
 
         getAction: (game_state, cb) ->
             [control, extra] <~ Util.repeatWhileUndefined(UserInterface.getControl)
@@ -106,7 +120,7 @@ define [
                     if @character.getInventory().isEmpty()
                         UserInterface.printLine "(empty)"
                     else
-                        printCharacterInventory(@character)
+                        @printCharacterInventory()
 
                     @character.getAction game_state, cb
             |   Types.Control.Drop
@@ -118,7 +132,7 @@ define [
 
                     UserInterface.printLine "Select item to drop:"
 
-                    printCharacterInventory(@character)
+                    @printCharacterInventory()
 
                     slot <~ @chooseInventorySlot()
                     if slot?
@@ -149,7 +163,46 @@ define [
 
                 cb(new Action.Ascend(@character, cell))
             |   Types.Control.Equip
-                    console.debug 'hi'
+                    UserInterface.printLine "Equip to where?"
+                    @printCharacterEquipmentSlots()
+                    slot <~ @chooseEquipmentSlot()
+
+                    if not slot?
+                        UserInterface.printLine "No such item slot."
+                        @character.getAction game_state, cb
+                        return
+
+                    UserInterface.printLine "#{Util.capitaliseFirstLetterOfString(slot.type.getEquipVerb())} which item? (#{slot.describe().toTitleString()})"
+                    count = @printCharacterInventory( (item) ->
+                        return item.isEquipable() and item.compatibleSlots.has(slot.type)
+                    )
+
+                    if count == 0
+                        UserInterface.printLine "No compatible items in inventory."
+                        @character.getAction game_state, cb
+                        return
+
+                    item_slot <~ @chooseInventorySlot()
+                    if not item_slot?
+                        UserInterface.printLine "You don't have that item."
+                        @character.getAction game_state, cb
+                        return
+                    if not item_slot.item.isEquipable()
+                        UserInterface.printLine "That item cannot be equipped."
+                        @character.getAction game_state, cb
+                        return
+                    if not item_slot.item.compatibleSlots.has(slot.type)
+                        UserInterface.printLine "That item cannot be equipped there."
+                        @character.getAction game_state, cb
+                        return
+
+                    if slot.item == item_slot.item
+                        action = new Action.Unequip(@character, slot)
+                        cb(action)
+                    else
+                        action = new Action.Equip(@character, slot, item_slot)
+                        cb(action)
+
             |   otherwise
                     @character.getAction game_state, cb
 
@@ -161,6 +214,11 @@ define [
         chooseItemSlot: (cell, cb) ->
             char <~ UserInterface.getChar()
             slot = cell.items.getSlotByLetter(char)
+            cb(slot)
+
+        chooseEquipmentSlot: (cb) ->
+            char <~ UserInterface.getChar()
+            slot = @character.equipmentSlots.getSlotByLetter(char)
             cb(slot)
 
         navigateToCell: (start_coord, game_state, cb) ->

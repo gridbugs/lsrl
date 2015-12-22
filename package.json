@@ -9,5 +9,6 @@
         "prelude-ls": "*",
         "requirejs": "*",
         "blessed": "*"
-    }
+    },
+    "engine": "node 5.2.0"
 }

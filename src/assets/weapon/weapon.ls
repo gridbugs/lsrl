@@ -3,10 +3,20 @@ define [
     'system/equipable'
     'assets/action/action'
     'assets/effect/reactive_effect'
+    'assets/equipment_slot/equipment_slot'
     'system/item'
     'asset_system'
     'types'
-], (Weapon, Equipable, Actions, ReactiveEffect, Item, AssetSystem, Types) ->
+], (Weapon, Equipable, Actions, ReactiveEffect, EquipmentSlot, Item, AssetSystem, Types) ->
+
+    class EquipableWeapon extends Weapon.EquipableWeapon
+        ->
+            super()
+
+        compatibleSlots: new Set([
+            EquipmentSlot.Weapon,
+            EquipmentSlot.PreparedWeapon
+        ])
 
     class BareHands extends Weapon
         ->
@@ -49,7 +59,14 @@ define [
         ->
             super()
 
-    class RustySword extends Weapon implements Equipable
+    class RustySword extends EquipableWeapon
+        ->
+            super()
+
+        getAttackDamage: ->
+            return 1
+
+    class BentSpear extends EquipableWeapon
         ->
             super()
 
@@ -62,5 +79,6 @@ define [
         ShrubberyPoisonSpikes
         SpiderFangs
         RustySword
+        BentSpear
         Null
     }

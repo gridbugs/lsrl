@@ -31,8 +31,6 @@ define [
         getTurnCount: ->
             return @controller.getTurnCount()
 
-        getName: -> 'Character'
-
         observe: (game_state) ->
             @controller.knowledge.beforeObserve()
             Observer.observe(@controller, game_state)
@@ -82,3 +80,15 @@ define [
 
         notifyEffectable: (action, relationship, game_state) ->
             @weapon.notify(action, relationship, game_state)
+
+        unequipItem: (equipment_slot) ->
+            item = equipment_slot.item
+            equipment_slot.item = equipment_slot.default
+            item.unequip()
+
+        equipItem: (item, equipment_slot) ->
+            equipment_slot.item = item
+            item.equip(equipment_slot)
+
+        getWeapon: ->
+            return @equipmentSlots.weapon.item

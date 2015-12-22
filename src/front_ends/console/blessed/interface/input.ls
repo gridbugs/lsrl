@@ -16,6 +16,7 @@ define [
         return: Key.ENTER
         ';': Key.SEMICOLON
         ':': Key.COLON
+        '.': Key.PERIOD
     }
 
     class Input extends BaseInput
@@ -23,11 +24,12 @@ define [
             super()
 
             @program.on 'keypress', (c, obj) ~>
-
                 if obj.name == 'enter'
                     return
 
                 code = NameToCode[obj.name]
+                if not code?
+                    code = NameToCode[c]
                 if not code?
                     if obj.name?
                         code = obj.name.toUpperCase().charCodeAt(0)

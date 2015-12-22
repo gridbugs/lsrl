@@ -1,7 +1,8 @@
 define [
     'system/effectable'
+    'system/equipable'
     'system/item'
-], (Effectable, Item) ->
+], (Effectable, Equipable, Item) ->
 
     class Weapon implements Effectable, Item
         ->
@@ -9,3 +10,14 @@ define [
 
         getAttackDamage: ->
             return 0
+
+    class EquipableWeapon extends Weapon implements Equipable
+        ->
+            super()
+            @initEquipable()
+
+        equipmentSlotName: 'weapon'
+
+    Weapon.EquipableWeapon = EquipableWeapon
+
+    return Weapon
