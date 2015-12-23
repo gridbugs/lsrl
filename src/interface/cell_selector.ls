@@ -24,7 +24,9 @@ define [
                     cb(extra)
             |   Types.Control.Direction
                     change = Direction.Vectors[control.direction]
-                    @selectedPosition = @selectedPosition.add(change)
+                    position = @selectedPosition.add(change)
+                    if character.grid.isValidCart(position)
+                        @selectedPosition = position
                     @selectCellLoop(character, game_state, cb, on_each)
             |   Types.Control.Accept
                     UserInterface.drawCharacterKnowledge(character, game_state)

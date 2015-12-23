@@ -135,6 +135,8 @@ define [
         getDistanceToEdge: (c) ->
             return c.distanceToEdge
 
+        isValidCart: (v) ->
+            return @isValidCoordinate(v.x, v.y)
         isValidCoordinate: (x, y) ->
             return x >= 0 and y >= 0 and x < @width and y < @height
 
