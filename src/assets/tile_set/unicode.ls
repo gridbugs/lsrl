@@ -72,6 +72,8 @@ define [
             tiles = @Tiles
 
             Knowledge.KnowledgeCell::getTile = (time) ->
+                if @gameCell.projectile?
+                    return @gameCell.projectile.getTile(time)
                 if @character?
                     if @character.getTile?
                         return @character.getTile(time)

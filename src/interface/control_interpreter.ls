@@ -1,5 +1,6 @@
 define [
     'assets/action/action'
+    'assets/item/item'
     'interface/auto_move'
     'types'
     'structures/search'
@@ -8,7 +9,7 @@ define [
     'structures/path'
     'util'
     'debug'
-], (Action, AutoMove, Types, Search, UserInterface, CellSelector, Path, Util, Debug) ->
+], (Action, Item, AutoMove, Types, Search, UserInterface, CellSelector, Path, Util, Debug) ->
 
     class ControlInterpreter
         (@character) ->
@@ -208,7 +209,12 @@ define [
                     cb(new Action.SwapWeapons(@character))
             |   Types.Control.Ability
                     path <~ @selectTargetCell(@character.position, game_state)
-                    @character.getAction game_state, cb
+                    if path?
+                        f = new Item.HealingFruit()
+                        action = new Action.FireProjectile(@character, f, path)
+                        cb(action)
+                    else
+                        @character.getAction game_state, cb
             |   otherwise
                     @character.getAction game_state, cb
 

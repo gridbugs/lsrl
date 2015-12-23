@@ -23,4 +23,8 @@ define [
         prepare: ->
         commit: ->
 
+    Action.CharacterAction = {
+        getPosition: -> @character.position
+    }
+
     return Action

@@ -15,4 +15,6 @@ define [
             super(action, relationship, game_state)
             @solid.notify(action, relationship, game_state)
 
+        getWeapon: -> @weapon
+
     AssetSystem.exposeAsset('Character', Spider)

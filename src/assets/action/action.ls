@@ -7,7 +7,7 @@ define [
     'debug'
 ], (Action, Assets, Util, AssetSystem, Types, Debug) ->
 
-    class Move extends Action
+    class Move extends Action implements Action.CharacterAction
         (@character, @direction) ->
             super()
             @fromCell = @character.getCell()
@@ -30,7 +30,7 @@ define [
             @fromCell.character = void
             @toCell.character = @character
 
-    class BumpIntoWall extends Action
+    class BumpIntoWall extends Action implements Action.CharacterAction
         (@character, @object) ->
             super()
 
@@ -45,7 +45,7 @@ define [
 
         commit: ->
 
-    class OpenDoor extends Action
+    class OpenDoor extends Action implements Action.CharacterAction
         (@character, @direction) ->
             super()
             @doorCell = @character.getCell().neighbours[@direction]
@@ -68,7 +68,7 @@ define [
         commit: ->
             @doorCell.feature.open()
 
-    class Wait extends Action
+    class Wait extends Action implements Action.CharacterAction
         (@character, @time = 0) ->
             super()
             @time += 1
@@ -82,7 +82,7 @@ define [
 
         commit: ->
 
-    class Attack extends Action
+    class Attack extends Action implements Action.CharacterAction
         (@character, @direction) ->
             super()
             @targetCell = @character.getCell().neighbours[@direction]
@@ -104,7 +104,7 @@ define [
         commit: (game_state) ->
             game_state.enqueueAction(new AttackHit(@character, @targetCharacter))
 
-    class AttackHit extends Action
+    class AttackHit extends Action implements Action.CharacterAction
         (@character, @targetCharacter) ->
             super()
             @rescheduleRequired = false
@@ -119,10 +119,10 @@ define [
             @targetCharacter.notify(this, @Relationships.Target, game_state)
 
         commit: (game_state) ->
-            damage = @character.weapon.getAttackDamage()
+            damage = @character.getWeapon().getAttackDamage()
             game_state.enqueueAction(new TakeDamage(@targetCharacter, damage))
 
-    class TakeDamage extends Action
+    class TakeDamage extends Action implements Action.CharacterAction
         (@character, @damage) ->
             super()
             @rescheduleRequired = false
@@ -139,7 +139,7 @@ define [
             if @character.hitPoints <= 0
                 game_state.enqueueAction(new Die(@character))
 
-    class Die extends Action
+    class Die extends Action implements Action.CharacterAction
         (@character) ->
             super()
             @rescheduleRequired = false
@@ -156,7 +156,7 @@ define [
         commit: (game_state) ->
             @character.die(game_state)
 
-    class GetStuckInWeb extends Action
+    class GetStuckInWeb extends Action implements Action.CharacterAction
         (@character, @cell) ->
             super()
 
@@ -171,7 +171,7 @@ define [
 
         commit: ->
 
-    class StruggleInWeb extends Action
+    class StruggleInWeb extends Action implements Action.CharacterAction
         (@character, @cell) ->
             super()
             @time = 10
@@ -188,7 +188,7 @@ define [
         commit: ->
             @cell.feature.weaken()
 
-    class BreakWeb extends Action
+    class BreakWeb extends Action implements Action.CharacterAction
         (@character, @cell) ->
             super()
 
@@ -204,7 +204,7 @@ define [
         commit: ->
             @cell.feature.break()
 
-    class BecomePoisoned extends Action
+    class BecomePoisoned extends Action implements Action.CharacterAction
         (@character) ->
             super()
             @rescheduleRequired = false
@@ -219,7 +219,7 @@ define [
         commit: (game_state) ->
             game_state.registerContinuousEffect(new Assets.ContinuousEffect.Poisoned(@character, 5), @character)
 
-    class Restore extends Action
+    class Restore extends Action implements Action.CharacterAction
         (@character) ->
             super()
 
@@ -233,7 +233,7 @@ define [
         commit: (game_state) ->
             @character.hitPoints = 100
 
-    class Take extends Action
+    class Take extends Action implements Action.CharacterAction
         (@character, @slot) ->
             super()
             @item = @slot.item
@@ -251,7 +251,7 @@ define [
             @slot.removeItem()
             @destinationKey = @character.getInventory().addItem(@item)
 
-    class Drop extends Action
+    class Drop extends Action implements Action.CharacterAction
         (@character, @slot) ->
             super()
             @item = @slot.item
@@ -269,7 +269,7 @@ define [
             @slot.removeItem()
             @character.getCell().items.addItem(@item)
 
-    class ChangeLevels extends Action
+    class ChangeLevels extends Action implements Action.CharacterAction
         (@character, @cell) ->
             super()
             @stairs = @cell.feature
@@ -296,7 +296,7 @@ define [
         (@character, @cell) ->
             super(@character, @cell)
 
-    class Equip extends Action
+    class Equip extends Action implements Action.CharacterAction
         (@character, @equipmentSlot, @inventorySlot) ->
             super()
             @item = @inventorySlot.item
@@ -332,7 +332,7 @@ define [
             @character.equipItem(@item, @equipmentSlot)
 
 
-    class Unequip extends Action
+    class Unequip extends Action implements Action.CharacterAction
         (@character, @equipmentSlot) ->
             super()
             @item = @equipmentSlot.item
@@ -349,7 +349,7 @@ define [
         commit: ->
             @character.unequipItem(@equipmentSlot)
 
-    class SwapWeapons extends Action
+    class SwapWeapons extends Action implements Action.CharacterAction
         (@character) ->
             super()
             @toEquip = @character.equipmentSlots.preparedWeapon
@@ -376,10 +376,56 @@ define [
             @toEquip.item = @toUnequip.item
             @toUnequip.item = tmp
 
+    class FireProjectile extends Action implements Action.CharacterAction
+        (@character, @projectile, @trajectory) ->
+            super()
+        
+        Relationships: Util.enum [
+            'Character'
+            'Projectile'
+        ]
+
+        prepare: (game_state) ->
+            @character.notify(this, @Relationships.Character, game_state)
+            @projectile.notify(this, @Relationships.Projectile, game_state)
+
+        commit: (game_state) ->
+            @trajectory.cells[0].projectile = @projectile
+            movement = new MoveProjectile(@projectile, @trajectory, 0)
+            game_state.enqueueAction(movement)
+            
+    class MoveProjectile extends Action
+        (@projectile, @trajectory, @index) ->
+            super()
+            @fromCell = @trajectory.cells[@index]
+            @toCell = @trajectory.cells[@index + 1]
+
+        Relationships: Util.enum [
+            'SourceCell'
+            'DestinationCell'
+            'Projectile'
+        ]
+
+        prepare: (game_state) ->
+            @projectile.notify(this, @Relationships.Projectile, game_state)
+            @fromCell.notify(this, @Relationships.SourceCell, game_state)
+            @toCell.notify(this, @Relationships.DestinationCell, game_state)
+
+        commit: (game_state) ->
+            @fromCell.projectile = void
+            if @toCell == @trajectory.end
+                @toCell.addItem(@projectile)
+            else
+                @toCell.projectile = @projectile
+                movement = new MoveProjectile(@projectile, @trajectory, @index + 1)
+                game_state.enqueueAction(movement)
+
+
     class Null extends Action
         ->
             super()
             @rescheduleRequired = false
+        
 
     AssetSystem.exposeAssets 'Action', {
         Move
@@ -402,5 +448,6 @@ define [
         Equip
         Unequip
         SwapWeapons
+        FireProjectile
         Null
     }

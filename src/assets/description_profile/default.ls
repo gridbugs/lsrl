@@ -10,7 +10,10 @@ define [
             return character in @character.controller.knowledge.visibleCharacters
 
         seenOrInvolved: (action) ->
-            return @seen(action.character) or action.character == @character
+            if action.character?
+                return @seen(action.character) or action.character == @character
+            else
+                return @character.getKnowledge().getGrid().getCart(action.getPosition()).visible
 
         accept: (action) ->
             switch action.type

@@ -17,6 +17,7 @@ define [
             @ground = void
             @feature = void
             @items = new FlatInventory()
+            @projectile = void
             @characters = []
             @centre = new Vec2((@x+0.5), (@y+0.5))
             @corners = []

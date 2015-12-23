@@ -64,27 +64,43 @@ define [
         enqueueAction: (action) ->
             @actionQueue.push(action)
 
-        applySingleAction: (action) ->
-            ret = action.apply(@gameState)
-            if action.success and @descriptionProfile.accept(action) and action.describe?
+        applySingleAction: (action, callback) ->
+            success = action.apply(@gameState)
+            if success and @descriptionProfile.accept(action)
                 UserInterface.printDescriptionLine(action.describe())
-            return ret
+                time = action.time
+            else
+                time = 0
 
-        applyAction: (action, source) ->
+            UserInterface.drawCharacterKnowledge(@gameState.getPlayerCharacter(), @gameState)
+            UserInterface.updateHud(@gameState.getPlayerCharacter())
+            setTimeout(callback, time, success)
+
+        applyAction: (action, source, callback) ->
             @enqueueAction(action)
-            @processFirstAction(source)
-            @processActions()
+            <~ @processFirstAction(source)
+            <~ @processActions()
+            callback()
 
-        processFirstAction: (source) ->
-            while @actionQueue.length != 0
+        processFirstAction: (source, callback) ->
+            if @actionQueue.length != 0
                 current_action = @actionQueue.pop()
-                if @applySingleAction(current_action)
+                success <~ @applySingleAction(current_action)
+                if success
                     if source.active and current_action.shouldReschedule
                         @scheduleActionSource(source, current_action.time)
-                    return
 
-        processActions: ->
-            while @actionQueue.length != 0
+                    callback(true)
+                else
+                    @processFirstAction(source, callback)
+            else
+                callback(false)
+
+        processActions: (callback) ->
+            if @actionQueue.length == 0
+                callback()
+            else
                 current_action = @actionQueue.pop()
-                @applySingleAction(current_action)
+                success <~ @applySingleAction(current_action)
+                @processActions(callback)
 

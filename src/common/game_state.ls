@@ -62,12 +62,14 @@ define [
         removeObserverNode: (node) ->
             @levelState.removeObserverNode(node)
 
-        processContinuousEffects: ->
+        processContinuousEffects: (callback) ->
             if @timeDelta > 0
                 @continuousEffects.forEach (effect) ~>
                     effect.apply(@timeDelta, this)
 
-                @processActions()
+                @processActions(callback)
+            else
+                callback()
 
         registerContinuousEffect: (effect, character) ->
             node = character.continuousEffects.insert(effect)
@@ -91,14 +93,14 @@ define [
         applySingleAction: (action) ->
             return @levelState.applySingleAction(action)
 
-        applyAction: (action, source) ->
-            @levelState.applyAction(action, source)
+        applyAction: (action, source, callback) ->
+            @levelState.applyAction(action, source, callback)
 
         processFirstAction: (source) ->
             @levelState.processFirstAction(source)
 
-        processActions: ->
-            @levelState.processActions()
+        processActions: (callback) ->
+            @levelState.processActions(callback)
 
         progressTurnCount: ->
             ++@turnCount

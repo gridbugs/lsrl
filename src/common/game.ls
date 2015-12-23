@@ -66,7 +66,7 @@ define [
 
         gameLoop: ->
             @gameState.processObservers()
-            @gameState.processContinuousEffects()
+            <~ @gameState.processContinuousEffects()
             UserInterface.drawCharacterKnowledge(@gameState.getPlayerCharacter(), @gameState)
             UserInterface.updateHud(@gameState.getPlayerCharacter())
 
@@ -93,10 +93,10 @@ define [
 
             UserInterface.updateHud(@gameState.getPlayerCharacter())
             action_source.getAction @gameState, (action) ~>
-                @gameState.applyAction(action, action_source)
+                @gameState.applyAction action, action_source, ~>
 
-                /* Get time until current action source (in game time) */
-                time = @gameState.getCurrentTimeDelta()
+                    /* Get time until current action source (in game time) */
+                    time = @gameState.getCurrentTimeDelta()
 
-                callback(time, action_source == @gameState.getPlayerCharacter())
+                    callback(time, action_source == @gameState.getPlayerCharacter())
 
