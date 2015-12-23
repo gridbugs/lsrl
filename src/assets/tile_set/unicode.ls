@@ -61,6 +61,7 @@ define [
                 HealingPlant:               ['%', 'Green',      true]
                 HealingFruit:               ['*', 'Orange',      true]
                 FlameAmulet:                ['(', 'Red',        true]
+                FireBall:                   ['*', 'Red',        true]
             }
 
             @Tiles = {}
@@ -156,6 +157,8 @@ define [
                 return tiles.HealingPlant
             Assets.Item.HealingFruit::getTile = ->
                 return tiles.HealingFruit
+            Assets.Item.FireBall::getTile = ->
+                return tiles.FireBall
 
         installPlayerCharacter: (pc) ->
             tiles = @Tiles

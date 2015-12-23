@@ -12,5 +12,6 @@ define [
             @$hud.append("<div>HP: #{character.getCurrentHitPoints()}</div>")
             @$hud.append("<div>Depth: #{character.level.depth}</div>")
             @$hud.append("<div>Weapon: #{character.getWeapon().describe().toTitleString()}</div>")
+            @$hud.append("<div>Amulet: #{character.equipmentSlots.neck.item.describe().toTitleString()}</div>")
             character.continuousEffects.forEach (effect) ~>
                 @$hud.append("<div>#{DescriptionInterpreter.descriptionToHtmlString(effect.describe())}</div>")

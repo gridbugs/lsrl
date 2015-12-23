@@ -16,7 +16,11 @@ define [
         ->
             super()
 
+    class NullAmulet extends EquipableAmulet
+        ->
+            super()
 
     AssetSystem.exposeAssets 'Apparel', {
+        NullAmulet
         FlameAmulet
     }

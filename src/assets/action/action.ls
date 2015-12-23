@@ -393,7 +393,7 @@ define [
             @trajectory.cells[0].projectile = @projectile
             movement = new MoveProjectile(@projectile, @trajectory, 0)
             game_state.enqueueAction(movement)
-            
+
     class MoveProjectile extends Action
         (@projectile, @trajectory, @index) ->
             super()
@@ -412,10 +412,10 @@ define [
             @toCell.notify(this, @Relationships.DestinationCell, game_state)
 
         commit: (game_state) ->
-            @fromCell.projectile = void
             if @toCell == @trajectory.end
-                @toCell.addItem(@projectile)
+                game_state.enqueueAction(new StopProjectile(@projectile, @toCell, @fromCell))
             else
+                @fromCell.projectile = void
                 @toCell.projectile = @projectile
                 movement = new MoveProjectile(@projectile, @trajectory, @index + 1)
                 game_state.enqueueAction(movement)
@@ -424,13 +424,92 @@ define [
             return @toCell.position
 
         getAnimationTime: ->
+            if @toCell == @trajectory.end
+                return 0
+            else
+                return 10
+
+    class StopProjectile extends Action
+        (@projectile, @toCell, @fromCell) ->
+            super()
+
+        Relationships: Util.enum [
+            'Projectile'
+            'ToCell'
+            'FromCell'
+        ]
+
+        prepare: (game_state) ->
+            @projectile.notify(this, @Relationships.Projectile, game_state)
+            @fromCell.notify(this, @Relationships.SourceCell, game_state)
+            @toCell.notify(this, @Relationships.DestinationCell, game_state)
+
+        commit: (game_state) ->
+            @fromCell.projectile = void
+            @toCell.addItem(@projectile)
+
+        getPosition: ->
+            return @toCell.position
+
+        getAnimationTime: ->
             return 10
+
+
+    class Explode extends Action
+        (@projectile, @cell) ->
+            super()
+            @cells = [@cell]
+            for n in @cell.allNeighbours
+                @cells.push(n)
+
+        Relationships: Util.enum [
+            'Projectile'
+            'Cell'
+        ]
+
+        prepare: (game_state) ->
+            @projectile.notify(this, @Relationships.Projectile, game_state)
+            for c in @cells
+                c.notify(this, @Relationships.Cell, game_state)
+
+        commit: (game_state) ->
+            for c in @cells
+                c.projectile = @projectile
+            game_state.enqueueAction(new PostExplode(@projectile, @cell, @cells))
+
+        getPosition: ->
+            return @cell.position
+
+        getAnimationTime: ->
+            return 100
+
+    class PostExplode extends Action
+        (@projectile, @cell, @cells) ->
+            super()
+
+        Relationships: Util.enum [
+            'Projectile'
+            'Cell'
+        ]
+
+        prepare: (game_state) ->
+            @projectile.notify(this, @Relationships.Projectile, game_state)
+            for c in @cells
+                c.notify(this, @Relationships.Cell, game_state)
+
+        commit: (game_state) ->
+            for c in @cells
+                c.projectile = void
+
+        getPosition: ->
+            return @cell.position
 
     class Null extends Action
         ->
             super()
             @rescheduleRequired = false
-        
+
+
 
     AssetSystem.exposeAssets 'Action', {
         Move
@@ -454,5 +533,8 @@ define [
         Unequip
         SwapWeapons
         FireProjectile
+        StopProjectile
+        Explode
+        PostExplode
         Null
     }

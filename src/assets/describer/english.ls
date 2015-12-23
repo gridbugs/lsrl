@@ -231,7 +231,7 @@ define [
                 return desc
 
             Assets.Action.Unequip::describe = ->
-                desc = getCharacterActionDescription(@character, 'unequip')
+                desc = getCharacterActionDescription(@character, @equipmentSlot.type.getUnequipVerb())
                 desc.append(' the ')
                 desc.append(@item.describe().toTitle())
                 desc.append('.')
@@ -256,6 +256,9 @@ define [
             Assets.Apparel.FlameAmulet::describe = ->
                 return new Description(['flame amulet'])
 
+            Assets.Apparel.NullAmulet::describe = ->
+                return new Description(['(none)'])
+
             # Equipment Slots
             EquipmentSlotTable.EquipmentSlot::describe = ->
                 return @type.describe()
@@ -266,6 +269,9 @@ define [
             Assets.EquipmentSlot.Weapon.getEquipVerb = ->
                 return 'equip'
 
+            Assets.EquipmentSlot.Weapon.getUnequipVerb = ->
+                return 'unequip'
+
             Assets.EquipmentSlot.Weapon.getEquippedVerb = ->
                 return 'equipped'
 
@@ -275,6 +281,9 @@ define [
             Assets.EquipmentSlot.PreparedWeapon.getEquipVerb = ->
                 return 'prepare'
 
+            Assets.EquipmentSlot.PreparedWeapon.getUnequipVerb = ->
+                return 'unequip'
+
             Assets.EquipmentSlot.PreparedWeapon.getEquippedVerb = ->
                 return 'prepared'
 
@@ -283,6 +292,9 @@ define [
 
             Assets.EquipmentSlot.Neck.getEquipVerb = ->
                 return 'put on'
+
+            Assets.EquipmentSlot.Neck.getUnequipVerb = ->
+                return 'take off'
 
             Assets.EquipmentSlot.Neck.getEquippedVerb = ->
                 return 'worn'

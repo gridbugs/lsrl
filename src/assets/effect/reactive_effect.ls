@@ -8,14 +8,15 @@ define [
         notify: (action, relationship, game_state) ->
             if action.type == Types.Action.Move and relationship == action.Relationships.DestinationCell
                 action.success = false
-
                 game_state.enqueueAction(new Action.BumpIntoWall(action.character, action.toCell.feature))
+            if action.type == Types.Action.MoveProjectile and relationship == action.Relationships.DestinationCell
+                action.success = false
+                game_state.enqueueAction(new Action.StopProjectile(action.projectile, action.fromCell, action.fromCell))
 
     class SolidCharacter
         notify: (action, relationship, game_state) ->
             if action.type == Types.Action.Move and relationship == action.Relationships.DestinationCell
                 action.success = false
-
                 game_state.enqueueAction(new Action.BumpIntoWall(action.character, action.toCell.character))
 
     class ResurrectOnDeath
