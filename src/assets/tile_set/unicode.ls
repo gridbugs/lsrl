@@ -60,6 +60,7 @@ define [
                 BentSpear:                  ['[', 'Blue',        true]
                 HealingPlant:               ['%', 'Green',      true]
                 HealingFruit:               ['*', 'Orange',      true]
+                FlameAmulet:                ['(', 'Red',        true]
             }
 
             @Tiles = {}
@@ -145,6 +146,10 @@ define [
                 return tiles.RustySword
             Assets.Weapon.BentSpear::getTile = ->
                 return tiles.BentSpear
+
+            # Apparel
+            Assets.Apparel.FlameAmulet::getTile = ->
+                return tiles.FlameAmulet
 
             # Misc Items
             Assets.Item.HealingPlant::getTile = ->

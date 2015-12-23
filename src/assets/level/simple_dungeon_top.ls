@@ -35,5 +35,6 @@ define [
             @grid.get(67, 27).addItem(new Assets.Item.HealingPlant())
             @grid.get(67, 26).addItem(new Assets.Item.HealingFruit())
             @grid.get(67, 25).addItem(new Assets.Weapon.BentSpear())
+            @grid.get(67, 24).addItem(new Assets.Apparel.FlameAmulet())
 
     AssetSystem.exposeAsset('Level', SimpleDungeonTop)

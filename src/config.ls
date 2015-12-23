@@ -6,7 +6,7 @@ define [
         Controls: 'Dvorak'
         DRAW_MAP_ONLY: false
         FAST_ANIMATION: false
-        ANIMATION_TIME: 3
+        ANIMATION_TIME: 1
         AUTOEXPLORE_ALL: false
         RUN_TEST: false
         RANDOM_SEED: 1450668793360

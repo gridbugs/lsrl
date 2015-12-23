@@ -21,6 +21,7 @@ define [
         equipmentSlots: new EquipmentSlotTable([
             [Assets.EquipmentSlot.Weapon, 'weapon', bare_hands]
             [Assets.EquipmentSlot.PreparedWeapon, 'preparedWeapon', bare_hands]
+            [Assets.EquipmentSlot.Neck, 'neck', bare_hands]
         ])
 
     AssetSystem.exposeAsset('Character', Human)

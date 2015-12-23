@@ -16,8 +16,6 @@ define [
             super()
             @initEquipable()
 
-        equipmentSlotName: 'weapon'
-
     Weapon.EquipableWeapon = EquipableWeapon
 
     return Weapon

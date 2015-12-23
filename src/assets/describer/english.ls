@@ -253,6 +253,8 @@ define [
             Assets.Item.HealingFruit::describe = ->
                 return new Description(['healing fruit'])
 
+            Assets.Apparel.FlameAmulet::describe = ->
+                return new Description(['flame amulet'])
 
             # Equipment Slots
             EquipmentSlotTable.EquipmentSlot::describe = ->
@@ -275,6 +277,15 @@ define [
 
             Assets.EquipmentSlot.PreparedWeapon.getEquippedVerb = ->
                 return 'prepared'
+
+            Assets.EquipmentSlot.Neck.describe = ->
+                return new Description(['neck'])
+
+            Assets.EquipmentSlot.Neck.getEquipVerb = ->
+                return 'put on'
+
+            Assets.EquipmentSlot.Neck.getEquippedVerb = ->
+                return 'worn'
 
         installPlayerCharacter: (pc) ->
             pc.describe = ->

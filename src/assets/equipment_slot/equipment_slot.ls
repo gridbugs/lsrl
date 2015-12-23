@@ -5,4 +5,5 @@ define [
     AssetSystem.makeAssets 'EquipmentSlot', {
         Weapon: {}
         PreparedWeapon: {}
+        Neck: {}
     }
