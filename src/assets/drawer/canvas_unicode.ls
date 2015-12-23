@@ -13,6 +13,7 @@ define [
     const UNSEEN_COLOUR = '#333333'
     const SELECTED_COLOUR = '#888800'
     const CLEAR_COLOUR = '#000000'
+    const PATH_COLOUR = '#880000'
 
     class CanvasUnicodeDrawer extends Drawer
         (@canvas, @numCols, @numRows) ->
@@ -114,5 +115,16 @@ define [
             @__processBoldQueue()
 
             @ctx.fill()
+        
+        drawPathSelectOverlay: (character, game_state, path) ->
+            @ctx.beginPath()
+            @__clearAll()
+            for c in path.cells
+                @__fillBackgroundCart(c, PATH_COLOUR)
+            @__fillBackgroundCart(path.end, SELECTED_COLOUR)
+            @__drawCharacterKnowledge(character, game_state)
+            @__processBoldQueue()
 
+            @ctx.fill()
+ 
     AssetSystem.exposeAsset('Drawer', CanvasUnicodeDrawer)

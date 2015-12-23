@@ -47,6 +47,7 @@ define [
         \Ascend
         \Equip
         \SwapWeapons
+        \Ability
     ]
 
     {

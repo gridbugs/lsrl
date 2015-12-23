@@ -5,9 +5,10 @@ define [
     'structures/search'
     'interface/user_interface'
     'interface/cell_selector'
+    'structures/path'
     'util'
     'debug'
-], (Action, AutoMove, Types, Search, UserInterface, CellSelector, Util, Debug) ->
+], (Action, AutoMove, Types, Search, UserInterface, CellSelector, Path, Util, Debug) ->
 
     class ControlInterpreter
         (@character) ->
@@ -88,6 +89,7 @@ define [
                         @character.getAction game_state, cb
 
                     , (coord) ~>
+                        UserInterface.drawCellSelectOverlay(@character, game_state, coord)
                         UserInterface.clearLine()
                         kcell = @character.getKnowledge().getGrid().getCart(coord)
                         UserInterface.printDescription(kcell.describe())
@@ -204,6 +206,9 @@ define [
                         cb(action)
             |   Types.Control.SwapWeapons
                     cb(new Action.SwapWeapons(@character))
+            |   Types.Control.Ability
+                    path <~ @selectTargetCell(@character.position, game_state)
+                    @character.getAction game_state, cb
             |   otherwise
                     @character.getAction game_state, cb
 
@@ -222,24 +227,45 @@ define [
             slot = @character.equipmentSlots.getSlotByLetter(char)
             cb(slot)
 
+        selectTargetCell:(start_coord, game_state, cb) ->
+            @selector.selectCell start_coord, @character, game_state
+                , (coord) ~>
+                    path = new Path.StraightLinePath(
+                        @character.grid.getCart(start_coord),
+                        @character.grid.getCart(coord)
+                    )
+                    path.terminateBefore (cell) -> cell.feature.isSolid()
+                    cb(path)
+                , (coord) ~>
+                    if coord?
+                        path = new Path.StraightLinePath(
+                            @character.grid.getCart(start_coord),
+                            @character.grid.getCart(coord)
+                        )
+                        path.terminateBefore (cell) -> cell.feature.isSolid()
+                        UserInterface.drawPathSelectOverlay(@character, game_state, path)
+
         navigateToCell: (start_coord, game_state, cb) ->
             UserInterface.printLine "Select cell to move to."
-            @selector.selectCell start_coord, @character, game_state, (coord) ~>
-                if not coord?
-                    @character.getAction(game_state, cb)
-                    return
+            @selector.selectCell start_coord, @character, game_state
+                , (coord) ~>
+                    if not coord?
+                        @character.getAction(game_state, cb)
+                        return
 
-                dest_cell = @character.grid.getCart coord
+                    dest_cell = @character.grid.getCart coord
 
-                result = Search.findPath @character.getKnowledgeCell(), \
-                    ((c, d) -> c.gameCell.getMoveOutCost(d)), \
-                    ((c) ~>
-                        return c.known and (c.gameCell.character == @character or (not c.gameCell.feature.isSolid()))), \
-                    dest_cell
+                    result = Search.findPath @character.getKnowledgeCell(), \
+                        ((c, d) -> c.gameCell.getMoveOutCost(d)), \
+                        ((c) ~>
+                            return c.known and (c.gameCell.character == @character or (not c.gameCell.feature.isSolid()))), \
+                        dest_cell
 
-                if result?
-                    @character.setAutoMove(new AutoMove.FollowPath(@character, result.directions))
-                    @character.getAction game_state, cb
-                else
-                    UserInterface.printLine "Can't reach selected cell."
-                    @navigateToCell coord, game_state, cb
+                    if result?
+                        @character.setAutoMove(new AutoMove.FollowPath(@character, result.directions))
+                        @character.getAction game_state, cb
+                    else
+                        UserInterface.printLine "Can't reach selected cell."
+                        @navigateToCell coord, game_state, cb
+                , (coord) ~>
+                    UserInterface.drawCellSelectOverlay(@character, game_state, coord)

@@ -1,7 +1,7 @@
 define [
     'assets/assets'
     'drawing/drawer'
-    'front_ends/console/colours'
+    'assets/colour/console'
     'front_ends/console/text'
     'interface/user_interface'
     'util'
@@ -11,6 +11,7 @@ define [
 
     UNSEEN_COLOUR = Colours.VeryDarkGrey
     SELECTED_COLOUR = Colours.DarkYellow
+    PATH_COLOUR = Colours.DarkRed
 
     class BlessedUnicodeDrawer extends Drawer
         (@program, @left, @top, @width, @height) ->
@@ -96,6 +97,32 @@ define [
             @setCursorCart(cell)
 
             @setBackground(SELECTED_COLOUR)
+            if cell.known
+                tile = @getTileFromCell(cell)
+                @drawTile(tile)
+            else
+                @drawUnknownTile()
+            @setDefaultBackground()
+
+            @program.flushBuffer()
+
+        drawPathSelectOverlay: (character, game_state, path) ->
+            @_drawCharacterKnowledge(character)
+
+            @setBackground(PATH_COLOUR)
+            for c in path.cells
+                cell = character.getKnowledge().getGrid().getCart(c)
+                @setCursorCart(cell)
+
+                if cell.known
+                    tile = @getTileFromCell(cell)
+                    @drawTile(tile)
+                else
+                    @drawUnknownTile()
+
+            @setBackground(SELECTED_COLOUR)
+            cell = character.getKnowledge().getGrid().getCart(path.end)
+            @setCursorCart(cell)
             if cell.known
                 tile = @getTileFromCell(cell)
                 @drawTile(tile)

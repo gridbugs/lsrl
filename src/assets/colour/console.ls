@@ -18,6 +18,7 @@ define [
         DarkGrey: 240
         VeryDarkGrey: 236
         LightRed: 196
+        DarkRed: 88
         Yellow:     11
         DarkYellow: 184
         Purple: 92

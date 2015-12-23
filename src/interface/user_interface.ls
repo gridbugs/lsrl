@@ -21,6 +21,7 @@ define [
 
             @drawCharacterKnowledge = bind(gameDrawer, 'drawCharacterKnowledge')
             @drawCellSelectOverlay = bind(gameDrawer, 'drawCellSelectOverlay')
+            @drawPathSelectOverlay = bind(gameDrawer, 'drawPathSelectOverlay')
 
             @getControl = bind(gameController, 'getControl')
             @getChar = bind(gameController, 'getChar')

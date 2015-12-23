@@ -15,8 +15,6 @@ define [
 
         selectCellLoop: (character, game_state, cb, on_each) ->
 
-            UserInterface.drawCellSelectOverlay(character, game_state, @selectedPosition)
-
             on_each?(@selectedPosition)
 
             [control, extra] <~ Util.repeatWhileUndefined(UserInterface.getControl)

@@ -17,6 +17,7 @@ define [
         DarkGrey: '#666666'
         VeryDarkGrey: '#333333'
         LightRed: '#ff0000'
+        DarkRed: '#880000'
         Yellow:  '#ffff00'
         DarkYellow: '#888800'
         Purple: '#993399'

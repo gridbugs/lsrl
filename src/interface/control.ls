@@ -45,6 +45,7 @@ define [
         'Ascend'
         'Equip'
         'SwapWeapons'
+        'Ability'
     ].map(createBasicControl)
 
     return Control
