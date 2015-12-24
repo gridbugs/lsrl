@@ -115,3 +115,8 @@ define [
         getCurrentTimeDelta: ->
             return @timeDelta
 
+        recordObservationTime: ->
+            @lastObservedTime = @getTurnCount()
+
+        getLastObservationTime: ->
+            return @lastObservedTime

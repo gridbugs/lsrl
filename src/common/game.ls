@@ -66,6 +66,7 @@ define [
 
         gameLoop: ->
             @gameState.processObservers()
+            @gameState.recordObservationTime()
             <~ @gameState.processContinuousEffects()
             UserInterface.drawCharacterKnowledge(@gameState.getPlayerCharacter(), @gameState)
             UserInterface.updateHud(@gameState.getPlayerCharacter())

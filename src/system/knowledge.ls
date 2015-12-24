@@ -31,6 +31,9 @@ define [
             if @character? and @character != @knowledge.character
                 @knowledge.visibleCharacters.push(@character)
 
+        isVisible: (game_state) ->
+            return @timestamp == game_state.getLastObservationTime()
+
         hasUnknownNeighbour: ->
             for n in @allNeighbours
                 if not n.known

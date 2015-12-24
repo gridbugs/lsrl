@@ -236,11 +236,13 @@ define [
         selectTargetCell:(start_coord, game_state, cb) ->
             @selector.selectCell start_coord, @character, game_state
                 , (coord) ~>
+                    if not coord?
+                        cb(void)
+                        return
                     path = new Path.StraightLinePath(
                         @character.grid.getCart(start_coord),
                         @character.grid.getCart(coord)
                     )
-                    path.terminateBefore (cell) -> cell.feature.isSolid()
                     cb(path)
                 , (coord) ~>
                     if coord?

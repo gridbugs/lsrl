@@ -9,13 +9,13 @@ define [
         seen: (character) ->
             return character in @character.controller.knowledge.visibleCharacters
 
-        seenOrInvolved: (action) ->
+        seenOrInvolved: (action, game_state) ->
             if action.character?
                 return @seen(action.character) or action.character == @character
             else
-                return @character.getKnowledge().getGrid().getCart(action.getPosition()).visible
+                return @character.getKnowledge().getGrid().getCart(action.getPosition()).isVisible(game_state)
 
-        accept: (action) ->
+        accept: (action, game_state) ->
             switch action.type
             |   Types.Action.BumpIntoWall
                     return action.character == @character

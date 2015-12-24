@@ -23,6 +23,9 @@ define [
         prepare: ->
         commit: ->
 
+        getAnimationTime: ->
+            return @time
+
     Action.CharacterAction = {
         getPosition: -> @character.position
     }

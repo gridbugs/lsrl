@@ -7,7 +7,8 @@ define [
     'assets/assets'
     'util'
     'debug'
-], (Heap, LinkedList, DistributedList, Action, UserInterface, Assets, Util, Debug) ->
+    'config'
+], (Heap, LinkedList, DistributedList, Action, UserInterface, Assets, Util, Debug, Config) ->
 
     class ScheduleEntry
         (action_source, time) ->
@@ -66,15 +67,16 @@ define [
 
         applySingleAction: (action, callback) ->
             success = action.apply(@gameState)
-            if success and @descriptionProfile.accept(action)
-                UserInterface.printDescriptionLine(action.describe())
-                time = action.time
-            else
-                time = 0
+            time = 0
+            if success
+                if @descriptionProfile.accept(action, @gameState)
+                    UserInterface.printDescriptionLine(action.describe())
+                if @descriptionProfile.seenOrInvolved(action, @gameState)
+                    time = action.getAnimationTime()
 
-            UserInterface.drawCharacterKnowledge(@gameState.getPlayerCharacter(), @gameState)
-            UserInterface.updateHud(@gameState.getPlayerCharacter())
-            setTimeout(callback, time, success)
+                UserInterface.drawCharacterKnowledge(@gameState.getPlayerCharacter(), @gameState)
+                UserInterface.updateHud(@gameState.getPlayerCharacter())
+            setTimeout(callback, time * Config.ANIMATION_TIME, success)
 
         applyAction: (action, source, callback) ->
             @enqueueAction(action)

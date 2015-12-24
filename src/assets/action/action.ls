@@ -420,6 +420,11 @@ define [
                 movement = new MoveProjectile(@projectile, @trajectory, @index + 1)
                 game_state.enqueueAction(movement)
 
+        getPosition: ->
+            return @toCell.position
+
+        getAnimationTime: ->
+            return 10
 
     class Null extends Action
         ->
